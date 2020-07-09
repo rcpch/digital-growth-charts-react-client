@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import './components/MeasurementForm'
+import 'semantic-ui-css/semantic.min.css'
+// import MenuBar from './components/MenuBar'
+import Footer from './components/Footer'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import MenuBar from './components/MenuBar';
+import Home from './pages/Home';
+import References from './pages/References';
+import Results from './pages/Results';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends Component {
+
+  render(){
+    return <div className="App">
+         <div>
+          <Router>
+              <MenuBar/>
+              <Switch>
+                  <Route exact path="/">
+                    <Home/>
+                  </Route>
+                  <Route path="/references">
+                    <References />
+                  </Route>
+                  <Route path="/results">
+                    <Results />
+                  </Route>
+              </Switch>
+          </Router> 
+          <Footer/>
+        </div>
+      </div>
+  }
 }
 
 export default App;
