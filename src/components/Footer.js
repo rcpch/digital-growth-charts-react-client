@@ -1,20 +1,17 @@
 import React, { Component } from 'react'
-import { Menu, Label } from 'semantic-ui-react'
+import { Menu, Icon, Image } from 'semantic-ui-react'
 
 export default class Footer extends Component {
     render() {
         return (
-            <Menu>
-                <Menu.Item disabled>
-                    (c) Copyright RCPCH
+            <Menu secondary pointing icon='labeled'>
+                <Menu.Item href='https://www.rcpch.ac.uk/'>
+                    <Image src='rcpch_logo.png' circular size='mini'></Image>
+                    © Copyright RCPCH
                 </Menu.Item>
-                <Menu.Item position="right">
-                    <Label>
-                        Follow the project
-                    </Label>
-                </Menu.Item>
-                <Menu.Item >
-                    RCPCH
+                <Menu.Item href="https://github.com/rcpch/digital-growth-charts-react-client">
+                    <Icon name='github'/>
+                    Follow the project
                 </Menu.Item>
             </Menu>
         );

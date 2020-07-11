@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container } from "semantic-ui-react";
+import { Container, Header, Grid } from "semantic-ui-react";
 import MeasurementForm from '../components/MeasurementForm';
 import axios from 'axios';
 import { withRouter } from "react-router-dom";
@@ -46,12 +46,14 @@ class Home extends Component {
   render() {
     return (
       <Container>
-        <div>
-          <h2>RCPCH Growth Charts</h2>
-        </div>
-        <Container>
-          <MeasurementForm onSubmitMeasurement={this.handleFormData}/>
-        </Container>
+        <Header as='h1'>
+          RCPCH Growth Charts
+        </Header>
+        <Grid centered>
+          <Grid.Column width={12}>
+            <MeasurementForm onSubmitMeasurement={this.handleFormData}/>
+          </Grid.Column>
+        </Grid>
       </Container>
     );
   }

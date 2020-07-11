@@ -171,7 +171,9 @@ class MeasurementForm extends React.Component {
       measurement_to_update.observation_value = event.target.value;
       all_measurements[measurement_index] = measurement_to_update;
       this.setState({measurements: all_measurements});
-      this.createBMI();
+      if (event.target.name !== 'ofc'){
+        this.createBMI();
+      }
     }
     var form_valid = this.formIsValid();
     this.setState({form_valid: form_valid})
