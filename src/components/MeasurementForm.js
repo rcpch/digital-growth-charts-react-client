@@ -182,12 +182,16 @@ class MeasurementForm extends React.Component {
   createBMI() {
     let all_measurements = this.state.measurements;
     const heightIndex = all_measurements.findIndex(measurement => {
-      return measurement.measurement_method === 'height'
+      return measurement.measurement_method === 'height';
     });
     const weightIndex = all_measurements.findIndex(measurement => {
-      return measurement.measurement_method === 'weight'
+      return measurement.measurement_method === 'weight';
     });
-    if (heightIndex !== -1 && weightIndex !== -1){
+    const bmiIndex = all_measurements.findIndex(measurement => {
+      
+      return measurement.measurement_method === 'bmi';
+    })
+    if (heightIndex !== -1 && weightIndex !== -1 && bmiIndex === -1){
       const height = all_measurements[heightIndex].observation_value;
       const weight = all_measurements[weightIndex].observation_value;
       const bmi = weight/(height / 100);
