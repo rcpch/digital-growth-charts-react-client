@@ -15,6 +15,7 @@ This does not happen on the React Client.
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 1. Install React [here](https://reactjs.org/docs/getting-started.html)
-2. Clone the repo
-3. Navigate to the root of the folder
-4. `npm start`
+1. Clone the repo
+1. Navigate to the root of the folder
+1. `npm install`
+1. `npm start`
