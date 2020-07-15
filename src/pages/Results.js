@@ -148,7 +148,7 @@ function CentilesTable(props) {
                         <Table.Row>
                             <Table.Cell>Centile</Table.Cell>
                             <Table.Cell> {item.measurement_calculated_values.centile} %</Table.Cell>
-                            <PopupData lay_comment={item.measurement_calculated_values.lay_comment} clinician_comment={item.measurement_calculated_values.clinician_comment}></PopupData>
+                            {/* <PopupData lay_comment={item.measurement_calculated_values.lay_comment} clinician_comment={item.measurement_calculated_values.clinician_comment}></PopupData> */}
                         </Table.Row>
                     </Table.Body>
                 );
