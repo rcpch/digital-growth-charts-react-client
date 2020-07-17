@@ -1,6 +1,7 @@
 import React from "react";
-import { Message, Container, Segment, Form, Input, Select, Grid, Button, Header } from 'semantic-ui-react'
+import { Message, Container, Segment, Form, Input, Select, Button, Header } from 'semantic-ui-react'
 import moment from "moment"
+import MeasurementInput from './MeasurementInput';
 
 const sexOptions = [
   { key: 'male', value: 'male', text: 'Male' },
@@ -42,13 +43,6 @@ const gestationDaysOptions = [
 const ROBERT_WADLOW = 272 // interesting fact - Robert Wadlow (22/2/1918 – 15/7/1940) was the world's tallest man
 const JON_BROWER_MINNOCH = 635 // interesting fact -  Jon Brower Minnoch (Born USA) was the world's heaviest man
 const KHALID_BIN_MOHSEN_SHAARI = 204 // Khalid bin Mohsen Shaari (2/8/1991) from Saudi Arabia had the highest recorded BMI
-
-const measurementOptions = [
-  {key: 'height', value: 'height', text: 'Height (cm)'},
-  {key: 'weight', value: 'weight', text: 'Weight (kg)'},
-  {key: 'bmi', value: 'bmi', text: 'BMI (kg/m²)'},
-  {key: 'ofc', value: 'ofc', text: 'Head Circumference (cm)'}
-]
 
 class MeasurementForm extends React.Component {
 
@@ -435,45 +429,4 @@ class MeasurementForm extends React.Component {
 
 export default MeasurementForm;
 
-function MeasurementInput(props)  {
-    return (
-        <div key={props.name}>
-          <Grid columns={3}>
-            <Grid.Row>
-              <Grid.Column width={7}>
-                <Form.Field required>
-                  <Select
-                    value={props.measurementMethod}
-                    id={props.id}
-                    name="measurement_method"
-                    placeholder="Measurement Type"
-                    options={measurementOptions}
-                    onChange={props.handleMeasurementChangeSelect}/> 
-                  <div>{props.measurementMethodError}</div>
-                </Form.Field>
-              </Grid.Column>
-              <Grid.Column width={7}>
-                <Form.Field>
-                  <Input
-                    type="number" 
-                    name="observation_value"
-                    id={props.id}
-                    placeholder="Measurement"
-                    value={props.observationValue}
-                    label={{ content: props.units.toString(), basic:true, color: 'blue' }}
-                    labelPosition='right'
-                    onChange={props.handleObservationChange}
-                  />
-                </Form.Field>
-                { props.observationValueError !== '' ? <Message color='red'>{ props.observationValueError }</Message> : null }
-              </Grid.Column>
-              <Grid.Column width={2} verticalAlign='middle'>
-                {props.removeButton ? <Button icon='remove' basic color='red' size='tiny' circular compact onClick={props.handleRemoveMeasurementButton}></Button>: null}
-                {props.addButton ? <Button size='tiny' basic id={props.id} circular color='green' icon='add' compact onClick={props.handleAddMeasurementButton}></Button>: null}
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        </div>
-    );
-  
-}
+

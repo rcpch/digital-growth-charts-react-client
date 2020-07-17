@@ -33,6 +33,8 @@ class Home extends Component {
       var mergedMeasurementArrays = [].concat.apply([], result);
       this.props.history.push({pathname: '/results', data:{calculations: mergedMeasurementArrays}});
     })
+    // TODO #1 needs a catch statement
+    
      
   }
 
