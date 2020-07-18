@@ -3,12 +3,12 @@ import { Message, Form, Input, Select, Grid, Button } from 'semantic-ui-react'
 
 export default function MeasurementInput(props)  {
 
-    const measurementOptions = [
-        {key: 'height', value: 'height', text: 'Height (cm)'},
-        {key: 'weight', value: 'weight', text: 'Weight (kg)'},
-        {key: 'bmi', value: 'bmi', text: 'BMI (kg/m²)'},
-        {key: 'ofc', value: 'ofc', text: 'Head Circumference (cm)'}
-        ]
+  const measurementOptions = [
+    {key: 'height', value: 'height', text: 'Height (cm)'},
+    {key: 'weight', value: 'weight', text: 'Weight (kg)'},
+    {key: 'bmi', value: 'bmi', text: 'BMI (kg/m²)'},
+    {key: 'ofc', value: 'ofc', text: 'Head Circumference (cm)'}
+  ];
 
     return (
         <div key={props.name}>
@@ -42,7 +42,7 @@ export default function MeasurementInput(props)  {
                 { props.observationValueError !== '' ? <Message color='red'>{ props.observationValueError }</Message> : null }
               </Grid.Column>
               <Grid.Column width={2} verticalAlign='middle'>
-                {props.removeButton ? <Button icon='remove' basic color='red' size='tiny' circular compact onClick={props.handleRemoveMeasurementButton}></Button>: null}
+                {props.removeButton ? <Button icon='remove' basic id={props.id} color='red' size='tiny' circular compact onClick={props.handleRemoveMeasurementButton}></Button>: null}
                 {props.addButton ? <Button size='tiny' basic id={props.id} circular color='green' icon='add' compact onClick={props.handleAddMeasurementButton}></Button>: null}
               </Grid.Column>
             </Grid.Row>
