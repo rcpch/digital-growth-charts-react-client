@@ -20,6 +20,12 @@ export default class MenuBar extends Component {
                         onClick={this.handleItemClick}
                     />
                     <Menu.Item
+                        as={Link} to='/spreadsheet'
+                        name='spreadsheet'
+                        active={this.state.activeItem === 'spreadsheet'}
+                        onClick={this.handleItemClick}
+                    />
+                    <Menu.Item
                         as={Link} to='/references'
                         name='references'
                         active={this.state.activeItem === 'references'}

@@ -9,6 +9,7 @@ import MenuBar from './components/MenuBar';
 import Home from './pages/Home';
 import References from './pages/References';
 import Results from './pages/Results';
+import Spreadsheet from './pages/Spreadsheet';
 
 
 class App extends Component {
@@ -27,6 +28,9 @@ class App extends Component {
                   </Route>
                   <Route path="/results">
                     <Results />
+                  </Route>
+                  <Route path='/spreadsheet'>
+                    <Spreadsheet/>
                   </Route>
               </Switch>
           </Router> 
