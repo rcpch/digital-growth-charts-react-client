@@ -21,7 +21,7 @@ class Spreadsheet extends Component{
     async uploadData(){
         let fileData = new FormData()
         fileData.append("excel_file", this.state.excelFile)
-        const response = await axios({
+        await axios({
             url:"http://localhost:5000/api/v1/json/spreadsheet", 
             data: fileData,
             method: 'POST',

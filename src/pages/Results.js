@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Table, Grid, Popup, Icon, Header, Menu, Loader } from "semantic-ui-react";
+import { Container, Table, Grid, Popup, Icon, Header, Menu } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
 import Charts from '../components/Charts'
 
