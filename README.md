@@ -1,9 +1,12 @@
+# RCPCH Growth Charts - React Demo Client
+This is now the main focus of development for our RCPCH Digital Growth Charts Demo Client. We previously built a [Flask-based client](https://github.com/rcpch/digital-growth-charts-flask-client) (which used Flask only because that client actually split off from the original API development). The Flask client code is still available as an educational tool, however it is considered deprecated and updating it mat not be a high priority.
 
+# Documentation
+* Documentation relating to the React client will be maintained in this repository.
+* API documentation is available via the links in the [live React client](), and deeper-dive docs are in the [API server repository's](https://github.com/rcpch/digital-growth-charts-server) `/docs/` folder.
+* If you spot errors or inconsistencies in any documentation, please do point them out to us either by creating an Issue in the relevant repository, or by making a pull request with a fix. We will [acknowledge](https://github.com/rcpch/digital-growth-charts-server/blob/alpha/docs/clinical-documentation/acknowledgements.md) all contributors.
 
-# RCPCH Growth Charts - React Client
-
-
-## Key Notes
+## Technical Notes
 Built in React 16.13.1, using the Semantic UI (React) 0.88.2 styling library.
 It currently relies on the server running on port 5000 of localhost
 

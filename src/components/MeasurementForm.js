@@ -44,10 +44,13 @@ const ROBERT_WADLOW = 272 // interesting fact - Robert Wadlow (22/2/1918 – 15/
 const JON_BROWER_MINNOCH = 635 // interesting fact -  Jon Brower Minnoch (Born USA) was the world's heaviest man
 const KHALID_BIN_MOHSEN_SHAARI = 204 // Khalid bin Mohsen Shaari (2/8/1991) from Saudi Arabia had the highest recorded BMI
 
+const measurementMethods = ['height', 'weight', 'bmi', 'ofc'];
+
 class MeasurementForm extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       birth_date: moment(new Date()).format("YYYY-MM-DD"),
       observation_date: moment(new Date()).format("YYYY-MM-DD"),
@@ -68,7 +71,7 @@ class MeasurementForm extends React.Component {
       birth_date_error: '',
       observation_date_error: '',
       observation_value_error: null,
-      form_valid: false
+      form_valid: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -82,9 +85,20 @@ class MeasurementForm extends React.Component {
   }
 
   handleAddMeasurement(event) {
+    //TODO #2 Conversation with @pacharanero and @atheneheaven about the utility of MeasurementInput component over simple input fields.
     let measurements = this.state.measurements;
-    measurements.push({measurement_method: 'height', observation_value: 0, id: Math.random().toString(36).substring(7), units: 'cm', observation_value_error: ''});
-    this.showHideMeasurementButtons(measurements);
+    const unselectedMeasurements = measurementMethods.filter(measurementMethod => { //returns an array of unselected measurements
+      return !measurements.find(measurement => measurement.measurement_method === measurementMethod)
+    });
+    if (unselectedMeasurements.length < 1){
+      // there are no measurements left - prevent addition of further measurements
+      console.log('All measurements have been used up now');
+      
+    } else {
+      measurements.push({measurement_method: unselectedMeasurements[0], observation_value: 0, id: Math.random().toString(36).substring(7), units: 'cm', observation_value_error: ''});
+    }
+    
+    this.updateShowHideMeasurementButtons();
     this.setState({measurements: measurements});
     event.preventDefault();
   }
@@ -92,21 +106,22 @@ class MeasurementForm extends React.Component {
   handleRemoveMeasurement(event) {
     event.preventDefault();
     let measurements = this.state.measurements;
-    const {id} = event.currentTarget;    
+    const {id} = event.currentTarget;
     const measurementIndex = measurements.findIndex(measurement => {
       return measurement.id === id;
     });
     measurements.splice(measurementIndex, 1);
-    this.showHideMeasurementButtons(measurements);
     this.setState({measurements: measurements});
+    this.updateShowHideMeasurementButtons();
   }
 
-  showHideMeasurementButtons(measurements){
+  updateShowHideMeasurementButtons(){
+    let measurements = this.state.measurements;
     const final_index = measurements.length - 1;
     if (measurements.length === 1){
       measurements[0].show_remove = false;
       measurements[0].show_add = true;
-      return measurements;
+      this.setState({ measurements: measurements });
     } else {
       let updatedMeasurements = measurements.map((measurement, index) => {
         if(index === 0){
@@ -114,10 +129,16 @@ class MeasurementForm extends React.Component {
           measurement.show_remove = true;
           return measurement;
         } 
-        if(index === final_index) {
-          // last item in the list
+        if(index === final_index && index !== 3) {
+          // last item in the list and list not full
           measurement.show_remove = true;
           measurement.show_add = true;
+          return measurement;
+        }
+        if(index === 3) {
+          // all measurements have been selected
+          measurement.show_remove = true;
+          measurement.show_add = false;
           return measurement;
         }
         else {
@@ -126,7 +147,7 @@ class MeasurementForm extends React.Component {
           return measurement;
         }
       });
-      return updatedMeasurements;
+      this.setState({ measurements: updatedMeasurements });
     }
   }
 
@@ -170,7 +191,7 @@ class MeasurementForm extends React.Component {
       }
     }
     var form_valid = this.formIsValid();
-    this.setState({form_valid: form_valid})
+    this.setState({form_valid: form_valid});
   }
 
   createBMI() {
@@ -186,13 +207,14 @@ class MeasurementForm extends React.Component {
       return measurement.measurement_method === 'bmi';
     })
     if (heightIndex !== -1 && weightIndex !== -1 && bmiIndex === -1){
+      // calculate BMI if height and weight exist and BMI does not already exist
       const height = all_measurements[heightIndex].observation_value;
       const weight = all_measurements[weightIndex].observation_value;
       const bmi = weight/(height / 100);
       const observationValueError = this.validateObservationValue('bmi', bmi);
       if (observationValueError === ''){
         this.state.measurements.push({measurement_method: 'bmi', observation_value: bmi, id: Math.random().toString(36).substring(7), units: 'kg/m²', observation_value_error: observationValueError});
-        this.showHideMeasurementButtons(this.state.measurements);
+        this.updateShowHideMeasurementButtons();
       }
     }
   }
@@ -370,6 +392,7 @@ class MeasurementForm extends React.Component {
                             observationValue={value.observation_value} 
                             observationValueError={value.observation_value_error} 
                             units={value.units}
+                            options={this.state.measurementOptions}
                             addButton={value.show_add}
                             removeButton={value.show_remove}
                             handleMeasurementChangeSelect={this.handleChangeSelect} 
