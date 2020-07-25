@@ -296,11 +296,12 @@ class MeasurementForm extends React.Component {
         observation_date: this.state.observation_date,
         measurement_method: measurement.measurement_method,
         observation_value: measurement.observation_value,
+        gestation_weeks: this.state.gestation_weeks,
+        gestation_days: this.state.gestation_days,
         sex: this.state.sex
       }
       measurementArray.push(formData);
     });
-
     
     this.props.onSubmitMeasurement(measurementArray)
   }

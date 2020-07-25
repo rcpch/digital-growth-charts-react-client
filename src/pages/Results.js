@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Table, Grid, Popup, Icon, Header, Menu } from "semantic-ui-react";
+import { Container, Table, Grid, Popup, Icon, Header, Menu, Loader } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
 import Charts from '../components/Charts'
 
@@ -158,7 +158,7 @@ function CentilesTable(props) {
 
 function MeasurementCell(props) {
     
-    if (props.item.child_observation_value.measurement_type === 'height') {
+    if (props.item.child_observation_value.measurement_method === 'height') {
         return (
                 <Table.Row>
                     <Table.Cell>Height</Table.Cell>
@@ -166,7 +166,7 @@ function MeasurementCell(props) {
                 </Table.Row>
         );
     }
-    else if (props.item.child_observation_value.measurement_type === 'weight') {
+    else if (props.item.child_observation_value.measurement_method === 'weight') {
         return (
             <Table.Row>
                 <Table.Cell>Weight</Table.Cell>
@@ -174,7 +174,7 @@ function MeasurementCell(props) {
             </Table.Row>
         );
     }
-    else if (props.item.child_observation_value.measurement_type === 'bmi') {
+    else if (props.item.child_observation_value.measurement_method === 'bmi') {
         return (
             <Table.Row>
                 <Table.Cell>BMI</Table.Cell>
@@ -182,7 +182,7 @@ function MeasurementCell(props) {
             </Table.Row>
         );
     }
-    else if (props.item.child_observation_value.measurement_type === 'ofc') {
+    else if (props.item.child_observation_value.measurement_method === 'ofc') {
         return (
             <Table.Row>
                 <Table.Cell>Head Circumference</Table.Cell>
@@ -190,6 +190,7 @@ function MeasurementCell(props) {
             </Table.Row>
         );
     }
+    
 }
 
 function PopupData(props) {

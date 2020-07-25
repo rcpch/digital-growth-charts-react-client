@@ -17,17 +17,19 @@ class Home extends Component {
     let resultsPromiseArray=[];
 
     formDataArray.forEach(formData => {
-      let payload = {
-        "birth_date": formData.birth_date,
-        "observation_date": formData.observation_date,
-        "sex": formData.sex,
-        "gestation_weeks": 0, //int(form.gestation_weeks.data),
-        "gestation_days": 0, //int(form.gestation_days.data)
-        "measurement_method": formData.measurement_method,
-        "observation_value": formData.observation_value
-      }
-      const centile = this.fetchCentilesForMeasurement(payload)
+      let axiosFormData = new FormData()
+      axiosFormData.append("birth_date", formData.birth_date);
+      axiosFormData.append("observation_date", formData.observation_date);
+      axiosFormData.append("sex", formData.sex);
+      axiosFormData.append("gestation_weeks", formData.gestation_weeks);
+      axiosFormData.append("gestation_days", formData.gestation_days);
+      axiosFormData.append("measurement_method", formData.measurement_method);
+      axiosFormData.append("observation_value", formData.observation_value);
+
+      const centile = this.fetchCentilesForMeasurement(axiosFormData);
+
       resultsPromiseArray.push(centile);
+      
     });
     Promise.all(resultsPromiseArray).then((result)=>{
       var mergedMeasurementArrays = [].concat.apply([], result);
@@ -39,8 +41,13 @@ class Home extends Component {
   }
 
   async fetchCentilesForMeasurement(payload){
-    const response = await axios('http://localhost:5000/api/v1/json/calculation', {
-      params: payload
+    const response = await axios({
+      url:'http://localhost:5000/api/v1/json/calculation', 
+      data: payload,
+      method: 'POST',
+      headers: {
+          'Content-Type': 'multipart/form-data'
+      }
     });
     return response.data;
   }
