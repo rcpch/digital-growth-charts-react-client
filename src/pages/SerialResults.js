@@ -7,13 +7,14 @@ import SerialResultsTable from '../components/SerialResultsTable';
 class Results extends Component {
     constructor(props){
         super(props);
-        let data = JSON.parse(this.props.location.data.data);
+        let data = this.props.location.data.data;
         this.state = {
             childData: data,
             activeItem: 'tables',
             chartData: null,
             unique_child: this.props.location.data.unique_child,
         }
+        console.log(data);
         this.handleItemClick.bind(this);
         /*
           the object passed in here has the structure:

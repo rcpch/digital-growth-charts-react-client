@@ -62,11 +62,19 @@ class SerialResultsTable extends Component {
 }
 
 export default withRouter(SerialResultsTable);
+
+
     
 function DataRow(props) {
-    const birth_date = new Date(props.data.birth_date).toLocaleDateString('en-UK');
-    const measurement_date = new Date(props.data.observation_date).toLocaleDateString('en-UK');
-    const edd = (props.data.estimated_date_delivery !== null) ? new Date(props.data.estimated_date_delivery).toLocaleDateString('en-UK') : "";
+
+    const birth_data = props.data.birth_data;
+    const measurement_calculated_values = props.data.measurement_calculated_values;
+    const measurement_dates= props.data.measurement_dates;
+    const child_observation_value = props.data.child_observation_value;
+
+    const birth_date = new Date(birth_data.birth_date).toLocaleDateString('en-UK');
+    const measurement_date = new Date(measurement_dates.observation_date).toLocaleDateString('en-UK');
+    const edd = (birth_data.estimated_date_delivery !== null) ? new Date(birth_data.estimated_date_delivery).toLocaleDateString('en-UK') : "";
 
     return (
         <Table.Row>
@@ -74,7 +82,7 @@ function DataRow(props) {
                 {birth_date}
             </Table.Cell>
             <Table.Cell>
-                {props.data.gestation_weeks}<sup>+{props.data.gestation_days}</sup>
+                {birth_data.gestation_weeks}<sup>+{birth_data.gestation_days}</sup>
             </Table.Cell>
             <Table.Cell>
                 {edd}
@@ -83,19 +91,19 @@ function DataRow(props) {
                 {measurement_date}
             </Table.Cell>
             <Table.Cell>
-                {props.data.corrected_decimal_age}
+                {measurement_dates.corrected_decimal_age}
             </Table.Cell>
             <Table.Cell>
-                {props.data.measurement_method}
+                {child_observation_value.measurement_method}
             </Table.Cell>
             <Table.Cell>
-                {props.data.measurement_value}
+                {child_observation_value.measurement_value}
             </Table.Cell>
             <Table.Cell>
-                {props.data.sds}
+                {measurement_calculated_values.sds}
             </Table.Cell>
             <Table.Cell>
-                {props.data.centile}
+                {measurement_calculated_values.centile}
             </Table.Cell>
         </Table.Row>
     );
