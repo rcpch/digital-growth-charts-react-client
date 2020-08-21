@@ -2,8 +2,8 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+test('renders RCPCH Growth Charts text', () => {
   const { getByText } = render(<App />);
-  const linkElement = getByText(/RCPCH Growth Charts/i);
-  expect(linkElement).toBeInTheDocument();
+  const textElement = getByText(/RCPCH Growth Charts/i);
+  expect(textElement).toBeInTheDocument();
 });
