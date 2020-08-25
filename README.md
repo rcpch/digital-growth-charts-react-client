@@ -22,3 +22,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 1. Navigate to the root of the folder
 1. `npm install`
 1. `npm start`
+
+## Other documentation
+* [Development documentation](docs/development.md)
+* Official API documentation
