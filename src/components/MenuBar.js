@@ -1,37 +1,49 @@
 import React, { Component } from "react";
-import { Menu } from 'semantic-ui-react';
-import { Link} from 'react-router-dom'
+import { Menu } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 
 export default class MenuBar extends Component {
-    state = {
-        activeItem: 'home'
-    }
+  state = {
+    activeItem: "home",
+  };
 
-    handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
-    render(){
-        // const { activeItem } = this.state
-        return (
-            <Menu pointing secondary>
-                    <Menu.Item
-                        as={Link} to='/'
-                        name='home'
-                        active={this.state.activeItem === 'home'}
-                        onClick={this.handleItemClick}
-                    />
-                    <Menu.Item
-                        as={Link} to='/spreadsheet'
-                        name='spreadsheet'
-                        active={this.state.activeItem === 'spreadsheet'}
-                        onClick={this.handleItemClick}
-                    />
-                    <Menu.Item
-                        as={Link} to='/references'
-                        name='references'
-                        active={this.state.activeItem === 'references'}
-                        onClick={this.handleItemClick}
-                    />  
-            </Menu>
-        );
-    }
+  render() {
+    // const { activeItem } = this.state
+    return (
+      <Menu pointing secondary>
+        <Menu.Item
+          as={Link}
+          to="/"
+          name="home"
+          active={this.state.activeItem === "home"}
+          onClick={this.handleItemClick}
+        />
+        <Menu.Item
+          as={Link}
+          to="/spreadsheet"
+          name="spreadsheet"
+          active={this.state.activeItem === "spreadsheet"}
+          onClick={this.handleItemClick}
+        />
+        <Menu.Item
+          as={Link}
+          to="/references"
+          name="references"
+          active={this.state.activeItem === "references"}
+          onClick={this.handleItemClick}
+        />
+        <Menu.Menu position="right">
+          <Menu.Item
+            as={Link}
+            to="/technical"
+            name="technical"
+            active={this.state.activeItem === "technical"}
+            onClick={this.handleItemClick}
+          />
+        </Menu.Menu>
+      </Menu>
+    );
+  }
 }

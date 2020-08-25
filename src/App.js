@@ -11,6 +11,7 @@ import References from './pages/References';
 import Results from './pages/Results';
 import Spreadsheet from './pages/Spreadsheet';
 import SerialResults from './pages/SerialResults';
+import Technical from './pages/Technical';
 
 
 class App extends Component {
@@ -35,6 +36,9 @@ class App extends Component {
                   </Route>
                   <Route path='/spreadsheet'>
                     <Spreadsheet/>
+                  </Route>
+                  <Route path='/technical'>
+                    <Technical/>
                   </Route>
               </Switch>
           </Router> 
