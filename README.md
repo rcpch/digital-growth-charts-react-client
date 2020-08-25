@@ -8,7 +8,6 @@ This is now the main focus of development for our RCPCH Digital Growth Charts De
 
 ## Technical Notes
 Built in React 16.13.1, using the Semantic UI (React) 0.88.2 styling library.
-It currently relies on the server running on port 5000 of localhost
 
 It differs from the Flask client in that the measurement form accepts only one measurement at a time.
 In the Flask client, if height and weight are both entered, a BMI is automatically calculated.
