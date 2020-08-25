@@ -22,7 +22,7 @@ class Spreadsheet extends Component{
         let fileData = new FormData()
         fileData.append("excel_file", this.state.excelFile)
         await axios({
-            url:"http://localhost:5000/api/v1/json/spreadsheet", 
+            url:`${process.env.REACT_APP_GROWTH_API_BASEURL}/api/v1/json/spreadsheet`, 
             data: fileData,
             method: 'POST',
             headers: {
