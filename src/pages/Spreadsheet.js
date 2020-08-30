@@ -12,7 +12,7 @@ class Spreadsheet extends Component{
         super(props);
         this.state = {
             uploadDisabled: true,
-            excelFile: null
+            csvFile: null
         }
         this.uploadData = this.uploadData.bind(this);
         this.removeFile = this.removeFile.bind(this);
@@ -20,7 +20,7 @@ class Spreadsheet extends Component{
 
     async uploadData(){
         let fileData = new FormData()
-        fileData.append("excel_file", this.state.excelFile)
+        fileData.append("csv_file", this.state.csvFile, 'upload.csv')
         await axios({
             url:`${process.env.REACT_APP_GROWTH_API_BASEURL}/api/v1/json/spreadsheet`, 
             data: fileData,
@@ -49,23 +49,9 @@ class Spreadsheet extends Component{
 
     removeFile(event){
         event.preventDefault();
-        console.log('remove');
-        this.setState({excelFile: null});
+        this.setState({csvFile: null});
         this.setState({uploadDisabled: true});
     }
-
-    // excelToJson(reader){
-    //     var fileData = reader.result;
-    //     var wb = XLSX.read(fileData, {type : 'binary'});
-    //     var data = {};
-    //     wb.SheetNames.forEach(function(sheetName){
-    //          var rowObj =XLSX.utils.sheet_to_row_object_array(wb.Sheets[sheetName]);
-    //         //  var rowString = JSON.stringify(rowObj);
-    //          data[sheetName] = rowObj   //rowString;
-    //     });
-    //     this.setState({excelData: data});
-    // }
-    
 
     render(){
         return (
@@ -73,19 +59,16 @@ class Spreadsheet extends Component{
                 <Grid centered>
                     <Grid.Column width={12}>
                         <Grid.Row style={{textAlign:"center"  }}>
-                            <h1>Download Excel Spreadsheet</h1>
+                            <h1>Upload .CSV Spreadsheet</h1>
                         </Grid.Row>
                         <Grid.Row centered>
                             <Dropzone 
                                 onDrop={acceptedFiles => {
                                         this.setState({uploadDisabled: false});
-                                        // var reader = new FileReader();
-                                        // reader.readAsBinaryString(acceptedFiles[0]);
-                                        // reader.onload = this.excelToJson.bind(this,reader);
-                                        this.setState({excelFile: acceptedFiles[0]})
+                                        this.setState({csvFile: acceptedFiles[0]})
                                     }
                                 }
-                                accept='application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                                accept='text/csv'
                                 minSize={0}
                                 maxSize={5242880}
                             >
@@ -95,15 +78,14 @@ class Spreadsheet extends Component{
                                             <input {...getInputProps()} />
                                             <Segment placeholder color='green'>
                                                 <Header icon>
-                                                    {this.state.excelFile === null ? <Icon name='excel file outline' color='green'/> : <Icon name='excel file' color='green'/>}
+                                                    {this.state.csvFile === null ? <Icon name='file outline' color='green'/> : <Icon name='file' color='green'/>}
                                                 </Header>
                                                 <h5 style={{textAlign:"center"  }}>
-                                                    {!isDragActive && this.state.excelFile === null && "Drag 'n' drop .xls or .xlsx here, or click to select files"}
-                                                    {isDragActive && this.state.excelFile === null && !isDragReject  && "Drop .xls or .xlsx here "}
-                                                    {isDragReject && this.state.excelFile === null && "Only .xls and .xlsx files accepted" }
-                                                    {this.state.excelFile !== null && <Label><Icon name="file excel" color='green'></Icon>{acceptedFiles[0].name}</Label>}
+                                                    {!isDragActive && this.state.csvFile === null && "Drag 'n' drop .csv only here, or click to select files"}
+                                                    {isDragActive && this.state.csvFile === null && !isDragReject  && "Drop .csv only here "}
+                                                    {isDragReject && this.state.csvFile === null && "Only .csv files accepted" }
+                                                    {this.state.csvFile !== null && <Label><Icon name="file" color='green'></Icon>{acceptedFiles[0].name}</Label>}
                                                 </h5>
-                                                
                                             </Segment>
                                         </div>
                                         </section>
