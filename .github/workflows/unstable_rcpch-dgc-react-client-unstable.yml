@@ -25,13 +25,11 @@ jobs:
         npm install
         npm run build --if-present
         npm run test --if-present
-      env:
-        REACT_APP_GROWTH_API_BASEURL: ${{ secrets.REACT_APP_UNSTABLE_GROWTH_API_BASEURL }}
 
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'rcpch-dgc-react-client-unstable'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_43f3bcdd19ef4b21addf47a506a29a31 }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_079d8fdda9964f0a963baf2b25e9246f }}
         package: .
