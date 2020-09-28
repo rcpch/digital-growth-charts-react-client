@@ -42,12 +42,12 @@ class Home extends Component {
 
   async fetchCentilesForMeasurement(payload){
     const response = await axios({
-      url:`${process.env.REACT_APP_GROWTH_API_BASEURL}/api/v1/json/calculation`, 
+      url: `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/calculation`,
       data: payload,
-      method: 'POST',
+      method: "POST",
       headers: {
-          'Content-Type': 'multipart/form-data'
-      }
+        "Content-Type": "multipart/form-data",
+      },
     });
     return response.data;
   }

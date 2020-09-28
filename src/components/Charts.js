@@ -199,12 +199,12 @@ class Charts extends Component {
         formData.append("unique_child", "true")
     
         const response = await axios({
-            url: `${process.env.REACT_APP_GROWTH_API_BASEURL}/api/v1/json/chart_data`, 
-            data: formData,
-            method: 'POST',
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
+          url: `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/chart_data`,
+          data: formData,
+          method: "POST",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         });
         return response.data;
     }

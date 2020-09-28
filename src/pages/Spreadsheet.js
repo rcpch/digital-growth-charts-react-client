@@ -22,14 +22,14 @@ class Spreadsheet extends Component{
         let fileData = new FormData()
         fileData.append("csv_file", this.state.csvFile, 'upload.csv')
         await axios({
-            url:`${process.env.REACT_APP_GROWTH_API_BASEURL}/api/v1/json/spreadsheet`, 
-            data: fileData,
-            method: 'POST',
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }).then(response => {
-            /*
+          url: `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/spreadsheet`,
+          data: fileData,
+          method: "POST",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }).then((response) => {
+          /*
             The response object from the server is:
                 {
                     data: [an array of Measurement class objects]
@@ -38,13 +38,16 @@ class Spreadsheet extends Component{
                     error: string  - error message if invalid file
                 }
             */
-            if(response.data['valid']) {
-                this.props.history.push({pathname: '/serial_results', data:response.data});
-            } else {
-                // TODO #7 implement popup in the event of failed validation of uploaded data as well as catch statement
-                console.log(response.data['error']);
-            }
-        })
+          if (response.data["valid"]) {
+            this.props.history.push({
+              pathname: "/serial_results",
+              data: response.data,
+            });
+          } else {
+            // TODO #7 implement popup in the event of failed validation of uploaded data as well as catch statement
+            console.log(response.data["error"]);
+          }
+        });
     }
 
     removeFile(event){
