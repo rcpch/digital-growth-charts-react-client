@@ -199,7 +199,7 @@ class Charts extends Component {
         formData.append("unique_child", "true")
     
         const response = await axios({
-          url: `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/chart_data`,
+          url: `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/chart-data`,
           data: formData,
           method: "POST",
           headers: {
