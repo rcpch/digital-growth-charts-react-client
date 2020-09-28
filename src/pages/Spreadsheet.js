@@ -26,7 +26,7 @@ class Spreadsheet extends Component{
           data: fileData,
           method: "POST",
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "text/csv",
           },
         }).then((response) => {
           /*
