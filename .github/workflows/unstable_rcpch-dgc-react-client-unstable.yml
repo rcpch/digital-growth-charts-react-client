@@ -31,5 +31,5 @@ jobs:
       with:
         app-name: 'rcpch-dgc-react-client-unstable'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_079d8fdda9964f0a963baf2b25e9246f }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_29347588379c4b79b5ecb60c44811f67 }}
         package: .
