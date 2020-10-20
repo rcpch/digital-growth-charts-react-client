@@ -194,17 +194,18 @@ class Charts extends Component {
 
     async fetchCentileData(childData) {
         
-        let formData = new FormData();
-        formData.append("results", JSON.stringify(childData));
-        formData.append("unique_child", "true")
+        let formData = {
+          results: childData,
+          unique_child: "true",
+        };
     
         const response = await axios({
-            url: `${process.env.REACT_APP_GROWTH_API_BASEURL}/api/v1/json/chart_data`, 
-            data: formData,
-            method: 'POST',
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
+          url: `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/chart-data`,
+          data: formData,
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
         return response.data;
     }

@@ -17,14 +17,15 @@ class Home extends Component {
     let resultsPromiseArray=[];
 
     formDataArray.forEach(formData => {
-      let axiosFormData = new FormData()
-      axiosFormData.append("birth_date", formData.birth_date);
-      axiosFormData.append("observation_date", formData.observation_date);
-      axiosFormData.append("sex", formData.sex);
-      axiosFormData.append("gestation_weeks", formData.gestation_weeks);
-      axiosFormData.append("gestation_days", formData.gestation_days);
-      axiosFormData.append("measurement_method", formData.measurement_method);
-      axiosFormData.append("observation_value", formData.observation_value);
+      let axiosFormData = {
+        birth_date: formData.birth_date,
+        observation_date: formData.observation_date,
+        sex: formData.sex,
+        gestation_weeks: formData.gestation_weeks,
+        gestation_days: formData.gestation_days,
+        measurement_method: formData.measurement_method,
+        observation_value: formData.observation_value,
+      };
 
       const centile = this.fetchCentilesForMeasurement(axiosFormData);
 
@@ -42,12 +43,12 @@ class Home extends Component {
 
   async fetchCentilesForMeasurement(payload){
     const response = await axios({
-      url:`${process.env.REACT_APP_GROWTH_API_BASEURL}/api/v1/json/calculation`, 
+      url: `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/calculation`,
       data: payload,
-      method: 'POST',
+      method: "POST",
       headers: {
-          'Content-Type': 'multipart/form-data'
-      }
+        "Content-Type": "application/json",
+      },
     });
     return response.data;
   }
