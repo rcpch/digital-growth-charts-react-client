@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Container, Table, Grid, Popup, Icon, Header, Menu } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
 import Charts from '../components/Charts'
+import ChartData from '../components/ChartLibrary'
 
 class Results extends Component {
     constructor(props){
@@ -19,6 +20,7 @@ class Results extends Component {
 
     render() {
         const { activeItem } = this.state;
+        console.log(this.state.results);
         return (
             <div>
             <Menu tabular>
@@ -34,7 +36,7 @@ class Results extends Component {
                 />
             </Menu>
             <Container>
-                {activeItem === 'tables'? <Tables results={this.state.results}/> : <Charts childData={this.state.results} />}
+                {activeItem === 'tables'? <Tables results={this.state.results}/> : <ChartData childData={this.state.results} />}
             </Container>
             </div>
         );

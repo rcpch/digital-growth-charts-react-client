@@ -43,7 +43,8 @@ class Home extends Component {
 
   async fetchCentilesForMeasurement(payload){
     const response = await axios({
-      url: `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/calculation`,
+      // url: `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/calculation`,
+      url: `http://localhost:5000/uk-who/calculation`,
       data: payload,
       method: "POST",
       headers: {
