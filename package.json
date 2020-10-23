@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@craco/craco": "^5.6.4",
+    "@rcpch/digital-growth-charts-react-chart-library": "git+https://github.com/rcpch/digital-growth-charts-react-chart-library.git",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",

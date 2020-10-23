@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Container, Menu } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
-import Charts from '../components/Charts'
+import ChartData from '../components/ChartLibrary'
 import SerialResultsTable from '../components/SerialResultsTable';
 
 class Results extends Component {
@@ -14,7 +14,6 @@ class Results extends Component {
             chartData: null,
             unique_child: this.props.location.data.unique_child,
         }
-        console.log(data);
         this.handleItemClick.bind(this);
         /*
           the object passed in here has the structure:
@@ -47,7 +46,7 @@ class Results extends Component {
                 />
             </Menu>
             <Container>
-                {activeItem === 'tables'? <SerialResultsTable results={this.state.childData}/> : <Charts childData={this.state.childData} />}
+                {activeItem === 'tables'? <SerialResultsTable results={this.state.childData}/> : <ChartData childData={this.state.childData} />}
             </Container>
             </div>
         );
