@@ -19,7 +19,6 @@ class Results extends Component {
 
     render() {
         const { activeItem } = this.state;
-        console.log(this.state.results);
         return (
             <div>
             <Menu tabular>
