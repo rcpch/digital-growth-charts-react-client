@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './App.css';
 import './components/MeasurementForm'
 import 'semantic-ui-css/semantic.min.css'
-// import MenuBar from './components/MenuBar'
 import Footer from './components/Footer'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import MenuBar from './components/MenuBar';
