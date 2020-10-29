@@ -19,9 +19,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 1. Install React [here](https://reactjs.org/docs/getting-started.html)
 1. Clone the repo
 1. Navigate to the root of the folder
+1. `npm login --registry=https://npm.pkg.github.com` and 
 1. `npm install`
 1. `npm start`
 
 ## Other documentation
 * [Development documentation](docs/development.md)
+* [Clinical documentation](docs/clinical.md)
 * Official API documentation
