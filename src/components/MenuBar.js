@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Menu } from "semantic-ui-react";
+import { Menu, Icon } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 export default class MenuBar extends Component {
@@ -27,18 +27,28 @@ export default class MenuBar extends Component {
           active={this.state.activeItem === "spreadsheet"}
           onClick={this.handleItemClick}
         />
-        <Menu.Item
-          as={Link}
-          to="/references"
-          name="references"
-          active={this.state.activeItem === "references"}
-          onClick={this.handleItemClick}
-        />
+
+        <Menu.Item href="https://growth-blog.rcpch.ac.uk/">
+          <Icon name="book" />
+          Growth Blog
+        </Menu.Item>
+
+        <Menu.Item href="https://dev.rcpch.ac.uk/">
+          <Icon name="lab" />
+          API Documentation
+        </Menu.Item>
+
+        <Menu.Item href="https://github.com/rcpch/growth-references">
+          <Icon name="github" />
+          Growth References
+        </Menu.Item>
+
         <Menu.Menu position="right">
           <Menu.Item
             as={Link}
             to="/technical"
             name="technical"
+            icon="code"
             active={this.state.activeItem === "technical"}
             onClick={this.handleItemClick}
           />
