@@ -27,7 +27,7 @@ jobs:
         npm run test --if-present
       env:
         REACT_APP_GROWTH_API_BASEURL: ${{ secrets.REACT_APP_UNSTABLE_GROWTH_API_BASEURL }}
-        NPM_REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NPM_REGISTRY_TOKEN: ${{ secrets.NPM_REGISTRY_TOKEN }}
 
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v2
