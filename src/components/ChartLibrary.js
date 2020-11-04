@@ -60,12 +60,10 @@ class ChartData extends Component {
                 selectedCharts.push('height')
             }
             if (result.child_data.weights.length > 0){
-                this.setState(
-                    {
-                        weights: result.child_data.heights,
-                        weight_SDS: result.child_data.height_SDS
-                    }
-                )
+                this.setState({
+                  weights: result.child_data.weights,
+                  weight_SDS: result.child_data.weight_SDS,
+                });
                 selectedCharts.push('weight')
             }
             if (result.child_data.ofcs.length > 0){
