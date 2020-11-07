@@ -11,10 +11,9 @@ export default function MeasurementInput(props)  {
   ];
 
     return (
-        <div key={props.name}>
-          <Grid columns={3}>
+          <Grid columns={3} key={props.name}>
             <Grid.Row>
-              <Grid.Column width={7}>
+              <Grid.Column width={6}>
                 <Form.Field required>
                   <Select
                     value={props.measurementMethod}
@@ -26,7 +25,7 @@ export default function MeasurementInput(props)  {
                   <div>{props.measurementMethodError}</div>
                 </Form.Field>
               </Grid.Column>
-              <Grid.Column width={7}>
+              <Grid.Column width={6}>
                 <Form.Field>
                   <Input
                     type="number" 
@@ -41,13 +40,12 @@ export default function MeasurementInput(props)  {
                 </Form.Field>
                 { props.observationValueError !== '' ? <Message color='red'>{ props.observationValueError }</Message> : null }
               </Grid.Column>
-              <Grid.Column width={2} verticalAlign='middle'>
+              <Grid.Column width={4} verticalAlign='middle'>
                 {props.removeButton ? <Button icon='remove' basic id={props.id} color='red' size='tiny' circular compact onClick={props.handleRemoveMeasurementButton}></Button>: null}
                 {props.addButton ? <Button size='tiny' basic id={props.id} circular color='green' icon='add' compact onClick={props.handleAddMeasurementButton}></Button>: null}
               </Grid.Column>
             </Grid.Row>
           </Grid>
-        </div>
     );
   
 }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Header, Button, Icon, Segment, Grid, Label } from "semantic-ui-react";
+import { Container, Header, Button, Icon, Segment, Grid, Label, Modal } from "semantic-ui-react";
 import axios from 'axios';
 import { withRouter } from "react-router-dom";
 import Dropzone from 'react-dropzone';
@@ -12,7 +12,9 @@ class Spreadsheet extends Component{
         super(props);
         this.state = {
             uploadDisabled: true,
-            csvFile: null
+            csvFile: null,
+            open: false,
+            error: null
         }
         this.uploadData = this.uploadData.bind(this);
         this.removeFile = this.removeFile.bind(this);
@@ -29,6 +31,8 @@ class Spreadsheet extends Component{
             "Content-Type": "text/csv",
           },
         }).then((response) => {
+
+            console.log(response);
           /*
             The response object from the server is:
                 {
@@ -38,15 +42,24 @@ class Spreadsheet extends Component{
                     error: string  - error message if invalid file
                 }
             */
-          if (response.data["valid"]) {
-            this.props.history.push({
-              pathname: "/serial_results",
-              data: response.data,
-            });
-          } else {
-            // TODO #7 implement popup in the event of failed validation of uploaded data as well as catch statement
-            alert(response.data["error"]);
-          }
+                if (response) {
+                    if (response.data["valid"]) {
+                        this.props.history.push({
+                          pathname: "/serial_results",
+                          data: response.data,
+                        });
+                      } else {
+                        // TODO #7 implement popup in the event of failed validation of uploaded data as well as catch statement
+                        this.setState({error: response.data["error"], open: true})
+                    }
+                } else {
+                    this.setState({error: 'No response from server', open: true})
+                }
+          
+        }).catch(error => {
+            if (error.response.status === 500){
+                this.setState({error: '500 Response from server', open: true})
+            }
         });
     }
 
@@ -57,9 +70,24 @@ class Spreadsheet extends Component{
     }
 
     render(){
+        const { open } = this.state
         return (
             <Container>
                 <Grid centered>
+                    <Modal
+                        size='mini'
+                        open={open}
+                    >
+                        <Modal.Header>Error</Modal.Header>
+                        <Modal.Content>
+                        <p>{this.state.error}</p>
+                        </Modal.Content>
+                        <Modal.Actions>
+                        <Button negative onClick={()=> this.setState({open: false, error: null})}>
+                            Cancel
+                        </Button>
+                        </Modal.Actions>
+                    </Modal>
                     <Grid.Column width={12}>
                         <Grid.Row style={{textAlign:"center"  }}>
                             <h1>Upload .CSV Spreadsheet</h1>
