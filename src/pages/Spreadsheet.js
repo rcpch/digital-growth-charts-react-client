@@ -45,7 +45,7 @@ class Spreadsheet extends Component{
             });
           } else {
             // TODO #7 implement popup in the event of failed validation of uploaded data as well as catch statement
-            console.log(response.data["error"]);
+            alert(response.data["error"]);
           }
         });
     }
