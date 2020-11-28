@@ -69,7 +69,7 @@ class ChartData extends Component {
             if (result.child_data.ofcs.length > 0){
                 this.setState(
                     {
-                        weights: result.child_data.ofcs,
+                        ofcs: result.child_data.ofcs,
                         weight_SDS: result.child_data.ofc_SDS
                     }
                 )

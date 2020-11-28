@@ -11,11 +11,9 @@ export default function MeasurementInput(props)  {
   ];
 
     return (
-        <div key={props.name}>
-          <Grid columns={3}>
-            <Grid.Row>
-              <Grid.Column width={7}>
-                <Form.Field required>
+          <div key={props.name}>
+              <Form.Group>
+                <Form.Field required width={8}>
                   <Select
                     value={props.measurementMethod}
                     id={props.id}
@@ -25,9 +23,7 @@ export default function MeasurementInput(props)  {
                     onChange={props.handleMeasurementChangeSelect}/> 
                   <div>{props.measurementMethodError}</div>
                 </Form.Field>
-              </Grid.Column>
-              <Grid.Column width={7}>
-                <Form.Field>
+                <Form.Field width={6}>
                   <Input
                     type="number" 
                     name="observation_value"
@@ -39,15 +35,17 @@ export default function MeasurementInput(props)  {
                     onChange={props.handleObservationChange}
                   />
                 </Form.Field>
-                { props.observationValueError !== '' ? <Message color='red'>{ props.observationValueError }</Message> : null }
-              </Grid.Column>
-              <Grid.Column width={2} verticalAlign='middle'>
-                {props.removeButton ? <Button icon='remove' basic id={props.id} color='red' size='tiny' circular compact onClick={props.handleRemoveMeasurementButton}></Button>: null}
-                {props.addButton ? <Button size='tiny' basic id={props.id} circular color='green' icon='add' compact onClick={props.handleAddMeasurementButton}></Button>: null}
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        </div>
+              <Form.Field width={2} >
+                <Grid verticalAlign='middle'>
+                  <Grid.Column verticalAlign='middle'>
+                    {props.removeButton ? <Button icon='remove' basic id={props.id} color='red' size='tiny' circular compact floated='right' onClick={props.handleRemoveMeasurementButton}></Button>: null}
+                    {props.addButton ? <Button size='tiny' basic id={props.id} circular color='green' icon='add' compact floated='right' onClick={props.handleAddMeasurementButton} ></Button>: null}
+                  </Grid.Column>
+                </Grid>
+              </Form.Field>
+            </Form.Group>
+            { props.observationValueError !== '' ? <Message color='red'>{ props.observationValueError }</Message> : null }
+          </div>
     );
   
 }

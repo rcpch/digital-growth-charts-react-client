@@ -95,7 +95,7 @@ class MeasurementForm extends React.Component {
       console.log('All measurements have been used up now');
       
     } else {
-      measurements.push({measurement_method: unselectedMeasurements[0], observation_value: 0, id: Math.random().toString(36).substring(7), units: 'cm', observation_value_error: ''});
+      measurements.push({measurement_method: unselectedMeasurements[0], observation_value: 0, id: Math.random().toString(36).substring(7), units: this.changeUnits(unselectedMeasurements[0]), observation_value_error: ''});
     }
     
     this.updateShowHideMeasurementButtons();
@@ -184,6 +184,7 @@ class MeasurementForm extends React.Component {
       let measurement_to_update = all_measurements[measurement_index];
       measurement_to_update.observation_value_error = this.validateObservationValue(measurement_to_update.measurement_method, event.target.value);
       measurement_to_update.observation_value = event.target.value;
+      measurement_to_update.units = this.changeUnits(measurement_to_update.measurement_method)
       all_measurements[measurement_index] = measurement_to_update;
       this.setState({measurements: all_measurements});
       if (event.target.name !== 'ofc'){
