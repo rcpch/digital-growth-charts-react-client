@@ -39,7 +39,7 @@ export default class MenuBar extends Component {
         </Menu.Item>
 
         <Menu.Item href="https://github.com/rcpch/growth-references">
-          <Icon name="github" />
+          <Icon name="line graph" />
           Growth References
         </Menu.Item>
 
