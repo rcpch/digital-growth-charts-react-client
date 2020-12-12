@@ -20,13 +20,6 @@ export default class MenuBar extends Component {
           active={this.state.activeItem === "home"}
           onClick={this.handleItemClick}
         />
-        <Menu.Item
-          as={Link}
-          to="/spreadsheet"
-          name="spreadsheet"
-          active={this.state.activeItem === "spreadsheet"}
-          onClick={this.handleItemClick}
-        />
 
         <Menu.Item href="https://growth-blog.rcpch.ac.uk/">
           <Icon name="book" />
