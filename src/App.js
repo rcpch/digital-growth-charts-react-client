@@ -9,7 +9,6 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./components/MeasurementForm";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import References from "./pages/References";
 import Results from "./pages/Results";
 import Spreadsheet from "./pages/Spreadsheet";
 import SerialResults from "./pages/SerialResults";
@@ -25,9 +24,6 @@ class App extends Component {
             <Switch>
               <Route exact path="/">
                 <Home />
-              </Route>
-              <Route path="/references">
-                <References />
               </Route>
               <Route path="/results">
                 <Results />
