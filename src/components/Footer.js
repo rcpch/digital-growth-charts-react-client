@@ -20,13 +20,7 @@ export default class Footer extends Component {
         style={{ margin: "5em 0em 0em", padding: "5em 0em" }}
         vertical
       >
-        <Container textAlign="center">
-          <Menu secondary pointing icon="labeled">
-            <Menu.Item href="https://www.thehtn.co.uk/health-tech-awards-2020-live/">
-              <Image src="htn-awards-winner-2020-logo.jpg" size="mini" />
-              Health Tech Awards 'Best Health Tech Solution 2020'
-            </Menu.Item>
-          </Menu>
+        <Container textAlign="center" className="footer">
           <Grid columns={4} divided stackable inverted>
             <Grid.Row>
               <Grid.Column>
@@ -86,10 +80,19 @@ export default class Footer extends Component {
                   <List.Item as="a">Link Four</List.Item>
                 </List>
               </Grid.Column>
-              <Grid.Column></Grid.Column>
+              <Grid.Column>
+                <Header inverted as="h4" content="Group 4" />
+                <List link inverted>
+                  <List.Item as="a">Link One</List.Item>
+                  <List.Item as="a">Link Two</List.Item>
+                  <List.Item as="a">Link Three</List.Item>
+                  <List.Item as="a">Link Four</List.Item>
+                </List>
+              </Grid.Column>
             </Grid.Row>
           </Grid>
           <Divider inverted section />
+
           <List horizontal inverted divided link size="small">
             <List.Item as="a" href="https://www.rcpch.ac.uk/">
               <Image

@@ -45,7 +45,7 @@ export class HeroSegment extends Component {
               </GridColumn>
             </Grid.Row>
 
-            <Grid.Row centered>
+            <Grid.Row basic="true" centered>
               <Grid.Column width={4}>
                 <Message>
                   <Flag name="gb" />

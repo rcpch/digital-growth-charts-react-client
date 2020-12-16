@@ -6,9 +6,10 @@ export class OpenSourceCard extends Component {
     return (
       <Card>
         <Card.Content>
-          <Icon name="github" />
+          <Card.Header as="h1">
+            <Icon name="github" size="huge" />
+          </Card.Header>
           <Card.Header>Open Source</Card.Header>
-          <Card.Meta>Meta</Card.Meta>
           <Card.Description>
             For transparency, accuracy, and maximum reuse, our Growth Charts API
             and associated libraries are 100% open source. We welcome code
