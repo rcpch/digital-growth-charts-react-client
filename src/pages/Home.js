@@ -1,22 +1,23 @@
 import React, { Component } from "react";
-import { Container, Header, Grid } from "semantic-ui-react";
-import MeasurementForm from '../components/MeasurementForm';
-import axios from 'axios';
+import axios from "axios";
 import { withRouter } from "react-router-dom";
+import HeroSegment from "../components/HeroSegment";
+import CardsSegment from "../components/CardsSegment";
+import Technical from "../components/Technical";
 
 class Home extends Component {
   state = {
-    formData: {}
-  }
+    formData: {},
+  };
 
-  handleFormData = async(formDataArray) => {
+  handleFormData = async (formDataArray) => {
     this.setState({
-      formData: formDataArray
+      formData: formDataArray,
     });
 
-    let resultsPromiseArray=[];
+    let resultsPromiseArray = [];
 
-    formDataArray.forEach(formData => {
+    formDataArray.forEach((formData) => {
       let axiosFormData = {
         birth_date: formData.birth_date,
         observation_date: formData.observation_date,
@@ -30,18 +31,18 @@ class Home extends Component {
       const centile = this.fetchCentilesForMeasurement(axiosFormData);
 
       resultsPromiseArray.push(centile);
-      
     });
-    Promise.all(resultsPromiseArray).then((result)=>{
+    Promise.all(resultsPromiseArray).then((result) => {
       var mergedMeasurementArrays = [].concat.apply([], result);
-      this.props.history.push({pathname: '/results', data:{calculations: mergedMeasurementArrays}});
-    })
+      this.props.history.push({
+        pathname: "/results",
+        data: { calculations: mergedMeasurementArrays },
+      });
+    });
     // TODO #1 needs a catch statement
-    
-     
-  }
+  };
 
-  async fetchCentilesForMeasurement(payload){
+  async fetchCentilesForMeasurement(payload) {
     const response = await axios({
       url: `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/calculation`,
       data: payload,
@@ -55,16 +56,11 @@ class Home extends Component {
 
   render() {
     return (
-      <Container>
-        <Header as='h1'>
-          RCPCH Growth Charts
-        </Header>
-        <Grid centered>
-          <Grid.Column width={12}>
-            <MeasurementForm onSubmitMeasurement={this.handleFormData}/>
-          </Grid.Column>
-        </Grid>
-      </Container>
+      <div>
+        <HeroSegment />
+        <CardsSegment />
+        <Technical />
+      </div>
     );
   }
 }

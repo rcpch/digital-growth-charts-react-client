@@ -1,51 +1,30 @@
 import React, { Component } from "react";
-import { Menu, Icon } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import { Menu } from "semantic-ui-react";
 
 export default class MenuBar extends Component {
-  state = {
-    activeItem: "home",
-  };
-
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
-
   render() {
-    // const { activeItem } = this.state
     return (
-      <Menu pointing secondary>
+      <Menu fluid borderless inverted color="blue" as="h2">
         <Menu.Item
-          as={Link}
-          to="/"
-          name="home"
-          active={this.state.activeItem === "home"}
-          onClick={this.handleItemClick}
+          href="https://growth-blog.rcpch.ac.uk/"
+          name="Growth Blog"
+          position="right"
         />
-
-        <Menu.Item href="https://growth-blog.rcpch.ac.uk/">
-          <Icon name="book" />
-          Growth Blog
-        </Menu.Item>
-
-        <Menu.Item href="https://dev.rcpch.ac.uk/">
-          <Icon name="lab" />
-          API Documentation
-        </Menu.Item>
-
-        <Menu.Item href="https://github.com/rcpch/growth-references">
-          <Icon name="line graph" />
-          Growth References
-        </Menu.Item>
-
-        <Menu.Menu position="right">
-          <Menu.Item
-            as={Link}
-            to="/technical"
-            name="technical"
-            icon="code"
-            active={this.state.activeItem === "technical"}
-            onClick={this.handleItemClick}
-          />
-        </Menu.Menu>
+        <Menu.Item
+          href="https://dev.rcpch.ac.uk/"
+          name="API Documentation"
+          position="right"
+        />
+        <Menu.Item
+          href="https://github.com/rcpch/growth-references"
+          name="Growth References"
+          position="right"
+        />
+        <Menu.Item
+          name="Technical"
+          onClick={this.handleItemClick}
+          position="right"
+        />
       </Menu>
     );
   }

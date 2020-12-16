@@ -1,15 +1,18 @@
+// React
 import React, { Component } from "react";
 import "./App.css";
-import "./components/MeasurementForm";
-import "semantic-ui-css/semantic.min.css";
-import Footer from "./components/Footer";
+
+// React Router DOM
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
+// RCPCH Components
+import "./components/MeasurementForm";
+import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import References from "./pages/References";
 import Results from "./pages/Results";
 import Spreadsheet from "./pages/Spreadsheet";
 import SerialResults from "./pages/SerialResults";
-import Technical from "./pages/Technical";
 import HeaderBar from "./components/HeaderBar";
 
 class App extends Component {
@@ -34,9 +37,6 @@ class App extends Component {
               </Route>
               <Route path="/spreadsheet">
                 <Spreadsheet />
-              </Route>
-              <Route path="/technical">
-                <Technical />
               </Route>
             </Switch>
           </Router>
