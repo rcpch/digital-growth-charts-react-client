@@ -510,7 +510,7 @@ class MeasurementForm extends React.Component {
               <Button
                 content="Calculate Centiles and Create Chart"
                 type="submit"
-                fluid="true"
+                fluid={true}
                 disabled={!this.state.form_valid}
                 color="pink"
                 icon="line graph"
