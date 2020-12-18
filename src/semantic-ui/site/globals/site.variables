@@ -1,0 +1,17 @@
+/*******************************
+     User Global Variables
+*******************************/
+
+/* Fonts */
+@fontName: 'Montserrat';
+@importGoogleFonts: true;
+
+@defaultBorderRadius: 0em;
+
+/* Colours */
+@rcpch-nav-actv: #1B469C;
+@rcpch-nav: #3366cc;
+@rcpch-dark-blue-header: #0d0d58;
+
+@blue: #3366cc;
+@pink: #e00087;
