@@ -1,5 +1,5 @@
 // React
-import React, { Component } from "react";
+import React, { useState } from "react";
 import "./App.css";
 
 // React Router DOM
@@ -13,34 +13,43 @@ import Results from "./pages/Results";
 import Spreadsheet from "./pages/Spreadsheet";
 import SerialResults from "./pages/SerialResults";
 import HeaderBar from "./components/HeaderBar";
+import Technical from "./components/Technical";
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <div>
-          <Router>
-            <HeaderBar />
-            <Switch>
-              <Route exact path="/">
-                <Home />
-              </Route>
-              <Route path="/results">
-                <Results />
-              </Route>
-              <Route path="/serial_results">
-                <SerialResults />
-              </Route>
-              <Route path="/spreadsheet">
-                <Spreadsheet />
-              </Route>
-            </Switch>
-          </Router>
-          <Footer />
-        </div>
-      </div>
-    );
+function App() {
+  const [toggle, setToggle] = useState(false);
+
+  function toggleTechnical() {
+    setToggle(!toggle);
   }
+
+  return (
+    <div className="App">
+      <div>
+        <Router>
+          <HeaderBar toggleTechnical={toggleTechnical} />
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/results">
+              <Results />
+            </Route>
+            <Route path="/serial_results">
+              <SerialResults />
+            </Route>
+            <Route path="/spreadsheet">
+              <Spreadsheet />
+            </Route>
+          </Switch>
+        </Router>
+        <Technical
+          technicalSidebarVisible={toggle}
+          toggleTechnical={toggleTechnical}
+        />
+        <Footer />
+      </div>
+    </div>
+  );
 }
 
 export default App;

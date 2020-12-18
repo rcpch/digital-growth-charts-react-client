@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import {
   Container,
   Segment,
@@ -79,6 +80,7 @@ class MeasurementForm extends React.Component {
       observation_date_error: "",
       observation_value_error: null,
       form_valid: false,
+      formData: {},
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -89,6 +91,50 @@ class MeasurementForm extends React.Component {
     this.handleChangeGestation = this.handleChangeGestation.bind(this);
     this.handleChangeSex = this.handleChangeSex.bind(this);
     this.createBMI = this.createBMI.bind(this);
+  }
+
+  handleFormData = async (formDataArray) => {
+    this.setState({
+      formData: formDataArray,
+    });
+
+    let resultsPromiseArray = [];
+
+    formDataArray.forEach((formData) => {
+      let axiosFormData = {
+        birth_date: formData.birth_date,
+        observation_date: formData.observation_date,
+        sex: formData.sex,
+        gestation_weeks: formData.gestation_weeks,
+        gestation_days: formData.gestation_days,
+        measurement_method: formData.measurement_method,
+        observation_value: formData.observation_value,
+      };
+
+      const centile = this.fetchCentilesForMeasurement(axiosFormData);
+
+      resultsPromiseArray.push(centile);
+    });
+    Promise.all(resultsPromiseArray).then((result) => {
+      var mergedMeasurementArrays = [].concat.apply([], result);
+      this.history.push({
+        pathname: "/results",
+        data: { calculations: mergedMeasurementArrays },
+      });
+    });
+    // TODO #1 needs a catch statement
+  };
+
+  async fetchCentilesForMeasurement(payload) {
+    const response = await axios({
+      url: `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/calculation`,
+      data: payload,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
   }
 
   handleAddMeasurement(event) {
@@ -326,7 +372,7 @@ class MeasurementForm extends React.Component {
       measurementArray.push(formData);
     });
 
-    this.props.onSubmitMeasurement(measurementArray);
+    this.handleFormData(measurementArray);
   }
 
   handleChangeSelect(event, data) {
@@ -381,7 +427,7 @@ class MeasurementForm extends React.Component {
   render() {
     return (
       <Container>
-        <Segment>
+        <Segment textAlign={"center"}>
           <Form onSubmit={this.handleSubmit}>
             <Form.Field required>
               <Input
@@ -439,8 +485,9 @@ class MeasurementForm extends React.Component {
                 options={sexOptions}
               />
             </Form.Field>
-            <Form.Group widths="equal">
-              <Form.Field required>
+
+            <Form.Group>
+              <Form.Field>
                 <Select
                   name="gestation_weeks"
                   value={this.state.gestation_weeks}
@@ -449,7 +496,7 @@ class MeasurementForm extends React.Component {
                 />
               </Form.Field>
 
-              <Form.Field required>
+              <Form.Field>
                 <Select
                   name="gestation_days"
                   value={this.state.gestation_days}
@@ -463,8 +510,9 @@ class MeasurementForm extends React.Component {
               <Button
                 content="Calculate Centiles and Create Chart"
                 type="submit"
+                fluid="true"
                 disabled={!this.state.form_valid}
-                color="blue"
+                color="pink"
                 icon="line graph"
                 labelPosition="right"
               />
