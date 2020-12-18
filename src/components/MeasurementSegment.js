@@ -5,7 +5,7 @@ import React, { useState, setState } from "react";
 import { Segment, Grid, Message, Flag, Tab, Menu } from "semantic-ui-react";
 
 // RCPCH Components
-import RCPCHChartComponent from "digital-growth-charts-react-chart-library";
+// import RCPCHChartComponent from "digital-growth-charts-react-chart-library";
 import MeasurementForm from "../components/MeasurementForm";
 
 function MeasurementSegment(props) {
@@ -45,7 +45,7 @@ function MeasurementSegment(props) {
       </Grid.Column>
       <Grid.Column width={5}>
         <Segment raised>
-          <Menu tabular>
+          <Menu>
             <Menu.Item
               name="height"
               active={activeItem === "height"}

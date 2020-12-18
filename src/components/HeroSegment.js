@@ -15,7 +15,7 @@ export class HeroSegment extends Component {
           backgroundSize: "cover",
         }}
       >
-        <Header inverted as="h1" style={{ fontSize: "4em" }}>
+        <Header inverted as="h1" style={{ fontSize: "3em" }}>
           <p>Royal College of Paediatrics and Child Health</p>
           <p>Digital Growth Charts</p>
         </Header>
