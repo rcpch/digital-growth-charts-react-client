@@ -1,5 +1,5 @@
 // React
-import React, { useState, setState } from "react";
+import React, { useState } from "react";
 
 // Semantic UI React
 import { Segment, Grid, Message, Flag, Tab, Menu } from "semantic-ui-react";
