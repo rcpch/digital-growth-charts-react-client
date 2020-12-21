@@ -81,6 +81,7 @@ class MeasurementForm extends React.Component {
       observation_value_error: null,
       form_valid: false,
       formData: {},
+      measurementResult: []
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -93,13 +94,17 @@ class MeasurementForm extends React.Component {
     this.createBMI = this.createBMI.bind(this);
   }
 
+  handleGrowthResults = (results) => {
+    this.props.measurementResult(results)
+  }
+
   handleFormData = async (formDataArray) => {
     this.setState({
       formData: formDataArray,
     });
 
     let resultsPromiseArray = [];
-
+  
     formDataArray.forEach((formData) => {
       let axiosFormData = {
         birth_date: formData.birth_date,
@@ -117,10 +122,12 @@ class MeasurementForm extends React.Component {
     });
     Promise.all(resultsPromiseArray).then((result) => {
       var mergedMeasurementArrays = [].concat.apply([], result);
-      this.history.push({
-        pathname: "/results",
-        data: { calculations: mergedMeasurementArrays },
-      });
+      // this.history.push({
+      //   pathname: "/results",
+      //   data: { calculations: mergedMeasurementArrays },
+      // });
+      console.log(mergedMeasurementArrays);
+      this.handleGrowthResults(mergedMeasurementArrays)
     });
     // TODO #1 needs a catch statement
   };
@@ -357,6 +364,7 @@ class MeasurementForm extends React.Component {
   }
 
   handleSubmit(event) {
+    
     const measurements = this.state.measurements;
     let measurementArray = [];
     measurements.forEach((measurement) => {

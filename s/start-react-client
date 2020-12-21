@@ -1,5 +1,4 @@
 #!/bin/bash
-
-export NPM_REGISTRY_TOKEN=""
+export NPM_REGISTRY_TOKEN="f976d6ba-51e7-47ec-ab4b-81a262e79066"
 export REACT_APP_GROWTH_API_BASEURL=http://localhost:5000
 npm start
