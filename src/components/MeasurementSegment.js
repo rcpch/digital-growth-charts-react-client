@@ -1,9 +1,9 @@
 // React
-import React, { useState } from "react";
+import React from "react";
 import { Component } from "react";
 
 // Semantic UI React
-import { Segment, Grid, Message, Flag, Tab, Menu } from "semantic-ui-react";
+import { Segment, Grid, Message, Flag, Tab } from "semantic-ui-react";
 import ChartData from '../api/Chart'
 
 // RCPCH Components
@@ -14,18 +14,7 @@ class MeasurementSegment extends Component {
 
       constructor(props){
         super(props)
-        const chart = <ChartData
-          reference={'uk-who'} //the choices are ["uk-who", "turner", "trisomy21"] REQUIRED
-          sex={"male"} //the choices are ["male", "female"] REQUIRED
-          measurementMethod={"height"} //the choices are ["height", "weight", "ofc", "bmi"] REQUIRED
-          centileColour="black"
-          width={700} 
-          height={600}
-          measurementsArray = {[]}  // an array of Measurement class objects from dGC API REQUIRED
-          measurementsSDSArray = {[]} // an array of SDS measurements for SDS charts REQUIRED: currently not implemented: pass []
-          measurementDataPointColour = 'green'
-        />
-        this.state = ({measurement: "height"})
+        this.state = ({measurementMethod: "height"}, {reference: "uk-who"}, {sex: "male"})
       }
 
 
@@ -35,31 +24,33 @@ class MeasurementSegment extends Component {
     // to receive plottable child
     
     const measurementMethod = results[0].child_observation_value.measurement_method
-    const reference = "uk-who"
     const sex = results[0].birth_data.sex
+    this.setState({measurementMethod: measurementMethod})
+    this.setState({sex: sex})
 
     const Chart = (
           <ChartData
-                key={measurementMethod + "results"}
-                reference={reference} //the choices are ["uk-who", "turner", "trisomy21"] REQUIRED
+                key={measurementMethod + "-" + this.state.reference + "-results"}
+                reference={this.state.reference} //the choices are ["uk-who", "turner", "trisomy21"] REQUIRED
                 sex={sex} //the choices are ["male", "female"] REQUIRED
-                measurementMethod={measurementMethod} //the choices are ["height", "weight", "ofc", "bmi"] REQUIRED
+                measurementMethod={this.state.measurementMethod} //the choices are ["height", "weight", "ofc", "bmi"] REQUIRED
                 centileColour="black"
                 width={700} 
                 height={600}
                 measurementsArray = {results}  // an array of Measurement class objects from dGC API REQUIRED
                 measurementsSDSArray = {[]} // an array of SDS measurements for SDS charts REQUIRED: currently not implemented: pass []
                 measurementDataPointColour = 'green'
+                chartBackground= 'white'
           />
     )
-    return Chart
+
   }
 
   returnNewChart(measurementMethod){
     const Chart = (
       <ChartData
-            key={measurementMethod}
-            reference={'uk-who'} //the choices are ["uk-who", "turner", "trisomy21"] REQUIRED
+            key={measurementMethod + "-" + this.state.reference}
+            reference="uk-who" //the choices are ["uk-who", "turner", "trisomy21"] REQUIRED
             sex={'male'} //the choices are ["male", "female"] REQUIRED
             measurementMethod={measurementMethod} //the choices are ["height", "weight", "ofc", "bmi"] REQUIRED
             centileColour="black"
@@ -68,25 +59,13 @@ class MeasurementSegment extends Component {
             measurementsArray = {[]}  // an array of Measurement class objects from dGC Optional
             measurementsSDSArray = {[]} // an array of SDS measurements for SDS charts Optional: currently not implemented: pass []
             measurementDataPointColour = 'green'
+            chartBackground= 'white'
       />
     )
     return Chart
   }
 
   render(){
-
-    const Chart = (
-      <ChartData
-            reference={'uk-who'} //the choices are ["uk-who", "turner", "trisomy21"] REQUIRED
-            sex={'male'} //the choices are ["male", "female"] REQUIRED
-            measurementMethod={this.state.measurementMethod} //the choices are ["height", "weight", "ofc", "bmi"] REQUIRED
-            centileColour="black"
-            width={700} 
-            height={600}
-            measurementsArray = {[]}  // an array of Measurement class objects from dGC Optional
-            measurementsSDSArray = {[]} // an array of SDS measurements for SDS charts Optional: currently not implemented: pass []
-            measurementDataPointColour = 'green'
-      />)
 
     const panes = [
       { menuItem: "height", 

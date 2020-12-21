@@ -111,16 +111,16 @@ class ChartData extends Component {
         } 
         
         subTitle = (measurementText + " - " + sexText)
-
+        
         return (
           <div>
             { this.state.isLoading ? (
                 <h1>Loading...</h1>
               ) : (
                     <RCPCHChartComponent
-                    //   key={measurement_method}
+                        // key={this.state.measurement_method + "-" + this.props.reference}
                         reference={this.props.reference}
-                        measurementMethod={this.state.measurement_method} 
+                        measurementMethod={this.props.measurementMethod} 
                         sex={this.props.sex}
                         title={title}
                         subtitle={subTitle}
@@ -130,6 +130,7 @@ class ChartData extends Component {
                         measurementsArray = {this.state.centile_data} // this is the plottable child data
                         measurementsSDSArray = {this.state.sds_data} // this is plottable SDS data
                         measurementDataPointColour = {this.props.measurementDataPointColour}
+                        chartBackground = {this.props.chartBackground}
                     />
                 )
             }
