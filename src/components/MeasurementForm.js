@@ -8,6 +8,7 @@ import {
   Select,
   Button,
   Header,
+  Label,
 } from "semantic-ui-react";
 import moment from "moment";
 import MeasurementInput from "./MeasurementInput";
@@ -81,6 +82,7 @@ class MeasurementForm extends React.Component {
       observation_value_error: null,
       form_valid: false,
       formData: {},
+      measurementResult: []
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -93,13 +95,17 @@ class MeasurementForm extends React.Component {
     this.createBMI = this.createBMI.bind(this);
   }
 
+  handleGrowthResults = (results) => {
+    this.props.measurementResult(results)
+  }
+
   handleFormData = async (formDataArray) => {
     this.setState({
       formData: formDataArray,
     });
 
     let resultsPromiseArray = [];
-
+  
     formDataArray.forEach((formData) => {
       let axiosFormData = {
         birth_date: formData.birth_date,
@@ -117,10 +123,11 @@ class MeasurementForm extends React.Component {
     });
     Promise.all(resultsPromiseArray).then((result) => {
       var mergedMeasurementArrays = [].concat.apply([], result);
-      this.history.push({
-        pathname: "/results",
-        data: { calculations: mergedMeasurementArrays },
-      });
+      // this.history.push({
+      //   pathname: "/results",
+      //   data: { calculations: mergedMeasurementArrays },
+      // });
+      this.handleGrowthResults(mergedMeasurementArrays)
     });
     // TODO #1 needs a catch statement
   };
@@ -357,6 +364,7 @@ class MeasurementForm extends React.Component {
   }
 
   handleSubmit(event) {
+    
     const measurements = this.state.measurements;
     let measurementArray = [];
     measurements.forEach((measurement) => {
@@ -486,24 +494,33 @@ class MeasurementForm extends React.Component {
               />
             </Form.Field>
 
-            <Form.Group>
+            <Form.Group >
               <Form.Field>
+                <span>
                 <Select
+                  compact
                   name="gestation_weeks"
                   value={this.state.gestation_weeks}
                   options={gestationWeeksOptions}
                   onChange={this.handleChangeGestation}
                 />
+                &nbsp;+
+                </span>
               </Form.Field>
 
               <Form.Field>
+                <span>
                 <Select
+                  compact
                   name="gestation_days"
                   value={this.state.gestation_days}
                   options={gestationDaysOptions}
                   onChange={this.handleChangeGestation}
                 />
+                &nbsp; weeks
+                </span>
               </Form.Field>
+              
             </Form.Group>
 
             <Form.Field>
