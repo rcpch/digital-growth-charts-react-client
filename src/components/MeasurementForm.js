@@ -8,6 +8,7 @@ import {
   Select,
   Button,
   Header,
+  Label,
 } from "semantic-ui-react";
 import moment from "moment";
 import MeasurementInput from "./MeasurementInput";
@@ -126,7 +127,6 @@ class MeasurementForm extends React.Component {
       //   pathname: "/results",
       //   data: { calculations: mergedMeasurementArrays },
       // });
-      console.log(mergedMeasurementArrays);
       this.handleGrowthResults(mergedMeasurementArrays)
     });
     // TODO #1 needs a catch statement
@@ -494,24 +494,33 @@ class MeasurementForm extends React.Component {
               />
             </Form.Field>
 
-            <Form.Group>
+            <Form.Group >
               <Form.Field>
+                <span>
                 <Select
+                  compact
                   name="gestation_weeks"
                   value={this.state.gestation_weeks}
                   options={gestationWeeksOptions}
                   onChange={this.handleChangeGestation}
                 />
+                &nbsp;+
+                </span>
               </Form.Field>
 
               <Form.Field>
+                <span>
                 <Select
+                  compact
                   name="gestation_days"
                   value={this.state.gestation_days}
                   options={gestationDaysOptions}
                   onChange={this.handleChangeGestation}
                 />
+                &nbsp; weeks
+                </span>
               </Form.Field>
+              
             </Form.Group>
 
             <Form.Field>

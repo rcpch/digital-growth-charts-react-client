@@ -13,7 +13,7 @@ export default function MeasurementInput(props)  {
     return (
           <div key={props.name}>
               <Form.Group>
-                <Form.Field required width={8}>
+                <Form.Field required width={10}>
                   <Select
                     value={props.measurementMethod}
                     id={props.id}
@@ -23,7 +23,7 @@ export default function MeasurementInput(props)  {
                     onChange={props.handleMeasurementChangeSelect}/> 
                   <div>{props.measurementMethodError}</div>
                 </Form.Field>
-                <Form.Field width={6}>
+                <Form.Field required width={8}>
                   <Input
                     type="number" 
                     name="observation_value"
@@ -35,14 +35,14 @@ export default function MeasurementInput(props)  {
                     onChange={props.handleObservationChange}
                   />
                 </Form.Field>
-              <Form.Field width={2} >
+              {/* <Form.Field width={2} >
                 <Grid verticalAlign='middle'>
                   <Grid.Column verticalAlign='middle'>
                     {props.removeButton ? <Button icon='remove' basic id={props.id} color='red' size='tiny' circular compact floated='right' onClick={props.handleRemoveMeasurementButton}></Button>: null}
                     {props.addButton ? <Button size='tiny' basic id={props.id} circular color='green' icon='add' compact floated='right' onClick={props.handleAddMeasurementButton} ></Button>: null}
                   </Grid.Column>
                 </Grid>
-              </Form.Field>
+              </Form.Field> */}
             </Form.Group>
             { props.observationValueError !== '' ? <Message color='red'>{ props.observationValueError }</Message> : null }
           </div>

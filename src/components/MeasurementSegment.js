@@ -14,11 +14,25 @@ class MeasurementSegment extends Component {
 
       constructor(props){
         super(props)
-        this.state = ({measurementMethod: "height"}, {reference: "uk-who"}, {sex: "male"})
+        this.state = {
+          measurementMethod: "height",
+          reference: "uk-who",
+          sex: "male",
+          heights: [],
+          weights: [],
+          ofcs: [],
+          bmis: [],
+          activeIndex: 0 //set tab to height
+        }
+        this.handleResults = this.handleResults.bind(this)
+        this.handleRangeChange = this.handleRangeChange.bind(this)
+        this.handleTabChange = this.handleTabChange.bind(this)
       }
+  
+  handleRangeChange = (e) => this.setState({ activeIndex: e.target.value })
+  handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex })
 
-
-  handleResults=(results)=>{
+  handleResults(results){
     // delegate function from MeasurementForm
     // receives measurement results and passes them back to API
     // to receive plottable child
@@ -27,26 +41,44 @@ class MeasurementSegment extends Component {
     const sex = results[0].birth_data.sex
     this.setState({measurementMethod: measurementMethod})
     this.setState({sex: sex})
+    
+    let measurementsArray = []
+    let concatenated = []
+    
+    switch (measurementMethod){
+      case ('height'):
+        measurementsArray = this.state.heights
+        concatenated = measurementsArray.concat(results)
+        this.setState({heights: concatenated})
+        this.setState({activeIndex: 0}) // move focus to height tab
+        break
+      case ('weight'):
+        measurementsArray = this.state.weights
+        concatenated = measurementsArray.concat(results)
+        this.setState({weights: concatenated})
+        this.setState({activeIndex: 1}) // move focus to weight tab
+        break
+      case ('bmi'):
+        measurementsArray = this.state.bmis
+        concatenated = measurementsArray.concat(results)
+        this.setState({bmis: concatenated})
+        this.setState({activeIndex: 2}) // move focus to bmi tab
+        break
+      case ('ofc'):
+        measurementsArray = this.state.ofcs
+        concatenated = measurementsArray.concat(results)
+        this.setState({bmis: concatenated})
+        this.setState({activeIndex: 3}) // move focus to ofc tab
+        break
+      default:
+        concatenated = []
+    }
 
-    const Chart = (
-          <ChartData
-                key={measurementMethod + "-" + this.state.reference + "-results"}
-                reference={this.state.reference} //the choices are ["uk-who", "turner", "trisomy21"] REQUIRED
-                sex={sex} //the choices are ["male", "female"] REQUIRED
-                measurementMethod={this.state.measurementMethod} //the choices are ["height", "weight", "ofc", "bmi"] REQUIRED
-                centileColour="black"
-                width={700} 
-                height={600}
-                measurementsArray = {results}  // an array of Measurement class objects from dGC API REQUIRED
-                measurementsSDSArray = {[]} // an array of SDS measurements for SDS charts REQUIRED: currently not implemented: pass []
-                measurementDataPointColour = 'green'
-                chartBackground= 'white'
-          />
-    )
+    this.returnNewChart(measurementMethod, concatenated)
 
   }
 
-  returnNewChart(measurementMethod){
+  returnNewChart(measurementMethod, measurementsArray){
     const Chart = (
       <ChartData
             key={measurementMethod + "-" + this.state.reference}
@@ -56,7 +88,7 @@ class MeasurementSegment extends Component {
             centileColour="black"
             width={700} 
             height={600}
-            measurementsArray = {[]}  // an array of Measurement class objects from dGC Optional
+            measurementsArray = {measurementsArray}  // an array of Measurement class objects from dGC Optional
             measurementsSDSArray = {[]} // an array of SDS measurements for SDS charts Optional: currently not implemented: pass []
             measurementDataPointColour = 'green'
             chartBackground= 'white'
@@ -70,18 +102,21 @@ class MeasurementSegment extends Component {
     const panes = [
       { menuItem: "height", 
         render: () => <Tab.Pane attached={"top"}>Height{
-          this.returnNewChart("height")
+          this.returnNewChart("height", this.state.heights)
         }</Tab.Pane> },
       { menuItem: "weight",
         render: () => <Tab.Pane attached={"top"}>
           Weight
-          {this.returnNewChart("weight")}
+          {this.returnNewChart("weight", this.state.weights)}
           </Tab.Pane> },
-      { menuItem: "bmi", render: () => <Tab.Pane attached={"top"}>BMI {this.returnNewChart("bmi")}</Tab.Pane> },
-      { menuItem: "ofc", render: () => <Tab.Pane attached={"top"}>OFC {this.returnNewChart("ofc")}</Tab.Pane> },
+      { menuItem: "bmi", render: () => <Tab.Pane attached={"top"}>BMI {this.returnNewChart("bmi", this.state.bmis)}</Tab.Pane> },
+      { menuItem: "ofc", render: () => <Tab.Pane attached={"top"}>OFC {this.returnNewChart("ofc", this.state.ofcs)}</Tab.Pane> },
     ];
   
-    const TabPanes = () => <Tab menu={{ attached: 'top' }} panes={panes} />
+    const TabPanes = () => <Tab menu={{ attached: 'top' }} panes={panes} activeIndex={activeIndex}
+    onTabChange={this.handleTabChange}/>
+
+    const { activeIndex } = this.state
   
     return (
       
