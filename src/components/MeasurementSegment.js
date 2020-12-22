@@ -3,12 +3,10 @@ import React from "react";
 import { Component } from "react";
 
 // Semantic UI React
-import { Segment, Grid, Message, Flag, Tab } from "semantic-ui-react";
+import { Segment, Grid, Message, Flag, Tab, Menu, Dropdown } from "semantic-ui-react";
 import ChartData from '../api/Chart'
-
-// RCPCH Components
-// import RCPCHChartComponent from "digital-growth-charts-react-chart-library";
 import MeasurementForm from "../components/MeasurementForm";
+import '../index.css'
 
 class MeasurementSegment extends Component {
 
@@ -18,6 +16,8 @@ class MeasurementSegment extends Component {
           measurementMethod: "height",
           reference: "uk-who",
           sex: "male",
+          chartBackground: "white",
+          centilesColour: "black",
           heights: [],
           weights: [],
           ofcs: [],
@@ -27,6 +27,7 @@ class MeasurementSegment extends Component {
         this.handleResults = this.handleResults.bind(this)
         this.handleRangeChange = this.handleRangeChange.bind(this)
         this.handleTabChange = this.handleTabChange.bind(this)
+        this.handleChangeTheme = this.handleChangeTheme.bind(this)
       }
   
   handleRangeChange = (e) => this.setState({ activeIndex: e.target.value })
@@ -78,43 +79,103 @@ class MeasurementSegment extends Component {
 
   }
 
-  returnNewChart(measurementMethod, measurementsArray){
+  returnNewChart(measurementMethod, measurementsArray, centilesColour, chartBackground){
+    
     const Chart = (
       <ChartData
             key={measurementMethod + "-" + this.state.reference}
             reference="uk-who" //the choices are ["uk-who", "turner", "trisomy21"] REQUIRED
             sex={'male'} //the choices are ["male", "female"] REQUIRED
             measurementMethod={measurementMethod} //the choices are ["height", "weight", "ofc", "bmi"] REQUIRED
-            centileColour="black"
+            centileColour={centilesColour}
             width={700} 
             height={600}
             measurementsArray = {measurementsArray}  // an array of Measurement class objects from dGC Optional
             measurementsSDSArray = {[]} // an array of SDS measurements for SDS charts Optional: currently not implemented: pass []
             measurementDataPointColour = 'green'
-            chartBackground= 'white'
+            chartBackground= {chartBackground}
+            centilesColour={chartBackground}
       />
     )
+    // this.setState({centilesColour: centilesColour})
+    // this.setState({chartBackground: chartBackground})
     return Chart
   }
+
+  handleChangeTheme(event, {value}){
+
+    // girl 201 85 157 - #c9559d
+    // boy 0 163 222 - #00a3de
+
+    let centilesColour = ""
+    let chartBackground = ""
+    
+    if (value === 'trad'){
+      if (this.state.sex === 'male'){
+        // this.setState({ centilesColour: '#00a3de' }, { chartBackground: 'white'})
+        centilesColour = '#00a3de' 
+        chartBackground = 'white'
+      } else {
+        // this.setState({ centilesColour: '#c9559d' }, { chartBackground: 'white'})
+        centilesColour = '#c9559d' 
+        chartBackground = 'white'
+      }
+    }
+    if (value === "colour"){
+      if (this.state.sex === 'male'){
+        // this.setState({ centilesColour: '#ff8000' }, { chartBackground: 'white'})
+        centilesColour = '#ff8000' 
+        chartBackground = 'white'
+      } else {
+        // this.setState({ centilesColour: '#ff8000' }, { chartBackground: 'white'})
+        centilesColour = '#ff8000' 
+        chartBackground = 'white'
+      }
+    }
+    if (value === 'simple'){
+      if (this.state.sex === 'male'){
+        centilesColour = 'black'
+        chartBackground = 'white'
+      } else {
+        centilesColour = 'black'
+        chartBackground = 'white'
+      }
+    }
+
+    this.returnNewChart(this.state.measurementMethod, this.state.measurementsArray, centilesColour, chartBackground)
+
+    this.setState({centilesColour: centilesColour})
+    this.setState({chartBackground: chartBackground})
+
+  }
+
+
 
   render(){
 
     const panes = [
-      { menuItem: "height", 
-        render: () => <Tab.Pane attached={"top"}>Height{
-          this.returnNewChart("height", this.state.heights)
+      { menuItem: "Height", 
+        render: () => <Tab.Pane attached={"top"}>{
+          this.returnNewChart("height", this.state.heights, this.state.centilesColour, this.state.chartBackground)
         }</Tab.Pane> },
-      { menuItem: "weight",
+      { menuItem: "Weight",
         render: () => <Tab.Pane attached={"top"}>
-          Weight
-          {this.returnNewChart("weight", this.state.weights)}
+          {this.returnNewChart("weight", this.state.weights, this.state.centilesColour, this.state.chartBackground)}
           </Tab.Pane> },
-      { menuItem: "bmi", render: () => <Tab.Pane attached={"top"}>BMI {this.returnNewChart("bmi", this.state.bmis)}</Tab.Pane> },
-      { menuItem: "ofc", render: () => <Tab.Pane attached={"top"}>OFC {this.returnNewChart("ofc", this.state.ofcs)}</Tab.Pane> },
+      { menuItem: "BMI", render: () => <Tab.Pane attached={"top"}>{this.returnNewChart("bmi", this.state.bmis, this.state.centilesColour, this.state.chartBackground)}</Tab.Pane> },
+      { menuItem: "Head Circumference", render: () => <Tab.Pane attached={"top"}>{this.returnNewChart("ofc", this.state.ofcs, this.state.centilesColour, this.state.chartBackground)}</Tab.Pane> },
     ];
   
     const TabPanes = () => <Tab menu={{ attached: 'top' }} panes={panes} activeIndex={activeIndex}
     onTabChange={this.handleTabChange}/>
+
+    const themeOptions = [{ key: 'trad', value: 'trad', text: 'Traditional' },{ key: 'colour', value: 'colour', text: 'Energy' }, { key: 'simple', value: 'simple', text: 'Simple' }]
+
+    const ThemeSelection = () => (
+      <Menu compact className="selectUpperMargin">
+        <Dropdown text='Theme' options={themeOptions} simple item onChange={this.handleChangeTheme}/>
+      </Menu>
+    )
 
     const { activeIndex } = this.state
   
@@ -146,7 +207,11 @@ class MeasurementSegment extends Component {
         <Grid.Column width={5}>
           <Segment raised>
             <TabPanes/>
+            <div>
+              <ThemeSelection />
+            </div>
           </Segment>
+          
         </Grid.Column>
       </Grid>
     );
