@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios';
-// @ts-ignore
-import RCPCHChartComponent from '@rcpch/digital-growth-charts-react-chart-library'
-// import 'digital-growth-charts-react-chart-component/dist/index.css'
+import { RCPCHChart } from 'digital-growth-charts-react-component-library'
 class ChartData extends Component {
 
     constructor(props){
@@ -117,7 +115,7 @@ class ChartData extends Component {
             { this.state.isLoading ? (
                 <h1>Loading...</h1>
               ) : (
-                    <RCPCHChartComponent
+                    <RCPCHChart
                         // key={this.state.measurement_method + "-" + this.props.reference}
                         reference={this.props.reference}
                         measurementMethod={this.props.measurementMethod} 

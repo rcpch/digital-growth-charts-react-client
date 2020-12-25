@@ -1,4 +1,4 @@
-import RCPCHChartComponent from '@rcpch/digital-growth-charts-react-chart-library'
+import { RCPCHChart } from 'digital-growth-charts-react-component-library'
 import React, { Component } from 'react'
 import axios from 'axios';
 
@@ -98,7 +98,7 @@ class ChartData extends Component {
                     {this.state.selectedCharts.map((selectedChart) => {
                         if (selectedChart === 'height'){
                             return (
-                                    <RCPCHChartComponent 
+                                    <RCPCHChart
                                         key={selectedChart}
                                         measurementMethod='height' 
                                         sex={this.state.sex} 
@@ -113,7 +113,7 @@ class ChartData extends Component {
                         }
                         if (selectedChart === 'weight'){
                             return (
-                                    <RCPCHChartComponent 
+                                    <RCPCHChart 
                                         key={selectedChart}
                                         measurementMethod='weight' 
                                         sex={this.state.sex}
@@ -128,7 +128,7 @@ class ChartData extends Component {
                         }
                         if (selectedChart === 'ofc'){
                             return (
-                                    <RCPCHChartComponent 
+                                    <RCPCHChart 
                                         key={selectedChart}
                                         measurementMethod='ofc' 
                                         sex={this.state.sex} 
@@ -143,7 +143,7 @@ class ChartData extends Component {
                         }
                         if (selectedChart === 'bmi'){
                             return (
-                                    <RCPCHChartComponent 
+                                    <RCPCHChart 
                                         key={selectedChart}
                                         measurementMethod='bmi' 
                                         sex={this.state.sex} 
