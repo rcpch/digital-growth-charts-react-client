@@ -3,7 +3,7 @@ import React from "react";
 import { Component } from "react";
 
 // Semantic UI React
-import { Segment, Grid, Message, Flag, Tab, Menu, Dropdown } from "semantic-ui-react";
+import { Grid, Segment, Message, Flag, Tab, Menu, Dropdown, Button, Table } from "semantic-ui-react";
 import ChartData from '../api/Chart'
 import MeasurementForm from "../components/MeasurementForm";
 import '../index.css'
@@ -22,12 +22,15 @@ class MeasurementSegment extends Component {
           weights: [],
           ofcs: [],
           bmis: [],
-          activeIndex: 0 //set tab to height
+          activeIndex: 0, //set tab to height
+          flip: false // flag to determine if results or chart showing
         }
         this.handleResults = this.handleResults.bind(this)
         this.handleRangeChange = this.handleRangeChange.bind(this)
         this.handleTabChange = this.handleTabChange.bind(this)
         this.handleChangeTheme = this.handleChangeTheme.bind(this)
+        this.handleFlipResults = this.handleFlipResults.bind(this)
+        this.returnMeasurementArray = this.returnMeasurementArray.bind(this)
       }
   
   handleRangeChange = (e) => this.setState({ activeIndex: e.target.value })
@@ -76,6 +79,45 @@ class MeasurementSegment extends Component {
     }
 
     this.returnNewChart(measurementMethod, concatenated)
+
+    /*
+    return object structure
+    [
+      {
+        birth_data: {
+          birth_date: ...,
+          estimated_date_delivery: ....,
+          estimated_date_delivery_string: ...,
+          gestation_weeks: ...,
+          gestation_days: ...,
+          sex: ...
+        },
+        child_observation_value: {
+          measurement_method: ....,
+          measurement_value: ...
+        },
+        child_measurement_dates: {
+          chronological_calendar_age: ...,
+          chronological_decimal_age: ...,
+          clinician_decimal_age_comment: ...,
+          corrected_calendar_age: ...,
+          corrected_decimal_age: ...,
+          corrected_gestational_age: {
+            corrected_gestation_weeks: ...,
+            corrected_gestatin_days: ...
+          },
+          lay_decimal_age_comment: ...,
+          observation_date: ...
+        },
+        measurement_calculated_values: {
+          centile: ...,
+          measurement_method: ...,
+          sds: ...,
+          centile_band: ...
+        }
+      }
+    ]
+    */
 
   }
 
@@ -149,6 +191,32 @@ class MeasurementSegment extends Component {
 
   }
 
+  handleFlipResults(){
+    const flipped = this.state.flip
+    this.setState({flip: !flipped})
+  }
+
+  returnMeasurementArray(measurementMethod){
+    
+    switch (measurementMethod) {
+      case "height":
+        return this.state.heights
+        break;
+      case "weight":
+        return  this.state.weights
+        break;
+      case "bmi":
+        return  this.state.bmis
+        break;
+      case "ofc":
+        return  this.state.ofcs
+        break;
+      default:
+        return
+        break;
+    }
+  }
+
 
 
   render(){
@@ -175,6 +243,77 @@ class MeasurementSegment extends Component {
       <Menu compact className="selectUpperMargin">
         <Dropdown text='Theme' options={themeOptions} simple item onChange={this.handleChangeTheme}/>
       </Menu>
+    )
+
+    const HeightResultsSegment = () => (
+
+          <Segment>
+            <h5>Results</h5>
+            <Table basic="very" celled collapsing compact>
+              <Table.Header>
+              <Table.Row>
+                  <Table.HeaderCell>Heights</Table.HeaderCell>
+                  <Table.HeaderCell>Results</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+            { this.state.heights.map((height, index) =>
+            <React.Fragment key={index}>
+              
+                <Table.Row>
+                  <Table.Cell>
+                    Chronological Age
+                  </Table.Cell>
+                  <Table.Cell>
+                    {height.measurement_dates.chronological_calendar_age}
+                  </Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    Decimal Age
+                  </Table.Cell>
+                  <Table.Cell>
+                    {height.measurement_dates.corrected_decimal_age}
+                  </Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    SDS
+                  </Table.Cell>
+                  <Table.Cell>
+                    {height.measurement_calculated_values.sds}
+                  </Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    Centile
+                  </Table.Cell>
+                  <Table.Cell>
+                    {height.measurement_calculated_values.centile}
+                  </Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    Observation
+                  </Table.Cell>
+                  <Table.Cell>
+                    {height.measurement_calculated_values.centile_band}
+                  </Table.Cell>
+                </Table.Row>
+              
+              </React.Fragment>)}
+          </Table.Body>
+            </Table>
+          </Segment>)
+    
+    const ResultsSegment = (selectedMeasurement) => (
+      <Segment>
+        <h5>Results</h5>
+        {this.returnMeasurementArray(selectedMeasurement).map(measurement => { 
+          return <h5>{measurement.birth_data.sex}</h5>
+        }
+      )}
+      </Segment>
     )
 
     const { activeIndex } = this.state
@@ -206,10 +345,11 @@ class MeasurementSegment extends Component {
         </Grid.Column>
         <Grid.Column width={5}>
           <Segment raised>
-            <TabPanes/>
-            <div>
+          {this.state.flip ? <ResultsSegment selectedMeasurement={this.state.measurementMethod}/> : <TabPanes/>}
+            <Grid.Row>
               <ThemeSelection />
-            </div>
+              <Button floated="right" className="selectUpperMargin" onClick={this.handleFlipResults}>Results</Button>
+            </Grid.Row>
           </Segment>
           
         </Grid.Column>
