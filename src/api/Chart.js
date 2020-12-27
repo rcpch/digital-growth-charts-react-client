@@ -24,6 +24,8 @@ function ChartData(props) {
 
         const measurementsArray = props.measurementsArray
 
+        const titles = setTitle(props);
+
         
         useEffect( () => {
             let ignore = false; // this prevents data being added to state if unmounted
@@ -56,14 +58,13 @@ function ChartData(props) {
                     <Loader>Fetching Chart</Loader>
                 </Dimmer>
               ) : (<div>
-                  {centile_data.length>0 ? <h5>{centile_data[0].centile_band}</h5>:<h5>No Dice</h5>}
                     <RCPCHChart
                         // key={this.state.measurement_method + "-" + this.props.reference}
                         reference={props.reference}
                         measurementMethod={props.measurementMethod}
                         sex={props.sex}
-                        title={"Chart"}
-                        subtitle={"-mageddon"}
+                        title={titles.title}
+                        subtitle={titles.subtitle}
                         centileColour={props.centileColour}
                         width={props.width} 
                         height={props.height}
