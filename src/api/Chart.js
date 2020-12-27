@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Dimmer, Loader } from 'semantic-ui-react'
 import axios from 'axios';
-import { RCPCHChart } from 'digital-growth-charts-react-component-library'
+import { RCPCHChart } from '@rcpch/digital-growth-charts-react-component-library'
+
+//symlink with local package "@rcpch/digital-growth-charts-react-component-library": "file:../component-libraries/digital-growth-charts-react-component-library",
+
 function ChartData(props) {
 
 
@@ -40,6 +43,7 @@ function ChartData(props) {
                     console.log(error.message)
                     if (!ignore){
                         setLoading(false)
+                        setLoadingError(error.message)
                     }
                 })
             } else {

@@ -35,6 +35,7 @@ class MeasurementSegment extends Component {
         this.handleChangeTheme = this.handleChangeTheme.bind(this)
         this.handleFlipResults = this.handleFlipResults.bind(this)
         this.returnMeasurementArray = this.returnMeasurementArray.bind(this)
+        this.units = this.units.bind(this)
       }
   
   handleRangeChange = (e) => this.setState({ activeIndex: e.target.value })
@@ -206,9 +207,24 @@ class MeasurementSegment extends Component {
     this.setState({flip: !flipped})
   }
 
-  returnMeasurementArray(measurementMethod){
+  units(measurementMethod){
+    if (measurementMethod === "height"){
+      return "cm"
+    }
+    if (measurementMethod === "weight"){
+      return "kg"
+    }
+    if (measurementMethod === "bmi"){
+      return "kg/m²"
+    }
+    if (measurementMethod === "ofc"){
+      return "cm"
+    }
     
-    switch (measurementMethod) {
+  }
+
+  returnMeasurementArray(measurementMethod){
+    switch (measurementMethod.selectedMeasurement) {
       case "height":
         return this.state.heights
       case "weight":
@@ -249,36 +265,33 @@ class MeasurementSegment extends Component {
         <Dropdown text='Theme' options={themeOptions} simple item onChange={this.handleChangeTheme}/>
       </Menu>
     )
-
-    const HeightResultsSegment = () => (
-
-          <Segment>
-            <h5>Results</h5>
-            <Table basic="very" celled collapsing compact>
+    
+    const ResultsSegment = (selectedMeasurement) => (
+      <Segment>
+          <Table basic="very" celled collapsing compact>
               <Table.Header>
               <Table.Row>
                   <Table.HeaderCell>Heights</Table.HeaderCell>
                   <Table.HeaderCell>Results</Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
-              <Table.Body>
-            { this.state.heights.map((height, index) =>
-            <React.Fragment key={index}>
+          { this.returnMeasurementArray(selectedMeasurement).map((measurement,index) => { 
+            return (<Table.Body key={index}>
               
                 <Table.Row>
                   <Table.Cell>
                     Chronological Age
                   </Table.Cell>
                   <Table.Cell>
-                    {height.measurement_dates.chronological_calendar_age}
+                    {measurement.measurement_dates.chronological_calendar_age}
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>
-                    Decimal Age
+                    Measurement
                   </Table.Cell>
                   <Table.Cell>
-                    {height.measurement_dates.corrected_decimal_age}
+                    {measurement.child_observation_value.observation_value} {this.units(measurement.child_observation_value.measurement_method)}
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
@@ -286,7 +299,7 @@ class MeasurementSegment extends Component {
                     SDS
                   </Table.Cell>
                   <Table.Cell>
-                    {height.measurement_calculated_values.sds}
+                    {Math.round(measurement.measurement_calculated_values.sds*1000)/1000}
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
@@ -294,7 +307,7 @@ class MeasurementSegment extends Component {
                     Centile
                   </Table.Cell>
                   <Table.Cell>
-                    {height.measurement_calculated_values.centile}
+                    {measurement.measurement_calculated_values.centile}
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
@@ -302,23 +315,13 @@ class MeasurementSegment extends Component {
                     Observation
                   </Table.Cell>
                   <Table.Cell>
-                    {height.measurement_calculated_values.centile_band}
+                    {measurement.measurement_calculated_values.centile_band}
                   </Table.Cell>
                 </Table.Row>
               
-              </React.Fragment>)}
-          </Table.Body>
-            </Table>
-          </Segment>)
-    
-    const ResultsSegment = (selectedMeasurement) => (
-      <Segment>
-        <h5>Results</h5>
-        {this.returnMeasurementArray(selectedMeasurement).map(measurement => { 
-          return <h5>{measurement.birth_data.sex}</h5>
-        }
-      )}
-      </Segment>
+                </Table.Body>)})}
+              </Table>
+            </Segment>
     )
 
     const { activeIndex } = this.state
