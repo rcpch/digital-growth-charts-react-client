@@ -1,139 +1,144 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Dimmer, Loader } from 'semantic-ui-react'
 import axios from 'axios';
 import { RCPCHChart } from 'digital-growth-charts-react-component-library'
-class ChartData extends Component {
+function ChartData(props) {
 
-    constructor(props){
-        super(props)
+
         // These are the colours from the orginal paper charts now deprecated
         // const girl = 'rgba(217, 49, 155, 1.0)';
         // const boy = 'rgba(0, 126, 198, 1.0)';
-
-        this.state = {
-            childData: [], // once measurements have returned from api in plottable form they are held in state
-            isLoading: true, // flag awaiting async fetchCentileData - could have spinner here
-            centiles_array: [], // an array to keep all of the cacluclated measurement
-        }
-        this.fetchCentileData.bind(this);
-
-    }
-
-    async fetchCentileData(childData) {
         
-        // child data here would be passed in from a form
-        // here we are using hardcoded example data - payload or preterm payload
-        // passed in from App.js
-  
-          const response = await axios({
-          //   url: `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/plottable-child-data`,
-            url: `http://localhost:5000/uk-who/plottable-child-data`,
-            data: childData,
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          return response.data;
-      }
-  
-      componentDidMount(){
-  
-          // if measurement results are supplied, generate plottable data
-          if (this.props.measurementsArray.length > 0){
-              // plot the plottable child data
-              const formData = {
-              results: this.props.measurementsArray // measurements passed in from the form
-            };
+
+        // state = {
+        //     isLoading: false, // flag awaiting async fetchCentileData - could have spinner here
+        //     centile_data: [], // an array to keep all of the cacluclated measurement
+        //     sds_data: []
+        // }
+
+        const [isLoading, setLoading] = useState(true)
+        const [loadingError, setLoadingError] = useState(null)
+        const [centile_data, setCentile_data] = useState([])
+        const [sds_data, setSDS_data] = useState([])
+        
+
+        const measurementsArray = props.measurementsArray
+
+        
+        useEffect( () => {
+            let ignore = false; // this prevents data being added to state if unmounted
+            if (measurementsArray.length > 0){
+                fetchCentileData(measurementsArray).then(result => {
+                    if (!ignore){ // this prevents data being added to state if unmounted
+                        setCentile_data(result.data.child_data.centile_data)
+                        setSDS_data(result.data.child_data.sds_data)
+                        setLoading(false)
+                    }
+                }).catch(error => {
+                    console.log(error.message)
+                    if (!ignore){
+                        setLoading(false)
+                    }
+                })
+            } else {
+                if (!ignore){
+                    setLoading(false)
+                }
+            }
+            return (() => { ignore = true; }); // this prevents data being added to state if unmounted
+
+        }, [measurementsArray])
     
-            const results = this.fetchCentileData(formData); //async function to fetch plottable child data
-            
-            results.then(result => { // stores child results in arrays based on measurement_methods in child results
-                
-                const measurement_method = result.child_data.measurement_method
-                const centile_data = result.child_data.centile_data
-                const sds_data = result.child_data.sds_data
-                this.setState({measurement_method: measurement_method})
-                this.setState({centile_data: centile_data})
-                this.setState({sds_data: sds_data})
-                this.setState({isLoading: false}) // data returned from API. set isLoading flag to false
-            })
-          } else {
-              const measurement_method = this.props.measurementMethod
-              this.setState({measurement_method: measurement_method})
-              this.setState({centile_data: []})
-              this.setState({sds_data: []})
-              this.setState({isLoading: false}) //skip the child measurements, render charts without
-          }
-          
-      }
-
-    render(){
-        
-        // set the title of the chart
-        let title=''
-        let subTitle=''
-        if (this.props.reference === "uk-who"){
-            title = "UK-WHO"
-        }
-        else if (this.props.reference === "turner"){
-            title="Turner's Syndrome"
-        }
-        else if (this.props.reference === "trisomy21"){
-            title = "Trisomy 21 (Down's Syndrome)"
-        }
-
-        let sexText = ''
-        let measurementText = ''
-        if (this.props.sex === 'male') {
-            sexText = 'Boys'
-        } else {
-            sexText = 'Girls'
-        }
-
-        switch(this.props.measurementMethod){
-            case("height"):
-                measurementText = "Length/Height"
-                break;
-            case("weight"):
-                measurementText = "Weight"
-                break;
-            case("bmi"):
-                measurementText = "Body Mass Index"
-                break;
-            case("ofc"):
-                measurementText = "Head Circumference"
-                break;
-            default:
-                measurementText = ""
-                break;
-        } 
-        
-        subTitle = (measurementText + " - " + sexText)
-        
         return (
           <div>
-            { this.state.isLoading ? (
-                <h1>Loading...</h1>
-              ) : (
+            { isLoading ? (
+                <Dimmer active>
+                    <Loader>Fetching Chart</Loader>
+                </Dimmer>
+              ) : (<div>
+                  {centile_data.length>0 ? <h5>{centile_data[0].centile_band}</h5>:<h5>No Dice</h5>}
                     <RCPCHChart
                         // key={this.state.measurement_method + "-" + this.props.reference}
-                        reference={this.props.reference}
-                        measurementMethod={this.props.measurementMethod} 
-                        sex={this.props.sex}
-                        title={title}
-                        subtitle={subTitle}
-                        centileColour={this.props.centileColour}
-                        width={this.props.width} 
-                        height={this.props.height}
-                        measurementsArray = {this.state.centile_data} // this is the plottable child data
-                        measurementsSDSArray = {this.state.sds_data} // this is plottable SDS data
-                        measurementDataPointColour = {this.props.measurementDataPointColour}
-                        chartBackground = {this.props.chartBackground}
+                        reference={props.reference}
+                        measurementMethod={props.measurementMethod}
+                        sex={props.sex}
+                        title={"Chart"}
+                        subtitle={"-mageddon"}
+                        centileColour={props.centileColour}
+                        width={props.width} 
+                        height={props.height}
+                        measurementsArray = {centile_data} // this is the plottable child data
+                        measurementsSDSArray = {sds_data} // this is plottable SDS data
+                        measurementDataPointColour = {props.measurementDataPointColour}
+                        chartBackground = {props.chartBackground}
                     />
+                    </div>
                 )
             }
         </div>)
-    }
+    
+}
+
+function setTitle(props){
+     // set the title of the chart
+     let title=''
+     let subTitle=''
+     if (props.reference === "uk-who"){
+         title = "UK-WHO"
+     }
+     else if (props.reference === "turner"){
+         title="Turner's Syndrome"
+     }
+     else if (props.reference === "trisomy21"){
+         title = "Trisomy 21 (Down's Syndrome)"
+     }
+
+     let sexText = ''
+     let measurementText = ''
+     if (props.sex === 'male') {
+         sexText = 'Boys'
+     } else {
+         sexText = 'Girls'
+     }
+
+     switch(props.measurementMethod){
+         case("height"):
+             measurementText = "Length/Height"
+             break;
+         case("weight"):
+             measurementText = "Weight"
+             break;
+         case("bmi"):
+             measurementText = "Body Mass Index"
+             break;
+         case("ofc"):
+             measurementText = "Head Circumference"
+             break;
+         default:
+             measurementText = ""
+             break;
+     } 
+
+     subTitle = measurementText + ' - ' + sexText
+     
+     return {subtitle: subTitle, title: title}
+}
+
+async function fetchCentileData(measurementsArray){
+    const formData = {
+        results: measurementsArray // measurements passed in from the form
+    };
+    
+    const response = await axios({
+          url: `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/plottable-child-data`,
+          data: formData,
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+    
+    return response
 }
 
 export default ChartData

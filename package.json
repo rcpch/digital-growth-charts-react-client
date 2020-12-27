@@ -9,7 +9,7 @@
     "axios": "^0.19.2",
     "chart.js": "^2.9.4",
     "craco-less": "^1.17.0",
-    "digital-growth-charts-react-component-library": "1.0.0",
+    "digital-growth-charts-react-component-library": "1.0.1",
     "moment": "^2.29.1",
     "react": "^16.14.0",
     "react-chartjs-2": "^2.10.0",

@@ -12,12 +12,16 @@ class MeasurementSegment extends Component {
 
       constructor(props){
         super(props)
+
+        const dummyData=[{birth_data:{birth_date:"Wed, 28 Jan 2015 00:00:00 GMT",estimated_date_delivery:null,estimated_date_delivery_string:null,gestation_days:0,gestation_weeks:40,sex:"male"},child_observation_value:{measurement_method:"height",observation_value:110},measurement_calculated_values:{centile:13,centile_band:"This height measurement is between the 9th and 25th centiles.",measurement_method:"height",sds:-1.117076305831875},measurement_dates:{chronological_calendar_age:"5 years, 10 months and 4 weeks",chronological_decimal_age:5.9110198494182065,clinician_decimal_age_comment:"Born Term. No correction necessary.",corrected_calendar_age:null,corrected_decimal_age:5.9110198494182065,corrected_gestational_age:{corrected_gestation_days:null,corrected_gestation_weeks:null},lay_decimal_age_comment:"At 40+0, your child is considered to have been born at term. No age adjustment is necessary.",observation_date:"Sat, 26 Dec 2020 00:00:00 GMT"}}]
+
         this.state = {
           measurementMethod: "height",
           reference: "uk-who",
           sex: "male",
           chartBackground: "white",
           centilesColour: "black",
+          measurementDataPointColour: "red",
           heights: [],
           weights: [],
           ofcs: [],
@@ -121,7 +125,7 @@ class MeasurementSegment extends Component {
 
   }
 
-  returnNewChart(measurementMethod, measurementsArray, centilesColour, chartBackground){
+  returnNewChart(measurementMethod, measurementsArray, centilesColour, chartBackground, measurementDataPointColour){
     
     const Chart = (
       <ChartData
@@ -134,7 +138,7 @@ class MeasurementSegment extends Component {
             height={600}
             measurementsArray = {measurementsArray}  // an array of Measurement class objects from dGC Optional
             measurementsSDSArray = {[]} // an array of SDS measurements for SDS charts Optional: currently not implemented: pass []
-            measurementDataPointColour = 'green'
+            measurementDataPointColour = {measurementDataPointColour}
             chartBackground= {chartBackground}
             centilesColour={chartBackground}
       />
@@ -151,12 +155,14 @@ class MeasurementSegment extends Component {
 
     let centilesColour = ""
     let chartBackground = ""
+    let measurementDataPointColour = ""
     
     if (value === 'trad'){
       if (this.state.sex === 'male'){
         // this.setState({ centilesColour: '#00a3de' }, { chartBackground: 'white'})
         centilesColour = '#00a3de' 
         chartBackground = 'white'
+        measurementDataPointColour='red'
       } else {
         // this.setState({ centilesColour: '#c9559d' }, { chartBackground: 'white'})
         centilesColour = '#c9559d' 
@@ -168,6 +174,7 @@ class MeasurementSegment extends Component {
         // this.setState({ centilesColour: '#ff8000' }, { chartBackground: 'white'})
         centilesColour = '#ff8000' 
         chartBackground = 'white'
+        measurementDataPointColour='red'
       } else {
         // this.setState({ centilesColour: '#ff8000' }, { chartBackground: 'white'})
         centilesColour = '#ff8000' 
@@ -178,16 +185,19 @@ class MeasurementSegment extends Component {
       if (this.state.sex === 'male'){
         centilesColour = 'black'
         chartBackground = 'white'
+        measurementDataPointColour='red'
       } else {
         centilesColour = 'black'
         chartBackground = 'white'
+        measurementDataPointColour='red'
       }
     }
 
-    this.returnNewChart(this.state.measurementMethod, this.state.measurementsArray, centilesColour, chartBackground)
+    this.returnNewChart(this.state.measurementMethod, this.state.measurementsArray, centilesColour, chartBackground, measurementDataPointColour)
 
     this.setState({centilesColour: centilesColour})
     this.setState({chartBackground: chartBackground})
+    this.setState({measurementDataPointColour: measurementDataPointColour})
 
   }
 
@@ -201,19 +211,14 @@ class MeasurementSegment extends Component {
     switch (measurementMethod) {
       case "height":
         return this.state.heights
-        break;
       case "weight":
         return  this.state.weights
-        break;
       case "bmi":
         return  this.state.bmis
-        break;
       case "ofc":
         return  this.state.ofcs
-        break;
       default:
         return
-        break;
     }
   }
 
@@ -224,14 +229,14 @@ class MeasurementSegment extends Component {
     const panes = [
       { menuItem: "Height", 
         render: () => <Tab.Pane attached={"top"}>{
-          this.returnNewChart("height", this.state.heights, this.state.centilesColour, this.state.chartBackground)
+          this.returnNewChart("height", this.state.heights, this.state.centilesColour, this.state.chartBackground, this.state.measurementDataPointColour)
         }</Tab.Pane> },
       { menuItem: "Weight",
         render: () => <Tab.Pane attached={"top"}>
-          {this.returnNewChart("weight", this.state.weights, this.state.centilesColour, this.state.chartBackground)}
+          {this.returnNewChart("weight", this.state.weights, this.state.centilesColour, this.state.chartBackground, this.state.measurementDataPointColour)}
           </Tab.Pane> },
-      { menuItem: "BMI", render: () => <Tab.Pane attached={"top"}>{this.returnNewChart("bmi", this.state.bmis, this.state.centilesColour, this.state.chartBackground)}</Tab.Pane> },
-      { menuItem: "Head Circumference", render: () => <Tab.Pane attached={"top"}>{this.returnNewChart("ofc", this.state.ofcs, this.state.centilesColour, this.state.chartBackground)}</Tab.Pane> },
+      { menuItem: "BMI", render: () => <Tab.Pane attached={"top"}>{this.returnNewChart("bmi", this.state.bmis, this.state.centilesColour, this.state.chartBackground, this.state.measurementDataPointColour)}</Tab.Pane> },
+      { menuItem: "Head Circumference", render: () => <Tab.Pane attached={"top"}>{this.returnNewChart("ofc", this.state.ofcs, this.state.centilesColour, this.state.chartBackground, this.state.measurementDataPointColour)}</Tab.Pane> },
     ];
   
     const TabPanes = () => <Tab menu={{ attached: 'top' }} panes={panes} activeIndex={activeIndex}

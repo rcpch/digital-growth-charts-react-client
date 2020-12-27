@@ -8,7 +8,6 @@ import {
   Select,
   Button,
   Header,
-  Label,
 } from "semantic-ui-react";
 import moment from "moment";
 import MeasurementInput from "./MeasurementInput";
