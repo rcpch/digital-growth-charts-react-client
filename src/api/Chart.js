@@ -20,7 +20,7 @@ function ChartData(props) {
         // }
 
         const [isLoading, setLoading] = useState(true)
-        const [loadingError, setLoadingError] = useState(null)
+        // const [ setLoadingError] = useState(null)
         const [centile_data, setCentile_data] = useState([])
         const [sds_data, setSDS_data] = useState([])
         
@@ -43,7 +43,8 @@ function ChartData(props) {
                     console.log(error.message)
                     if (!ignore){
                         setLoading(false)
-                        setLoadingError(error.message)
+                        // setLoadingError(error.message)
+                        // console.log(loadingError);
                     }
                 })
             } else {
