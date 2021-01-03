@@ -70,13 +70,20 @@ function ChartData(props) {
                         sex={props.sex}
                         title={titles.title}
                         subtitle={titles.subtitle}
-                        centileColour={props.centileColour}
-                        width={props.width} 
-                        height={props.height}
                         measurementsArray = {centile_data} // this is the plottable child data
-                        measurementsSDSArray = {sds_data} // this is plottable SDS data
-                        measurementDataPointColour = {props.measurementDataPointColour}
-                        chartBackground = {props.chartBackground}
+                        chartBackground={props.chartBackground}
+                        gridlineStroke={props.gridlineStroke}
+                        gridlineStrokeWidth={props.gridlineStrokeWidth}
+                        gridlineDashed={props.gridlineDashed}
+                        gridlines={props.gridlines}
+                        centileStroke={props.centileStroke}
+                        centileStrokeWidth={props.centileStrokeWidth}
+                        axisStroke={props.axisStroke}
+                        axisLabelFont={props.axisLabelFont}
+                        axisLabelColour={props.axisLabelColour}
+                        measurementFill={props.measurementFill}
+                        measurementSize={props.measurementSize}
+                        measurementShape={props.measurementShape}
                     />
                     </div>
                 )

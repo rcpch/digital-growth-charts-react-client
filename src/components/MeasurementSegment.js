@@ -19,16 +19,21 @@ class MeasurementSegment extends Component {
           measurementMethod: "height",
           reference: "uk-who",
           sex: "male",
-          chartBackground: "white",
-          centilesColour: "black",
-          measurementDataPointColour: "red",
+          chartStyle: this.returnChartStyle('#f8f8f8'),
+          axisStyle: this.returnAxisStyle("#000000", 'sans', '#000000'),
+          centileStyle: this.returnCentileStyle("#000000", 0.5),
+          gridlines: false,
+          gridlineStyle: this.returnGridlineStyle(0.25, "#D9D9D9", false),
+          measurementStyle: this.returnMeasurementStyle("#000000", "1", "circle"),
           heights: [],
           weights: [],
           ofcs: [],
           bmis: [],
+          theme: 'simple',
           activeIndex: 0, //set tab to height
           flip: false // flag to determine if results or chart showing
         }
+
         this.handleResults = this.handleResults.bind(this)
         this.handleRangeChange = this.handleRangeChange.bind(this)
         this.handleTabChange = this.handleTabChange.bind(this)
@@ -83,7 +88,14 @@ class MeasurementSegment extends Component {
         concatenated = []
     }
 
-    this.returnNewChart(measurementMethod, concatenated)
+    this.returnNewChart(
+      measurementMethod, concatenated, 
+      this.state.chartStyle, 
+      this.state.axisStyle, 
+      this.state.gridlines, 
+      this.state.gridlineStyle, 
+      this.state.centileStyle, 
+      this.state.measurementStyle)
 
     /*
     return object structure
@@ -126,79 +138,156 @@ class MeasurementSegment extends Component {
 
   }
 
-  returnNewChart(measurementMethod, measurementsArray, centilesColour, chartBackground, measurementDataPointColour){
+  returnNewChart(
+    measurementMethod, 
+    measurementsArray, 
+    chartStyle, 
+    axisStyle, 
+    gridlines, 
+    gridlineStyle, 
+    centileStyle, 
+    measurementStyle){
     
     const Chart = (
       <ChartData
             key={measurementMethod + "-" + this.state.reference}
-            reference="uk-who" //the choices are ["uk-who", "turner", "trisomy21"] REQUIRED
-            sex={'male'} //the choices are ["male", "female"] REQUIRED
+            reference={this.state.reference} //the choices are ["uk-who", "turner", "trisomy21"] REQUIRED
+            sex={this.state.sex} //the choices are ["male", "female"] REQUIRED
             measurementMethod={measurementMethod} //the choices are ["height", "weight", "ofc", "bmi"] REQUIRED
-            centileColour={centilesColour}
-            width={700} 
-            height={600}
             measurementsArray = {measurementsArray}  // an array of Measurement class objects from dGC Optional
-            measurementsSDSArray = {[]} // an array of SDS measurements for SDS charts Optional: currently not implemented: pass []
-            measurementDataPointColour = {measurementDataPointColour}
-            chartBackground= {chartBackground}
-            centilesColour={chartBackground}
+            // measurementsSDSArray = {[]} // an array of SDS measurements for SDS charts Optional: currently not implemented: pass []
+            chartBackground={chartStyle.backgroundColour}
+            gridlineStroke={gridlineStyle.stroke}
+            gridlineStrokeWidth={gridlineStyle.strokeWidth}
+            gridlineDashed={gridlineStyle.dashed}
+            gridlines={gridlines}
+            centileStroke={centileStyle.stroke}
+            centileStrokeWidth={centileStyle.strokeWidth}
+            axisStroke={axisStyle.stroke}
+            axisLabelFont={axisStyle.labelFont}
+            axisLabelColour={axisStyle.labelColour}
+            measurementFill={measurementStyle.fill}
+            measurementSize={measurementStyle.size}
+            measurementShape={measurementStyle.shape}
       />
     )
-    // this.setState({centilesColour: centilesColour})
-    // this.setState({chartBackground: chartBackground})
     return Chart
+  }
+
+  returnCentileStyle(stroke, strokeWidth){
+    const centileStyle = {
+      stroke: stroke,
+      strokeWidth: strokeWidth
+    }
+    return centileStyle
+  }
+
+  returnGridlineStyle(strokeWidth, stroke, dashed){
+    const gridlineStyle = {
+      strokeWidth: strokeWidth,
+      stroke: stroke,
+      dashed: dashed
+    }
+    return gridlineStyle
+  }
+
+  returnMeasurementStyle(fill, size, shape){
+    const measurementStyle = {
+      fill: fill,
+      size: size,
+      shape: shape
+    }
+    return measurementStyle
+  }
+
+  returnAxisStyle(stroke, labelFont, labelColour){
+    let axisStyle = {
+      stroke: stroke,
+      labelFont: labelFont,
+      labelColour: labelColour
+    }
+    return axisStyle
+  }
+
+  returnChartStyle(backgroundColour){
+      const chartStyle = {
+        backgroundColour: backgroundColour
+      }
+      return chartStyle
   }
 
   handleChangeTheme(event, {value}){
 
-    // girl 201 85 157 - #c9559d
-    // boy 0 163 222 - #00a3de
+    let axisStyle
+    let measurementStyle 
+    let gridlineStyle 
+    let chartStyle
+    let centileStyle
+    let gridlines
 
-    let centilesColour = ""
-    let chartBackground = ""
-    let measurementDataPointColour = ""
     
     if (value === 'trad'){
+          // girl 201 85 157 - #c9559d
+          // boy 0 163 222 - #00a3de
       if (this.state.sex === 'male'){
         // this.setState({ centilesColour: '#00a3de' }, { chartBackground: 'white'})
-        centilesColour = '#00a3de' 
-        chartBackground = 'white'
-        measurementDataPointColour='red'
+        axisStyle = this.returnAxisStyle("#D9D9D9", 'sans', '#000000')
+        centileStyle = this.returnCentileStyle("#00a3de", 0.5)
+        gridlines = true
+        gridlineStyle = this.returnGridlineStyle(0.25, "#ECECEC")
+        measurementStyle = this.returnMeasurementStyle("#000000", "1", "circle")
+        chartStyle = this.returnChartStyle('#FFFFFF')
+        
       } else {
-        // this.setState({ centilesColour: '#c9559d' }, { chartBackground: 'white'})
-        centilesColour = '#c9559d' 
-        chartBackground = 'white'
+        axisStyle = this.returnAxisStyle("#D9D9D9", 'sans', '#000000')
+        centileStyle = this.returnCentileStyle("#c9559d", 0.5)
+        gridlines = true
+        gridlineStyle = this.returnGridlineStyle(0.25, "#ECECEC")
+        measurementStyle = this.returnMeasurementStyle("#000000", "1", "circle")
+        chartStyle = this.returnChartStyle('white')
       }
     }
     if (value === "colour"){
       if (this.state.sex === 'male'){
-        // this.setState({ centilesColour: '#ff8000' }, { chartBackground: 'white'})
-        centilesColour = '#ff8000' 
-        chartBackground = 'white'
-        measurementDataPointColour='red'
+        axisStyle = this.returnAxisStyle("#D9D9D9", 'sans', '#808080')
+        centileStyle = this.returnCentileStyle("#0089ff", 0.5)
+        gridlines = true
+        gridlineStyle = this.returnGridlineStyle(0.25, "#808080")
+        measurementStyle = this.returnMeasurementStyle("#ff0056", "1", "circle")
+        chartStyle = this.returnChartStyle('#ffe5d6')
       } else {
-        // this.setState({ centilesColour: '#ff8000' }, { chartBackground: 'white'})
-        centilesColour = '#ff8000' 
-        chartBackground = 'white'
+        axisStyle = this.returnAxisStyle("#D9D9D9", 'sans', '#808080')
+        centileStyle = this.returnCentileStyle("00ff00", 0.5)
+        gridlines = true
+        gridlineStyle = this.returnGridlineStyle(0.25, "#808080")
+        measurementStyle = this.returnMeasurementStyle("#ff0056", "1", "circle")
+        chartStyle = this.returnChartStyle('#ffe5d6')
       }
     }
     if (value === 'simple'){
-      if (this.state.sex === 'male'){
-        centilesColour = 'black'
-        chartBackground = 'white'
-        measurementDataPointColour='red'
-      } else {
-        centilesColour = 'black'
-        chartBackground = 'white'
-        measurementDataPointColour='red'
-      }
+      axisStyle = this.returnAxisStyle("#000000", 'sans', '#000000')
+      centileStyle = this.returnCentileStyle("#000000", 0.5)
+      gridlines = false
+      gridlineStyle = this.returnGridlineStyle(0.25, "#D9D9D9", false)
+      measurementStyle = this.returnMeasurementStyle("#000000", "1", "circle")
+      chartStyle = this.returnChartStyle('#f8f8f8')
     }
+    this.returnNewChart(
+      this.state.measurementMethod, 
+      this.state.measurementsArray, 
+      chartStyle, 
+      axisStyle, 
+      gridlines, 
+      gridlineStyle,
+      centileStyle,
+      measurementStyle)
 
-    this.returnNewChart(this.state.measurementMethod, this.state.measurementsArray, centilesColour, chartBackground, measurementDataPointColour)
-
-    this.setState({centilesColour: centilesColour})
-    this.setState({chartBackground: chartBackground})
-    this.setState({measurementDataPointColour: measurementDataPointColour})
+    this.setState({centileStyle: centileStyle})
+    this.setState({chartStyle: chartStyle})
+    this.setState({measurementStyle: measurementStyle})
+    this.setState({axisStyle: axisStyle})
+    this.setState({gridlines: gridlines})
+    this.setState({theme: value})
 
   }
 
@@ -238,21 +327,65 @@ class MeasurementSegment extends Component {
     }
   }
 
-
+test(param){
+  console.log(param);
+  return param
+}
 
   render(){
 
     const panes = [
       { menuItem: "Height", 
         render: () => <Tab.Pane attached={"top"}>{
-          this.returnNewChart("height", this.state.heights, this.state.centilesColour, this.state.chartBackground, this.state.measurementDataPointColour)
+          this.returnNewChart(
+            "height", 
+            this.state.heights, 
+            this.state.chartStyle, 
+            this.state.axisStyle,
+            this.state.gridlines,
+            this.state.gridlineStyle,
+            this.state.centileStyle,
+            this.state.measurementStyle
+            )
         }</Tab.Pane> },
       { menuItem: "Weight",
-        render: () => <Tab.Pane attached={"top"}>
-          {this.returnNewChart("weight", this.state.weights, this.state.centilesColour, this.state.chartBackground, this.state.measurementDataPointColour)}
+        render: () => <Tab.Pane attached={"top"}>{
+          this.returnNewChart(
+            "weight", 
+            this.state.weights,
+            this.state.chartStyle, 
+            this.state.axisStyle,
+            this.state.gridlines,
+            this.state.gridlineStyle,
+            this.state.centileStyle,
+            this.state.measurementStyle
+            )}
           </Tab.Pane> },
-      { menuItem: "BMI", render: () => <Tab.Pane attached={"top"}>{this.returnNewChart("bmi", this.state.bmis, this.state.centilesColour, this.state.chartBackground, this.state.measurementDataPointColour)}</Tab.Pane> },
-      { menuItem: "Head Circumference", render: () => <Tab.Pane attached={"top"}>{this.returnNewChart("ofc", this.state.ofcs, this.state.centilesColour, this.state.chartBackground, this.state.measurementDataPointColour)}</Tab.Pane> },
+      { menuItem: "BMI", 
+        render: () => <Tab.Pane attached={"top"}>
+        {this.returnNewChart(
+            "bmi", 
+            this.state.bmis,
+            this.state.chartStyle, 
+            this.state.axisStyle,
+            this.state.gridlines,
+            this.state.gridlineStyle,
+            this.state.centileStyle,
+            this.state.measurementStyle
+        )},
+        </Tab.Pane> },
+      { menuItem: "Head Circumference", render: () => <Tab.Pane attached={"top"}>
+        {this.returnNewChart(
+          "ofc", 
+          this.state.ofcs, 
+          this.state.chartStyle, 
+          this.state.axisStyle,
+          this.state.gridlines,
+          this.state.gridlineStyle,
+          this.state.centileStyle,
+          this.state.measurementStyle
+        )},
+        </Tab.Pane> },
     ];
   
     const TabPanes = () => <Tab menu={{ attached: 'top' }} panes={panes} activeIndex={activeIndex}

@@ -444,7 +444,7 @@ class MeasurementForm extends React.Component {
                 </Form.Field>
                 <Form.Field required width={8}>
                   <Input
-                    type="number" 
+                    type="decimal" 
                     name="observation_value"
                     placeholder="Measurement"
                     value={this.state.measurement.observationValue}
