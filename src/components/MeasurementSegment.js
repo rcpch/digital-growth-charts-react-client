@@ -3,7 +3,7 @@ import React from "react";
 import { Component } from "react";
 
 // Semantic UI React
-import { Grid, Segment, Message, Flag, Tab, Menu, Dropdown, Button, Table } from "semantic-ui-react";
+import { Grid, Segment, Message, Flag, Tab, Menu, Dropdown, Button, Table, List } from "semantic-ui-react";
 import ChartData from '../api/Chart'
 import MeasurementForm from "../components/MeasurementForm";
 import '../index.css'
@@ -230,7 +230,6 @@ class MeasurementSegment extends Component {
           // girl 201 85 157 - #c9559d
           // boy 0 163 222 - #00a3de
       if (this.state.sex === 'male'){
-        // this.setState({ centilesColour: '#00a3de' }, { chartBackground: 'white'})
         axisStyle = this.returnAxisStyle("#D9D9D9", 'sans', '#000000')
         centileStyle = this.returnCentileStyle("#00a3de", 0.5)
         gridlines = true
@@ -249,14 +248,14 @@ class MeasurementSegment extends Component {
     }
     if (value === "colour"){
       if (this.state.sex === 'male'){
-        axisStyle = this.returnAxisStyle("#cbe896", 'sans', '#cbe896')
+        axisStyle = this.returnAxisStyle("#cbe896", 'sans', '#504746')
         centileStyle = this.returnCentileStyle("#ff7f11", 0.5)
         gridlines = true
         gridlineStyle = this.returnGridlineStyle(0.25, "#beb7a4")
         measurementStyle = this.returnMeasurementStyle("#cbe896", "1", "circle")
         chartStyle = this.returnChartStyle('#eaf2e3')
       } else {
-        axisStyle = this.returnAxisStyle("#cbe896", 'sans', '#cbe896')
+        axisStyle = this.returnAxisStyle("#cbe896", 'sans', '#504746')
         centileStyle = this.returnCentileStyle("#ff1b1c", 0.5)
         gridlines = true
         gridlineStyle = this.returnGridlineStyle(0.25, "#beb7a4")
@@ -334,6 +333,22 @@ test(param){
 
   render(){
 
+    const Acknowledgements = ()=> {
+      // list={["Freeman JV, Cole TJ, Chinn S, Jones PRM, White EM, Preece MA. Cross sectional stature and weight reference curves for the UK, 1990. Arch Dis Child 1995; 73:17-24.", "<a href='www.who.int/childgrowth/en'>www.who.int/childgrowth/en</a>", "For further relevant references see fact sheet downloadable from www.growthcharts.RCPCH.ac.uk"]}
+          return (
+              <Message>
+                <Message.Header>
+                References
+                </Message.Header>
+                <List>
+                  <List.Item>Freeman JV, Cole TJ, Chinn S, Jones PRM, White EM, Preece MA. Cross sectional stature and weight reference curves for the UK, 1990. Arch Dis Child 1995; 73:17-24.</List.Item>
+                  <List.Item><a href='www.who.int/childgrowth/en'>www.who.int/childgrowth/en</a></List.Item>
+                  <List.Item>For further relevant references see fact sheet downloadable from <a href="www.growthcharts.RCPCH.ac.uk">www.growthcharts.RCPCH.ac.uk</a></List.Item>
+                </List>
+              </Message>
+          )
+    }
+
     const panes = [
       { menuItem: "Height", 
         render: () => <Tab.Pane attached={"top"}>{
@@ -347,7 +362,7 @@ test(param){
             this.state.centileStyle,
             this.state.measurementStyle
             )
-        }</Tab.Pane> },
+        }<Acknowledgements /></Tab.Pane> },
       { menuItem: "Weight",
         render: () => <Tab.Pane attached={"top"}>{
           this.returnNewChart(
@@ -359,7 +374,7 @@ test(param){
             this.state.gridlineStyle,
             this.state.centileStyle,
             this.state.measurementStyle
-            )}
+            )}<Acknowledgements />
           </Tab.Pane> },
       { menuItem: "BMI", 
         render: () => <Tab.Pane attached={"top"}>
@@ -372,7 +387,7 @@ test(param){
             this.state.gridlineStyle,
             this.state.centileStyle,
             this.state.measurementStyle
-        )},
+        )}<Acknowledgements />
         </Tab.Pane> },
       { menuItem: "Head Circumference", render: () => <Tab.Pane attached={"top"}>
         {this.returnNewChart(
@@ -384,7 +399,7 @@ test(param){
           this.state.gridlineStyle,
           this.state.centileStyle,
           this.state.measurementStyle
-        )},
+        )}<Acknowledgements />
         </Tab.Pane> },
     ];
   
@@ -460,41 +475,44 @@ test(param){
     const { activeIndex } = this.state
   
     return (
-      
-      <Grid centered stackable>
-        <Grid.Column width={5}>
-          <Segment raised>
-            <Message>
-              <Flag name="gb" />
-              This calculator uses the UK-WHO references to calculate gold
-              standard accurate child growth parameters. In the future we are
-              planning to add other growth references such as specialist Trisomy
-              21 and Turner's Syndrome references, CDC and WHO.
-            </Message>
-  
-            <Message color="red">
-              This site is under development. No responsibility is accepted for
-              the accuracy of results produced by this tool.
-            </Message>
-          </Segment>
-        </Grid.Column>
-  
-        <Grid.Column width={5}>
-          <Segment raised>
-            <MeasurementForm measurementResult={this.handleResults} className="measurement-form" />
-          </Segment>
-        </Grid.Column>
-        <Grid.Column width={5}>
-          <Segment raised>
-          {this.state.flip ? <ResultsSegment selectedMeasurement={this.state.measurementMethod}/> : <TabPanes/>}
+        <Grid padded>
+          <Grid.Row>
+          <Grid.Column width={6}>
             <Grid.Row>
-              <ThemeSelection />
-              <Button floated="right" className="selectUpperMargin" onClick={this.handleFlipResults}>Results</Button>
+              <Segment raised>
+                <MeasurementForm measurementResult={this.handleResults} className="measurement-form" />
+              </Segment>
             </Grid.Row>
-          </Segment>
-          
-        </Grid.Column>
-      </Grid>
+            <Grid.Row>
+              <Grid.Column width={5}>
+                <Segment raised>
+                  <Message>
+                    <Flag name="gb" />
+                    This calculator uses the UK-WHO references to calculate gold
+                    standard accurate child growth parameters. In the future we are
+                    planning to add other growth references such as specialist Trisomy
+                    21 and Turner's Syndrome references, CDC and WHO.
+                  </Message>
+        
+                  <Message color="red">
+                    This site is under development. No responsibility is accepted for
+                    the accuracy of results produced by this tool.
+                  </Message>
+                </Segment>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid.Column>
+          <Grid.Column width={10}>
+            <Segment raised>
+            {this.state.flip ? <ResultsSegment selectedMeasurement={this.state.measurementMethod}/> : <TabPanes/>}
+              <Grid.Row>
+                  <ThemeSelection />
+                  <Button floated="right" className="selectUpperMargin" onClick={this.handleFlipResults}>Results</Button>
+              </Grid.Row>
+            </Segment>
+          </Grid.Column>
+          </Grid.Row>
+        </Grid>
     );
 
   }
