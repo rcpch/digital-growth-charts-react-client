@@ -19,7 +19,7 @@ class MeasurementSegment extends Component {
           measurementMethod: "height",
           reference: "uk-who",
           sex: "male",
-          chartStyle: this.returnChartStyle('#f8f8f8'),
+          chartStyle: this.returnChartStyle('#ffffff'),
           axisStyle: this.returnAxisStyle("#000000", 'sans', '#000000'),
           centileStyle: this.returnCentileStyle("#000000", 0.5),
           gridlines: false,
@@ -244,24 +244,24 @@ class MeasurementSegment extends Component {
         gridlines = true
         gridlineStyle = this.returnGridlineStyle(0.25, "#ECECEC")
         measurementStyle = this.returnMeasurementStyle("#000000", "1", "circle")
-        chartStyle = this.returnChartStyle('white')
+        chartStyle = this.returnChartStyle('#ffffff')
       }
     }
     if (value === "colour"){
       if (this.state.sex === 'male'){
-        axisStyle = this.returnAxisStyle("#D9D9D9", 'sans', '#808080')
-        centileStyle = this.returnCentileStyle("#0089ff", 0.5)
+        axisStyle = this.returnAxisStyle("#cbe896", 'sans', '#cbe896')
+        centileStyle = this.returnCentileStyle("#ff7f11", 0.5)
         gridlines = true
-        gridlineStyle = this.returnGridlineStyle(0.25, "#808080")
-        measurementStyle = this.returnMeasurementStyle("#ff0056", "1", "circle")
-        chartStyle = this.returnChartStyle('#ffe5d6')
+        gridlineStyle = this.returnGridlineStyle(0.25, "#beb7a4")
+        measurementStyle = this.returnMeasurementStyle("#cbe896", "1", "circle")
+        chartStyle = this.returnChartStyle('#eaf2e3')
       } else {
-        axisStyle = this.returnAxisStyle("#D9D9D9", 'sans', '#808080')
-        centileStyle = this.returnCentileStyle("00ff00", 0.5)
+        axisStyle = this.returnAxisStyle("#cbe896", 'sans', '#cbe896')
+        centileStyle = this.returnCentileStyle("#ff1b1c", 0.5)
         gridlines = true
-        gridlineStyle = this.returnGridlineStyle(0.25, "#808080")
-        measurementStyle = this.returnMeasurementStyle("#ff0056", "1", "circle")
-        chartStyle = this.returnChartStyle('#ffe5d6')
+        gridlineStyle = this.returnGridlineStyle(0.25, "#beb7a4")
+        measurementStyle = this.returnMeasurementStyle("#cbe896", "1", "circle")
+        chartStyle = this.returnChartStyle('#eaf2e3')
       }
     }
     if (value === 'simple'){

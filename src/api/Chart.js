@@ -22,7 +22,7 @@ function ChartData(props) {
         const [isLoading, setLoading] = useState(true)
         // const [ setLoadingError] = useState(null)
         const [centile_data, setCentile_data] = useState([])
-        const [sds_data, setSDS_data] = useState([])
+        // const [sds_data, setSDS_data] = useState([])
         
 
         const measurementsArray = props.measurementsArray
@@ -36,7 +36,7 @@ function ChartData(props) {
                 fetchCentileData(measurementsArray).then(result => {
                     if (!ignore){ // this prevents data being added to state if unmounted
                         setCentile_data(result.data.child_data.centile_data)
-                        setSDS_data(result.data.child_data.sds_data)
+                        // setSDS_data(result.data.child_data.sds_data)
                         setLoading(false)
                     }
                 }).catch(error => {
