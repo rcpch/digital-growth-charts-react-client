@@ -8,9 +8,9 @@ import {
   Select,
   Button,
   Header,
+  Message
 } from "semantic-ui-react";
 import moment from "moment";
-import MeasurementInput from "./MeasurementInput";
 
 const sexOptions = [
   { key: "male", value: "male", text: "Male" },
@@ -49,11 +49,24 @@ const gestationDaysOptions = [
   { key: "6", value: 6, text: "6" },
 ];
 
+const references = [
+  { key: 'uk-who', value: 'uk-who', text: 'UK-WHO'},
+  { key: 'turner', value: 'turner', text: 'Turner\'s syndrome' },
+  { key: 'trisomy-21', value: 'trisomy-21', text: 'Down\'s Syndrome' }
+]
+
 const ROBERT_WADLOW = 272; // interesting fact - Robert Wadlow (22/2/1918 – 15/7/1940) was the world's tallest man
 const JON_BROWER_MINNOCH = 635; // interesting fact -  Jon Brower Minnoch (Born USA) was the world's heaviest man
 const KHALID_BIN_MOHSEN_SHAARI = 204; // Khalid bin Mohsen Shaari (2/8/1991) from Saudi Arabia had the highest recorded BMI
 
-const measurementMethods = ["height", "weight", "bmi", "ofc"];
+// const measurementMethods = ["height", "weight", "bmi", "ofc"];
+
+let measurementOptions = [
+  {key: 'height', value: 'height', text: 'Height (cm)', disabled: false },
+  {key: 'weight', value: 'weight', text: 'Weight (kg)', disabled: false },
+  {key: 'bmi', value: 'bmi', text: 'BMI (kg/m²)', disabled: false },
+  {key: 'ofc', value: 'ofc', text: 'Head Circumference (cm)', disabled: false }
+];
 
 class MeasurementForm extends React.Component {
   constructor(props) {
@@ -62,41 +75,63 @@ class MeasurementForm extends React.Component {
     this.state = {
       birth_date: moment(new Date()).format("YYYY-MM-DD"),
       observation_date: moment(new Date()).format("YYYY-MM-DD"),
-      measurements: [
+      measurement: 
         {
           measurement_method: "height",
           observation_value: 0,
-          id: Math.random().toString(36).substring(7),
           units: "cm",
-          observation_value_error: "",
           show_add: true,
           show_remove: false,
+          disabled: false
         },
-      ],
       sex: "male",
       gestation_weeks: 40,
       gestation_days: 0,
       birth_date_error: "",
       observation_date_error: "",
-      observation_value_error: null,
+      observation_value_error: "",
       form_valid: false,
       formData: {},
-      measurementResult: []
+      measurementResult: [],
+      reference: 'uk-who',
+      measurementOptions: measurementOptions
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeSelect = this.handleChangeSelect.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleAddMeasurement = this.handleAddMeasurement.bind(this);
-    this.handleRemoveMeasurement = this.handleRemoveMeasurement.bind(this);
     this.handleChangeGestation = this.handleChangeGestation.bind(this);
     this.handleChangeSex = this.handleChangeSex.bind(this);
-    this.createBMI = this.createBMI.bind(this);
+    this.handleObservationChange = this.handleObservationChange.bind(this);
+    this.handleChangeReference = this.handleChangeReference.bind(this);
   }
 
   handleGrowthResults = (results) => {
     this.props.measurementResult(results)
   }
+
+  handleChangeReference = (ref, data) => {
+    this.setState({reference: data.value})
+    
+    if (data.value === "turner"){
+        this.disableMeasurement("weight", true)
+        this.disableMeasurement("ofc", true)
+        this.disableMeasurement("bmi", true)
+        return
+    } 
+    if (data.value === "uk-who"){
+        this.disableMeasurement("weight", false)
+        this.disableMeasurement("ofc", false)
+        this.disableMeasurement("bmi", false)
+        return
+    } 
+    if (data.value === "trisomy-21"){
+      this.disableMeasurement("weight", false)
+      this.disableMeasurement("ofc", false)
+      this.disableMeasurement("bmi", false)
+      return
+  }
+}
 
   handleFormData = async (formDataArray) => {
     this.setState({
@@ -116,24 +151,58 @@ class MeasurementForm extends React.Component {
         observation_value: formData.observation_value,
       };
 
-      const centile = this.fetchCentilesForMeasurement(axiosFormData);
-
+      
+      const  centile = this.fetchCentilesForMeasurement(axiosFormData, this.state.reference);
+      
       resultsPromiseArray.push(centile);
     });
     Promise.all(resultsPromiseArray).then((result) => {
       var mergedMeasurementArrays = [].concat.apply([], result);
-      // this.history.push({
-      //   pathname: "/results",
-      //   data: { calculations: mergedMeasurementArrays },
-      // });
       this.handleGrowthResults(mergedMeasurementArrays)
     });
     // TODO #1 needs a catch statement
   };
 
-  async fetchCentilesForMeasurement(payload) {
+  disableMeasurement=(measurement_method, disable)=>{
+    if (measurement_method === "height"){
+      let options = this.state.measurementOptions
+      options[0].disabled=disable
+      this.setState({measurementOptions: options})
+    }
+    if (measurement_method === "weight"){
+      let options = this.state.measurementOptions
+      options[1].disabled=disable
+      this.setState({measurementOptions: options})
+    }
+    if (measurement_method === "ofc"){
+      let options = this.state.measurementOptions
+      options[2].disabled=disable
+      this.setState({measurementOptions: options})
+    }
+    if (measurement_method === "bmi"){
+      let options = this.state.measurementOptions
+      options[3].disabled=disable
+      this.setState({measurementOptions: options})
+    }
+  }
+
+
+
+  async fetchCentilesForMeasurement(payload, reference) {
+
+    let url
+    if (reference === "uk-who"){
+      url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/calculation`
+    }
+    if (reference === "turner"){
+      url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/turner/calculation`
+    }
+    if (reference === "trisomy-21"){
+      url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/trisomy-21/calculation`
+    }
+
     const response = await axios({
-      url: `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/calculation`,
+      url: url,
       data: payload,
       method: "POST",
       headers: {
@@ -143,81 +212,6 @@ class MeasurementForm extends React.Component {
     return response.data;
   }
 
-  handleAddMeasurement(event) {
-    //TODO #2 Conversation with @pacharanero and @atheneheaven about the utility of MeasurementInput component over simple input fields.
-    let measurements = this.state.measurements;
-    const unselectedMeasurements = measurementMethods.filter(
-      (measurementMethod) => {
-        //returns an array of unselected measurements
-        return !measurements.find(
-          (measurement) => measurement.measurement_method === measurementMethod
-        );
-      }
-    );
-    if (unselectedMeasurements.length < 1) {
-      // there are no measurements left - prevent addition of further measurements
-      console.log("All measurements have been used up now");
-    } else {
-      measurements.push({
-        measurement_method: unselectedMeasurements[0],
-        observation_value: 0,
-        id: Math.random().toString(36).substring(7),
-        units: this.changeUnits(unselectedMeasurements[0]),
-        observation_value_error: "",
-      });
-    }
-
-    this.updateShowHideMeasurementButtons();
-    this.setState({ measurements: measurements });
-    event.preventDefault();
-  }
-
-  handleRemoveMeasurement(event) {
-    event.preventDefault();
-    let measurements = this.state.measurements;
-    const { id } = event.currentTarget;
-    const measurementIndex = measurements.findIndex((measurement) => {
-      return measurement.id === id;
-    });
-    measurements.splice(measurementIndex, 1);
-    this.setState({ measurements: measurements });
-    this.updateShowHideMeasurementButtons();
-  }
-
-  updateShowHideMeasurementButtons() {
-    let measurements = this.state.measurements;
-    const final_index = measurements.length - 1;
-    if (measurements.length === 1) {
-      measurements[0].show_remove = false;
-      measurements[0].show_add = true;
-      this.setState({ measurements: measurements });
-    } else {
-      let updatedMeasurements = measurements.map((measurement, index) => {
-        if (index === 0) {
-          measurement.show_add = false;
-          measurement.show_remove = true;
-          return measurement;
-        }
-        if (index === final_index && index !== 3) {
-          // last item in the list and list not full
-          measurement.show_remove = true;
-          measurement.show_add = true;
-          return measurement;
-        }
-        if (index === 3) {
-          // all measurements have been selected
-          measurement.show_remove = true;
-          measurement.show_add = false;
-          return measurement;
-        } else {
-          measurement.show_add = false;
-          measurement.show_remove = true;
-          return measurement;
-        }
-      });
-      this.setState({ measurements: updatedMeasurements });
-    }
-  }
 
   handleChange(event) {
     if (event.target.name === "birth_date") {
@@ -233,75 +227,38 @@ class MeasurementForm extends React.Component {
         this.setState({ observation_date_error: "" });
         this.setState({ [event.target.name]: event.target.value });
       }
-    } else if (event.target.name === "observation_date") {
+    } 
+    if (event.target.name === "observation_date") {
       birth_moment = moment(this.state.birth_date);
       observation_moment = moment(event.target.value);
       if (birth_moment.isAfter(observation_moment)) {
         this.setState({
           observation_date_error:
-            "Date of measurement cannot come before the date of measurement",
+            "Date of measurement cannot come before the date of birth.",
         });
       } else {
         this.setState({ observation_date_error: "" });
         this.setState({ birth_date_error: "" });
         this.setState({ [event.target.name]: event.target.value });
       }
-    } else {
-      // this is updating an observation value
-      const input_id = event.target.id;
-      const measurement_index = this.state.measurements.findIndex(
-        (measurement) => {
-          return measurement.id === input_id;
-        }
-      );
-      let all_measurements = this.state.measurements;
-      let measurement_to_update = all_measurements[measurement_index];
-      measurement_to_update.observation_value_error = this.validateObservationValue(
-        measurement_to_update.measurement_method,
-        event.target.value
-      );
-      measurement_to_update.observation_value = event.target.value;
-      measurement_to_update.units = this.changeUnits(
-        measurement_to_update.measurement_method
-      );
-      all_measurements[measurement_index] = measurement_to_update;
-      this.setState({ measurements: all_measurements });
-      if (event.target.name !== "ofc") {
-        this.createBMI();
-      }
     }
     var form_valid = this.formIsValid();
     this.setState({ form_valid: form_valid });
-  }
+}
 
-  createBMI() {
-    let all_measurements = this.state.measurements;
-    const heightIndex = all_measurements.findIndex((measurement) => {
-      return measurement.measurement_method === "height";
-    });
-    const weightIndex = all_measurements.findIndex((measurement) => {
-      return measurement.measurement_method === "weight";
-    });
-    const bmiIndex = all_measurements.findIndex((measurement) => {
-      return measurement.measurement_method === "bmi";
-    });
-    if (heightIndex !== -1 && weightIndex !== -1 && bmiIndex === -1) {
-      // calculate BMI if height and weight exist and BMI does not already exist
-      const height = all_measurements[heightIndex].observation_value;
-      const weight = all_measurements[weightIndex].observation_value;
-      const bmi = weight / (height / 100);
-      const observationValueError = this.validateObservationValue("bmi", bmi);
-      if (observationValueError === "") {
-        this.state.measurements.push({
-          measurement_method: "bmi",
-          observation_value: bmi,
-          id: Math.random().toString(36).substring(7),
-          units: "kg/m²",
-          observation_value_error: observationValueError,
-        });
-        this.updateShowHideMeasurementButtons();
-      }
-    }
+  handleObservationChange=(observation, data)=>{
+     // this is updating an observation value
+     
+     const observation_value = data.value
+     let {measurement, observation_value_error} = this.state
+     measurement.observation_value = observation_value
+     observation_value_error = this.validateObservationValue(this.state.measurement.measurement_method, observation_value)
+     this.setState({measurement: measurement, observation_value_error: observation_value_error})
+     if (this.state.birth_date_error === "" && this.state.observation_date_error === "" && observation_value_error===""){
+      this.setState({form_valid: true})
+     } else {
+       this.setState({form_valid: false})
+     }
   }
 
   validateObservationValue(measurement_method, observation_value) {
@@ -344,16 +301,14 @@ class MeasurementForm extends React.Component {
   }
 
   formIsValid() {
-    const all_measurements = this.state.measurements;
     let valid = true;
-    all_measurements.forEach((measurement) => {
-      if (measurement.observation_value_error !== "") {
+      if (this.state.observation_value_error !== "") {
+        console.log(this.state.observation_value_error);
         valid = false;
       }
-    });
     if (
-      this.state.birth_date_error === "" &&
-      this.state.observation_date_error === "" &&
+      this.state.birth_date_error === null &&
+      this.state.observation_date_error === null &&
       valid
     ) {
       return true;
@@ -363,36 +318,41 @@ class MeasurementForm extends React.Component {
   }
 
   handleSubmit(event) {
-    
-    const measurements = this.state.measurements;
     let measurementArray = [];
-    measurements.forEach((measurement) => {
+    
       let formData = {
         birth_date: this.state.birth_date,
         observation_date: this.state.observation_date,
-        measurement_method: measurement.measurement_method,
-        observation_value: measurement.observation_value,
+        measurement_method: this.state.measurement.measurement_method,
+        observation_value: this.state.measurement.observation_value,
         gestation_weeks: this.state.gestation_weeks,
         gestation_days: this.state.gestation_days,
         sex: this.state.sex,
       };
       measurementArray.push(formData);
-    });
 
     this.handleFormData(measurementArray);
   }
 
   handleChangeSelect(event, data) {
-    const select_id = data.id;
-    let measurements = this.state.measurements;
-    measurements.map((measurement) => {
-      if (measurement.id === select_id) {
+    
+    let measurement = this.state.measurement;
+    console.log(measurement.measurement_method);
+    console.log(data.value);
+      if (data.value !== measurement.measurement_method) {
         measurement.measurement_method = data.value;
         measurement.units = this.changeUnits(data.value);
+        if (this.state.reference==="turner"&& measurement.measurement_method !== "height"){
+          this.disableMeasurement("weight", true)
+          this.disableMeasurement("bmi", true)
+          this.disableMeasurement("ofc", true)
+        }else{
+          this.disableMeasurement("weight", false)
+          this.disableMeasurement("bmi", false)
+          this.disableMeasurement("ofc", false)
+        }
       }
-      return measurement;
-    });
-    this.setState({ measurements: measurements });
+    this.setState({measurement: measurement})
     this.setState({ form_valid: this.formIsValid() });
   }
 
@@ -436,6 +396,16 @@ class MeasurementForm extends React.Component {
       <Container>
         <Segment textAlign={"center"}>
           <Form onSubmit={this.handleSubmit}>
+            <Form.Field>
+              <Select
+              label='Reference'
+              name='reference'
+              value={this.state.reference}
+              options={references}
+              onChange={this.handleChangeReference}
+              placeholder="Select reference"
+            />
+            </Form.Field>
             <Form.Field required>
               <Input
                 label="Birth Date"
@@ -456,32 +426,38 @@ class MeasurementForm extends React.Component {
                 placeholder="Date of Measurement"
                 onChange={this.handleChange}
               />
-              <h5>{this.state.observation_date_error}</h5>
             </Form.Field>
             <Segment>
               <Header as="h5" textAlign="left">
                 Measurements
               </Header>
-              {this.state.measurements.map((value) => {
-                return (
-                  <MeasurementInput
-                    key={value.id}
-                    name={value.measurement_method}
-                    id={value.id}
-                    measurementMethod={value.measurement_method}
-                    observationValue={value.observation_value}
-                    observationValueError={value.observation_value_error}
-                    units={value.units}
-                    options={this.state.measurementOptions}
-                    addButton={value.show_add}
-                    removeButton={value.show_remove}
-                    handleMeasurementChangeSelect={this.handleChangeSelect}
-                    handleObservationChange={this.handleChange}
-                    handleRemoveMeasurementButton={this.handleRemoveMeasurement}
-                    handleAddMeasurementButton={this.handleAddMeasurement}
+              
+              <Form.Group>
+                <Form.Field required width={10}>
+                  <Select
+                    value={this.state.measurement.measurement_method}
+                    name="measurement_method"
+                    placeholder="Measurement Type"
+                    options={measurementOptions}
+                    onChange={this.handleChangeSelect}
+                    /> 
+                </Form.Field>
+                <Form.Field required width={8}>
+                  <Input
+                    type="decimal" 
+                    name="observation_value"
+                    placeholder="Measurement"
+                    value={this.state.measurement.observationValue}
+                    label={{ content: this.state.measurement.units.toString(), basic:true, color: 'blue' }}
+                    labelPosition='right'
+                    onChange={this.handleObservationChange}
                   />
-                );
-              })}
+                </Form.Field>
+              
+            </Form.Group>
+            { this.state.observation_value_error !== "" ? <Message color='red'>{ this.state.observation_value_error }</Message> : null }
+            { this.state.observation_date_error !== "" ? <Message color='red'>{ this.state.observation_date_error }</Message> : null }
+            { this.state.birth_date_error !== "" ? <Message color='red'>{ this.state.birth_date_error }</Message> : null }
             </Segment>
             <Form.Field required>
               <Select
