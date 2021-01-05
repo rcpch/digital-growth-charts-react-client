@@ -33,20 +33,30 @@ function ChartData(props) {
         useEffect( () => {
             let ignore = false; // this prevents data being added to state if unmounted
             if (measurementsArray.length > 0){
-                fetchCentileData(measurementsArray).then(result => {
-                    if (!ignore){ // this prevents data being added to state if unmounted
-                        setCentile_data(result.data.child_data.centile_data)
-                        // setSDS_data(result.data.child_data.sds_data)
-                        setLoading(false)
-                    }
-                }).catch(error => {
-                    console.log(error.message)
+                try{
+                    fetchCentileData(measurementsArray).then(result => {
+                        if (!ignore){ // this prevents data being added to state if unmounted
+                            setCentile_data(result.data.child_data.centile_data)
+                            // setSDS_data(result.data.child_data.sds_data)
+                            setLoading(false)
+                        }
+                    });
+                } catch(error) {
+                    console.error('Failure!');
+                    console.error(error.response.status);
+                    alert("The server is not responding. Sorry.")
                     if (!ignore){
                         setLoading(false)
-                        // setLoadingError(error.message)
-                        // console.log(loadingError);
                     }
-                })
+                }
+                // .catch(error => {
+                //     console.log(error.response)
+                //     if (!ignore){
+                //         setLoading(false)
+                //         // setLoadingError(error.message)
+                //         // console.log(loadingError);
+                //     }
+                // })
             } else {
                 if (!ignore){
                     setLoading(false)
@@ -149,7 +159,7 @@ async function fetchCentileData(measurementsArray){
           headers: {
             "Content-Type": "application/json",
           },
-        });
+        })
     
     return response
 }
