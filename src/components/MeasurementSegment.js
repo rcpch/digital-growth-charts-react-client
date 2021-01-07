@@ -230,7 +230,7 @@ class MeasurementSegment extends Component {
           // girl 201 85 157 - #c9559d
           // boy 0 163 222 - #00a3de
       if (this.state.sex === 'male'){
-        axisStyle = this.returnAxisStyle("#D9D9D9", 'sans', '#000000')
+        axisStyle = this.returnAxisStyle("#D9D9D9", 'sans', '#D9D9D9')
         centileStyle = this.returnCentileStyle("#00a3de", 0.5)
         gridlines = true
         gridlineStyle = this.returnGridlineStyle(0.25, "#ECECEC")
@@ -238,7 +238,7 @@ class MeasurementSegment extends Component {
         chartStyle = this.returnChartStyle('#FFFFFF')
         
       } else {
-        axisStyle = this.returnAxisStyle("#D9D9D9", 'sans', '#000000')
+        axisStyle = this.returnAxisStyle("#D9D9D9", 'sans', '#D9D9D9')
         centileStyle = this.returnCentileStyle("#c9559d", 0.5)
         gridlines = true
         gridlineStyle = this.returnGridlineStyle(0.25, "#ECECEC")

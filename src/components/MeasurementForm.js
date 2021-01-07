@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+
 import {
   Container,
   Segment,
@@ -330,7 +331,7 @@ class MeasurementForm extends React.Component {
         sex: this.state.sex,
       };
       measurementArray.push(formData);
-
+  
     this.handleFormData(measurementArray);
   }
 
