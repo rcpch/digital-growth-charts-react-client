@@ -14,8 +14,8 @@ import {
 import moment from "moment";
 
 const sexOptions = [
-  { key: "male", value: "male", text: "Male" },
-  { key: "female", value: "female", text: "Female" },
+  { key: "male", value: "male", text: "Boy" },
+  { key: "female", value: "female", text: "Girl" },
 ];
 const gestationWeeksOptions = [
   { key: "23", value: 23, text: "23" },
@@ -398,8 +398,9 @@ class MeasurementForm extends React.Component {
         <Segment textAlign={"center"}>
           <Form onSubmit={this.handleSubmit}>
             <Form.Field>
+            <Header as="h5" textAlign="left">
+                  Reference</Header>
               <Select
-              label='Reference'
               name='reference'
               value={this.state.reference}
               options={references}
@@ -408,6 +409,8 @@ class MeasurementForm extends React.Component {
             />
             </Form.Field>
             <Form.Field required>
+            <Header as="h5" textAlign="left">
+                  Dates</Header>
               <Input
                 label="Birth Date"
                 type="date"
@@ -428,13 +431,13 @@ class MeasurementForm extends React.Component {
                 onChange={this.handleChange}
               />
             </Form.Field>
-            <Segment>
+            {/* <Segment> */}
               <Header as="h5" textAlign="left">
                 Measurements
               </Header>
               
               <Form.Group>
-                <Form.Field required width={10}>
+                <Form.Field required >
                   <Select
                     value={this.state.measurement.measurement_method}
                     name="measurement_method"
@@ -459,7 +462,10 @@ class MeasurementForm extends React.Component {
             { this.state.observation_value_error !== "" ? <Message color='red'>{ this.state.observation_value_error }</Message> : null }
             { this.state.observation_date_error !== "" ? <Message color='red'>{ this.state.observation_date_error }</Message> : null }
             { this.state.birth_date_error !== "" ? <Message color='red'>{ this.state.birth_date_error }</Message> : null }
-            </Segment>
+            {/* </Segment> */}
+            <Header as="h5" textAlign="left">
+                Sex
+              </Header>
             <Form.Field required>
               <Select
                 name="sex"
@@ -472,6 +478,8 @@ class MeasurementForm extends React.Component {
 
             <Form.Group >
               <Form.Field>
+                <Header as="h5" textAlign="left">
+                  Gestation</Header>
                 <span>
                 <Select
                   compact
@@ -481,11 +489,6 @@ class MeasurementForm extends React.Component {
                   onChange={this.handleChangeGestation}
                 />
                 &nbsp;+
-                </span>
-              </Form.Field>
-
-              <Form.Field>
-                <span>
                 <Select
                   compact
                   name="gestation_days"
@@ -495,8 +498,8 @@ class MeasurementForm extends React.Component {
                 />
                 &nbsp; weeks
                 </span>
-              </Form.Field>
-              
+               </Form.Field>
+              {/* </Segment> */}
             </Form.Group>
 
             <Form.Field>
