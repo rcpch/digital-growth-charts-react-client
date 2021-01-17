@@ -1,34 +1,31 @@
 {
   "name": "rcpchgrowth-react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "dependencies": {
-    "@craco/craco": "^5.6.4",
-    "@rcpch/digital-growth-charts-react-chart-library": "1.0.2",
+    "@rcpch/digital-growth-charts-react-component-library": "0.1.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "axios": "^0.19.2",
-    "chart.js": "^2.9.3",
+    "axios": "^0.21.1",
+    "chart.js": "^2.9.4",
     "craco-less": "^1.17.0",
-    "moment": "^2.27.0",
-    "react": "^16.13.1",
-    "react-chartjs-2": "^2.9.0",
-    "react-dom": "^16.13.1",
-    "react-dropzone": "^11.0.2",
+    "moment": "^2.29.1",
+    "react": "^16.14.0",
+    "react-chartjs-2": "^2.10.0",
+    "react-dom": "^16.14.0",
+    "react-dropzone": "^11.2.3",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
-    "semantic-ui-css": "^2.4.1",
-    "semantic-ui-less": "^2.4.1",
     "semantic-ui-react": "^0.88.2",
-    "xlsx": "^0.16.4"
+    "xlsx": "^0.16.8"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "craco eject"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -44,5 +41,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@craco/craco": "^5.9.0",
+    "@semantic-ui-react/craco-less": "^1.2.1",
+    "semantic-ui-less": "^2.4.1"
   }
 }

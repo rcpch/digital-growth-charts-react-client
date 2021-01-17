@@ -1,14 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+// React
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import * as serviceWorker from "./serviceWorker";
+
+// Semantic UI React
+import "semantic-ui-less/semantic.less";
+
+// CSS
+import "./index.css";
 
 ReactDOM.render(
   // <React.StrictMode>
-    <App />,
+  <App />,
   // </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

@@ -2,15 +2,24 @@
 
 body {
   margin: 0;
-  font-family: 'Roboto', 'Oxygen', sans-serif;
+  font-family: "Montserrat", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  
-  code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, monospace;
-  }
-  
-  h1, h2, h3 {
-    font-family: Montserrat;
-  }
 }
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.selectUpperMargin {
+  margin-top: 10px !important;
+}
+
+/* RCPCH Colours 
+
+Heading text #0d0d58;
+Nav Blue #1B469C;
+Nav Blue #3366cc;
+
+*/

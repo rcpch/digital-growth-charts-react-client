@@ -1,50 +1,55 @@
-import React, { Component } from 'react';
-import './App.css';
-import './components/MeasurementForm'
-import 'semantic-ui-css/semantic.min.css'
-import Footer from './components/Footer'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import MenuBar from './components/MenuBar';
-import Home from './pages/Home';
-import References from './pages/References';
-import Results from './pages/Results';
-import Spreadsheet from './pages/Spreadsheet';
-import SerialResults from './pages/SerialResults';
-import Technical from './pages/Technical';
+// React
+import React, { useState } from "react";
+import "./App.css";
 
+// React Router DOM
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-class App extends Component {
+// RCPCH Components
+import "./components/MeasurementForm";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import Results from "./pages/Results";
+import Spreadsheet from "./pages/Spreadsheet";
+import SerialResults from "./pages/SerialResults";
+import HeaderBar from "./components/HeaderBar";
+import Technical from "./components/Technical";
 
-  render(){
-    return <div className="App">
-         <div>
-          <Router>
-              <MenuBar/>
-              <Switch>
-                  <Route exact path="/">
-                    <Home/>
-                  </Route>
-                  <Route path="/references">
-                    <References />
-                  </Route>
-                  <Route path="/results">
-                    <Results />
-                  </Route>
-                  <Route path="/serial_results">
-                    <SerialResults/>
-                  </Route>
-                  <Route path='/spreadsheet'>
-                    <Spreadsheet/>
-                  </Route>
-                  <Route path='/technical'>
-                    <Technical/>
-                  </Route>
-              </Switch>
-          </Router> 
-          <Footer/>
-        </div>
-      </div>
+function App() {
+  const [toggle, setToggle] = useState(false);
+
+  function toggleTechnical() {
+    setToggle(!toggle);
   }
+
+  return (
+    <div className="App">
+      <div>
+        <Router>
+          <HeaderBar toggleTechnical={toggleTechnical} />
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/results">
+              <Results />
+            </Route>
+            <Route path="/serial_results">
+              <SerialResults />
+            </Route>
+            <Route path="/spreadsheet">
+              <Spreadsheet />
+            </Route>
+          </Switch>
+        </Router>
+        <Technical
+          technicalSidebarVisible={toggle}
+          toggleTechnical={toggleTechnical}
+        />
+        <Footer />
+      </div>
+    </div>
+  );
 }
 
 export default App;
