@@ -40,3 +40,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ### Style
 
 - We recommend the use of the Prettier Javascript linter
+
+## Other documentation
+
+- [Development documentation](docs/development.md)
+- [Clinical documentation](docs/clinical.md)
+- Official API documentation
