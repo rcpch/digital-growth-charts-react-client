@@ -99,7 +99,7 @@ class MeasurementForm extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleChangeSelect = this.handleChangeSelect.bind(this);
+    this.handleChangeMeasurementMethod = this.handleChangeMeasurementMethod.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChangeGestation = this.handleChangeGestation.bind(this);
     this.handleChangeSex = this.handleChangeSex.bind(this);
@@ -118,18 +118,23 @@ class MeasurementForm extends React.Component {
         this.disableMeasurement("weight", true)
         this.disableMeasurement("ofc", true)
         this.disableMeasurement("bmi", true)
+        this.setState({sex: "female"})
+        this.setState({measurementMethod: "height"})
+        this.props.handleChangeReference(data.value) //call back
         return
     } 
     if (data.value === "uk-who"){
         this.disableMeasurement("weight", false)
         this.disableMeasurement("ofc", false)
         this.disableMeasurement("bmi", false)
+        this.props.handleChangeReference(data.value) //call back
         return
     } 
     if (data.value === "trisomy-21"){
       this.disableMeasurement("weight", false)
       this.disableMeasurement("ofc", false)
       this.disableMeasurement("bmi", false)
+      this.props.handleChangeReference(data.value) //call back
       return
   }
 }
@@ -335,11 +340,11 @@ class MeasurementForm extends React.Component {
     this.handleFormData(measurementArray);
   }
 
-  handleChangeSelect(event, data) {
+  handleChangeMeasurementMethod(event, data) {
     
     let measurement = this.state.measurement;
-    console.log(measurement.measurement_method);
-    console.log(data.value);
+    
+      this.props.handleChangeMeasurementMethod(data.value)
       if (data.value !== measurement.measurement_method) {
         measurement.measurement_method = data.value;
         measurement.units = this.changeUnits(data.value);
@@ -375,6 +380,7 @@ class MeasurementForm extends React.Component {
 
   handleChangeSex(event, data) {
     this.setState({ sex: data.value });
+    this.props.handleChangeSex(data.value)
   }
 
   changeUnits(measurement_method) {
@@ -443,7 +449,7 @@ class MeasurementForm extends React.Component {
                     name="measurement_method"
                     placeholder="Measurement Type"
                     options={measurementOptions}
-                    onChange={this.handleChangeSelect}
+                    onChange={this.handleChangeMeasurementMethod}
                     /> 
                 </Form.Field>
                 <Form.Field required width={8}>

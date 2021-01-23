@@ -8,6 +8,45 @@ import ChartData from '../api/Chart'
 import MeasurementForm from "../components/MeasurementForm";
 import '../index.css'
 
+/*
+    return object structure from API
+    [
+      {
+        birth_data: {
+          birth_date: ...,
+          estimated_date_delivery: ....,
+          estimated_date_delivery_string: ...,
+          gestation_weeks: ...,
+          gestation_days: ...,
+          sex: ...
+        },
+        child_observation_value: {
+          measurement_method: ....,
+          measurement_value: ...
+        },
+        child_measurement_dates: {
+          chronological_calendar_age: ...,
+          chronological_decimal_age: ...,
+          clinician_decimal_age_comment: ...,
+          corrected_calendar_age: ...,
+          corrected_decimal_age: ...,
+          corrected_gestational_age: {
+            corrected_gestation_weeks: ...,
+            corrected_gestatin_days: ...
+          },
+          lay_decimal_age_comment: ...,
+          observation_date: ...
+        },
+        measurement_calculated_values: {
+          centile: ...,
+          measurement_method: ...,
+          sds: ...,
+          centile_band: ...
+        }
+      }
+    ]
+    */
+
 class MeasurementSegment extends Component {
 
       constructor(props){
@@ -31,7 +70,11 @@ class MeasurementSegment extends Component {
           bmis: [],
           theme: 'simple',
           activeIndex: 0, //set tab to height
-          flip: false // flag to determine if results or chart showing
+          flip: false, // flag to determine if results or chart showing
+          heightDisabled: false,
+          weightDisabled: false,
+          bmiDisabled: false,
+          ofcDisabled: false
         }
 
         this.handleResults = this.handleResults.bind(this)
@@ -41,10 +84,78 @@ class MeasurementSegment extends Component {
         this.handleFlipResults = this.handleFlipResults.bind(this)
         this.returnMeasurementArray = this.returnMeasurementArray.bind(this)
         this.units = this.units.bind(this)
+        this.changeReference = this.changeReference.bind(this)
+        this.changeSex = this.changeSex.bind(this)
+        this.changeMeasurement= this.changeMeasurement.bind(this)
       }
   
   handleRangeChange = (e) => this.setState({ activeIndex: e.target.value })
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex })
+
+  changeReference(reference){
+    // call back from MeasurementForm
+    this.setState({reference: reference})
+    if (reference==="turner"){
+      this.setState({measurementMethod:"height"})
+      this.setState({sex: "female"})
+      this.setState({heightDisabled: false})
+      this.setState({weightDisabled: true})
+      this.setState({bmiDisabled: true})
+      this.setState({ofcDisabled: true})
+    }
+    if (reference==="trisomy-21"){
+      this.setState({heightDisabled: false})
+      this.setState({weightDisabled: false})
+      this.setState({bmiDisabled: false})
+      this.setState({ofcDisabled: true})
+    }
+    if (reference==="uk-who"){
+      this.setState({heightDisabled: false})
+      this.setState({weightDisabled: false})
+      this.setState({bmiDisabled: false})
+      this.setState({ofcDisabled: false})
+    }
+    this.returnNewChart(
+      this.state.measurementMethod,
+      [],
+      this.state.chartStyle,
+      this.state.axisStyle,
+      this.state.gridlines,
+      this.state.gridlineStyle,
+      this.state.centileStyle,
+      this.state.measurementStyle
+    )
+  }
+
+  changeSex(sex){
+     // call back from MeasurementForm
+     this.setState({sex: sex})
+     this.returnNewChart(
+       this.state.measurementMethod,
+       [],
+       this.state.chartStyle,
+       this.state.axisStyle,
+       this.state.gridlines,
+       this.state.gridlineStyle,
+       this.state.centileStyle,
+       this.state.measurementStyle
+     )
+  }
+
+  changeMeasurement(measurementMethod){
+    // call back from MeasurementForm
+    this.setState({measurementMethod: measurementMethod})
+    this.returnNewChart(
+      measurementMethod,
+      [],
+      this.state.chartStyle,
+      this.state.axisStyle,
+      this.state.gridlines,
+      this.state.gridlineStyle,
+      this.state.centileStyle,
+      this.state.measurementStyle
+    )
+  }
 
   handleResults(results){
     // delegate function from MeasurementForm
@@ -97,45 +208,6 @@ class MeasurementSegment extends Component {
       this.state.centileStyle, 
       this.state.measurementStyle)
 
-    /*
-    return object structure
-    [
-      {
-        birth_data: {
-          birth_date: ...,
-          estimated_date_delivery: ....,
-          estimated_date_delivery_string: ...,
-          gestation_weeks: ...,
-          gestation_days: ...,
-          sex: ...
-        },
-        child_observation_value: {
-          measurement_method: ....,
-          measurement_value: ...
-        },
-        child_measurement_dates: {
-          chronological_calendar_age: ...,
-          chronological_decimal_age: ...,
-          clinician_decimal_age_comment: ...,
-          corrected_calendar_age: ...,
-          corrected_decimal_age: ...,
-          corrected_gestational_age: {
-            corrected_gestation_weeks: ...,
-            corrected_gestatin_days: ...
-          },
-          lay_decimal_age_comment: ...,
-          observation_date: ...
-        },
-        measurement_calculated_values: {
-          centile: ...,
-          measurement_method: ...,
-          sds: ...,
-          centile_band: ...
-        }
-      }
-    ]
-    */
-
   }
 
   returnNewChart(
@@ -147,11 +219,11 @@ class MeasurementSegment extends Component {
     gridlineStyle, 
     centileStyle, 
     measurementStyle){
-    
+
     const Chart = (
       <ChartData
             key={measurementMethod + "-" + this.state.reference}
-            reference={this.state.reference} //the choices are ["uk-who", "turner", "trisomy21"] REQUIRED
+            reference={this.state.reference} //the choices are ["uk-who", "turner", "trisomy-21"] REQUIRED
             sex={this.state.sex} //the choices are ["male", "female"] REQUIRED
             measurementMethod={measurementMethod} //the choices are ["height", "weight", "ofc", "bmi"] REQUIRED
             measurementsArray = {measurementsArray}  // an array of Measurement class objects from dGC Optional
@@ -351,7 +423,7 @@ test(param){
 
     const panes = [
       { menuItem: "Height", 
-        render: () => <Tab.Pane attached={"top"}>{
+        render: () => <Tab.Pane attached={"top"} disabled={this.state.heightDisabled}>{
           this.returnNewChart(
             "height", 
             this.state.heights, 
@@ -364,7 +436,7 @@ test(param){
             )
         }<Acknowledgements /></Tab.Pane> },
       { menuItem: "Weight",
-        render: () => <Tab.Pane attached={"top"}>{
+        render: () => <Tab.Pane attached={"top"} disabled={this.state.weightDisabled}>{
           this.returnNewChart(
             "weight", 
             this.state.weights,
@@ -377,7 +449,7 @@ test(param){
             )}<Acknowledgements />
           </Tab.Pane> },
       { menuItem: "BMI", 
-        render: () => <Tab.Pane attached={"top"}>
+        render: () => <Tab.Pane attached={"top"} disabled={this.state.bmiDisabled}>
         {this.returnNewChart(
             "bmi", 
             this.state.bmis,
@@ -389,7 +461,7 @@ test(param){
             this.state.measurementStyle
         )}<Acknowledgements />
         </Tab.Pane> },
-      { menuItem: "Head Circumference", render: () => <Tab.Pane attached={"top"}>
+      { menuItem: "Head Circumference", render: () => <Tab.Pane attached={"top"} disabled={this.state.ofcDisabled}>
         {this.returnNewChart(
           "ofc", 
           this.state.ofcs, 
@@ -480,7 +552,12 @@ test(param){
           <Grid.Column width={6}>
             <Grid.Row>
               <Segment raised>
-                <MeasurementForm measurementResult={this.handleResults} className="measurement-form" />
+                <MeasurementForm 
+                  measurementResult={this.handleResults} 
+                  handleChangeReference={this.changeReference}
+                  handleChangeSex={this.changeSex}
+                  handleChangeMeasurementMethod={this.changeMeasurement}
+                  className="measurement-form" />
               </Segment>
             </Grid.Row>
             <Grid.Row>
