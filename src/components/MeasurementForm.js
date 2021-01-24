@@ -543,7 +543,6 @@ class MeasurementForm extends React.Component {
 }
 
 const ErrorModal = (props) =>{
-  console.log(props);
   return (
     <Modal
           error={props.error}

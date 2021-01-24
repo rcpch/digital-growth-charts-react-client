@@ -1,7 +1,8 @@
 {
   "name": "rcpchgrowth-react",
   "version": "0.1.1",
-  "private": true,
+  "private": false,
+  "license": "MIT",
   "dependencies": {
     "@rcpch/digital-growth-charts-react-component-library": "1.1.1",
     "@testing-library/jest-dom": "^4.2.4",

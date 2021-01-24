@@ -290,6 +290,10 @@ class MeasurementSegment extends Component {
 
   handleChangeTheme(event, {value}){
 
+    // These are the colours from the orginal paper charts now deprecated
+        // const girl = 'rgba(217, 49, 155, 1.0)';
+        // const boy = 'rgba(0, 126, 198, 1.0)';
+
     let axisStyle
     let measurementStyle 
     let gridlineStyle 

@@ -7,29 +7,14 @@ import { RCPCHChart } from '@rcpch/digital-growth-charts-react-component-library
 
 function ChartData(props) {
 
-
-        // These are the colours from the orginal paper charts now deprecated
-        // const girl = 'rgba(217, 49, 155, 1.0)';
-        // const boy = 'rgba(0, 126, 198, 1.0)';
-        
-
-        // state = {
-        //     isLoading: false, // flag awaiting async fetchCentileData - could have spinner here
-        //     centile_data: [], // an array to keep all of the cacluclated measurement
-        //     sds_data: []
-        // }
-
         const [isLoading, setLoading] = useState(true)
-        // const [ setLoadingError] = useState(null)
         const [centile_data, setCentile_data] = useState([])
         // const [sds_data, setSDS_data] = useState([])
         
 
         const measurementsArray = props.measurementsArray
-
         const titles = setTitle(props);
 
-        
         useEffect( () => {
             let ignore = false; // this prevents data being added to state if unmounted
             if (measurementsArray.length > 0){
@@ -49,14 +34,6 @@ function ChartData(props) {
                         setLoading(false)
                     }
                 }
-                // .catch(error => {
-                //     console.log(error.response)
-                //     if (!ignore){
-                //         setLoading(false)
-                //         // setLoadingError(error.message)
-                //         // console.log(loadingError);
-                //     }
-                // })
             } else {
                 if (!ignore){
                     setLoading(false)
@@ -112,7 +89,7 @@ function setTitle(props){
      else if (props.reference === "turner"){
          title="Turner's Syndrome"
      }
-     else if (props.reference === "trisomy21"){
+     else if (props.reference === "trisomy-21"){
          title = "Trisomy 21 (Down's Syndrome)"
      }
 
