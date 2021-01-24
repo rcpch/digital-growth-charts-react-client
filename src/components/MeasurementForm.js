@@ -9,9 +9,11 @@ import {
   Select,
   Button,
   Header,
-  Message
+  Message,
+  Modal
 } from "semantic-ui-react";
 import moment from "moment";
+
 
 const sexOptions = [
   { key: "male", value: "male", text: "Boy" },
@@ -95,7 +97,9 @@ class MeasurementForm extends React.Component {
       formData: {},
       measurementResult: [],
       reference: 'uk-who',
-      measurementOptions: measurementOptions
+      measurementOptions: measurementOptions,
+      networkError: '',
+      modalOpen: false
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -112,6 +116,7 @@ class MeasurementForm extends React.Component {
   }
 
   handleChangeReference = (ref, data) => {
+
     this.setState({reference: data.value})
     
     if (data.value === "turner"){
@@ -165,8 +170,10 @@ class MeasurementForm extends React.Component {
     Promise.all(resultsPromiseArray).then((result) => {
       var mergedMeasurementArrays = [].concat.apply([], result);
       this.handleGrowthResults(mergedMeasurementArrays)
+    }).catch(error => {
+      this.setState({networkError: error.message})
+      this.setState({modalOpen: true})
     });
-    // TODO #1 needs a catch statement
   };
 
   disableMeasurement=(measurement_method, disable)=>{
@@ -521,9 +528,38 @@ class MeasurementForm extends React.Component {
             </Form.Field>
           </Form>
         </Segment>
+        <ErrorModal 
+          error={this.state.networkError} 
+          open={this.state.modalOpen}
+          handleClose={
+            () => {
+              this.setState({ modalOpen: false })
+            }
+          }
+        />
       </Container>
     );
   }
+}
+
+const ErrorModal = (props) =>{
+  console.log(props);
+  return (
+    <Modal
+          error={props.error}
+          open={props.open}
+          size='small'
+          closeOnEscape={true}
+    >
+      <Modal.Header>{props.error}</Modal.Header>
+      <Modal.Content>It is likely the server is down. Please check back later</Modal.Content>
+      <Modal.Actions>
+        <Button negative onClick={props.handleClose}>
+          Cancel
+        </Button>
+      </Modal.Actions>
+    </Modal>
+  )
 }
 
 export default MeasurementForm;
