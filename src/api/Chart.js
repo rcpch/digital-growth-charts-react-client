@@ -10,7 +10,6 @@ function ChartData(props) {
         const [isLoading, setLoading] = useState(true)
         const [centile_data, setCentile_data] = useState([])
         // const [sds_data, setSDS_data] = useState([])
-        
 
         const measurementsArray = props.measurementsArray
         const reference = props.reference
@@ -59,19 +58,11 @@ function ChartData(props) {
                         title={titles.title}
                         subtitle={titles.subtitle}
                         measurementsArray = {centile_data} // this is the plottable child data
-                        chartBackground={props.chartBackground}
-                        gridlineStroke={props.gridlineStroke}
-                        gridlineStrokeWidth={props.gridlineStrokeWidth}
-                        gridlineDashed={props.gridlineDashed}
-                        gridlines={props.gridlines}
-                        centileStroke={props.centileStroke}
-                        centileStrokeWidth={props.centileStrokeWidth}
-                        axisStroke={props.axisStroke}
-                        axisLabelFont={props.axisLabelFont}
-                        axisLabelColour={props.axisLabelColour}
-                        measurementFill={props.measurementFill}
-                        measurementSize={props.measurementSize}
-                        measurementShape={props.measurementShape}
+                        chartStyle={props.chartStyle}
+                        axisStyle={props.axisStyle}
+                        gridlineStyle={props.gridlineStyle}
+                        centileStyle={props.centileStyle}
+                        measurementStyle={props.measurementStyle}
                     />
                     </div>
                 )

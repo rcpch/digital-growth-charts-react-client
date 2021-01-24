@@ -4,7 +4,7 @@ import { Component } from "react";
 import RCPCHTheme1 from "../components/chartThemes/rcpchTheme1";
 import RCPCHTheme2 from "../components/chartThemes/rcpchTheme2";
 import RCPCHTheme3 from "../components/chartThemes/rcpchTheme3";
-import RCPCHMonochrome  from "./chartThemes/rcpchThemeMonochrome";
+import RCPCHThemeMonochrome from "../components/chartThemes/rcpchThemeMonochrome";
 import RCPCHThemeTraditionalBoy from '../components/chartThemes/RCPCHThemeTraditionalBoy'
 import RCPCHThemeTraditionalGirl from '../components/chartThemes/RCPCHThemeTraditionalGirl'
 
@@ -13,7 +13,6 @@ import { Grid, Segment, Message, Flag, Tab, Menu, Dropdown, Button, Table, List 
 import ChartData from '../api/Chart'
 import MeasurementForm from "../components/MeasurementForm";
 import '../index.css'
-import RCPCHThemeMonochrome from "./chartThemes/rcpchThemeMonochrome";
 
 /*
     return object structure from API
@@ -60,7 +59,7 @@ class MeasurementSegment extends Component {
         super(props)
 
         // const dummyData=[{birth_data:{birth_date:"Wed, 28 Jan 2015 00:00:00 GMT",estimated_date_delivery:null,estimated_date_delivery_string:null,gestation_days:0,gestation_weeks:40,sex:"male"},child_observation_value:{measurement_method:"height",observation_value:110},measurement_calculated_values:{centile:13,centile_band:"This height measurement is between the 9th and 25th centiles.",measurement_method:"height",sds:-1.117076305831875},measurement_dates:{chronological_calendar_age:"5 years, 10 months and 4 weeks",chronological_decimal_age:5.9110198494182065,clinician_decimal_age_comment:"Born Term. No correction necessary.",corrected_calendar_age:null,corrected_decimal_age:5.9110198494182065,corrected_gestational_age:{corrected_gestation_days:null,corrected_gestation_weeks:null},lay_decimal_age_comment:"At 40+0, your child is considered to have been born at term. No age adjustment is necessary.",observation_date:"Sat, 26 Dec 2020 00:00:00 GMT"}}]
-        const defaultTheme = RCPCHMonochrome;
+        const defaultTheme = RCPCHThemeMonochrome;
         
         this.state = {
           measurementMethod: "height",
@@ -237,31 +236,23 @@ class MeasurementSegment extends Component {
     gridlineStyle, 
     centileStyle, 
     measurementStyle){
-
-    const Chart = (
-      <ChartData
-            key={measurementMethod + "-" + this.state.reference}
-            reference={this.state.reference} //the choices are ["uk-who", "turner", "trisomy-21"] REQUIRED
-            sex={this.state.sex} //the choices are ["male", "female"] REQUIRED
-            measurementMethod={measurementMethod} //the choices are ["height", "weight", "ofc", "bmi"] REQUIRED
-            measurementsArray = {measurementsArray}  // an array of Measurement class objects from dGC Optional
-            // measurementsSDSArray = {[]} // an array of SDS measurements for SDS charts Optional: currently not implemented: pass []
-            chartBackground={chartStyle.backgroundColour}
-            gridlineStroke={gridlineStyle.stroke}
-            gridlineStrokeWidth={gridlineStyle.strokeWidth}
-            gridlineDashed={gridlineStyle.dashed}
-            gridlines={gridlineStyle.gridlines}
-            centileStroke={centileStyle.stroke}
-            centileStrokeWidth={centileStyle.strokeWidth}
-            axisStroke={axisStyle.stroke}
-            axisLabelFont={axisStyle.labelFont}
-            axisLabelColour={axisStyle.labelColour}
-            measurementFill={measurementStyle.fill}
-            measurementSize={measurementStyle.size}
-            measurementShape={measurementStyle.shape}
-      />
-    )
-    return Chart
+      
+      const Chart = (
+        <ChartData
+              key={measurementMethod + "-" + this.state.reference}
+              reference={this.state.reference} //the choices are ["uk-who", "turner", "trisomy-21"] REQUIRED
+              sex={this.state.sex} //the choices are ["male", "female"] REQUIRED
+              measurementMethod={measurementMethod} //the choices are ["height", "weight", "ofc", "bmi"] REQUIRED
+              measurementsArray = {measurementsArray}  // an array of Measurement class objects from dGC Optional
+              // measurementsSDSArray = {[]} // an array of SDS measurements for SDS charts Optional: currently not implemented: pass []
+              chartStyle={chartStyle}
+              axisStyle={axisStyle}
+              gridlineStyle={gridlineStyle}
+              centileStyle={centileStyle}
+              measurementStyle={measurementStyle}
+        />
+      )
+      return Chart
   }
 
   handleChangeTheme(event, {value}){
@@ -287,6 +278,7 @@ class MeasurementSegment extends Component {
     if (value==="monochrome"){
       selectedTheme=RCPCHThemeMonochrome
     }
+
     this.returnNewChart(
       this.state.measurementMethod, 
       this.state.measurementsArray, 
@@ -339,11 +331,6 @@ class MeasurementSegment extends Component {
         return
     }
   }
-
-test(param){
-  console.log(param);
-  return param
-}
 
   render(){
 
@@ -416,7 +403,7 @@ test(param){
     const TabPanes = () => <Tab menu={{ attached: 'top' }} panes={panes} activeIndex={activeIndex}
     onTabChange={this.handleTabChange}/>
 
-    const themeOptions = [{ key: 'trad', value: 'trad', text: 'Traditional' },{ key: 'tanner1', value: 'tanner1', text: 'Tanner 1' }, { key: 'tanner2', value: 'tanner2', text: 'Tanner 2' }, { key: 'tanner3', value: 'tanner3', text: 'Tanner 3' }, { key: 'tanner4', value: 'tanner4', text: 'Monochrome' }]
+    const themeOptions = [{ key: 'trad', value: 'trad', text: 'Traditional' },{ key: 'tanner1', value: 'tanner1', text: 'Tanner 1' }, { key: 'tanner2', value: 'tanner2', text: 'Tanner 2' }, { key: 'tanner3', value: 'tanner3', text: 'Tanner 3' }, { key: 'monochrome', value: 'monochrome', text: 'Monochrome' }]
 
     const ThemeSelection = () => (
       <Menu compact className="selectUpperMargin">

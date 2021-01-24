@@ -18,21 +18,27 @@ font: Montserrat regular
 
 const centileColour = "#ff8000"
 const pubertyFill = "#ffc080"
-const tooltip = "#3366cc"
+const tooltipBackGroundColour = "#3366cc"
+const tooltipTextColour = "#FFFFFF"
 const gridlineColour = "#d9d9d9"
 const gridlineWidth = 0.25
 const backgroundColour = "#FFFFFF"
 const centileWidth = 1.5
-const font="Montserrat"
 const axisLabelColour = "#000000"
-const axisColour = "#000000"
-const measurementsColour = "#000000"
+const axisstroke = "#000000"
+const measurementsFill = "#000000"
+const measurementsShape = 'circle'
+const measurementsSize = 2
+const axisLabelSize = 6
+const tickLabelSize = 4
+const axisLabelFont = "Montserrat"
 
 const RCPCHChart = new ChartObject(
      backgroundColour,
      809,
      700,
-     tooltip
+     tooltipBackGroundColour,
+     tooltipTextColour
 )
 
 const RCPCHGridlines = new GridlineObject(
@@ -49,19 +55,19 @@ const RCPCHCentiles = new CentilesObject(
 )
 
 const RCPCHAxes = new AxesObject(
-    axisColour,
+    axisstroke,
     axisLabelColour,
-    font,
-    10,
-    6
+    axisLabelFont,
+    axisLabelSize,
+    tickLabelSize
 )
 
 const RCPCHMeasurements = new MeasurementsObject(
-    measurementsColour,
-    2.5,
-    "circle"
+    measurementsFill,
+    measurementsSize,
+    measurementsShape
 )
 
-const RCPCHTheme2 = new ChartTheme(RCPCHChart, RCPCHGridlines, RCPCHCentiles, RCPCHAxes, RCPCHMeasurements)
+const RCPCHTheme2 = new ChartTheme(RCPCHChart, RCPCHGridlines, RCPCHAxes, RCPCHCentiles, RCPCHMeasurements)
 
 export default RCPCHTheme2
