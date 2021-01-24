@@ -13,13 +13,14 @@ function ChartData(props) {
         
 
         const measurementsArray = props.measurementsArray
+        const reference = props.reference
         const titles = setTitle(props);
 
         useEffect( () => {
             let ignore = false; // this prevents data being added to state if unmounted
             if (measurementsArray.length > 0){
                 try{
-                    fetchCentileData(measurementsArray).then(result => {
+                    fetchCentileData(measurementsArray, reference).then(result => {
                         if (!ignore){ // this prevents data being added to state if unmounted
                             setCentile_data(result.data.child_data.centile_data)
                             // setSDS_data(result.data.child_data.sds_data)
@@ -41,7 +42,7 @@ function ChartData(props) {
             }
             return (() => { ignore = true; }); // this prevents data being added to state if unmounted
 
-        }, [measurementsArray])
+        }, [measurementsArray, reference])
     
         return (
           <div>
@@ -124,13 +125,13 @@ function setTitle(props){
      return {subtitle: subTitle, title: title}
 }
 
-async function fetchCentileData(measurementsArray){
+async function fetchCentileData(measurementsArray, reference){
     const formData = {
         results: measurementsArray // measurements passed in from the form
     };
     
     const response = await axios({
-          url: `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/plottable-child-data`,
+          url: `${process.env.REACT_APP_GROWTH_API_BASEURL}/`+ reference + `/plottable-child-data`,
           data: formData,
           method: "POST",
           headers: {
