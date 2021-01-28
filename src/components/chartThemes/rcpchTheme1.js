@@ -29,14 +29,14 @@ const axisstroke = "#000000"
 const measurementsFill = "#000000"
 const measurementsShape = 'circle'
 const measurementsSize = 2
-const axisLabelSize = 6
-const tickLabelSize = 4
+const axisLabelSize = 10
+const tickLabelSize = 8
 const axisLabelFont = "Montserrat"
 
 const RCPCHChart = new ChartObject(
      backgroundColour,
-     809,
      700,
+     500,
      tooltipBackGroundColour,
      tooltipTextColour
 )
