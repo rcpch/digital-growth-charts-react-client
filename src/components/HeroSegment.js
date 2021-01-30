@@ -23,7 +23,7 @@ export class HeroSegment extends Component {
           A first-of-its-kind 'Best Practice As Code' innovation by the RCPCH.
           Digital clinical tools provided to developers of clinician and patient
           facing technology.
-          <a href="https://marcus-baw.medium.com/royal-colleges-3-0-best-practice-as-code-7065bce821a7">
+          <a href="https://marcus-baw.medium.com/royal-colleges-3-0-best-practice-as-code-7065bce821a7" className="royalcolleges">
             #royalcolleges3.0
           </a>
         </Header>
