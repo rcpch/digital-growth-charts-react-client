@@ -9,9 +9,11 @@ import {
   Select,
   Button,
   Header,
-  Message
+  Message,
+  Modal
 } from "semantic-ui-react";
 import moment from "moment";
+
 
 const sexOptions = [
   { key: "male", value: "male", text: "Boy" },
@@ -95,11 +97,13 @@ class MeasurementForm extends React.Component {
       formData: {},
       measurementResult: [],
       reference: 'uk-who',
-      measurementOptions: measurementOptions
+      measurementOptions: measurementOptions,
+      networkError: '',
+      modalOpen: false
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleChangeSelect = this.handleChangeSelect.bind(this);
+    this.handleChangeMeasurementMethod = this.handleChangeMeasurementMethod.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChangeGestation = this.handleChangeGestation.bind(this);
     this.handleChangeSex = this.handleChangeSex.bind(this);
@@ -112,24 +116,30 @@ class MeasurementForm extends React.Component {
   }
 
   handleChangeReference = (ref, data) => {
+
     this.setState({reference: data.value})
     
     if (data.value === "turner"){
         this.disableMeasurement("weight", true)
         this.disableMeasurement("ofc", true)
         this.disableMeasurement("bmi", true)
+        this.setState({sex: "female"})
+        this.setState({measurementMethod: "height"})
+        this.props.handleChangeReference(data.value) //call back
         return
     } 
     if (data.value === "uk-who"){
         this.disableMeasurement("weight", false)
         this.disableMeasurement("ofc", false)
         this.disableMeasurement("bmi", false)
+        this.props.handleChangeReference(data.value) //call back
         return
     } 
     if (data.value === "trisomy-21"){
       this.disableMeasurement("weight", false)
       this.disableMeasurement("ofc", false)
       this.disableMeasurement("bmi", false)
+      this.props.handleChangeReference(data.value) //call back
       return
   }
 }
@@ -160,8 +170,10 @@ class MeasurementForm extends React.Component {
     Promise.all(resultsPromiseArray).then((result) => {
       var mergedMeasurementArrays = [].concat.apply([], result);
       this.handleGrowthResults(mergedMeasurementArrays)
+    }).catch(error => {
+      this.setState({networkError: error.message})
+      this.setState({modalOpen: true})
     });
-    // TODO #1 needs a catch statement
   };
 
   disableMeasurement=(measurement_method, disable)=>{
@@ -335,11 +347,11 @@ class MeasurementForm extends React.Component {
     this.handleFormData(measurementArray);
   }
 
-  handleChangeSelect(event, data) {
+  handleChangeMeasurementMethod(event, data) {
     
     let measurement = this.state.measurement;
-    console.log(measurement.measurement_method);
-    console.log(data.value);
+    
+      this.props.handleChangeMeasurementMethod(data.value)
       if (data.value !== measurement.measurement_method) {
         measurement.measurement_method = data.value;
         measurement.units = this.changeUnits(data.value);
@@ -375,6 +387,7 @@ class MeasurementForm extends React.Component {
 
   handleChangeSex(event, data) {
     this.setState({ sex: data.value });
+    this.props.handleChangeSex(data.value)
   }
 
   changeUnits(measurement_method) {
@@ -443,7 +456,7 @@ class MeasurementForm extends React.Component {
                     name="measurement_method"
                     placeholder="Measurement Type"
                     options={measurementOptions}
-                    onChange={this.handleChangeSelect}
+                    onChange={this.handleChangeMeasurementMethod}
                     /> 
                 </Form.Field>
                 <Form.Field required width={8}>
@@ -515,9 +528,37 @@ class MeasurementForm extends React.Component {
             </Form.Field>
           </Form>
         </Segment>
+        <ErrorModal 
+          error={this.state.networkError} 
+          open={this.state.modalOpen}
+          handleClose={
+            () => {
+              this.setState({ modalOpen: false })
+            }
+          }
+        />
       </Container>
     );
   }
+}
+
+const ErrorModal = (props) =>{
+  return (
+    <Modal
+          error={props.error}
+          open={props.open}
+          size='small'
+          closeOnEscape={true}
+    >
+      <Modal.Header>{props.error}</Modal.Header>
+      <Modal.Content>It is likely the server is down. Please check back later</Modal.Content>
+      <Modal.Actions>
+        <Button negative onClick={props.handleClose}>
+          Cancel
+        </Button>
+      </Modal.Actions>
+    </Modal>
+  )
 }
 
 export default MeasurementForm;
