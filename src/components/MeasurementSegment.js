@@ -74,7 +74,7 @@ class MeasurementSegment extends Component {
           weights: [],
           ofcs: [],
           bmis: [],
-          theme: 'monochrome',
+          theme: 'tanner4',
           activeIndex: 0, //set tab to height
           flip: false, // flag to determine if results or chart showing
           heightDisabled: false,
@@ -335,6 +335,7 @@ class MeasurementSegment extends Component {
   render(){
 
     const Acknowledgements = ()=> {
+      // list={["Freeman JV, Cole TJ, Chinn S, Jones PRM, White EM, Preece MA. Cross sectional stature and weight reference curves for the UK, 1990. Arch Dis Child 1995; 73:17-24.", "<a href='www.who.int/childgrowth/en'>www.who.int/childgrowth/en</a>", "For further relevant references see fact sheet downloadable from www.growthcharts.RCPCH.ac.uk"]}
           return (
               <Message>
                 <Message.Header>
@@ -406,12 +407,7 @@ class MeasurementSegment extends Component {
 
     const ThemeSelection = () => (
       <Menu compact className="selectUpperMargin">
-        <Dropdown 
-          placeholder='Select theme'
-          selection
-          options={themeOptions} 
-          value={this.state.theme}
-          onChange={this.handleChangeTheme}/>
+        <Dropdown text='Theme' options={themeOptions} simple item onChange={this.handleChangeTheme}/>
       </Menu>
     )
     
