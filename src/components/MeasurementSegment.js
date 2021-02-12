@@ -9,7 +9,7 @@ import RCPCHThemeTraditionalBoy from '../components/chartThemes/RCPCHThemeTradit
 import RCPCHThemeTraditionalGirl from '../components/chartThemes/RCPCHThemeTraditionalGirl'
 
 // Semantic UI React
-import { Grid, Segment, Message, Flag, Tab, Menu, Dropdown, Button, Table, List } from "semantic-ui-react";
+import { Grid, Segment, Message, Flag, Tab, Dropdown, Button, Table, List } from "semantic-ui-react";
 import ChartData from '../api/Chart'
 import MeasurementForm from "../components/MeasurementForm";
 import '../index.css'
@@ -74,7 +74,10 @@ class MeasurementSegment extends Component {
           weights: [],
           ofcs: [],
           bmis: [],
-          theme: 'tanner4',
+          theme: {
+            value: 'tanner4',
+            text: "Monochrome"
+          },
           activeIndex: 0, //set tab to height
           flip: false, // flag to determine if results or chart showing
           heightDisabled: false,
@@ -258,25 +261,31 @@ class MeasurementSegment extends Component {
   handleChangeTheme(event, {value}){
 
     let selectedTheme;
-    
+    let text;
+
     if (value === 'trad'){  
       if (this.state.sex === 'male'){
         selectedTheme = RCPCHThemeTraditionalBoy
       } else {
         selectedTheme = RCPCHThemeTraditionalGirl
       }
+      text="Traditional"
     }
     if (value === "tanner1"){
       selectedTheme=RCPCHTheme1
+      text="Tanner 1"
     }
     if (value === 'tanner2'){
      selectedTheme=RCPCHTheme2
+     text = "Tanner 2"
     }
     if (value==="tanner3"){
       selectedTheme=RCPCHTheme3
+      text = "Tanner 3"
     }
     if (value==="monochrome"){
       selectedTheme=RCPCHThemeMonochrome
+      text = "Monochrome"
     }
 
     this.returnNewChart(
@@ -287,12 +296,12 @@ class MeasurementSegment extends Component {
       selectedTheme.gridlines, 
       selectedTheme.centiles,
       selectedTheme.measurements)
-
+      
     this.setState({centileStyle: selectedTheme.centiles})
     this.setState({chartStyle: selectedTheme.chart})
     this.setState({measurementStyle: selectedTheme.measurements})
     this.setState({axisStyle: selectedTheme.axes})
-    this.setState({theme: value})
+    this.setState({theme: {value: value, text: text}})
 
   }
 
@@ -406,9 +415,12 @@ class MeasurementSegment extends Component {
     const themeOptions = [{ key: 'trad', value: 'trad', text: 'Traditional' },{ key: 'tanner1', value: 'tanner1', text: 'Tanner 1' }, { key: 'tanner2', value: 'tanner2', text: 'Tanner 2' }, { key: 'tanner3', value: 'tanner3', text: 'Tanner 3' }, { key: 'monochrome', value: 'monochrome', text: 'Monochrome' }]
 
     const ThemeSelection = () => (
-      <Menu compact className="selectUpperMargin">
-        <Dropdown text='Theme' options={themeOptions} simple item onChange={this.handleChangeTheme}/>
-      </Menu>
+      // <Menu compact className="selectUpperMargin">
+      <span>
+        Theme {' '}
+        <Dropdown options={themeOptions} floating inline onChange={this.handleChangeTheme} text={this.state.theme.text}/>
+      </span>
+      // </Menu>
     )
     
     const ResultsSegment = (selectedMeasurement) => (
@@ -507,10 +519,16 @@ class MeasurementSegment extends Component {
           <Grid.Column width={10}>
             <Segment raised>
             {this.state.flip ? <ResultsSegment selectedMeasurement={this.state.measurementMethod}/> : <TabPanes/>}
-              <Grid.Row>
+            <Grid verticalAlign='middle'>
+              <Grid.Row columns={2}>
+                <Grid.Column textAlign='left'>
                   <ThemeSelection />
-                  <Button floated="right" className="selectUpperMargin" onClick={this.handleFlipResults}>Results</Button>
+                </Grid.Column>
+                <Grid.Column textAlign='right'>
+                  <Button className="selectUpperMargin" onClick={this.handleFlipResults}>Results</Button>
+                </Grid.Column>
               </Grid.Row>
+              </Grid>
             </Segment>
           </Grid.Column>
           </Grid.Row>
