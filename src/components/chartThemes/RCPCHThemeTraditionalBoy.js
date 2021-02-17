@@ -20,7 +20,7 @@ font: Montserrat regular
 
 const centileColour = "#00a3de"
 const pubertyFill = "#66c8eb"
-const tooltipBackgroundColour = "#b3b3b3"
+const tooltipBackgroundColour = "#66c8eb"
 const tooltipTextColour = "#000000"
 const gridlineColour = "#d9d9d9"
 const gridlineWidth = 0.25
