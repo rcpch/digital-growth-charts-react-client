@@ -236,7 +236,7 @@ class MeasurementSegment extends Component {
       case ('ofc'):
         measurementsArray = this.state.ofcs
         concatenated = measurementsArray.concat(results)
-        this.setState({bmis: concatenated})
+        this.setState({ofcs: concatenated})
         this.setState({activeIndex: 3}) // move focus to ofc tab
         break
       default:
