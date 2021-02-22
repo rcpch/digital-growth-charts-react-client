@@ -125,6 +125,7 @@ class MeasurementSegment extends Component {
       this.setState({ofcDisabled: false})
     }
     this.returnNewChart(
+      this.state.sex,
       this.state.measurementMethod,
       [],
       this.state.chartStyle,
@@ -138,7 +139,27 @@ class MeasurementSegment extends Component {
   changeSex(sex){
      // call back from MeasurementForm
      this.setState({sex: sex})
+     let selectedTheme
+     if (this.state.reference==="uk-who"){
+        if (sex==="male"){
+          selectedTheme=RCPCHThemeTraditionalBoy
+        } else {
+          selectedTheme=RCPCHThemeTraditionalGirl
+        }
+        
+        this.returnNewChart(
+          sex,
+          this.state.measurementMethod,
+          [],
+          selectedTheme.chart, 
+          selectedTheme.axes,
+          selectedTheme.gridlines, 
+          selectedTheme.centiles,
+          selectedTheme.measurements
+        )
+     }
      this.returnNewChart(
+       sex,
        this.state.measurementMethod,
        [],
        this.state.chartStyle,
@@ -168,6 +189,7 @@ class MeasurementSegment extends Component {
         return
     }
     this.returnNewChart(
+      this.state.sex,
       measurementMethod,
       [],
       this.state.chartStyle,
@@ -214,7 +236,7 @@ class MeasurementSegment extends Component {
       case ('ofc'):
         measurementsArray = this.state.ofcs
         concatenated = measurementsArray.concat(results)
-        this.setState({bmis: concatenated})
+        this.setState({ofcs: concatenated})
         this.setState({activeIndex: 3}) // move focus to ofc tab
         break
       default:
@@ -222,16 +244,18 @@ class MeasurementSegment extends Component {
     }
 
     this.returnNewChart(
-      measurementMethod, concatenated, 
+      this.state.sex,
+      measurementMethod, 
+      concatenated, 
       this.state.chartStyle, 
       this.state.axisStyle, 
       this.state.gridlineStyle, 
       this.state.centileStyle, 
       this.state.measurementStyle)
-
   }
 
   returnNewChart(
+    sex,
     measurementMethod, 
     measurementsArray, 
     chartStyle, 
@@ -239,12 +263,11 @@ class MeasurementSegment extends Component {
     gridlineStyle, 
     centileStyle, 
     measurementStyle){
-      
       const Chart = (
         <ChartData
               key={measurementMethod + "-" + this.state.reference}
               reference={this.state.reference} //the choices are ["uk-who", "turner", "trisomy-21"] REQUIRED
-              sex={this.state.sex} //the choices are ["male", "female"] REQUIRED
+              sex={sex} //the choices are ["male", "female"] REQUIRED
               measurementMethod={measurementMethod} //the choices are ["height", "weight", "ofc", "bmi"] REQUIRED
               measurementsArray = {measurementsArray}  // an array of Measurement class objects from dGC Optional
               // measurementsSDSArray = {[]} // an array of SDS measurements for SDS charts Optional: currently not implemented: pass []
@@ -289,6 +312,7 @@ class MeasurementSegment extends Component {
     }
 
     this.returnNewChart(
+      this.state.sex,
       this.state.measurementMethod, 
       this.state.measurementsArray, 
       selectedTheme.chart, 
@@ -363,6 +387,7 @@ class MeasurementSegment extends Component {
       { menuItem: "Height", 
         render: () => <Tab.Pane attached={"top"} disabled={this.state.heightDisabled}>{
           this.returnNewChart(
+            this.state.sex,
             "height", 
             this.state.heights, 
             this.state.chartStyle, 
@@ -375,6 +400,7 @@ class MeasurementSegment extends Component {
       { menuItem: "Weight",
         render: () => <Tab.Pane attached={"top"} disabled={this.state.weightDisabled}>{
           this.returnNewChart(
+            this.state.sex,
             "weight", 
             this.state.weights,
             this.state.chartStyle, 
@@ -387,6 +413,7 @@ class MeasurementSegment extends Component {
       { menuItem: "BMI", 
         render: () => <Tab.Pane attached={"top"} disabled={this.state.bmiDisabled}>
         {this.returnNewChart(
+            this.state.sex,
             "bmi", 
             this.state.bmis,
             this.state.chartStyle, 
@@ -398,6 +425,7 @@ class MeasurementSegment extends Component {
         </Tab.Pane> },
       { menuItem: "Head Circumference", render: () => <Tab.Pane attached={"top"} disabled={this.state.ofcDisabled}>
         {this.returnNewChart(
+          this.state.sex,
           "ofc", 
           this.state.ofcs, 
           this.state.chartStyle, 
@@ -453,18 +481,18 @@ class MeasurementSegment extends Component {
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>
-                    SDS
+                    Corrected SDS
                   </Table.Cell>
                   <Table.Cell>
-                    {Math.round(measurement.measurement_calculated_values.sds*1000)/1000}
+                    {Math.round(measurement.measurement_calculated_values.corrected_sds*1000)/1000}
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>
-                    Centile
+                    Corrected Centile
                   </Table.Cell>
                   <Table.Cell>
-                    {measurement.measurement_calculated_values.centile}
+                    {measurement.measurement_calculated_values.corrected_centile}
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>

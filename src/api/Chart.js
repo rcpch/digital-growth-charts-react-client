@@ -20,7 +20,6 @@ function ChartData(props) {
           if (!ignore) {
             // this prevents data being added to state if unmounted
             setCentile_data(result.data.child_data.centile_data);
-            // setSDS_data(result.data.child_data.sds_data)
             setLoading(false);
           }
         });
