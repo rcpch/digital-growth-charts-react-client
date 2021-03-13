@@ -16,12 +16,15 @@ function ChartData(props) {
     let ignore = false; // this prevents data being added to state if unmounted
     if (measurementsArray.length > 0) {
       try {
-        fetchCentileData(measurementsArray, reference).then((result) => {
-          if (!ignore) {
-            // this prevents data being added to state if unmounted
-            setCentile_data(result.data.child_data.centile_data);
-            setLoading(false);
-          }
+        setLoading(false)
+        measurementsArray.forEach(measurement => {
+          fetchCentilesForMeasurement(measurement, reference).then((result) => {
+            if (!ignore) {
+              // this prevents data being added to state if unmounted
+              setCentile_data(result);
+              setLoading(false);
+            }
+          });
         });
       } catch (error) {
         console.error("Failure!");
@@ -112,24 +115,29 @@ function setTitle(props) {
   return { subtitle: subTitle, title: title };
 }
 
-async function fetchCentileData(measurementsArray, reference) {
-  const formData = {
-    results: measurementsArray, // measurements passed in from the form
-  };
+const fetchCentilesForMeasurement = async  (payload, reference) =>{
+    
+    let url
+    if (reference === "uk-who"){
+      url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/calculation`
+    }
+    if (reference === "turner"){
+      url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/turner/calculation`
+    }
+    if (reference === "trisomy-21"){
+      url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/trisomy-21/calculation`
+    }
 
-  const response = await axios({
-    url:
-      `${process.env.REACT_APP_GROWTH_API_BASEURL}/` +
-      reference +
-      `/plottable-child-data`,
-    data: formData,
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+    const response = await axios({
+      url: url,
+      data: payload,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  return response;
-}
+    return response.data;
+  }
 
 export default ChartData;

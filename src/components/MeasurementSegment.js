@@ -203,18 +203,13 @@ class MeasurementSegment extends Component {
 
   handleResults(results){
     // delegate function from MeasurementForm
-    // receives measurement results and passes them back to API
-    // to receive plottable child
-    
-    const measurementMethod = results[0].child_observation_value.measurement_method
-    const sex = results[0].birth_data.sex
-    this.setState({measurementMethod: measurementMethod})
-    this.setState({sex: sex})
+    // receives form data and stores in the correct measurement array
+    // this will trigger a rerender
     
     let measurementsArray = []
     let concatenated = []
     
-    switch (measurementMethod){
+    switch (this.state.measurementMethod){
       case ('height'):
         measurementsArray = this.state.heights
         concatenated = measurementsArray.concat(results)
@@ -242,16 +237,6 @@ class MeasurementSegment extends Component {
       default:
         concatenated = []
     }
-
-    this.returnNewChart(
-      this.state.sex,
-      measurementMethod, 
-      concatenated, 
-      this.state.chartStyle, 
-      this.state.axisStyle, 
-      this.state.gridlineStyle, 
-      this.state.centileStyle, 
-      this.state.measurementStyle)
   }
 
   returnNewChart(
