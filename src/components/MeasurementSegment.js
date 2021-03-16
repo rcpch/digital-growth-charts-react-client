@@ -1,6 +1,5 @@
 // React
-import React from "react";
-import { Component } from "react";
+import React, { useState, useEffect } from "react";
 import RCPCHTheme1 from "../components/chartThemes/rcpchTheme1";
 import RCPCHTheme2 from "../components/chartThemes/rcpchTheme2";
 import RCPCHTheme3 from "../components/chartThemes/rcpchTheme3";
@@ -13,6 +12,8 @@ import { Grid, Segment, Message, Flag, Tab, Dropdown, Button, Table, List } from
 import ChartData from '../api/Chart'
 import MeasurementForm from "../components/MeasurementForm";
 import '../index.css'
+
+import axios from "axios";
 
 /*
     return object structure from API
@@ -53,155 +54,187 @@ import '../index.css'
     ]
     */
 
-class MeasurementSegment extends Component {
-
-      constructor(props){
-        super(props)
+function MeasurementSegment(){
 
         // const dummyData=[{birth_data:{birth_date:"Wed, 28 Jan 2015 00:00:00 GMT",estimated_date_delivery:null,estimated_date_delivery_string:null,gestation_days:0,gestation_weeks:40,sex:"male"},child_observation_value:{measurement_method:"height",observation_value:110},measurement_calculated_values:{centile:13,centile_band:"This height measurement is between the 9th and 25th centiles.",measurement_method:"height",sds:-1.117076305831875},measurement_dates:{chronological_calendar_age:"5 years, 10 months and 4 weeks",chronological_decimal_age:5.9110198494182065,clinician_decimal_age_comment:"Born Term. No correction necessary.",corrected_calendar_age:null,corrected_decimal_age:5.9110198494182065,corrected_gestational_age:{corrected_gestation_days:null,corrected_gestation_weeks:null},lay_decimal_age_comment:"At 40+0, your child is considered to have been born at term. No age adjustment is necessary.",observation_date:"Sat, 26 Dec 2020 00:00:00 GMT"}}]
         const defaultTheme = RCPCHThemeMonochrome;
+
+        const hs=[{
+          "birth_date": "2020-04-12",
+          "observation_date": "2020-06-12",
+          "observation_value": 60,
+          "sex": "male",
+          "gestation_weeks": 40,
+          "gestation_days": 0,
+          "measurement_method": "height"
+      },
+      {
+          "birth_date": "2020-04-12",
+          "observation_date": "2020-09-12",
+          "observation_value": 62,
+          "sex": "male",
+          "gestation_weeks": 40,
+          "gestation_days": 0,
+          "measurement_method": "height"
+      }]
         
-        this.state = {
-          measurementMethod: "height",
-          reference: "uk-who",
-          sex: "male",
-          chartStyle: defaultTheme.chart,
-          axisStyle: defaultTheme.axes,
-          centileStyle: defaultTheme.centiles,
-          gridlineStyle: defaultTheme.gridlines,
-          measurementStyle: defaultTheme.measurements,
-          heights: [],
-          weights: [],
-          ofcs: [],
-          bmis: [],
-          theme: {
+        
+          const [measurementMethod, setMeasurementMethod]=useState("height")
+          const [reference, setReference]=useState("uk-who")
+          const [sex, setSex]=useState("male")
+          const [chartStyle, setChartSyle]=useState(defaultTheme.chart)
+          const [axisStyle, setAxisStyle]=useState(defaultTheme.axes)
+          const [centileStyle, setCentileStyle]=useState(defaultTheme.centiles)
+          const [gridlineStyle, setGridlineStyle]=useState(defaultTheme.gridlines)
+          const [measurementStyle, setMeasurementStyle]=useState(defaultTheme.measurements)
+          let heights=hs
+          let weights=[]
+          let ofcs=[]
+          let bmis=[]
+          const [theme, setTheme]=useState({
             value: 'tanner4',
             text: "Monochrome"
-          },
-          activeIndex: 0, //set tab to height
-          flip: false, // flag to determine if results or chart showing
-          heightDisabled: false,
-          weightDisabled: false,
-          bmiDisabled: false,
-          ofcDisabled: false
-        }
+          })
+          const [activeIndex, setActiveIndex]=useState(0) //set tab to height
+          const [flip,setFlip]=useState(false) // flag to determine if results or chart showing
+          const [heightDisabled, setHeightDisabled]=useState(false)
+          const [weightDisabled, setWeightDisabled]=useState(false)
+          const [bmiDisabled, setBMIDisabled]=useState(false)
+          const [ofcDisabled, setOFCDisabled]=useState(false)
+          const [apiResult, setAPIResult]=useState({val: 1, result: []})
+          const [hasRun, setHasRun]=useState(false)
 
-        this.handleResults = this.handleResults.bind(this)
-        this.handleRangeChange = this.handleRangeChange.bind(this)
-        this.handleTabChange = this.handleTabChange.bind(this)
-        this.handleChangeTheme = this.handleChangeTheme.bind(this)
-        this.handleFlipResults = this.handleFlipResults.bind(this)
-        this.returnMeasurementArray = this.returnMeasurementArray.bind(this)
-        this.units = this.units.bind(this)
-        this.changeReference = this.changeReference.bind(this)
-        this.changeSex = this.changeSex.bind(this)
-        this.changeMeasurement= this.changeMeasurement.bind(this)
-      }
+
+          useEffect(() => {
+            
+            const fetchCentilesForMeasurement = async  (array) =>{
+            
+              let url
+              if (reference === "uk-who"){
+                url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/calculation`
+              }
+              if (reference === "turner"){
+                url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/turner/calculation`
+              }
+              if (reference === "trisomy-21"){
+                url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/trisomy-21/calculation`
+              }
+
+              const results = array.map(async(payload) => {
+                const response = await axios({
+                  url: url,
+                  data: payload,
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                });
+                return response.data
+              })
+              
+              return Promise.all(results)
+          
+            }
+            
+            let formRequests=[]
+            if (measurementMethod==="height"){
+              formRequests=heights
+            }
+            if (measurementMethod==="weight"){
+              formRequests=weights
+            }
+            if (measurementMethod==="bmi"){
+              formRequests=bmis
+            }
+            if (measurementMethod==="ofc"){
+              formRequests=ofcs
+            }
+
+            // let ignore = false; // this prevents data being added to state if unmounted
+            if (formRequests.length > 0) {
+              // if (!ignore){
+                const results = fetchCentilesForMeasurement(formRequests)
+                results.then(final => {  
+                  if(final.length>0 && apiResult.val===1){
+                    setAPIResult(prevState => ({...prevState, result: final}))
+                  }
+                })
+              // }
+            } else {
+              return
+            }
+            return () => {
+              // ignore = true;
+            }; // this prevents data being added to state if unmounted
+          },[apiResult.val]);
   
-  handleRangeChange = (e) => this.setState({ activeIndex: e.target.value })
-  handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex })
+  const handleTabChange = (e, { activeIndex }) => setActiveIndex(activeIndex)
 
-  changeReference(reference){
+  const changeReference=(reference)=>{
     // call back from MeasurementForm
-    this.setState({reference: reference})
+    setReference(reference)
     if (reference==="turner"){
-      this.setState({measurementMethod:"height"})
-      this.setState({sex: "female"})
-      this.setState({heightDisabled: false})
-      this.setState({weightDisabled: true})
-      this.setState({bmiDisabled: true})
-      this.setState({ofcDisabled: true})
+      setMeasurementMethod("height")
+      setSex("female")
+      setHeightDisabled(false)
+      setWeightDisabled(true)
+      setBMIDisabled(true)
+      setOFCDisabled(true)
     }
     if (reference==="trisomy-21"){
-      this.setState({heightDisabled: false})
-      this.setState({weightDisabled: false})
-      this.setState({bmiDisabled: false})
-      this.setState({ofcDisabled: true})
+      setHeightDisabled(false)
+      setWeightDisabled(false)
+      setBMIDisabled(false)
+      setOFCDisabled(true)
     }
     if (reference==="uk-who"){
-      this.setState({heightDisabled: false})
-      this.setState({weightDisabled: false})
-      this.setState({bmiDisabled: false})
-      this.setState({ofcDisabled: false})
+      setHeightDisabled(false)
+      setWeightDisabled(false)
+      setBMIDisabled(false)
+      setOFCDisabled(false)
     }
-    this.returnNewChart(
-      this.state.sex,
-      this.state.measurementMethod,
-      [],
-      this.state.chartStyle,
-      this.state.axisStyle,
-      this.state.gridlineStyle,
-      this.state.centileStyle,
-      this.state.measurementStyle
-    )
   }
 
-  changeSex(sex){
+  const changeSex=(sex)=>{
      // call back from MeasurementForm
-     this.setState({sex: sex})
+     setSex(sex)
      let selectedTheme
-     if (this.state.reference==="uk-who"){
+     if (reference==="uk-who"){
         if (sex==="male"){
           selectedTheme=RCPCHThemeTraditionalBoy
         } else {
           selectedTheme=RCPCHThemeTraditionalGirl
         }
-        
-        this.returnNewChart(
-          sex,
-          this.state.measurementMethod,
-          [],
-          selectedTheme.chart, 
-          selectedTheme.axes,
-          selectedTheme.gridlines, 
-          selectedTheme.centiles,
-          selectedTheme.measurements
-        )
+        setCentileStyle(selectedTheme.centiles)
+        setChartSyle(selectedTheme.chart)
+        setMeasurementStyle(selectedTheme.measurements)
+        setAxisStyle(selectedTheme.axes)
+        setTheme({value: 'tanner1', text: "Tanner 1"})
      }
-     this.returnNewChart(
-       sex,
-       this.state.measurementMethod,
-       [],
-       this.state.chartStyle,
-       this.state.axisStyle,
-       this.state.gridlineStyle,
-       this.state.centileStyle,
-       this.state.measurementStyle
-     )
   }
 
-  changeMeasurement(measurementMethod){
+  const changeMeasurement=(measurementMethod)=>{
     // call back from MeasurementForm
     switch (measurementMethod){
       case ('height'):
-        this.setState({activeIndex: 0}) // move focus to height tab
+        setActiveIndex(0) // move focus to height tab
         break
       case ('weight'):
-        this.setState({activeIndex: 1}) // move focus to weight tab
+        setActiveIndex(1) // move focus to weight tab
         break
       case ('bmi'):
-        this.setState({activeIndex: 2}) // move focus to bmi tab
+        setActiveIndex(2) // move focus to bmi tab
         break
       case ('ofc'):
-        this.setState({activeIndex: 3}) // move focus to ofc tab
+        setActiveIndex(3) // move focus to ofc tab
         break
       default:
         return
     }
-    this.returnNewChart(
-      this.state.sex,
-      measurementMethod,
-      [],
-      this.state.chartStyle,
-      this.state.axisStyle,
-      this.state.gridlineStyle,
-      this.state.centileStyle,
-      this.state.measurementStyle
-      )
-      this.setState({measurementMethod: measurementMethod})
+    setMeasurementMethod(measurementMethod)
   }
 
-  handleResults(results){
+  const handleResults=(results)=>{
     // delegate function from MeasurementForm
     // receives form data and stores in the correct measurement array
     // this will trigger a rerender
@@ -209,37 +242,37 @@ class MeasurementSegment extends Component {
     let measurementsArray = []
     let concatenated = []
     
-    switch (this.state.measurementMethod){
+    switch (measurementMethod){
       case ('height'):
-        measurementsArray = this.state.heights
+        measurementsArray = heights
         concatenated = measurementsArray.concat(results)
-        this.setState({heights: concatenated})
-        this.setState({activeIndex: 0}) // move focus to height tab
+        heights = concatenated
+        setActiveIndex(0) // move focus to height tab
         break
       case ('weight'):
-        measurementsArray = this.state.weights
+        measurementsArray = weights
         concatenated = measurementsArray.concat(results)
-        this.setState({weights: concatenated})
-        this.setState({activeIndex: 1}) // move focus to weight tab
+        weights=concatenated
+        setActiveIndex(1) // move focus to weight tab
         break
       case ('bmi'):
-        measurementsArray = this.state.bmis
+        measurementsArray = bmis
         concatenated = measurementsArray.concat(results)
-        this.setState({bmis: concatenated})
-        this.setState({activeIndex: 2}) // move focus to bmi tab
+        bmis=concatenated
+        setActiveIndex(2) // move focus to bmi tab
         break
       case ('ofc'):
-        measurementsArray = this.state.ofcs
+        measurementsArray = ofcs
         concatenated = measurementsArray.concat(results)
-        this.setState({ofcs: concatenated})
-        this.setState({activeIndex: 3}) // move focus to ofc tab
+        ofcs=concatenated
+        setActiveIndex(3)// move focus to ofc tab
         break
       default:
         concatenated = []
     }
   }
 
-  returnNewChart(
+  const returnNewChart = (
     sex,
     measurementMethod, 
     measurementsArray, 
@@ -247,11 +280,11 @@ class MeasurementSegment extends Component {
     axisStyle, 
     gridlineStyle, 
     centileStyle, 
-    measurementStyle){
+    measurementStyle)=>{
       const Chart = (
         <ChartData
-              key={measurementMethod + "-" + this.state.reference}
-              reference={this.state.reference} //the choices are ["uk-who", "turner", "trisomy-21"] REQUIRED
+              key={measurementMethod + "-" + reference}
+              reference={reference} //the choices are ["uk-who", "turner", "trisomy-21"] REQUIRED
               sex={sex} //the choices are ["male", "female"] REQUIRED
               measurementMethod={measurementMethod} //the choices are ["height", "weight", "ofc", "bmi"] REQUIRED
               measurementsArray = {measurementsArray}  // an array of Measurement class objects from dGC Optional
@@ -266,13 +299,13 @@ class MeasurementSegment extends Component {
       return Chart
   }
 
-  handleChangeTheme(event, {value}){
+  const handleChangeTheme = (event, {value})=>{
 
     let selectedTheme;
     let text;
 
     if (value === 'trad'){  
-      if (this.state.sex === 'male'){
+      if (sex === 'male'){
         selectedTheme = RCPCHThemeTraditionalBoy
       } else {
         selectedTheme = RCPCHThemeTraditionalGirl
@@ -296,30 +329,30 @@ class MeasurementSegment extends Component {
       text = "Monochrome"
     }
 
-    this.returnNewChart(
-      this.state.sex,
-      this.state.measurementMethod, 
-      this.state.measurementsArray, 
-      selectedTheme.chart, 
-      selectedTheme.axes,
-      selectedTheme.gridlines, 
-      selectedTheme.centiles,
-      selectedTheme.measurements)
+    // this.returnNewChart(
+    //   sex,
+    //   measurementMethod, 
+    //   measurementsArray, 
+    //   selectedTheme.chart, 
+    //   selectedTheme.axes,
+    //   selectedTheme.gridlines, 
+    //   selectedTheme.centiles,
+    //   selectedTheme.measurements)
       
-    this.setState({centileStyle: selectedTheme.centiles})
-    this.setState({chartStyle: selectedTheme.chart})
-    this.setState({measurementStyle: selectedTheme.measurements})
-    this.setState({axisStyle: selectedTheme.axes})
-    this.setState({theme: {value: value, text: text}})
+    setCentileStyle(selectedTheme.centiles)
+    setChartSyle(selectedTheme.chart)
+    setMeasurementStyle(selectedTheme.measurements)
+    setAxisStyle(selectedTheme.axes)
+    setTheme({value: value, text: text})
 
   }
 
-  handleFlipResults(){
+  const handleFlipResults=()=>{
     const flipped = this.state.flip
     this.setState({flip: !flipped})
   }
 
-  units(measurementMethod){
+  const units=(measurementMethod)=>{
     if (measurementMethod === "height"){
       return "cm"
     }
@@ -335,24 +368,22 @@ class MeasurementSegment extends Component {
     
   }
 
-  returnMeasurementArray(measurementMethod){
+  const returnMeasurementArray=(measurementMethod)=>{
     switch (measurementMethod.selectedMeasurement) {
       case "height":
-        return this.state.heights
+        return heights
       case "weight":
-        return  this.state.weights
+        return weights
       case "bmi":
-        return  this.state.bmis
+        return bmis
       case "ofc":
-        return  this.state.ofcs
+        return ofcs
       default:
         return
     }
   }
 
-  render(){
-
-    const Acknowledgements = ()=> {
+  const Acknowledgements = ()=> {
       // list={["Freeman JV, Cole TJ, Chinn S, Jones PRM, White EM, Preece MA. Cross sectional stature and weight reference curves for the UK, 1990. Arch Dis Child 1995; 73:17-24.", "<a href='www.who.int/childgrowth/en'>www.who.int/childgrowth/en</a>", "For further relevant references see fact sheet downloadable from www.growthcharts.RCPCH.ac.uk"]}
           return (
               <Message>
@@ -368,75 +399,75 @@ class MeasurementSegment extends Component {
           )
     }
 
-    const panes = [
+  const panes = [
       { menuItem: "Height", 
-        render: () => <Tab.Pane attached={"top"} disabled={this.state.heightDisabled}>{
-          this.returnNewChart(
-            this.state.sex,
+        render: () => <Tab.Pane attached={"top"} disabled={heightDisabled}>{
+          returnNewChart(
+            sex,
             "height", 
-            this.state.heights, 
-            this.state.chartStyle, 
-            this.state.axisStyle,
-            this.state.gridlineStyle,
-            this.state.centileStyle,
-            this.state.measurementStyle
+            apiResult.result, 
+            chartStyle, 
+            axisStyle,
+            gridlineStyle,
+            centileStyle,
+            measurementStyle
             )
         }<Acknowledgements /></Tab.Pane> },
       { menuItem: "Weight",
-        render: () => <Tab.Pane attached={"top"} disabled={this.state.weightDisabled}>{
-          this.returnNewChart(
-            this.state.sex,
+        render: () => <Tab.Pane attached={"top"} disabled={weightDisabled}>{
+          returnNewChart(
+            sex,
             "weight", 
-            this.state.weights,
-            this.state.chartStyle, 
-            this.state.axisStyle,
-            this.state.gridlineStyle,
-            this.state.centileStyle,
-            this.state.measurementStyle
+            apiResult,
+            chartStyle, 
+            axisStyle,
+            gridlineStyle,
+            centileStyle,
+            measurementStyle
             )}<Acknowledgements />
           </Tab.Pane> },
       { menuItem: "BMI", 
-        render: () => <Tab.Pane attached={"top"} disabled={this.state.bmiDisabled}>
-        {this.returnNewChart(
-            this.state.sex,
+        render: () => <Tab.Pane attached={"top"} disabled={bmiDisabled}>
+        {returnNewChart(
+            sex,
             "bmi", 
-            this.state.bmis,
-            this.state.chartStyle, 
-            this.state.axisStyle,
-            this.state.gridlineStyle,
-            this.state.centileStyle,
-            this.state.measurementStyle
+            apiResult,
+            chartStyle, 
+            axisStyle,
+            gridlineStyle,
+            centileStyle,
+            measurementStyle
         )}<Acknowledgements />
         </Tab.Pane> },
-      { menuItem: "Head Circumference", render: () => <Tab.Pane attached={"top"} disabled={this.state.ofcDisabled}>
-        {this.returnNewChart(
-          this.state.sex,
+      { menuItem: "Head Circumference", render: () => <Tab.Pane attached={"top"} disabled={ofcDisabled}>
+        {returnNewChart(
+          sex,
           "ofc", 
-          this.state.ofcs, 
-          this.state.chartStyle, 
-          this.state.axisStyle,
-          this.state.gridlineStyle,
-          this.state.centileStyle,
-          this.state.measurementStyle
+          apiResult,
+          chartStyle, 
+          axisStyle,
+          gridlineStyle,
+          centileStyle,
+          measurementStyle
         )}<Acknowledgements />
         </Tab.Pane> },
     ];
   
-    const TabPanes = () => <Tab menu={{ attached: 'top' }} panes={panes} activeIndex={activeIndex}
-    onTabChange={this.handleTabChange}/>
+  const TabPanes = () => <Tab menu={{ attached: 'top' }} panes={panes} activeIndex={activeIndex}
+    onTabChange={handleTabChange}/>
 
-    const themeOptions = [{ key: 'trad', value: 'trad', text: 'Traditional' },{ key: 'tanner1', value: 'tanner1', text: 'Tanner 1' }, { key: 'tanner2', value: 'tanner2', text: 'Tanner 2' }, { key: 'tanner3', value: 'tanner3', text: 'Tanner 3' }, { key: 'monochrome', value: 'monochrome', text: 'Monochrome' }]
+  const themeOptions = [{ key: 'trad', value: 'trad', text: 'Traditional' },{ key: 'tanner1', value: 'tanner1', text: 'Tanner 1' }, { key: 'tanner2', value: 'tanner2', text: 'Tanner 2' }, { key: 'tanner3', value: 'tanner3', text: 'Tanner 3' }, { key: 'monochrome', value: 'monochrome', text: 'Monochrome' }]
 
-    const ThemeSelection = () => (
+  const ThemeSelection = () => (
       // <Menu compact className="selectUpperMargin">
       <span>
         Theme {' '}
-        <Dropdown options={themeOptions} floating inline onChange={this.handleChangeTheme} text={this.state.theme.text}/>
+        <Dropdown options={themeOptions} floating inline onChange={handleChangeTheme} text={theme.text}/>
       </span>
       // </Menu>
     )
     
-    const ResultsSegment = (selectedMeasurement) => (
+  const ResultsSegment = (selectedMeasurement) => (
       <Segment>
           <Table basic="very" celled collapsing compact>
               <Table.Header>
@@ -445,7 +476,7 @@ class MeasurementSegment extends Component {
                   <Table.HeaderCell>Results</Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
-          { this.returnMeasurementArray(selectedMeasurement).map((measurement,index) => { 
+          { returnMeasurementArray(selectedMeasurement).map((measurement,index) => { 
             return (<Table.Body key={index}>
               
                 <Table.Row>
@@ -461,7 +492,7 @@ class MeasurementSegment extends Component {
                     Measurement
                   </Table.Cell>
                   <Table.Cell>
-                    {measurement.child_observation_value.observation_value} {this.units(measurement.child_observation_value.measurement_method)}
+                    {measurement.child_observation_value.observation_value} {units(measurement.child_observation_value.measurement_method)}
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
@@ -493,8 +524,6 @@ class MeasurementSegment extends Component {
               </Table>
             </Segment>
     )
-
-    const { activeIndex } = this.state
   
     return (
         <Grid padded>
@@ -503,10 +532,10 @@ class MeasurementSegment extends Component {
             <Grid.Row>
               <Segment raised>
                 <MeasurementForm 
-                  measurementResult={this.handleResults} 
-                  handleChangeReference={this.changeReference}
-                  handleChangeSex={this.changeSex}
-                  handleChangeMeasurementMethod={this.changeMeasurement}
+                  measurementResult={handleResults} 
+                  handleChangeReference={changeReference}
+                  handleChangeSex={changeSex}
+                  handleChangeMeasurementMethod={changeMeasurement}
                   className="measurement-form" />
               </Segment>
             </Grid.Row>
@@ -531,14 +560,14 @@ class MeasurementSegment extends Component {
           </Grid.Column>
           <Grid.Column width={10}>
             <Segment raised>
-            {this.state.flip ? <ResultsSegment selectedMeasurement={this.state.measurementMethod}/> : <TabPanes/>}
+            {flip ? <ResultsSegment selectedMeasurement={measurementMethod}/> : <TabPanes/>}
             <Grid verticalAlign='middle'>
               <Grid.Row columns={2}>
                 <Grid.Column textAlign='left'>
                   <ThemeSelection />
                 </Grid.Column>
                 <Grid.Column textAlign='right'>
-                  <Button className="selectUpperMargin" onClick={this.handleFlipResults}>Results</Button>
+                  <Button className="selectUpperMargin" onClick={handleFlipResults}>Results</Button>
                 </Grid.Column>
               </Grid.Row>
               </Grid>
@@ -549,8 +578,5 @@ class MeasurementSegment extends Component {
     );
 
   }
-
-  
-}
 
 export default MeasurementSegment;
