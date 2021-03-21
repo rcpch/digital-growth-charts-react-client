@@ -11,6 +11,7 @@ function ChartData(props) {
 
   const isLoading = false
   const titles = setTitle(props)
+  
   return (
     <div>
       {isLoading ? (
@@ -26,7 +27,7 @@ function ChartData(props) {
             sex={props.sex}
             title={titles.title}
             subtitle={titles.subtitle}
-            measurementsArray={props.measurementsArray} // this is the plottable child data
+            measurementsArray={props.apiResult} // this is the plottable child data
             chartStyle={props.chartStyle}
             axisStyle={props.axisStyle}
             gridlineStyle={props.gridlineStyle}
