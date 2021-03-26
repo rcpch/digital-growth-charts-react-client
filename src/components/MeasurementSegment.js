@@ -99,10 +99,11 @@ function MeasurementSegment() {
   const [measurementStyle, setMeasurementStyle] = useState(
     defaultTheme.measurements
   );
-  // let heights = [];
-  // let weights = [];
-  // let ofcs = [];
-  // let bmis = [];
+  const [heights, setHeights] = useState([]);
+  const [weights, setWeights] = useState([]);
+  const [ofcs, setOfcs] = useState([]);
+  const [bmis, setBmis] = useState([]);
+
   const [theme, setTheme] = useState({
     value: 'tanner4',
     text: 'Monochrome',
@@ -113,10 +114,14 @@ function MeasurementSegment() {
   const [weightDisabled, setWeightDisabled] = useState(false);
   const [bmiDisabled, setBMIDisabled] = useState(false);
   const [ofcDisabled, setOFCDisabled] = useState(false);
-  const [apiResult, setAPIResult] = useState({ val: 1, result: [] });
-  const [hasRun, setHasRun] = useState(false);
-
+  const [apiResult, setAPIResult] = useState({
+    height: [],
+    weight: [],
+    bmi: [],
+    ofc: [],
+  });
   const [currentMeasurements, setCurrentMeasurements] = useState([]);
+
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -149,69 +154,46 @@ function MeasurementSegment() {
 
     let ignore = false; // this prevents data being added to state if unmounted
 
+    let submitArray = [];
+
+    switch (measurementMethod) {
+      case 'height':
+        setCurrentMeasurements(heights);
+        submitArray = heights;
+        break;
+      case 'weight':
+        setCurrentMeasurements(weights);
+        submitArray = weights;
+        break;
+      case 'bmi':
+        setCurrentMeasurements(bmis);
+        submitArray = bmis;
+        break;
+      case 'ofc':
+        setCurrentMeasurements(ofcs);
+        submitArray = ofcs;
+        break;
+      default:
+        console.error(
+          'No valid active index picked up when preparing results to server fetch'
+        );
+    }
+
     if (isLoading) {
-      if (currentMeasurements.length > 0) {
-        fetchCentilesForMeasurement(currentMeasurements).then((final) => {
-          if (final.length > 0 && apiResult.val === 1 && !ignore) {
-            // const plottable = [
-            //   [
-            //     {
-            //       age_type: 'corrected_age',
-            //       calendar_age:
-            //         final[0].measurement_dates.corrected_calendar_age,
-            //       centile_band:
-            //         final[0].measurement_calculated_values
-            //           .corrected_centile_band,
-            //       centile_value:
-            //         final[0].measurement_calculated_values.corrected_centile,
-            //       corrected_gestation_days:
-            //         final[0].measurement_dates.corrected_gestational_age
-            //           .corrected_gestation_days,
-            //       corrected_gestation_weeks:
-            //         final[0].measurement_dates.corrected_gestational_age
-            //           .corrected_gestation_weeks,
-            //       measurement_method:
-            //         final[0].child_observation_value.measurement_method,
-            //       x:
-            //         final[0].plottable_data.centile_data
-            //           .corrected_decimal_age_data.x,
-            //       y:
-            //         final[0].plottable_data.centile_data
-            //           .corrected_decimal_age_data.y,
-            //     },
-            //     {
-            //       age_type: 'chronological_age',
-            //       calendar_age:
-            //         final[0].measurement_dates.chronological_calendar_age,
-            //       centile_band:
-            //         final[0].measurement_calculated_values
-            //           .chronological_centile_band,
-            //       centile_value:
-            //         final[0].measurement_calculated_values
-            //           .chronological_centile_value,
-            //       corrected_gestation_days:
-            //         final[0].measurement_dates.corrected_gestational_age
-            //           .corrected_gestation_days,
-            //       corrected_gestation_weeks:
-            //         final[0].measurement_dates.corrected_gestational_age
-            //           .corrected_gestation_weeks,
-            //       measurement_method:
-            //         final[0].child_observation_value.measurement_method,
-            //       x:
-            //         final[0].plottable_data.centile_data
-            //           .chronological_decimal_age_data.x,
-            //       y:
-            //         final[0].plottable_data.centile_data
-            //           .chronological_decimal_age_data.y,
-            //     },
-            //   ],
-            // ];
-            const orderedFinal = final.sort((a,b)=> a.measurement_dates.corrected_decimal_age < b.measurement_dates.corrected_decimal_age ? 1 : -1)
+      if (submitArray.length > 0) {
+        fetchCentilesForMeasurement(submitArray).then((final) => {
+          if (final.length > 0 && !ignore) {
+            const orderedFinal = final.sort((a, b) =>
+              a.measurement_dates.corrected_decimal_age <
+              b.measurement_dates.corrected_decimal_age
+                ? 1
+                : -1
+            );
+            setIsLoading(false);
             setAPIResult((prevState) => ({
               ...prevState,
-              result: orderedFinal,
+              ...{ [measurementMethod]: orderedFinal },
             }));
-            setIsLoading(false);
           }
         });
       } else {
@@ -223,7 +205,17 @@ function MeasurementSegment() {
       // this prevents data being added to state if unmounted
       ignore = true;
     };
-  }, [isLoading, measurementMethod, reference, apiResult, currentMeasurements]);
+  }, [
+    isLoading,
+    measurementMethod,
+    reference,
+    apiResult,
+    heights,
+    weights,
+    ofcs,
+    bmis,
+    currentMeasurements,
+  ]);
 
   const handleTabChange = (e, { activeIndex }) => setActiveIndex(activeIndex);
 
@@ -296,52 +288,58 @@ function MeasurementSegment() {
     // receives form data and stores in the correct measurement array
     // this will trigger a rerender
 
-    let measurementsArray = [];
-    const concatenated = measurementsArray.concat(results);
-    setIsLoading(true);
-    setCurrentMeasurements(concatenated);
+    let concatenated;
     switch (measurementMethod) {
       case 'height':
+        concatenated = heights.concat(results);
         setActiveIndex(0); // move focus to height tab
+        setHeights(concatenated);
         break;
       case 'weight':
+        concatenated = weights.concat(results);
         setActiveIndex(1); // move focus to weight tab
+        setWeights(concatenated);
         break;
       case 'bmi':
+        concatenated = bmis.concat(results);
+        setBmis(concatenated);
         setActiveIndex(2); // move focus to bmi tab
         break;
       case 'ofc':
+        concatenated = ofcs.concat(results);
+        setOfcs(concatenated);
         setActiveIndex(3); // move focus to ofc tab
         break;
       default:
       //
     }
+    setIsLoading(true);
   };
 
   const returnNewChart = (
-    newSex,
-    newMeasurementMethod,
-    newMeasurementsArray,
-    newChartStyle,
-    newAxisStyle,
-    newGridlineStyle,
-    newCentileStyle,
-    newMeasurementStyle
+    Sex,
+    MeasurementMethod,
+    MeasurementsArray,
+    ChartStyle,
+    AxisStyle,
+    GridlineStyle,
+    CentileStyle,
+    MeasurementStyle
   ) => {
     const Chart = (
       <ChartData
-        key={newMeasurementMethod + '-' + reference}
+        key={MeasurementMethod + '-' + reference}
         reference={reference} //the choices are ["uk-who", "turner", "trisomy-21"] REQUIRED
-        sex={newSex} //the choices are ["male", "female"] REQUIRED
-        measurementMethod={newMeasurementMethod} //the choices are ["height", "weight", "ofc", "bmi"] REQUIRED
-        apiResult={newMeasurementsArray} // an array of Measurement class objects from dGC Optional
+        sex={Sex} //the choices are ["male", "female"] REQUIRED
+        measurementMethod={MeasurementMethod} //the choices are ["height", "weight", "ofc", "bmi"] REQUIRED
+        measurementsArray={MeasurementsArray} // an array of Measurement class objects from dGC Optional
         // setAPIResult={setAPIResult}
         // measurementsSDSArray = {[]} // an array of SDS measurements for SDS charts Optional: currently not implemented: pass []
-        chartStyle={newChartStyle}
-        axisStyle={newAxisStyle}
-        gridlineStyle={newGridlineStyle}
-        centileStyle={newCentileStyle}
-        measurementStyle={newMeasurementStyle}
+        chartStyle={ChartStyle}
+        axisStyle={AxisStyle}
+        gridlineStyle={GridlineStyle}
+        centileStyle={CentileStyle}
+        measurementStyle={MeasurementStyle}
       />
     );
     return Chart;
@@ -446,7 +444,7 @@ function MeasurementSegment() {
           {returnNewChart(
             sex,
             'height',
-            apiResult.result,
+            apiResult.height,
             chartStyle,
             axisStyle,
             gridlineStyle,
@@ -464,7 +462,7 @@ function MeasurementSegment() {
           {returnNewChart(
             sex,
             'weight',
-            apiResult,
+            apiResult.weight,
             chartStyle,
             axisStyle,
             gridlineStyle,
@@ -482,7 +480,7 @@ function MeasurementSegment() {
           {returnNewChart(
             sex,
             'bmi',
-            apiResult,
+            apiResult.bmi,
             chartStyle,
             axisStyle,
             gridlineStyle,
@@ -500,7 +498,7 @@ function MeasurementSegment() {
           {returnNewChart(
             sex,
             'ofc',
-            apiResult,
+            apiResult.ofc,
             chartStyle,
             axisStyle,
             gridlineStyle,
