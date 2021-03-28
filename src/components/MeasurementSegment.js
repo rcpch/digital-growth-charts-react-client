@@ -68,26 +68,26 @@ function MeasurementSegment() {
   // const dummyData=[{birth_data:{birth_date:"Wed, 28 Jan 2015 00:00:00 GMT",estimated_date_delivery:null,estimated_date_delivery_string:null,gestation_days:0,gestation_weeks:40,sex:"male"},child_observation_value:{measurement_method:"height",observation_value:110},measurement_calculated_values:{centile:13,centile_band:"This height measurement is between the 9th and 25th centiles.",measurement_method:"height",sds:-1.117076305831875},measurement_dates:{chronological_calendar_age:"5 years, 10 months and 4 weeks",chronological_decimal_age:5.9110198494182065,clinician_decimal_age_comment:"Born Term. No correction necessary.",corrected_calendar_age:null,corrected_decimal_age:5.9110198494182065,corrected_gestational_age:{corrected_gestation_days:null,corrected_gestation_weeks:null},lay_decimal_age_comment:"At 40+0, your child is considered to have been born at term. No age adjustment is necessary.",observation_date:"Sat, 26 Dec 2020 00:00:00 GMT"}}]
   const defaultTheme = RCPCHThemeMonochrome;
 
-  const hs = [
-    {
-      birth_date: '2020-04-12',
-      observation_date: '2020-06-12',
-      observation_value: 60,
-      sex: 'male',
-      gestation_weeks: 40,
-      gestation_days: 0,
-      measurement_method: 'height',
-    },
-    {
-      birth_date: '2020-04-12',
-      observation_date: '2020-09-12',
-      observation_value: 62,
-      sex: 'male',
-      gestation_weeks: 40,
-      gestation_days: 0,
-      measurement_method: 'height',
-    },
-  ];
+  // const hs = [ // some dummy data
+  //   {
+  //     birth_date: '2020-04-12',
+  //     observation_date: '2020-06-12',
+  //     observation_value: 60,
+  //     sex: 'male',
+  //     gestation_weeks: 40,
+  //     gestation_days: 0,
+  //     measurement_method: 'height',
+  //   },
+  //   {
+  //     birth_date: '2020-04-12',
+  //     observation_date: '2020-09-12',
+  //     observation_value: 62,
+  //     sex: 'male',
+  //     gestation_weeks: 40,
+  //     gestation_days: 0,
+  //     measurement_method: 'height',
+  //   },
+  // ];
 
   const [measurementMethod, setMeasurementMethod] = useState('height');
   const [reference, setReference] = useState('uk-who');

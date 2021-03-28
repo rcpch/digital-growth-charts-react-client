@@ -40,12 +40,24 @@ export class ChartTheme{
 }
 
 export class ChartObject{
-    constructor(backgroundColour, width, height, tooltipBackgroundColour, tooltipTextColour){
+    constructor(backgroundColour, width, height, padding, titleStyle, subTitleStyle, tooltipBackgroundColour, tooltipStroke, tooltipTextStyle, termFill, termStroke, infoBoxFill, infoBoxStroke, infoBoxTextStyle, toggleButtonInactiveColour, toggleButtonActiveColour, toggleButtonTextColour){
         this.backgroundColour = backgroundColour
         this.width = width
         this.height = height
+        this.padding = padding
+        this.titleStyle=titleStyle
+        this.subTitleStyle=subTitleStyle
         this.tooltipBackgroundColour = tooltipBackgroundColour
-        this.tooltipTextColour = tooltipTextColour
+        this.tooltipStroke = tooltipStroke
+        this.tooltipTextStyle = tooltipTextStyle
+        this.termFill=termFill
+        this.termStroke=termStroke
+        this.infoBoxFill=infoBoxFill
+        this.infoBoxStroke=infoBoxStroke
+        this.infoBoxTextStyle=infoBoxTextStyle
+        this.toggleButtonInactiveColour=toggleButtonInactiveColour
+        this.toggleButtonActiveColour=toggleButtonActiveColour
+        this.toggleButtonTextColour=toggleButtonTextColour
     }
     get backgroundColour(){
         return this._backgroundColour
@@ -56,11 +68,62 @@ export class ChartObject{
     get height(){
         return this._height
     }
+    get padding(){
+        return this._padding
+    }
+    get titleStyle(){
+        return this._titleStyle
+    }
+    get subTitleStyle(){
+        return this._subTitleStyle
+    }
     get tooltipBackgroundColour(){
         return this._tooltipBackgroundColour
     }
-    get tooltipTextColour(){
-        return this._tooltipTextColour
+    get tooltipStroke(){
+        return this._tooltipStroke
+    }
+    get tooltipTextStyle(){
+        return this._tooltipTextStyle
+    }
+    get termFill(){
+        return this._termFill
+    }
+    get termStroke(){
+        return this._termStroke
+    }
+    get infoBoxFill(){
+        return this._infoBoxFill
+    }
+    get infoBoxStroke(){
+        return this._infoBoxStroke
+    }
+    get infoBoxTextStyle(){
+        return this._infoBoxTextStyle
+    }
+    get toggleButtonActiveColour(){
+        return this._toggleButtonActiveColour
+    }
+    get toggleButtonInactiveColour(){
+        return this._toggleButtonInactiveColour
+    }
+    get toggleButtonTextColour(){
+        return this._toggleButtonTextColour
+    }
+    set termFill(val){
+        this._termFill=val
+    }
+    set termStroke(val){
+        this._termStroke=val
+    }
+    set infoBoxFill(val){
+        this._infoBoxFill=val
+    }
+    set infoBoxStroke(val){
+        this._infoBoxStroke=val
+    }
+    set infoBoxTextStyle(val){
+        this._infoBoxTextStyle=val
     }
     set backgroundColour(val){
         this._backgroundColour=val
@@ -71,11 +134,98 @@ export class ChartObject{
     set height(val){
         this._height=val
     }
+    set padding(val){
+        this._padding=val
+    }
     set tooltipBackgroundColour(val){
         this._tooltipBackgroundColour=val
+    }set tooltipStroke(val){
+        this._tooltipStroke=val
     }
-    set tooltipTextColour(val){
-        this._tooltipTextColour=val
+    set tooltipTextStyle(val){
+        this._tooltipTextStyle=val
+    }
+    set titleStyle(val){
+        this._titleStyle=val
+    }
+    set subTitleStyle(val){
+        this._subTitleStyle=val
+    }
+    set toggleButtonTextColour(val){
+        this._toggleButtonTextColour=val
+    }
+    set toggleButtonInactiveColour(val){
+        this._toggleButtonInactiveColour=val
+    }
+    set toggleButtonActiveColour(val){
+        this._toggleButtonActiveColour=val
+    }
+}
+
+export class PaddingObject{
+    constructor(left, right, top, bottom){
+        this.left = left
+        this.right=right
+        this.top=top
+        this.bottom=bottom
+    }
+    get left(){
+        return this._left
+    }
+    get right(){
+        return this._right
+    }
+    get top(){
+        return this._top
+    }
+    get bottom(){
+        return this._bottom
+    }
+
+    set left(val){
+        this._left=val
+    }
+    set right(val){
+        this._right=val
+    }
+    set top(val){
+        this._top=val
+    }
+    set bottom(val){
+        this._bottom=val
+    }
+}
+
+export class TextStyleObject{
+    constructor(name, colour, size, weight){
+        this.name=name
+        this.colour=colour
+        this.size=size
+        this.weight=weight
+    }
+    get name(){
+        return this._name
+    }
+    get colour(){
+        return this._colour
+    }
+    get size(){
+        return this._size
+    }
+    get style(){
+        return this._style
+    }
+    set name(val){
+        this._name=val
+    }
+    set colour(val){
+        this._colour=val
+    }
+    set size(val){
+        this._size=val
+    }
+    set weight(val){
+        this._weight=val
     }
 }
 
@@ -113,42 +263,28 @@ export class GridlineObject{
 }
 
 export class AxesObject{
-    constructor(axisStroke, axisLabelColour, axisLabelFont, axisLabelSize, tickLabelSize){
+    constructor(axisStroke, axisLabelTextStyle, tickLabelStyle){
         this.axisStroke=axisStroke
-        this.axisLabelFont=axisLabelFont
-        this.axisLabelColour=axisLabelColour
-        this.axisLabelSize=axisLabelSize
-        this.tickLabelSize=tickLabelSize
+        this.axisLabelTextStyle=axisLabelTextStyle
+        this.tickLabelTextStyle=tickLabelStyle
     }
     get axisStroke(){
         return this._axisStroke
     }
-    get axisLabelFont(){
-        return this._axisLabelFont
+    get axisLabelTextStyle(){
+        return this._axisLabelTextStyle
     }
-    get axisLabelColour(){
-        return this._axisLabelColour
-    }
-    get axisLabelSize(){
-        return this._axisLabelSize
-    }
-    get tickLabelSize(){
-        return this._tickLabelSize
+    get tickLabelTextStyle(){
+        return this._tickLabelTexSize
     }
     set axisStroke(val){
         this._axisStroke=val
     }
-    set axisLabelFont(val){
-        this._axisLabelFont=val
+    set axisLabelTextStyle(val){
+        this._axisLabelTextStyle=val
     }
-    set axisLabelColour(val){
-        this._axisLabelColour=val
-    }
-    set axisLabelSize(val){
-        this._axisLabelSize=val
-    }
-    set tickLabelSize(val){
-        this._tickLabelSize=val
+    set tickLabelTextStyle(val){
+        this._tickLabelTexSize=val
     }
 }
 export class CentilesObject{
@@ -178,27 +314,27 @@ export class CentilesObject{
 }
 
 export class MeasurementsObject{
-    constructor(measurementFill, measurementSize, measurementShape){
+    constructor(measurementFill, measurementStroke, measurementSize){
         this.measurementFill=measurementFill        
         this.measurementSize=measurementSize
-        this.measurementShape=measurementShape    }
+           }
     get measurementFill(){
         return this._measurementFill
+    }
+    get measurementStroke(){
+        return this._measurementStroke
     }
     get measurementSize(){
         return this._measurementSize
     }
-    get measurementShape(){
-        return this._measurementShape
-    }
     set measurementFill(val){
         this._measurementFill=val
     }
+    set measurementStroke(val){
+        this._measurementStroke=val
+    }
     set measurementSize(val){
         this._measurementSize=val
-    }
-    set measurementShape(val){
-        this._measurementShape=val
     }
 }
 
