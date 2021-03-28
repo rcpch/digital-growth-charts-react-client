@@ -1,7 +1,7 @@
 import React from "react";
 import { Dimmer, Loader } from "semantic-ui-react";
 
-import { RCPCHChart } from "@rcpch/digital-growth-charts-react-component-library";
+import { RCPCHChart } from "@rcpch/digital-growth-charts-react-component-library"
 
 function ChartData(props) {
   // const [isLoading, setLoading] = useState(true);
