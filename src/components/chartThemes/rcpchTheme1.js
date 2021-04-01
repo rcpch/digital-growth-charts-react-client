@@ -94,9 +94,9 @@ const RCPCHChart = new ChartObject(
      "#CDCDCD",
      "#CDCDCD",
     infoBoxTextStyle,
-    '#cb3083',
-    "#E497C1",
-    "FFFFFF"
+    '#E497C1',
+    "#cb3083",
+    "#FFFFFF"
 )
 
 
