@@ -1,4 +1,4 @@
-import {ChartTheme, ChartObject, GridlineObject, CentilesObject, MeasurementsObject, AxesObject} from './themes'
+import {ChartTheme, ChartObject, GridlineObject, CentilesObject, MeasurementsObject, AxesObject, TextStyleObject, PaddingObject} from './themes'
 
 /* 
 Traditional: girl
@@ -26,23 +26,83 @@ const gridlineColour = "#d9d9d9"
 const gridlineWidth = 0.25
 const backgroundColour = "#FFFFFF"
 const centileWidth = 1.5
-const axisLabelColour = "#000000"
+// const axisLabelColour = "#000000"
 const axisstroke = "#000000"
 const measurementsFill = "#000000"
-const measurementsShape = 'circle'
+const measurementsStroke = '#000000'
 const measurementsSize = 2
-const axisLabelSize = 10
-const tickLabelSize = 8
-const axisLabelFont = "Montserrat"
+// const axisLabelSize = 10
+// const tickLabelSize = 8
+// const axisLabelFont = "Montserrat"
 
+
+const titleStyle = new TextStyleObject(
+   "Arial",
+   "#000000",
+   12,
+   'bold'
+)
+const subTitleStyle = new TextStyleObject(
+   "Arial",
+   "#000000",
+   10,
+   'regular'
+)
+
+const tooltipTextStyle = new TextStyleObject(
+   "Montserrat",
+   tooltipTextColour,
+   0.25,
+   "regular"
+)
+const infoBoxTextStyle = new TextStyleObject(
+   "Montserrat",
+   "#000000",
+   6,
+   "regular"
+)
+
+const axisLabelTextStyle = new TextStyleObject(
+   "Arial",
+   "000000",
+   10,
+   'regular'
+)
+const tickLabelTextStyle = new TextStyleObject(
+   "Arial",
+   "000000",
+   8,
+   'regular'
+)
+
+const chartPadding = new PaddingObject(
+   50,
+   50,
+   50,
+   50
+)
 
 const RCPCHChart = new ChartObject(
     backgroundColour,
     700,
     500,
+    chartPadding,
+    titleStyle,
+    subTitleStyle,
     tooltipBackgroundColour,
-    tooltipTextColour
+    tooltipBackgroundColour,
+    tooltipTextStyle,
+    "#CDCDCD",
+    "#CDCDCD",
+    tooltipBackgroundColour,
+    tooltipBackgroundColour,
+   infoBoxTextStyle,
+   '#E497C1',
+   "#cb3083",
+   "#FFFFFF"
 )
+
+
 
 const RCPCHGridlines = new GridlineObject(
    true,
@@ -59,16 +119,14 @@ const RCPCHCentiles = new CentilesObject(
 
 const RCPCHAxes = new AxesObject(
    axisstroke,
-   axisLabelColour,
-   axisLabelFont,
-   axisLabelSize,
-   tickLabelSize
+   axisLabelTextStyle,
+   tickLabelTextStyle
 )
 
 const RCPCHMeasurements = new MeasurementsObject(
    measurementsFill,
+   measurementsStroke,
    measurementsSize,
-   measurementsShape
 )
 
 const RCPCHThemeTraditionalGirl = new ChartTheme(RCPCHChart, RCPCHGridlines, RCPCHAxes, RCPCHCentiles, RCPCHMeasurements)
