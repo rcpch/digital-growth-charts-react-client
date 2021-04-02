@@ -255,7 +255,6 @@ class MeasurementForm extends React.Component {
   formIsValid() {
     let valid = true;
       if (this.state.observation_value_error !== "") {
-        console.log(this.state.observation_value_error);
         valid = false;
       }
     if (

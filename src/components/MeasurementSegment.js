@@ -17,7 +17,7 @@ import {
   Dropdown,
   Button,
   Table,
-  List,
+  List
 } from 'semantic-ui-react';
 import ChartData from '../api/Chart';
 import MeasurementForm from '../components/MeasurementForm';
@@ -25,69 +25,9 @@ import '../index.css';
 
 import axios from 'axios';
 
-/*
-    return object structure from API
-    [
-      {
-        birth_data: {
-          birth_date: ...,
-          estimated_date_delivery: ....,
-          estimated_date_delivery_string: ...,
-          gestation_weeks: ...,
-          gestation_days: ...,
-          sex: ...
-        },
-        child_observation_value: {
-          measurement_method: ....,
-          measurement_value: ...
-        },
-        child_measurement_dates: {
-          chronological_calendar_age: ...,
-          chronological_decimal_age: ...,
-          clinician_decimal_age_comment: ...,
-          corrected_calendar_age: ...,
-          corrected_decimal_age: ...,
-          corrected_gestational_age: {
-            corrected_gestation_weeks: ...,
-            corrected_gestatin_days: ...
-          },
-          lay_decimal_age_comment: ...,
-          observation_date: ...
-        },
-        measurement_calculated_values: {
-          centile: ...,
-          measurement_method: ...,
-          sds: ...,
-          centile_band: ...
-        }
-      }
-    ]
-    */
-
 function MeasurementSegment() {
-  // const dummyData=[{birth_data:{birth_date:"Wed, 28 Jan 2015 00:00:00 GMT",estimated_date_delivery:null,estimated_date_delivery_string:null,gestation_days:0,gestation_weeks:40,sex:"male"},child_observation_value:{measurement_method:"height",observation_value:110},measurement_calculated_values:{centile:13,centile_band:"This height measurement is between the 9th and 25th centiles.",measurement_method:"height",sds:-1.117076305831875},measurement_dates:{chronological_calendar_age:"5 years, 10 months and 4 weeks",chronological_decimal_age:5.9110198494182065,clinician_decimal_age_comment:"Born Term. No correction necessary.",corrected_calendar_age:null,corrected_decimal_age:5.9110198494182065,corrected_gestational_age:{corrected_gestation_days:null,corrected_gestation_weeks:null},lay_decimal_age_comment:"At 40+0, your child is considered to have been born at term. No age adjustment is necessary.",observation_date:"Sat, 26 Dec 2020 00:00:00 GMT"}}]
+  
   const defaultTheme = RCPCHThemeMonochrome;
-
-  // const hs = [ // some dummy data
-  //   {
-  //     birth_date: '2020-04-12',
-  //     observation_date: '2020-06-12',
-  //     observation_value: 60,
-  //     sex: 'male',
-  //     gestation_weeks: 40,
-  //     gestation_days: 0,
-  //     measurement_method: 'height',
-  //   },
-  //   {
-  //     birth_date: '2020-04-12',
-  //     observation_date: '2020-09-12',
-  //     observation_value: 62,
-  //     sex: 'male',
-  //     gestation_weeks: 40,
-  //     gestation_days: 0,
-  //     measurement_method: 'height',
-  //   },
-  // ];
 
   const [measurementMethod, setMeasurementMethod] = useState('height');
   const [reference, setReference] = useState('uk-who');
@@ -258,6 +198,7 @@ function MeasurementSegment() {
       setChartSyle(selectedTheme.chart);
       setMeasurementStyle(selectedTheme.measurements);
       setAxisStyle(selectedTheme.axes);
+      setGridlineStyle(selectedTheme.gridlines)
       setTheme({ value: 'tanner1', text: 'Tanner 1' });
     }
   };
@@ -333,8 +274,6 @@ function MeasurementSegment() {
         sex={Sex} //the choices are ["male", "female"] REQUIRED
         measurementMethod={MeasurementMethod} //the choices are ["height", "weight", "ofc", "bmi"] REQUIRED
         measurementsArray={MeasurementsArray} // an array of Measurement class objects from dGC Optional
-        // setAPIResult={setAPIResult}
-        // measurementsSDSArray = {[]} // an array of SDS measurements for SDS charts Optional: currently not implemented: pass []
         chartStyle={ChartStyle}
         axisStyle={AxisStyle}
         gridlineStyle={GridlineStyle}
@@ -374,16 +313,6 @@ function MeasurementSegment() {
       text = 'Monochrome';
     }
 
-    // this.returnNewChart(
-    //   sex,
-    //   measurementMethod,
-    //   measurementsArray,
-    //   selectedTheme.chart,
-    //   selectedTheme.axes,
-    //   selectedTheme.gridlines,
-    //   selectedTheme.centiles,
-    //   selectedTheme.measurements)
-
     setCentileStyle(selectedTheme.centiles);
     setChartSyle(selectedTheme.chart);
     setMeasurementStyle(selectedTheme.measurements);
@@ -392,8 +321,7 @@ function MeasurementSegment() {
   };
 
   const handleFlipResults = () => {
-    const flipped = this.state.flip;
-    this.setState({ flip: !flipped });
+    setFlip(!flip);
   };
 
   const units = (measurementMethod) => {
@@ -548,55 +476,121 @@ function MeasurementSegment() {
       <Table basic="very" celled collapsing compact>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>Heights</Table.HeaderCell>
-            <Table.HeaderCell>Results</Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
+            <Table.HeaderCell>
+              Corrected Results
+            </Table.HeaderCell>
+            <Table.HeaderCell>
+              Chronological Results
+            </Table.HeaderCell>
           </Table.Row>
         </Table.Header>
-        {currentMeasurements.map((measurement, index) => {
+        <Table.Body>
+          {apiResult.height.length > 0 &&
+            <Table.Row>
+              <Table.HeaderCell></Table.HeaderCell>
+              <Table.HeaderCell>Heights</Table.HeaderCell>
+              <Table.HeaderCell></Table.HeaderCell>
+            </Table.Row>
+          }
+        {apiResult.height.length > 0 && apiResult.height.map((measurement, index) => {
+          return <TableBody
+            measurement={measurement}
+            key={index}
+          />
+        })}
+        {apiResult.weight.length > 0 &&
+            <Table.Row>
+              <Table.HeaderCell></Table.HeaderCell>
+              <Table.HeaderCell>Weights</Table.HeaderCell>
+              <Table.HeaderCell></Table.HeaderCell>
+            </Table.Row>
+          }
+        {apiResult.weight.length > 0 && apiResult.weight.map((measurement, index) => {
           return (
-            <Table.Body key={index}>
-              <Table.Row>
-                <Table.Cell>Chronological Age</Table.Cell>
-                <Table.Cell>
-                  {measurement.measurement_dates.chronological_calendar_age}
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>Measurement</Table.Cell>
-                <Table.Cell>
-                  {measurement.child_observation_value.observation_value}{' '}
-                  {units(
-                    measurement.child_observation_value.measurement_method
-                  )}
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>Corrected SDS</Table.Cell>
-                <Table.Cell>
-                  {Math.round(
-                    measurement.measurement_calculated_values.corrected_sds *
-                      1000
-                  ) / 1000}
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>Corrected Centile</Table.Cell>
-                <Table.Cell>
-                  {measurement.measurement_calculated_values.corrected_centile}
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>Observation</Table.Cell>
-                <Table.Cell>
-                  {measurement.measurement_calculated_values.centile_band}
-                </Table.Cell>
-              </Table.Row>
-            </Table.Body>
+            <TableBody 
+              key={index} 
+              measurement={measurement}/>
           );
         })}
+        {apiResult.bmi.length > 0 &&
+            <Table.Row>
+              <Table.HeaderCell></Table.HeaderCell>
+              <Table.HeaderCell>BMIs</Table.HeaderCell>
+              <Table.HeaderCell></Table.HeaderCell>
+            </Table.Row>
+          }
+        {apiResult.bmi.length > 0 && apiResult.bmi.map((measurement, index) => {
+          return (
+            <TableBody 
+              key={index} 
+              measurement={measurement}/>
+          );
+        })}
+        {apiResult.ofc.length > 0 &&
+            <Table.Row>
+              <Table.HeaderCell></Table.HeaderCell>
+              <Table.HeaderCell>Head Circumferences</Table.HeaderCell>
+              <Table.HeaderCell></Table.HeaderCell>
+            </Table.Row>
+        }
+        {apiResult.ofc.length > 0 && apiResult.ofc.map((measurement, index) => {
+          return (
+            <TableBody 
+              key={index}
+              measurement={measurement}
+            />
+          );
+        })}
+        </Table.Body>
       </Table>
     </Segment>
   );
+
+  const TableBody = (props) => {
+      const measurement = props.measurement
+      return  (<>
+                <Table.Row>
+                  <Table.Cell>Ages</Table.Cell>
+                  <Table.Cell>{measurement.measurement_dates.chronological_calendar_age}</Table.Cell>
+                  <Table.Cell>
+                  {measurement.measurement_dates.corrected_calendar_age}
+                  </Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                <Table.Cell>Measurement</Table.Cell>
+                  <Table.Cell>{measurement.child_observation_value.observation_value}{' '}
+                  {units(measurement.child_observation_value.measurement_method)}
+                  </Table.Cell>
+                  <Table.Cell>
+                  </Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>SDS</Table.Cell>
+                  <Table.Cell>
+                    {Math.round(
+                      measurement.measurement_calculated_values.corrected_sds *
+                        1000
+                    ) / 1000}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {Math.round(
+                      measurement.measurement_calculated_values.chronological_sds *
+                        1000
+                    ) / 1000}
+                  </Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>Centiles</Table.Cell>
+                  <Table.Cell>
+                    {measurement.measurement_calculated_values.corrected_centile}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {measurement.measurement_calculated_values.chronological_centile}
+                  </Table.Cell>
+                </Table.Row>
+              </>)
+  }
 
   return (
     <Grid padded>
