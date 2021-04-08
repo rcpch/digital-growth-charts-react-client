@@ -1,10 +1,10 @@
 {
   "name": "rcpchgrowth-react",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": false,
   "license": "MIT",
   "dependencies": {
-    "@rcpch/digital-growth-charts-react-component-library": "3.0.1",
+    "@rcpch/digital-growth-charts-react-component-library": "4.0.5",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -12,12 +12,12 @@
     "chart.js": "^2.9.4",
     "craco-less": "^1.17.0",
     "moment": "^2.29.1",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-dropzone": "^11.2.3",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
+    "react-scripts": "^4.0.3",
     "semantic-ui-react": "^0.88.2",
     "xlsx": "^0.16.8"
   },

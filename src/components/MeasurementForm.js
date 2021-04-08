@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 
 import {
   Container,
@@ -61,8 +60,6 @@ const references = [
 const ROBERT_WADLOW = 272; // interesting fact - Robert Wadlow (22/2/1918 – 15/7/1940) was the world's tallest man
 const JON_BROWER_MINNOCH = 635; // interesting fact -  Jon Brower Minnoch (Born USA) was the world's heaviest man
 const KHALID_BIN_MOHSEN_SHAARI = 204; // Khalid bin Mohsen Shaari (2/8/1991) from Saudi Arabia had the highest recorded BMI
-
-// const measurementMethods = ["height", "weight", "bmi", "ofc"];
 
 let measurementOptions = [
   {key: 'height', value: 'height', text: 'Height (cm)', disabled: false },
@@ -144,38 +141,6 @@ class MeasurementForm extends React.Component {
   }
 }
 
-  handleFormData = async (formDataArray) => {
-    this.setState({
-      formData: formDataArray,
-    });
-
-    let resultsPromiseArray = [];
-  
-    formDataArray.forEach((formData) => {
-      let axiosFormData = {
-        birth_date: formData.birth_date,
-        observation_date: formData.observation_date,
-        sex: formData.sex,
-        gestation_weeks: formData.gestation_weeks,
-        gestation_days: formData.gestation_days,
-        measurement_method: formData.measurement_method,
-        observation_value: formData.observation_value,
-      };
-
-      
-      const  centile = this.fetchCentilesForMeasurement(axiosFormData, this.state.reference);
-      
-      resultsPromiseArray.push(centile);
-    });
-    Promise.all(resultsPromiseArray).then((result) => {
-      var mergedMeasurementArrays = [].concat.apply([], result);
-      this.handleGrowthResults(mergedMeasurementArrays)
-    }).catch(error => {
-      this.setState({networkError: error.message})
-      this.setState({modalOpen: true})
-    });
-  };
-
   disableMeasurement=(measurement_method, disable)=>{
     if (measurement_method === "height"){
       let options = this.state.measurementOptions
@@ -197,33 +162,6 @@ class MeasurementForm extends React.Component {
       options[3].disabled=disable
       this.setState({measurementOptions: options})
     }
-  }
-
-
-
-  async fetchCentilesForMeasurement(payload, reference) {
-
-    let url
-    if (reference === "uk-who"){
-      url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/calculation`
-    }
-    if (reference === "turner"){
-      url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/turner/calculation`
-    }
-    if (reference === "trisomy-21"){
-      url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/trisomy-21/calculation`
-    }
-
-    const response = await axios({
-      url: url,
-      data: payload,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    return response.data;
   }
 
 
@@ -317,7 +255,6 @@ class MeasurementForm extends React.Component {
   formIsValid() {
     let valid = true;
       if (this.state.observation_value_error !== "") {
-        console.log(this.state.observation_value_error);
         valid = false;
       }
     if (
@@ -332,6 +269,7 @@ class MeasurementForm extends React.Component {
   }
 
   handleSubmit(event) {
+    // passes the form data back to the parent (measurement segment)
     let measurementArray = [];
     
       let formData = {
@@ -345,7 +283,8 @@ class MeasurementForm extends React.Component {
       };
       measurementArray.push(formData);
   
-    this.handleFormData(measurementArray);
+    
+    this.handleGrowthResults(measurementArray)
   }
 
   handleChangeMeasurementMethod(event, data) {
