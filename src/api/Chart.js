@@ -4,11 +4,7 @@ import { Dimmer, Loader } from "semantic-ui-react";
 import { RCPCHChart } from "@rcpch/digital-growth-charts-react-component-library"
 
 function ChartData(props) {
-  // const [isLoading, setLoading] = useState(true);
-  // const [centile_data, setCentile_data] = useState([]);
-  // const reference = props.reference;
-  // const titles = setTitle(props);
-
+  
   const isLoading = false
   const titles = setTitle(props)
   
@@ -21,13 +17,13 @@ function ChartData(props) {
       ) : (
         <div>
           <RCPCHChart
-            // key={this.state.measurement_method + "-" + this.props.reference}
             reference={props.reference}
             measurementMethod={props.measurementMethod}
             sex={props.sex}
             title={titles.title}
             subtitle={titles.subtitle}
             measurementsArray={props.measurementsArray} // this is the plottable child data
+            enableZoom={true}
             chartStyle={props.chartStyle}
             axisStyle={props.axisStyle}
             gridlineStyle={props.gridlineStyle}
