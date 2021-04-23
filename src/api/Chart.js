@@ -1,46 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Dimmer, Loader } from "semantic-ui-react";
-import axios from "axios";
-import { RCPCHChart } from "@rcpch/digital-growth-charts-react-component-library";
+
+import { RCPCHChart } from "@rcpch/digital-growth-charts-react-component-library"
 
 function ChartData(props) {
-  const [isLoading, setLoading] = useState(true);
-  const [centile_data, setCentile_data] = useState([]);
-  // const [sds_data, setSDS_data] = useState([])
-
-  const measurementsArray = props.measurementsArray;
-  const reference = props.reference;
-  const titles = setTitle(props);
-
-  useEffect(() => {
-    let ignore = false; // this prevents data being added to state if unmounted
-    if (measurementsArray.length > 0) {
-      try {
-        fetchCentileData(measurementsArray, reference).then((result) => {
-          if (!ignore) {
-            // this prevents data being added to state if unmounted
-            setCentile_data(result.data.child_data.centile_data);
-            setLoading(false);
-          }
-        });
-      } catch (error) {
-        console.error("Failure!");
-        console.error(error.response.status);
-        alert("The server is not responding. Sorry.");
-        if (!ignore) {
-          setLoading(false);
-        }
-      }
-    } else {
-      if (!ignore) {
-        setLoading(false);
-      }
-    }
-    return () => {
-      ignore = true;
-    }; // this prevents data being added to state if unmounted
-  }, [measurementsArray, reference]);
-
+  
+  const isLoading = false
+  const titles = setTitle(props)
+  
   return (
     <div>
       {isLoading ? (
@@ -50,13 +17,13 @@ function ChartData(props) {
       ) : (
         <div>
           <RCPCHChart
-            // key={this.state.measurement_method + "-" + this.props.reference}
             reference={props.reference}
             measurementMethod={props.measurementMethod}
             sex={props.sex}
             title={titles.title}
             subtitle={titles.subtitle}
-            measurementsArray={centile_data} // this is the plottable child data
+            measurementsArray={props.measurementsArray} // this is the plottable child data
+            enableZoom={true}
             chartStyle={props.chartStyle}
             axisStyle={props.axisStyle}
             gridlineStyle={props.gridlineStyle}
@@ -110,26 +77,6 @@ function setTitle(props) {
   subTitle = measurementText + " - " + sexText;
 
   return { subtitle: subTitle, title: title };
-}
-
-async function fetchCentileData(measurementsArray, reference) {
-  const formData = {
-    results: measurementsArray, // measurements passed in from the form
-  };
-
-  const response = await axios({
-    url:
-      `${process.env.REACT_APP_GROWTH_API_BASEURL}/` +
-      reference +
-      `/plottable-child-data`,
-    data: formData,
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  return response;
 }
 
 export default ChartData;
