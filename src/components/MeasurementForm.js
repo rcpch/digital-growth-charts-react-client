@@ -9,7 +9,6 @@ import {
   Button,
   Header,
   Message,
-  Modal,
 } from 'semantic-ui-react';
 
 const sexOptions = [
@@ -39,8 +38,8 @@ const gestationDaysOptions = [
 
 const references = [
   { key: 'uk-who', value: 'uk-who', text: 'UK-WHO' },
-  { key: 'turner', value: 'turner', text: "Turner's syndrome" },
   { key: 'trisomy-21', value: 'trisomy-21', text: "Down's Syndrome" },
+  { key: 'turner', value: 'turner', text: "Turner's syndrome" },
 ];
 
 const ROBERT_WADLOW = 272; // interesting fact - Robert Wadlow (22/2/1918 – 15/7/1940) was the world's tallest man
@@ -96,13 +95,11 @@ const isValidDate = (inputDate) => {
 class MeasurementForm extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       birth_date: formatDate(new Date()),
       observation_date: formatDate(new Date()),
       measurement: {
-        measurement_method: 'height',
-        observation_value: 0,
+        observation_value: '',
         units: 'cm',
         show_add: true,
         show_remove: false,
@@ -113,20 +110,17 @@ class MeasurementForm extends React.Component {
       gestation_days: 0,
       birth_date_error: '',
       observation_date_error: '',
-      observation_value_error: '',
+      observation_value_error: null,
       form_valid: false,
       formData: {},
       measurementResult: [],
       reference: 'uk-who',
       measurementOptions: measurementOptions,
-      networkError: '',
-      modalOpen: false,
     };
 
     this.handleChangeDate = this.handleChangeDate.bind(this);
-    this.handleChangeMeasurementMethod = this.handleChangeMeasurementMethod.bind(
-      this
-    );
+    this.handleChangeMeasurementMethod =
+      this.handleChangeMeasurementMethod.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChangeGestation = this.handleChangeGestation.bind(this);
     this.handleChangeSex = this.handleChangeSex.bind(this);
@@ -139,31 +133,33 @@ class MeasurementForm extends React.Component {
   };
 
   handleChangeReference = (ref, data) => {
-    this.setState({ reference: data.value });
-
     if (data.value === 'turner') {
       this.disableMeasurement('weight', true);
       this.disableMeasurement('ofc', true);
       this.disableMeasurement('bmi', true);
-      this.setState({ sex: 'female' });
-      this.setState({ measurementMethod: 'height' });
-      this.props.handleChangeReference(data.value); //call back
-      return;
-    }
-    if (data.value === 'uk-who') {
+      this.setState({
+        sex: 'female',
+        observation_value_error: this.validateObservationValue(
+          'height',
+          this.state.measurement.observation_value
+        ),
+        reference: data.value,
+      });
+      this.props.handleChangeSex('female');
+      this.props.setMeasurementMethod('height');
+    } else {
       this.disableMeasurement('weight', false);
       this.disableMeasurement('ofc', false);
       this.disableMeasurement('bmi', false);
-      this.props.handleChangeReference(data.value); //call back
-      return;
+      this.setState({
+        observation_value_error: this.validateObservationValue(
+          this.props.measurementMethod,
+          this.state.measurement.observation_value
+        ),
+        reference: data.value,
+      });
     }
-    if (data.value === 'trisomy-21') {
-      this.disableMeasurement('weight', false);
-      this.disableMeasurement('ofc', false);
-      this.disableMeasurement('bmi', false);
-      this.props.handleChangeReference(data.value); //call back
-      return;
-    }
+    this.props.handleChangeReference(data.value); //call back
   };
 
   disableMeasurement = (measurement_method, disable) => {
@@ -251,7 +247,7 @@ class MeasurementForm extends React.Component {
     let { measurement, observation_value_error } = this.state;
     measurement.observation_value = observation_value;
     observation_value_error = this.validateObservationValue(
-      this.state.measurement.measurement_method,
+      this.props.measurementMethod,
       observation_value
     );
     this.setState({
@@ -270,8 +266,11 @@ class MeasurementForm extends React.Component {
   };
 
   validateObservationValue(measurement_method, observation_value) {
+    if (observation_value === '') {
+      return null;
+    }
     if (measurement_method === 'height') {
-      if (observation_value < 35) {
+      if (observation_value < 20) {
         return 'The ' + measurement_method + ' you entered is too low.';
       } else if (observation_value > ROBERT_WADLOW) {
         return 'The ' + measurement_method + ' you entered is too tall.';
@@ -309,29 +308,29 @@ class MeasurementForm extends React.Component {
   }
 
   formIsValid() {
-    let valid = true;
-    if (this.state.observation_value_error !== '') {
-      valid = false;
+    if (
+      this.state.reference === 'turner' &&
+      this.props.measurementMethod !== 'height'
+    ) {
+      return false;
     }
     if (
       this.state.birth_date_error === '' &&
       this.state.observation_date_error === '' &&
-      valid
+      this.state.observation_value_error === ''
     ) {
       return true;
-    } else {
-      return false;
     }
   }
 
   handleSubmit(event) {
     // passes the form data back to the parent (measurement segment)
-    let measurementArray = [];
+    const measurementArray = [];
 
-    let formData = {
+    const formData = {
       birth_date: this.state.birth_date,
       observation_date: this.state.observation_date,
-      measurement_method: this.state.measurement.measurement_method,
+      measurement_method: this.props.measurementMethod,
       observation_value: this.state.measurement.observation_value,
       gestation_weeks: this.state.gestation_weeks,
       gestation_days: this.state.gestation_days,
@@ -343,15 +342,20 @@ class MeasurementForm extends React.Component {
   }
 
   handleChangeMeasurementMethod(event, data) {
-    let measurement = this.state.measurement;
-
-    this.props.handleChangeMeasurementMethod(data.value);
-    if (data.value !== measurement.measurement_method) {
-      measurement.measurement_method = data.value;
+    let measurement = { ...this.state.measurement };
+    if (data.value !== this.props.measurementMethod) {
       measurement.units = this.changeUnits(data.value);
+      this.props.setMeasurementMethod(data.value);
+      this.setState({
+        measurement: measurement,
+        observation_value_error: this.validateObservationValue(
+          data.value,
+          measurement.observation_value
+        ),
+      });
       if (
         this.state.reference === 'turner' &&
-        measurement.measurement_method !== 'height'
+        this.props.measurementMethod !== 'height'
       ) {
         this.disableMeasurement('weight', true);
         this.disableMeasurement('bmi', true);
@@ -362,8 +366,6 @@ class MeasurementForm extends React.Component {
         this.disableMeasurement('ofc', false);
       }
     }
-    this.setState({ measurement: measurement });
-    this.setState({ form_valid: this.formIsValid() });
   }
 
   handleChangeGestation(event, data) {
@@ -383,8 +385,10 @@ class MeasurementForm extends React.Component {
   }
 
   handleChangeSex(event, data) {
-    this.setState({ sex: data.value });
-    this.props.handleChangeSex(data.value);
+    const success = this.props.handleChangeSex(data.value);
+    if (success) {
+      this.setState({ sex: data.value });
+    }
   }
 
   changeUnits(measurement_method) {
@@ -399,6 +403,12 @@ class MeasurementForm extends React.Component {
     }
     if (measurement_method === 'ofc') {
       return 'cm';
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.state.form_valid !== this.formIsValid()) {
+      this.setState({ form_valid: this.formIsValid() });
     }
   }
 
@@ -450,7 +460,7 @@ class MeasurementForm extends React.Component {
             <Form.Group>
               <Form.Field required>
                 <Select
-                  value={this.state.measurement.measurement_method}
+                  value={this.props.measurementMethod}
                   name="measurement_method"
                   placeholder="Measurement Type"
                   options={measurementOptions}
@@ -473,15 +483,15 @@ class MeasurementForm extends React.Component {
                 />
               </Form.Field>
             </Form.Group>
-            {this.state.observation_value_error !== '' ? (
+            {this.state.observation_value_error ? (
               <Message color="red">
                 {this.state.observation_value_error}
               </Message>
             ) : null}
-            {this.state.observation_date_error !== '' ? (
+            {this.state.observation_date_error ? (
               <Message color="red">{this.state.observation_date_error}</Message>
             ) : null}
-            {this.state.birth_date_error !== '' ? (
+            {this.state.birth_date_error ? (
               <Message color="red">{this.state.birth_date_error}</Message>
             ) : null}
             {/* </Segment> */}
@@ -527,7 +537,7 @@ class MeasurementForm extends React.Component {
 
             <Form.Field>
               <Button
-                content="Calculate Centiles and Create Chart"
+                content="Calculate Centiles and Add To Chart"
                 type="submit"
                 fluid={true}
                 disabled={!this.state.form_valid}
@@ -538,37 +548,9 @@ class MeasurementForm extends React.Component {
             </Form.Field>
           </Form>
         </Segment>
-        <ErrorModal
-          error={this.state.networkError}
-          open={this.state.modalOpen}
-          handleClose={() => {
-            this.setState({ modalOpen: false });
-          }}
-        />
       </Container>
     );
   }
 }
-
-const ErrorModal = (props) => {
-  return (
-    <Modal
-      error={props.error}
-      open={props.open}
-      size="small"
-      closeOnEscape={true}
-    >
-      <Modal.Header>{props.error}</Modal.Header>
-      <Modal.Content>
-        It is likely the server is down. Please check back later
-      </Modal.Content>
-      <Modal.Actions>
-        <Button negative onClick={props.handleClose}>
-          Cancel
-        </Button>
-      </Modal.Actions>
-    </Modal>
-  );
-};
 
 export default MeasurementForm;

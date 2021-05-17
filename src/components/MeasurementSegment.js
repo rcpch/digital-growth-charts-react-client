@@ -17,7 +17,8 @@ import {
   Dropdown,
   Button,
   Table,
-  List
+  List,
+  Modal,
 } from 'semantic-ui-react';
 import ChartData from '../api/Chart';
 import MeasurementForm from '../components/MeasurementForm';
@@ -26,7 +27,6 @@ import '../index.css';
 import axios from 'axios';
 
 function MeasurementSegment() {
-  
   const defaultTheme = RCPCHThemeMonochrome;
 
   const [measurementMethod, setMeasurementMethod] = useState('height');
@@ -39,30 +39,42 @@ function MeasurementSegment() {
   const [measurementStyle, setMeasurementStyle] = useState(
     defaultTheme.measurements
   );
-  const [heights, setHeights] = useState([]);
-  const [weights, setWeights] = useState([]);
-  const [ofcs, setOfcs] = useState([]);
-  const [bmis, setBmis] = useState([]);
 
   const [theme, setTheme] = useState({
     value: 'tanner4',
     text: 'Monochrome',
   });
-  const [activeIndex, setActiveIndex] = useState(0); //set tab to height
+
   const [flip, setFlip] = useState(false); // flag to determine if results or chart showing
   const [heightDisabled, setHeightDisabled] = useState(false);
   const [weightDisabled, setWeightDisabled] = useState(false);
   const [bmiDisabled, setBMIDisabled] = useState(false);
   const [ofcDisabled, setOFCDisabled] = useState(false);
-  const [apiResult, setAPIResult] = useState({
-    height: [],
-    weight: [],
-    bmi: [],
-    ofc: [],
-  });
-  const [currentMeasurements, setCurrentMeasurements] = useState([]);
+
+  const [measurements, setMeasurements] = useState(InitialMeasurementState());
+  const [apiResult, setAPIResult] = useState(InitialMeasurementState());
+
+  const [errorModal, setErrorModal] = useState(InitalErrorModalState());
 
   const [isLoading, setIsLoading] = useState(false);
+
+  let activeIndex = 0;
+
+  switch (measurementMethod) {
+    case 'weight':
+      activeIndex = 1;
+      break;
+    case 'bmi':
+      activeIndex = 2;
+      break;
+    case 'ofc':
+      activeIndex = 3;
+      break;
+    default:
+      console.warn(
+        'Fall through case for selecting active index for measurement method'
+      );
+  }
 
   useEffect(() => {
     const fetchCentilesForMeasurement = async (array) => {
@@ -92,52 +104,55 @@ function MeasurementSegment() {
       return Promise.all(results);
     };
 
-    let ignore = false; // this prevents data being added to state if unmounted
-
-    let submitArray = [];
-
-    switch (measurementMethod) {
-      case 'height':
-        setCurrentMeasurements(heights);
-        submitArray = heights;
-        break;
-      case 'weight':
-        setCurrentMeasurements(weights);
-        submitArray = weights;
-        break;
-      case 'bmi':
-        setCurrentMeasurements(bmis);
-        submitArray = bmis;
-        break;
-      case 'ofc':
-        setCurrentMeasurements(ofcs);
-        submitArray = ofcs;
-        break;
-      default:
-        console.error(
-          'No valid active index picked up when preparing results to server fetch'
-        );
-    }
+    let ignore = false;
 
     if (isLoading) {
+      const submitArray = measurements[reference][measurementMethod];
       if (submitArray.length > 0) {
-        fetchCentilesForMeasurement(submitArray).then((final) => {
-          if (final.length > 0 && !ignore) {
-            const orderedFinal = final.sort((a, b) =>
-              a.measurement_dates.corrected_decimal_age <
-              b.measurement_dates.corrected_decimal_age
-                ? 1
-                : -1
-            );
+        fetchCentilesForMeasurement(submitArray)
+          .then((final) => {
+            if (!ignore) {
+              let error = '';
+              for (const result of final) {
+                if (
+                  result.measurement_calculated_values
+                    .corrected_measurement_error
+                ) {
+                  error =
+                    result.measurement_calculated_values
+                      .corrected_measurement_error;
+                  break;
+                }
+              }
+              if (error) {
+                setErrorModal({
+                  visible: true,
+                  title: 'Incompatible measurement',
+                  body: `Measurement entered has been rejected by the server. Reason given: ${error}`,
+                });
+              } else {
+                setAPIResult((old) => {
+                  const mutable = {
+                    turner: { ...old.turner },
+                    'trisomy-21': { ...old['trisomy-21'] },
+                    'uk-who': { ...old['uk-who'] },
+                  };
+                  mutable[reference][measurementMethod] = final;
+                  return mutable;
+                });
+              }
+              setIsLoading(false);
+            }
+          })
+          .catch((error) => {
+            const errorForUser = `There has been a problem fetching the result from the server. Error details: ${error.message} `;
+            setErrorModal({
+              visible: true,
+              title: 'Server error',
+              body: errorForUser,
+            });
             setIsLoading(false);
-            setAPIResult((prevState) => ({
-              ...prevState,
-              ...{ [measurementMethod]: orderedFinal },
-            }));
-          }
-        });
-      } else {
-        return;
+          });
       }
     }
 
@@ -145,24 +160,38 @@ function MeasurementSegment() {
       // this prevents data being added to state if unmounted
       ignore = true;
     };
-  }, [
-    isLoading,
-    measurementMethod,
-    reference,
-    apiResult,
-    heights,
-    weights,
-    ofcs,
-    bmis,
-    currentMeasurements,
-  ]);
+  }, [isLoading, measurementMethod, reference, apiResult, measurements]);
 
-  const handleTabChange = (e, { activeIndex }) => setActiveIndex(activeIndex);
+  const handleTabChange = (e, { activeIndex }) => {
+    if (reference === 'turner' && activeIndex !== 0) {
+      setErrorModal({
+        visible: true,
+        title: 'Measurement unavailable',
+        body: "Only height data is available for Turner's Syndrome.",
+      });
+    }
+    switch (activeIndex) {
+      case 0:
+        setMeasurementMethod('height');
+        break;
+      case 1:
+        setMeasurementMethod('weight');
+        break;
+      case 2:
+        setMeasurementMethod('bmi');
+        break;
+      case 3:
+        setMeasurementMethod('ofc');
+        break;
+      default:
+        console.warm('Handle tab change did not pick up valid active index');
+    }
+  };
 
-  const changeReference = (reference) => {
+  const changeReference = (newReference) => {
     // call back from MeasurementForm
-    setReference(reference);
-    if (reference === 'turner') {
+    setReference(newReference);
+    if (newReference === 'turner') {
       setMeasurementMethod('height');
       setSex('female');
       setHeightDisabled(false);
@@ -170,13 +199,13 @@ function MeasurementSegment() {
       setBMIDisabled(true);
       setOFCDisabled(true);
     }
-    if (reference === 'trisomy-21') {
+    if (newReference === 'trisomy-21') {
       setHeightDisabled(false);
       setWeightDisabled(false);
       setBMIDisabled(false);
-      setOFCDisabled(true);
+      setOFCDisabled(false);
     }
-    if (reference === 'uk-who') {
+    if (newReference === 'uk-who') {
       setHeightDisabled(false);
       setWeightDisabled(false);
       setBMIDisabled(false);
@@ -184,12 +213,25 @@ function MeasurementSegment() {
     }
   };
 
-  const changeSex = (sex) => {
+  const changeSex = (newSex) => {
     // call back from MeasurementForm
-    setSex(sex);
+    const existingResults = [...measurements[reference][measurementMethod]];
+    if (existingResults.length > 0) {
+      for (const oldResult of existingResults) {
+        if (newSex !== oldResult.sex) {
+          setErrorModal({
+            visible: true,
+            title: 'Unable to change sex',
+            body: `Each chart can only display measurements from one patient at a time.`,
+          });
+          return false;
+        }
+      }
+    }
+    setSex(newSex);
     let selectedTheme;
     if (reference === 'uk-who') {
-      if (sex === 'male') {
+      if (newSex === 'male') {
         selectedTheme = RCPCHThemeTraditionalBoy;
       } else {
         selectedTheme = RCPCHThemeTraditionalGirl;
@@ -198,90 +240,66 @@ function MeasurementSegment() {
       setChartSyle(selectedTheme.chart);
       setMeasurementStyle(selectedTheme.measurements);
       setAxisStyle(selectedTheme.axes);
-      setGridlineStyle(selectedTheme.gridlines)
+      setGridlineStyle(selectedTheme.gridlines);
       setTheme({ value: 'tanner1', text: 'Tanner 1' });
     }
-  };
-
-  const changeMeasurement = (measurementMethod) => {
-    // call back from MeasurementForm
-    switch (measurementMethod) {
-      case 'height':
-        setActiveIndex(0); // move focus to height tab
-        break;
-      case 'weight':
-        setActiveIndex(1); // move focus to weight tab
-        break;
-      case 'bmi':
-        setActiveIndex(2); // move focus to bmi tab
-        break;
-      case 'ofc':
-        setActiveIndex(3); // move focus to ofc tab
-        break;
-      default:
-        return;
-    }
-    setMeasurementMethod(measurementMethod);
+    return true;
   };
 
   const handleResults = (results) => {
     // delegate function from MeasurementForm
     // receives form data and stores in the correct measurement array
-    // this will trigger a rerender
-
-    let concatenated;
-    switch (measurementMethod) {
-      case 'height':
-        concatenated = heights.concat(results);
-        setActiveIndex(0); // move focus to height tab
-        setHeights(concatenated);
-        break;
-      case 'weight':
-        concatenated = weights.concat(results);
-        setActiveIndex(1); // move focus to weight tab
-        setWeights(concatenated);
-        break;
-      case 'bmi':
-        concatenated = bmis.concat(results);
-        setBmis(concatenated);
-        setActiveIndex(2); // move focus to bmi tab
-        break;
-      case 'ofc':
-        concatenated = ofcs.concat(results);
-        setOfcs(concatenated);
-        setActiveIndex(3); // move focus to ofc tab
-        break;
-      default:
-      //
+    // checks for mismatching dobs, sexes and gestations
+    const existingResults = [...measurements[reference][measurementMethod]];
+    let errorString = '';
+    if (existingResults.length > 0) {
+      const latestResult = results[0];
+      const newGestation =
+        latestResult.gestation_weeks * 7 + latestResult.gestation_days;
+      const errors = [];
+      for (const oldResult of existingResults) {
+        const oldGestation =
+          oldResult.gestation_weeks * 7 + oldResult.gestation_days;
+        if (oldResult.sex !== latestResult.sex) {
+          errors.push('differing sexes');
+        }
+        if (oldResult.birth_date !== latestResult.birth_date) {
+          errors.push('differing date of births');
+        }
+        if (oldGestation !== newGestation) {
+          errors.push('differing gestations');
+        }
+        if (errors.length > 0) {
+          errorString = errors[0];
+          if (errors.length === 2) {
+            errorString = errors.join(' and ');
+          } else if (errors.length === 3) {
+            errorString = `${errors[0]}, ${errors[1]} and ${errors[2]}`;
+          }
+          break;
+        }
+      }
     }
-    setIsLoading(true);
-  };
-
-  const returnNewChart = (
-    Sex,
-    MeasurementMethod,
-    MeasurementsArray,
-    ChartStyle,
-    AxisStyle,
-    GridlineStyle,
-    CentileStyle,
-    MeasurementStyle
-  ) => {
-    const Chart = (
-      <ChartData
-        key={MeasurementMethod + '-' + reference}
-        reference={reference} //the choices are ["uk-who", "turner", "trisomy-21"] REQUIRED
-        sex={Sex} //the choices are ["male", "female"] REQUIRED
-        measurementMethod={MeasurementMethod} //the choices are ["height", "weight", "ofc", "bmi"] REQUIRED
-        measurementsArray={MeasurementsArray} // an array of Measurement class objects from dGC Optional
-        chartStyle={ChartStyle}
-        axisStyle={AxisStyle}
-        gridlineStyle={GridlineStyle}
-        centileStyle={CentileStyle}
-        measurementStyle={MeasurementStyle}
-      />
-    );
-    return Chart;
+    if (errorString) {
+      setErrorModal({
+        visible: true,
+        title: 'Please check entries',
+        body: `Each chart can only display measurements from one patient at a time: ${errorString} were detected.`,
+      });
+      return null;
+    } else {
+      setMeasurements((old) => {
+        const mutable = {
+          turner: { ...old.turner },
+          'trisomy-21': { ...old['trisomy-21'] },
+          'uk-who': { ...old['uk-who'] },
+        };
+        const newArray = old[reference][measurementMethod].concat(results);
+        mutable[reference][measurementMethod] = newArray;
+        return mutable;
+      });
+      setIsLoading(true);
+    }
   };
 
   const handleChangeTheme = (event, { value }) => {
@@ -324,120 +342,40 @@ function MeasurementSegment() {
     setFlip(!flip);
   };
 
-  const units = (measurementMethod) => {
-    if (measurementMethod === 'height') {
-      return 'cm';
-    }
-    if (measurementMethod === 'weight') {
-      return 'kg';
-    }
-    if (measurementMethod === 'bmi') {
-      return 'kg/m²';
-    }
-    if (measurementMethod === 'ofc') {
-      return 'cm';
-    }
-  };
-
-  const Acknowledgements = () => {
-    // list={["Freeman JV, Cole TJ, Chinn S, Jones PRM, White EM, Preece MA. Cross sectional stature and weight reference curves for the UK, 1990. Arch Dis Child 1995; 73:17-24.", "<a href='www.who.int/childgrowth/en'>www.who.int/childgrowth/en</a>", "For further relevant references see fact sheet downloadable from www.growthcharts.RCPCH.ac.uk"]}
-    return (
-      <Message>
-        <Message.Header>References</Message.Header>
-        <List>
-          <List.Item>
-            Freeman JV, Cole TJ, Chinn S, Jones PRM, White EM, Preece MA. Cross
-            sectional stature and weight reference curves for the UK, 1990. Arch
-            Dis Child 1995; 73:17-24.
-          </List.Item>
-          <List.Item>
-            <a href="www.who.int/childgrowth/en">www.who.int/childgrowth/en</a>
-          </List.Item>
-          <List.Item>
-            For further relevant references see fact sheet downloadable from{' '}
-            <a href="www.growthcharts.RCPCH.ac.uk">
-              www.growthcharts.RCPCH.ac.uk
-            </a>
-          </List.Item>
-        </List>
-      </Message>
-    );
-  };
-
-  const panes = [
-    {
-      menuItem: 'Height',
-      render: () => (
-        <Tab.Pane attached={'top'} disabled={heightDisabled}>
-          {returnNewChart(
-            sex,
-            'height',
-            apiResult.height,
-            chartStyle,
-            axisStyle,
-            gridlineStyle,
-            centileStyle,
-            measurementStyle
-          )}
-          <Acknowledgements />
-        </Tab.Pane>
-      ),
-    },
-    {
-      menuItem: 'Weight',
-      render: () => (
-        <Tab.Pane attached={'top'} disabled={weightDisabled}>
-          {returnNewChart(
-            sex,
-            'weight',
-            apiResult.weight,
-            chartStyle,
-            axisStyle,
-            gridlineStyle,
-            centileStyle,
-            measurementStyle
-          )}
-          <Acknowledgements />
-        </Tab.Pane>
-      ),
-    },
-    {
-      menuItem: 'BMI',
-      render: () => (
-        <Tab.Pane attached={'top'} disabled={bmiDisabled}>
-          {returnNewChart(
-            sex,
-            'bmi',
-            apiResult.bmi,
-            chartStyle,
-            axisStyle,
-            gridlineStyle,
-            centileStyle,
-            measurementStyle
-          )}
-          <Acknowledgements />
-        </Tab.Pane>
-      ),
-    },
+  const panesBlueprint = [
+    { menuItem: 'Height', measurementName: 'height', disabled: heightDisabled },
+    { menuItem: 'Weight', measurementName: 'weight', disabled: weightDisabled },
+    { menuItem: 'BMI', measurementName: 'bmi', disabled: bmiDisabled },
     {
       menuItem: 'Head Circumference',
+      measurementName: 'ofc',
+      disabled: ofcDisabled,
+    },
+  ];
+
+  const panes = panesBlueprint.map((details) => {
+    return {
+      menuItem: details.menuItem,
       render: () => (
-        <Tab.Pane attached={'top'} disabled={ofcDisabled}>
-          {returnNewChart(
-            sex,
-            'ofc',
-            apiResult.ofc,
-            chartStyle,
-            axisStyle,
-            gridlineStyle,
-            centileStyle,
-            measurementStyle
-          )}
+        <Tab.Pane attached="top" disabled={details.disabled}>
+          <ChartData
+            key={details.measurementName}
+            reference={reference} //the choices are ["uk-who", "turner", "trisomy-21"] REQUIRED
+            sex={sex} //the choices are ["male", "female"] REQUIRED
+            measurementMethod={details.measurementName} //the choices are ["height", "weight", "ofc", "bmi"] REQUIRED
+            measurementsArray={apiResult[reference][details.measurementName]} // an array of Measurement class objects from dGC Optional
+            chartStyle={chartStyle}
+            axisStyle={axisStyle}
+            gridlineStyle={gridlineStyle}
+            centileStyle={centileStyle}
+            measurementStyle={measurementStyle}
+            isLoading={isLoading}
+          />
           <Acknowledgements />
         </Tab.Pane>
       ),
-    },
-  ];
+    };
+  });
 
   const TabPanes = () => (
     <Tab
@@ -477,182 +415,261 @@ function MeasurementSegment() {
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell></Table.HeaderCell>
-            <Table.HeaderCell>
-              Corrected Results
-            </Table.HeaderCell>
-            <Table.HeaderCell>
-              Chronological Results
-            </Table.HeaderCell>
+            <Table.HeaderCell>Corrected Results</Table.HeaderCell>
+            <Table.HeaderCell>Chronological Results</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {apiResult.height.length > 0 &&
+          {apiResult[reference].height.length > 0 && (
             <Table.Row>
               <Table.HeaderCell></Table.HeaderCell>
               <Table.HeaderCell>Heights</Table.HeaderCell>
               <Table.HeaderCell></Table.HeaderCell>
             </Table.Row>
-          }
-        {apiResult.height.length > 0 && apiResult.height.map((measurement, index) => {
-          return <TableBody
-            measurement={measurement}
-            key={index}
-          />
-        })}
-        {apiResult.weight.length > 0 &&
+          )}
+          {apiResult[reference].height.length > 0 &&
+            apiResult[reference].height.map((measurement, index) => {
+              return <TableBody measurement={measurement} key={index} />;
+            })}
+          {apiResult[reference].weight.length > 0 && (
             <Table.Row>
               <Table.HeaderCell></Table.HeaderCell>
               <Table.HeaderCell>Weights</Table.HeaderCell>
               <Table.HeaderCell></Table.HeaderCell>
             </Table.Row>
-          }
-        {apiResult.weight.length > 0 && apiResult.weight.map((measurement, index) => {
-          return (
-            <TableBody 
-              key={index} 
-              measurement={measurement}/>
-          );
-        })}
-        {apiResult.bmi.length > 0 &&
+          )}
+          {apiResult[reference].weight.length > 0 &&
+            apiResult[reference].weight.map((measurement, index) => {
+              return <TableBody key={index} measurement={measurement} />;
+            })}
+          {apiResult[reference].bmi.length > 0 && (
             <Table.Row>
               <Table.HeaderCell></Table.HeaderCell>
               <Table.HeaderCell>BMIs</Table.HeaderCell>
               <Table.HeaderCell></Table.HeaderCell>
             </Table.Row>
-          }
-        {apiResult.bmi.length > 0 && apiResult.bmi.map((measurement, index) => {
-          return (
-            <TableBody 
-              key={index} 
-              measurement={measurement}/>
-          );
-        })}
-        {apiResult.ofc.length > 0 &&
+          )}
+          {apiResult[reference].bmi.length > 0 &&
+            apiResult.bmi.map((measurement, index) => {
+              return <TableBody key={index} measurement={measurement} />;
+            })}
+          {apiResult[reference].ofc.length > 0 && (
             <Table.Row>
               <Table.HeaderCell></Table.HeaderCell>
               <Table.HeaderCell>Head Circumferences</Table.HeaderCell>
               <Table.HeaderCell></Table.HeaderCell>
             </Table.Row>
-        }
-        {apiResult.ofc.length > 0 && apiResult.ofc.map((measurement, index) => {
-          return (
-            <TableBody 
-              key={index}
-              measurement={measurement}
-            />
-          );
-        })}
+          )}
+          {apiResult[reference].ofc.length > 0 &&
+            apiResult[reference].ofc.map((measurement, index) => {
+              return <TableBody key={index} measurement={measurement} />;
+            })}
         </Table.Body>
       </Table>
     </Segment>
   );
 
-  const TableBody = (props) => {
-      const measurement = props.measurement
-      return  (<>
-                <Table.Row>
-                  <Table.Cell>Ages</Table.Cell>
-                  <Table.Cell>{measurement.measurement_dates.chronological_calendar_age}</Table.Cell>
-                  <Table.Cell>
-                  {measurement.measurement_dates.corrected_calendar_age}
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                <Table.Cell>Measurement</Table.Cell>
-                  <Table.Cell>{measurement.child_observation_value.observation_value}{' '}
-                  {units(measurement.child_observation_value.measurement_method)}
-                  </Table.Cell>
-                  <Table.Cell>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>SDS</Table.Cell>
-                  <Table.Cell>
-                    {Math.round(
-                      measurement.measurement_calculated_values.corrected_sds *
-                        1000
-                    ) / 1000}
-                  </Table.Cell>
-                  <Table.Cell>
-                    {Math.round(
-                      measurement.measurement_calculated_values.chronological_sds *
-                        1000
-                    ) / 1000}
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>Centiles</Table.Cell>
-                  <Table.Cell>
-                    {measurement.measurement_calculated_values.corrected_centile}
-                  </Table.Cell>
-                  <Table.Cell>
-                    {measurement.measurement_calculated_values.chronological_centile}
-                  </Table.Cell>
-                </Table.Row>
-              </>)
-  }
-
   return (
-    <Grid padded>
-      <Grid.Row>
-        <Grid.Column width={6}>
-          <Grid.Row>
-            <Segment raised>
-              <MeasurementForm
-                measurementResult={handleResults}
-                handleChangeReference={changeReference}
-                handleChangeSex={changeSex}
-                handleChangeMeasurementMethod={changeMeasurement}
-                className="measurement-form"
-              />
-            </Segment>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column width={5}>
+    <React.Fragment>
+      <Grid padded>
+        <Grid.Row>
+          <Grid.Column width={6}>
+            <Grid.Row>
               <Segment raised>
-                <Message>
-                  <Flag name="gb" />
-                  This calculator uses the UK-WHO references to calculate gold
-                  standard accurate child growth parameters. In the future we
-                  are planning to add other growth references such as specialist
-                  Trisomy 21 and Turner's Syndrome references, CDC and WHO.
-                </Message>
-
-                <Message color="red">
-                  This site is under development. No responsibility is accepted
-                  for the accuracy of results produced by this tool.
-                </Message>
+                <MeasurementForm
+                  measurementResult={handleResults}
+                  handleChangeReference={changeReference}
+                  handleChangeSex={changeSex}
+                  measurementMethod={measurementMethod}
+                  setMeasurementMethod={setMeasurementMethod}
+                  className="measurement-form"
+                />
               </Segment>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid.Column>
-        <Grid.Column width={10}>
-          <Segment raised>
-            {flip ? (
-              <ResultsSegment selectedMeasurement={measurementMethod} />
-            ) : (
-              <TabPanes />
-            )}
-            <Grid verticalAlign="middle">
-              <Grid.Row columns={2}>
-                <Grid.Column textAlign="left">
-                  <ThemeSelection />
-                </Grid.Column>
-                <Grid.Column textAlign="right">
-                  <Button
-                    className="selectUpperMargin"
-                    onClick={handleFlipResults}
-                  >
-                    Results
-                  </Button>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          </Segment>
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column width={5}>
+                <Segment raised>
+                  <Message>
+                    <Flag name="gb" />
+                    This calculator uses the UK-WHO references to calculate gold
+                    standard accurate child growth parameters. In the future we
+                    are planning to add other growth references such as
+                    specialist Trisomy 21 and Turner's Syndrome references, CDC
+                    and WHO.
+                  </Message>
+
+                  <Message color="red">
+                    This site is under development. No responsibility is
+                    accepted for the accuracy of results produced by this tool.
+                  </Message>
+                </Segment>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid.Column>
+          <Grid.Column width={10}>
+            <Segment raised>
+              {flip ? (
+                <ResultsSegment selectedMeasurement={measurementMethod} />
+              ) : (
+                <TabPanes />
+              )}
+              <Grid verticalAlign="middle">
+                <Grid.Row columns={2}>
+                  <Grid.Column textAlign="left">
+                    <ThemeSelection />
+                  </Grid.Column>
+                  <Grid.Column textAlign="right">
+                    <Button
+                      className="selectUpperMargin"
+                      onClick={handleFlipResults}
+                    >
+                      Results
+                    </Button>
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+            </Segment>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+      <ErrorModal
+        title={errorModal.title}
+        body={errorModal.body}
+        visible={errorModal.visible}
+        handleClose={() => setErrorModal(InitalErrorModalState())}
+      />
+    </React.Fragment>
   );
+}
+
+function InitialMeasurementState() {
+  return {
+    turner: {
+      height: [],
+      weight: [],
+      bmi: [],
+      ofc: [],
+    },
+    'trisomy-21': {
+      height: [],
+      weight: [],
+      bmi: [],
+      ofc: [],
+    },
+    'uk-who': {
+      height: [],
+      weight: [],
+      bmi: [],
+      ofc: [],
+    },
+  };
+}
+
+const units = (measurementMethod) => {
+  if (measurementMethod === 'height') {
+    return 'cm';
+  }
+  if (measurementMethod === 'weight') {
+    return 'kg';
+  }
+  if (measurementMethod === 'bmi') {
+    return 'kg/m²';
+  }
+  if (measurementMethod === 'ofc') {
+    return 'cm';
+  }
+};
+
+const Acknowledgements = () => {
+  // list={["Freeman JV, Cole TJ, Chinn S, Jones PRM, White EM, Preece MA. Cross sectional stature and weight reference curves for the UK, 1990. Arch Dis Child 1995; 73:17-24.", "<a href='www.who.int/childgrowth/en'>www.who.int/childgrowth/en</a>", "For further relevant references see fact sheet downloadable from www.growthcharts.RCPCH.ac.uk"]}
+  return (
+    <Message>
+      <Message.Header>References</Message.Header>
+      <List>
+        <List.Item>
+          Freeman JV, Cole TJ, Chinn S, Jones PRM, White EM, Preece MA. Cross
+          sectional stature and weight reference curves for the UK, 1990. Arch
+          Dis Child 1995; 73:17-24.
+        </List.Item>
+        <List.Item>
+          <a href="www.who.int/childgrowth/en">www.who.int/childgrowth/en</a>
+        </List.Item>
+        <List.Item>
+          For further relevant references see fact sheet downloadable from{' '}
+          <a href="www.growthcharts.RCPCH.ac.uk">
+            www.growthcharts.RCPCH.ac.uk
+          </a>
+        </List.Item>
+      </List>
+    </Message>
+  );
+};
+
+const TableBody = (props) => {
+  const measurement = props.measurement;
+  return (
+    <React.Fragment>
+      <Table.Row>
+        <Table.Cell>Ages</Table.Cell>
+        <Table.Cell>
+          {measurement.measurement_dates.chronological_calendar_age}
+        </Table.Cell>
+        <Table.Cell>
+          {measurement.measurement_dates.corrected_calendar_age}
+        </Table.Cell>
+      </Table.Row>
+      <Table.Row>
+        <Table.Cell>Measurement</Table.Cell>
+        <Table.Cell>
+          {measurement.child_observation_value.observation_value}{' '}
+          {units(measurement.child_observation_value.measurement_method)}
+        </Table.Cell>
+        <Table.Cell></Table.Cell>
+      </Table.Row>
+      <Table.Row>
+        <Table.Cell>SDS</Table.Cell>
+        <Table.Cell>
+          {Math.round(
+            measurement.measurement_calculated_values.corrected_sds * 1000
+          ) / 1000}
+        </Table.Cell>
+        <Table.Cell>
+          {Math.round(
+            measurement.measurement_calculated_values.chronological_sds * 1000
+          ) / 1000}
+        </Table.Cell>
+      </Table.Row>
+      <Table.Row>
+        <Table.Cell>Centiles</Table.Cell>
+        <Table.Cell>
+          {measurement.measurement_calculated_values.corrected_centile}
+        </Table.Cell>
+        <Table.Cell>
+          {measurement.measurement_calculated_values.chronological_centile}
+        </Table.Cell>
+      </Table.Row>
+    </React.Fragment>
+  );
+};
+
+const ErrorModal = ({ title, body, handleClose, visible }) => {
+  return (
+    <Modal title={title} open={visible} size="small" closeOnEscape={true}>
+      <Modal.Header>{title}</Modal.Header>
+      <Modal.Content>{body}</Modal.Content>
+      <Modal.Actions>
+        <Button onClick={handleClose}>OK</Button>
+      </Modal.Actions>
+    </Modal>
+  );
+};
+
+function InitalErrorModalState() {
+  return {
+    visible: false,
+    title: '',
+    body: '',
+  };
 }
 
 export default MeasurementSegment;
