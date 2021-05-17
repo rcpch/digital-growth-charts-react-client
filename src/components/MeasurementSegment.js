@@ -29,9 +29,6 @@ import axios from 'axios';
 function MeasurementSegment() {
   const defaultTheme = RCPCHThemeMonochrome;
 
-  const [measurementMethod, setMeasurementMethod] = useState('height');
-  const [reference, setReference] = useState('uk-who');
-  const [sex, setSex] = useState('male');
   const [chartStyle, setChartSyle] = useState(defaultTheme.chart);
   const [axisStyle, setAxisStyle] = useState(defaultTheme.axes);
   const [centileStyle, setCentileStyle] = useState(defaultTheme.centiles);
@@ -45,11 +42,16 @@ function MeasurementSegment() {
   });
 
   const [flip, setFlip] = useState(false); // flag to determine if results or chart showing
-  const [heightDisabled, setHeightDisabled] = useState(false);
-  const [weightDisabled, setWeightDisabled] = useState(false);
-  const [bmiDisabled, setBMIDisabled] = useState(false);
-  const [ofcDisabled, setOFCDisabled] = useState(false);
+  const [disabled, setDisabled] = useState({
+    height: false,
+    weight: false,
+    bmi: false,
+    ofc: false,
+  });
 
+  const [measurementMethod, setMeasurementMethod] = useState('height');
+  const [reference, setReference] = useState('uk-who');
+  const [sex, setSex] = useState('male');
   const [measurements, setMeasurements] = useState(InitialMeasurementState());
   const [apiResult, setAPIResult] = useState(InitialMeasurementState());
 
@@ -71,6 +73,7 @@ function MeasurementSegment() {
       activeIndex = 3;
       break;
     default:
+      //height
       activeIndex = 0;
   }
 
@@ -181,7 +184,6 @@ function MeasurementSegment() {
         title: 'Measurement unavailable',
         body: "Only height data is available for Turner's Syndrome.",
       });
-      return null;
     }
     switch (activeIndex) {
       case 0:
@@ -197,7 +199,7 @@ function MeasurementSegment() {
         setMeasurementMethod('ofc');
         break;
       default:
-        console.warm('Handle tab change did not pick up valid active index');
+        console.warn('Handle tab change did not pick up valid active index');
     }
   };
 
@@ -207,16 +209,20 @@ function MeasurementSegment() {
     if (newReference === 'turner') {
       setMeasurementMethod('height');
       setSex('female');
-      setHeightDisabled(false);
-      setWeightDisabled(true);
-      setBMIDisabled(true);
-      setOFCDisabled(true);
+      setDisabled({
+        height: false,
+        weight: true,
+        bmi: true,
+        ofc: true,
+      });
       return { newSex: 'female' };
     } else {
-      setHeightDisabled(false);
-      setWeightDisabled(false);
-      setBMIDisabled(false);
-      setOFCDisabled(false);
+      setDisabled({
+        height: false,
+        weight: false,
+        bmi: false,
+        ofc: false,
+      });
       if (
         apiResult[newReference][measurementMethod].length > 0 &&
         apiResult[newReference][measurementMethod][0]?.birth_data.sex !== sex
@@ -359,13 +365,12 @@ function MeasurementSegment() {
   };
 
   const panesBlueprint = [
-    { menuItem: 'Height', measurementName: 'height', disabled: heightDisabled },
-    { menuItem: 'Weight', measurementName: 'weight', disabled: weightDisabled },
-    { menuItem: 'BMI', measurementName: 'bmi', disabled: bmiDisabled },
+    { menuItem: 'Height', measurementName: 'height' },
+    { menuItem: 'Weight', measurementName: 'weight' },
+    { menuItem: 'BMI', measurementName: 'bmi' },
     {
       menuItem: 'Head Circumference',
       measurementName: 'ofc',
-      disabled: ofcDisabled,
     },
   ];
 
@@ -373,7 +378,7 @@ function MeasurementSegment() {
     return {
       menuItem: details.menuItem,
       render: () => (
-        <Tab.Pane attached="top" disabled={details.disabled}>
+        <Tab.Pane attached="top" disabled={disabled[details.measurementName]}>
           <ChartData
             key={details.measurementName}
             reference={reference} //the choices are ["uk-who", "turner", "trisomy-21"] REQUIRED
