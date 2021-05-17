@@ -115,7 +115,7 @@ function MeasurementSegment() {
     setErrorModal({
       visible: true,
       title: 'Are you sure you want to reset?',
-      body: 'This will remove all measurements from the current graph.',
+      body: 'This will remove all measurements from the current chart.',
       handleCancel: () => setErrorModal(InitalErrorModalState()),
       handleClose: () => {
         setMeasurements((old) => {
@@ -148,7 +148,7 @@ function MeasurementSegment() {
     setErrorModal({
       visible: true,
       title: 'Are you sure you want to remove the last measurement?',
-      body: 'This will remove the last measurement entered on the graph.',
+      body: 'This will remove the last measurement entered on the chart.',
       handleCancel: () => setErrorModal(InitalErrorModalState()),
       handleClose: () => {
         removeLast(true);
@@ -231,7 +231,7 @@ function MeasurementSegment() {
           setErrorModal({
             visible: true,
             title: 'Unable to change sex',
-            body: `Each chart can only display measurements from one patient at a time. Please reset the graph before entering measurements from a new patient.`,
+            body: `Each chart can only display measurements from one patient at a time. Please reset the chart before entering measurements from a new patient.`,
             handleClose: () => setErrorModal(InitalErrorModalState()),
           });
           return false;
