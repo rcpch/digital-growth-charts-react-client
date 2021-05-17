@@ -57,8 +57,9 @@ function MeasurementSegment() {
   const [errorModal, setErrorModal] = useState(InitalErrorModalState());
 
   const [isLoading, setIsLoading] = useState(false);
+  const [clearMeasurement, setClearMeasurement] = useState(false);
 
-  let activeIndex = 0;
+  let activeIndex;
 
   switch (measurementMethod) {
     case 'weight':
@@ -71,9 +72,7 @@ function MeasurementSegment() {
       activeIndex = 3;
       break;
     default:
-      console.warn(
-        'Fall through case for selecting active index for measurement method'
-      );
+      activeIndex = 0;
   }
 
   useEffect(() => {
@@ -125,6 +124,19 @@ function MeasurementSegment() {
                 }
               }
               if (error) {
+                const newMeasurements = [
+                  ...measurements[reference][measurementMethod],
+                ];
+                newMeasurements.pop();
+                setMeasurements((old) => {
+                  const mutable = {
+                    turner: { ...old.turner },
+                    'trisomy-21': { ...old['trisomy-21'] },
+                    'uk-who': { ...old['uk-who'] },
+                  };
+                  mutable[reference][measurementMethod] = newMeasurements;
+                  return mutable;
+                });
                 setErrorModal({
                   visible: true,
                   title: 'Incompatible measurement',
@@ -140,6 +152,7 @@ function MeasurementSegment() {
                   mutable[reference][measurementMethod] = final;
                   return mutable;
                 });
+                setClearMeasurement(true);
               }
               setIsLoading(false);
             }
@@ -169,6 +182,7 @@ function MeasurementSegment() {
         title: 'Measurement unavailable',
         body: "Only height data is available for Turner's Syndrome.",
       });
+      return null;
     }
     switch (activeIndex) {
       case 0:
@@ -198,18 +212,23 @@ function MeasurementSegment() {
       setWeightDisabled(true);
       setBMIDisabled(true);
       setOFCDisabled(true);
-    }
-    if (newReference === 'trisomy-21') {
+      return { newSex: 'female' };
+    } else {
       setHeightDisabled(false);
       setWeightDisabled(false);
       setBMIDisabled(false);
       setOFCDisabled(false);
-    }
-    if (newReference === 'uk-who') {
-      setHeightDisabled(false);
-      setWeightDisabled(false);
-      setBMIDisabled(false);
-      setOFCDisabled(false);
+      if (
+        apiResult[newReference][measurementMethod].length > 0 &&
+        apiResult[newReference][measurementMethod][0]?.birth_data.sex !== sex
+      ) {
+        setSex(apiResult[newReference][measurementMethod][0].birth_data.sex);
+        return {
+          newSex: apiResult[newReference][measurementMethod][0].birth_data.sex,
+        };
+      } else {
+        return { newSex: sex };
+      }
     }
   };
 
@@ -286,7 +305,7 @@ function MeasurementSegment() {
         title: 'Please check entries',
         body: `Each chart can only display measurements from one patient at a time: ${errorString} were detected.`,
       });
-      return null;
+      return false;
     } else {
       setMeasurements((old) => {
         const mutable = {
@@ -294,11 +313,12 @@ function MeasurementSegment() {
           'trisomy-21': { ...old['trisomy-21'] },
           'uk-who': { ...old['uk-who'] },
         };
-        const newArray = old[reference][measurementMethod].concat(results);
+        const newArray = mutable[reference][measurementMethod].concat(results);
         mutable[reference][measurementMethod] = newArray;
         return mutable;
       });
       setIsLoading(true);
+      return true;
     }
   };
 
@@ -482,6 +502,8 @@ function MeasurementSegment() {
                   handleChangeSex={changeSex}
                   measurementMethod={measurementMethod}
                   setMeasurementMethod={setMeasurementMethod}
+                  clearMeasurement={clearMeasurement}
+                  setClearMeasurement={setClearMeasurement}
                   className="measurement-form"
                 />
               </Segment>

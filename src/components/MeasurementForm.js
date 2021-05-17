@@ -128,17 +128,15 @@ class MeasurementForm extends React.Component {
     this.handleChangeReference = this.handleChangeReference.bind(this);
   }
 
-  handleGrowthResults = (results) => {
-    this.props.measurementResult(results);
-  };
-
   handleChangeReference = (ref, data) => {
+    //call back, returns new sex if already measurements charted with different sex
+    const callbackReturn = this.props.handleChangeReference(data.value);
     if (data.value === 'turner') {
       this.disableMeasurement('weight', true);
       this.disableMeasurement('ofc', true);
       this.disableMeasurement('bmi', true);
       this.setState({
-        sex: 'female',
+        sex: callbackReturn.newSex,
         observation_value_error: this.validateObservationValue(
           'height',
           this.state.measurement.observation_value
@@ -156,10 +154,10 @@ class MeasurementForm extends React.Component {
           this.props.measurementMethod,
           this.state.measurement.observation_value
         ),
+        sex: callbackReturn.newSex,
         reference: data.value,
       });
     }
-    this.props.handleChangeReference(data.value); //call back
   };
 
   disableMeasurement = (measurement_method, disable) => {
@@ -326,7 +324,6 @@ class MeasurementForm extends React.Component {
   handleSubmit(event) {
     // passes the form data back to the parent (measurement segment)
     const measurementArray = [];
-
     const formData = {
       birth_date: this.state.birth_date,
       observation_date: this.state.observation_date,
@@ -337,13 +334,7 @@ class MeasurementForm extends React.Component {
       sex: this.state.sex,
     };
     measurementArray.push(formData);
-    const newMeasurement = { ...this.state.measurement };
-    newMeasurement.observation_value = '';
-    this.setState({
-      measurement: newMeasurement,
-      observation_value_error: null,
-    });
-    this.handleGrowthResults(measurementArray);
+    this.props.measurementResult(measurementArray);
   }
 
   handleChangeMeasurementMethod(event, data) {
@@ -414,6 +405,16 @@ class MeasurementForm extends React.Component {
   componentDidUpdate() {
     if (this.state.form_valid !== this.formIsValid()) {
       this.setState({ form_valid: this.formIsValid() });
+    }
+    if (this.props.clearMeasurement) {
+      const newMeasurement = { ...this.state.measurement };
+      newMeasurement.observation_value = '';
+      this.setState({
+        measurement: newMeasurement,
+        observation_value_error: null,
+        form_valid: false,
+      });
+      this.props.setClearMeasurement(false);
     }
   }
 
