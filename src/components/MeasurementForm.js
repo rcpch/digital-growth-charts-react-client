@@ -145,7 +145,7 @@ class MeasurementForm extends React.Component {
         ),
         reference: data.value,
       });
-      this.props.handleChangeSex('female');
+      this.props.handleChangeSex({}, 'female', true);
       this.props.setMeasurementMethod('height');
     } else {
       this.disableMeasurement('weight', false);
@@ -389,8 +389,8 @@ class MeasurementForm extends React.Component {
     }
   }
 
-  handleChangeSex(event, data) {
-    const success = this.props.handleChangeSex(data.value);
+  handleChangeSex(event, data, isTurner = false) {
+    const success = this.props.handleChangeSex(data.value, isTurner);
     if (success) {
       this.setState({ sex: data.value });
     }

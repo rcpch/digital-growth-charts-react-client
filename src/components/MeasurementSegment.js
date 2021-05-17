@@ -213,10 +213,10 @@ function MeasurementSegment() {
     }
   };
 
-  const changeSex = (newSex) => {
+  const changeSex = (newSex, isTurner = false) => {
     // call back from MeasurementForm
     const existingResults = [...measurements[reference][measurementMethod]];
-    if (existingResults.length > 0) {
+    if (existingResults.length > 0 && !isTurner) {
       for (const oldResult of existingResults) {
         if (newSex !== oldResult.sex) {
           setErrorModal({
