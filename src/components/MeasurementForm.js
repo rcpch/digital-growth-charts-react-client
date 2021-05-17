@@ -12,9 +12,10 @@ import {
 } from 'semantic-ui-react';
 
 const sexOptions = [
-  { key: 'male', value: 'male', text: 'Boy' },
-  { key: 'female', value: 'female', text: 'Girl' },
+  { key: 'male', value: 'male', text: 'Boy', disabled: false },
+  { key: 'female', value: 'female', text: 'Girl', disabled: false },
 ];
+
 let gestationWeeksOptions = [];
 let gestWeeks = 23;
 while (gestWeeks <= 42) {
@@ -101,9 +102,6 @@ class MeasurementForm extends React.Component {
       measurement: {
         observation_value: '',
         units: 'cm',
-        show_add: true,
-        show_remove: false,
-        disabled: false,
       },
       sex: 'male',
       gestation_weeks: 40,
@@ -112,10 +110,10 @@ class MeasurementForm extends React.Component {
       observation_date_error: '',
       observation_value_error: null,
       form_valid: false,
-      formData: {},
       measurementResult: [],
       reference: 'uk-who',
       measurementOptions: measurementOptions,
+      sexOptions: sexOptions,
     };
 
     this.handleChangeDate = this.handleChangeDate.bind(this);
@@ -126,6 +124,8 @@ class MeasurementForm extends React.Component {
     this.handleChangeSex = this.handleChangeSex.bind(this);
     this.handleObservationChange = this.handleObservationChange.bind(this);
     this.handleChangeReference = this.handleChangeReference.bind(this);
+    this.handleResetCurrentGraph = this.handleResetCurrentGraph.bind(this);
+    this.handleUndoLast = this.handleUndoLast.bind(this);
   }
 
   handleChangeReference = (ref, data) => {
@@ -135,6 +135,11 @@ class MeasurementForm extends React.Component {
       this.disableMeasurement('weight', true);
       this.disableMeasurement('ofc', true);
       this.disableMeasurement('bmi', true);
+      const newSexOptions = [
+        { ...this.state.sexOptions[0] },
+        { ...this.state.sexOptions[1] },
+      ];
+      newSexOptions[0].disabled = true;
       this.setState({
         sex: 'female',
         observation_value_error: this.validateObservationValue(
@@ -142,6 +147,7 @@ class MeasurementForm extends React.Component {
           this.state.measurement.observation_value
         ),
         reference: data.value,
+        sexOptions: newSexOptions,
       });
       this.props.handleChangeSex('female', true);
       this.props.setMeasurementMethod('height');
@@ -149,6 +155,11 @@ class MeasurementForm extends React.Component {
       this.disableMeasurement('weight', false);
       this.disableMeasurement('ofc', false);
       this.disableMeasurement('bmi', false);
+      const newSexOptions = [
+        { ...this.state.sexOptions[0] },
+        { ...this.state.sexOptions[1] },
+      ];
+      newSexOptions[0].disabled = false;
       this.setState({
         observation_value_error: this.validateObservationValue(
           this.props.measurementMethod,
@@ -156,6 +167,7 @@ class MeasurementForm extends React.Component {
         ),
         sex: callbackReturn.newSex,
         reference: data.value,
+        sexOptions: newSexOptions,
       });
     }
   };
@@ -266,6 +278,9 @@ class MeasurementForm extends React.Component {
   validateObservationValue(measurement_method, observation_value) {
     if (observation_value === '') {
       return null;
+    }
+    if (Number.isNaN(Number(observation_value))) {
+      return 'Please enter a valid number';
     }
     if (measurement_method === 'height') {
       if (observation_value < 20) {
@@ -402,11 +417,23 @@ class MeasurementForm extends React.Component {
     }
   }
 
+  handleResetCurrentGraph() {
+    this.props.setCommands((old) => {
+      return { ...old, resetCurrent: true };
+    });
+  }
+
+  handleUndoLast() {
+    this.props.setCommands((old) => {
+      return { ...old, undoLast: true };
+    });
+  }
+
   componentDidUpdate() {
     if (this.state.form_valid !== this.formIsValid()) {
       this.setState({ form_valid: this.formIsValid() });
     }
-    if (this.props.clearMeasurement) {
+    if (this.props.commands.clearMeasurement) {
       const newMeasurement = { ...this.state.measurement };
       newMeasurement.observation_value = '';
       this.setState({
@@ -414,7 +441,9 @@ class MeasurementForm extends React.Component {
         observation_value_error: null,
         form_valid: false,
       });
-      this.props.setClearMeasurement(false);
+      this.props.setCommands((old) => {
+        return { ...old, clearMeasurement: false };
+      });
     }
   }
 
@@ -510,7 +539,7 @@ class MeasurementForm extends React.Component {
                 placeholder="Sex"
                 value={this.state.sex}
                 onChange={this.handleChangeSex}
-                options={sexOptions}
+                options={this.state.sexOptions}
               />
             </Form.Field>
 
@@ -545,7 +574,7 @@ class MeasurementForm extends React.Component {
               <Button
                 content="Calculate Centiles and Add To Chart"
                 type="submit"
-                fluid={true}
+                fluid
                 disabled={!this.state.form_valid}
                 color="pink"
                 icon="line graph"
@@ -553,6 +582,18 @@ class MeasurementForm extends React.Component {
               />
             </Form.Field>
           </Form>
+          <Segment>
+            <Button
+              content="Reset Graph"
+              icon="power off"
+              onClick={this.handleResetCurrentGraph}
+            />
+            <Button
+              content="Remove Last"
+              icon="undo"
+              onClick={this.handleUndoLast}
+            />
+          </Segment>
         </Segment>
       </Container>
     );

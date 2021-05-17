@@ -1,5 +1,5 @@
 // React
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import RCPCHTheme1 from '../components/chartThemes/rcpchTheme1';
 import RCPCHTheme2 from '../components/chartThemes/rcpchTheme2';
 import RCPCHTheme3 from '../components/chartThemes/rcpchTheme3';
@@ -58,7 +58,11 @@ function MeasurementSegment() {
   const [errorModal, setErrorModal] = useState(InitalErrorModalState());
 
   const [isLoading, setIsLoading] = useState(false);
-  const [clearMeasurement, setClearMeasurement] = useState(false);
+  const [commands, setCommands] = useState({
+    clearMeasurement: false,
+    resetCurrent: false,
+    undoLast: false,
+  });
 
   let activeIndex;
 
@@ -77,105 +81,84 @@ function MeasurementSegment() {
       activeIndex = 0;
   }
 
-  useEffect(() => {
-    const fetchCentilesForMeasurement = async (array) => {
-      let url;
-      if (reference === 'uk-who') {
-        url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/calculation`;
-      }
-      if (reference === 'turner') {
-        url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/turner/calculation`;
-      }
-      if (reference === 'trisomy-21') {
-        url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/trisomy-21/calculation`;
-      }
-
-      const results = array.map(async (payload) => {
-        const response = await axios({
-          url: url,
-          data: payload,
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        return response.data;
+  const removeLast = useCallback(
+    (both = false) => {
+      const newMeasurements = [...measurements[reference][measurementMethod]];
+      newMeasurements.pop();
+      setMeasurements((old) => {
+        const mutable = {
+          turner: { ...old.turner },
+          'trisomy-21': { ...old['trisomy-21'] },
+          'uk-who': { ...old['uk-who'] },
+        };
+        mutable[reference][measurementMethod] = newMeasurements;
+        return mutable;
       });
-
-      return Promise.all(results);
-    };
-
-    let ignore = false;
-
-    if (isLoading) {
-      const submitArray = measurements[reference][measurementMethod];
-      if (submitArray.length > 0) {
-        fetchCentilesForMeasurement(submitArray)
-          .then((final) => {
-            if (!ignore) {
-              let error = '';
-              for (const result of final) {
-                if (
-                  result.measurement_calculated_values
-                    .corrected_measurement_error
-                ) {
-                  error =
-                    result.measurement_calculated_values
-                      .corrected_measurement_error;
-                  break;
-                }
-              }
-              if (error) {
-                const newMeasurements = [
-                  ...measurements[reference][measurementMethod],
-                ];
-                newMeasurements.pop();
-                setMeasurements((old) => {
-                  const mutable = {
-                    turner: { ...old.turner },
-                    'trisomy-21': { ...old['trisomy-21'] },
-                    'uk-who': { ...old['uk-who'] },
-                  };
-                  mutable[reference][measurementMethod] = newMeasurements;
-                  return mutable;
-                });
-                setErrorModal({
-                  visible: true,
-                  title: 'Incompatible measurement',
-                  body: `Measurement entered has been rejected by the server. Reason given: ${error}`,
-                });
-              } else {
-                setAPIResult((old) => {
-                  const mutable = {
-                    turner: { ...old.turner },
-                    'trisomy-21': { ...old['trisomy-21'] },
-                    'uk-who': { ...old['uk-who'] },
-                  };
-                  mutable[reference][measurementMethod] = final;
-                  return mutable;
-                });
-                setClearMeasurement(true);
-              }
-              setIsLoading(false);
-            }
-          })
-          .catch((error) => {
-            const errorForUser = `There has been a problem fetching the result from the server. Error details: ${error.message} `;
-            setErrorModal({
-              visible: true,
-              title: 'Server error',
-              body: errorForUser,
-            });
-            setIsLoading(false);
-          });
+      if (both) {
+        const newApi = [...apiResult[reference][measurementMethod]];
+        newApi.pop();
+        setAPIResult((old) => {
+          const mutable = {
+            turner: { ...old.turner },
+            'trisomy-21': { ...old['trisomy-21'] },
+            'uk-who': { ...old['uk-who'] },
+          };
+          mutable[reference][measurementMethod] = newApi;
+          return mutable;
+        });
       }
-    }
+    },
+    [measurements, reference, measurementMethod, apiResult]
+  );
 
-    return () => {
-      // this prevents data being added to state if unmounted
-      ignore = true;
-    };
-  }, [isLoading, measurementMethod, reference, apiResult, measurements]);
+  if (commands.resetCurrent) {
+    setErrorModal({
+      visible: true,
+      title: 'Are you sure you want to reset?',
+      body: 'This will remove all measurements from the current graph.',
+      handleCancel: () => setErrorModal(InitalErrorModalState()),
+      handleClose: () => {
+        setMeasurements((old) => {
+          const mutable = {
+            turner: { ...old.turner },
+            'trisomy-21': { ...old['trisomy-21'] },
+            'uk-who': { ...old['uk-who'] },
+          };
+          mutable[reference][measurementMethod] = [];
+          return mutable;
+        });
+        setAPIResult((old) => {
+          const mutable = {
+            turner: { ...old.turner },
+            'trisomy-21': { ...old['trisomy-21'] },
+            'uk-who': { ...old['uk-who'] },
+          };
+          mutable[reference][measurementMethod] = [];
+          return mutable;
+        });
+        setErrorModal(InitalErrorModalState());
+      },
+    });
+    setCommands((old) => {
+      return { ...old, resetCurrent: false };
+    });
+  }
+
+  if (commands.undoLast) {
+    setErrorModal({
+      visible: true,
+      title: 'Are you sure you want to remove the last measurement?',
+      body: 'This will remove the last measurement entered on the graph.',
+      handleCancel: () => setErrorModal(InitalErrorModalState()),
+      handleClose: () => {
+        removeLast(true);
+        setErrorModal(InitalErrorModalState());
+      },
+    });
+    setCommands((old) => {
+      return { ...old, undoLast: false };
+    });
+  }
 
   const handleTabChange = (e, { activeIndex }) => {
     if (reference === 'turner' && activeIndex !== 0) {
@@ -183,6 +166,7 @@ function MeasurementSegment() {
         visible: true,
         title: 'Measurement unavailable',
         body: "Only height data is available for Turner's Syndrome.",
+        handleClose: () => setErrorModal(InitalErrorModalState()),
       });
     }
     switch (activeIndex) {
@@ -247,7 +231,8 @@ function MeasurementSegment() {
           setErrorModal({
             visible: true,
             title: 'Unable to change sex',
-            body: `Each chart can only display measurements from one patient at a time.`,
+            body: `Each chart can only display measurements from one patient at a time. Please reset the graph before entering measurements from a new patient.`,
+            handleClose: () => setErrorModal(InitalErrorModalState()),
           });
           return false;
         }
@@ -279,6 +264,10 @@ function MeasurementSegment() {
         latestResult.gestation_weeks * 7 + latestResult.gestation_days;
       const errors = [];
       for (const oldResult of existingResults) {
+        if (JSON.stringify(oldResult) === JSON.stringify(latestResult)) {
+          errorString = 'duplicate';
+          break;
+        }
         const oldGestation =
           oldResult.gestation_weeks * 7 + oldResult.gestation_days;
         if (oldResult.sex !== latestResult.sex) {
@@ -302,11 +291,21 @@ function MeasurementSegment() {
       }
     }
     if (errorString) {
-      setErrorModal({
-        visible: true,
-        title: 'Please check entries',
-        body: `Each chart can only display measurements from one patient at a time: ${errorString} were detected.`,
-      });
+      if (errorString === 'duplicate') {
+        setErrorModal({
+          visible: true,
+          title: 'Duplicate entries',
+          body: `Please check the last measurement entry as it appears to be identical to a measurement already entered.`,
+          handleClose: () => setErrorModal(InitalErrorModalState()),
+        });
+      } else {
+        setErrorModal({
+          visible: true,
+          title: 'Please check entries',
+          body: `Each chart can only display measurements from one patient at a time: ${errorString} were detected.`,
+          handleClose: () => setErrorModal(InitalErrorModalState()),
+        });
+      }
       return false;
     } else {
       setMeasurements((old) => {
@@ -430,65 +429,105 @@ function MeasurementSegment() {
     // </Menu>
   );
 
-  const ResultsSegment = () => (
-    <Segment>
-      <Table basic="very" celled collapsing compact>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell></Table.HeaderCell>
-            <Table.HeaderCell>Corrected Results</Table.HeaderCell>
-            <Table.HeaderCell>Chronological Results</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {apiResult[reference].height.length > 0 && (
-            <Table.Row>
-              <Table.HeaderCell></Table.HeaderCell>
-              <Table.HeaderCell>Heights</Table.HeaderCell>
-              <Table.HeaderCell></Table.HeaderCell>
-            </Table.Row>
-          )}
-          {apiResult[reference].height.length > 0 &&
-            apiResult[reference].height.map((measurement, index) => {
-              return <TableBody measurement={measurement} key={index} />;
-            })}
-          {apiResult[reference].weight.length > 0 && (
-            <Table.Row>
-              <Table.HeaderCell></Table.HeaderCell>
-              <Table.HeaderCell>Weights</Table.HeaderCell>
-              <Table.HeaderCell></Table.HeaderCell>
-            </Table.Row>
-          )}
-          {apiResult[reference].weight.length > 0 &&
-            apiResult[reference].weight.map((measurement, index) => {
-              return <TableBody key={index} measurement={measurement} />;
-            })}
-          {apiResult[reference].bmi.length > 0 && (
-            <Table.Row>
-              <Table.HeaderCell></Table.HeaderCell>
-              <Table.HeaderCell>BMIs</Table.HeaderCell>
-              <Table.HeaderCell></Table.HeaderCell>
-            </Table.Row>
-          )}
-          {apiResult[reference].bmi.length > 0 &&
-            apiResult.bmi.map((measurement, index) => {
-              return <TableBody key={index} measurement={measurement} />;
-            })}
-          {apiResult[reference].ofc.length > 0 && (
-            <Table.Row>
-              <Table.HeaderCell></Table.HeaderCell>
-              <Table.HeaderCell>Head Circumferences</Table.HeaderCell>
-              <Table.HeaderCell></Table.HeaderCell>
-            </Table.Row>
-          )}
-          {apiResult[reference].ofc.length > 0 &&
-            apiResult[reference].ofc.map((measurement, index) => {
-              return <TableBody key={index} measurement={measurement} />;
-            })}
-        </Table.Body>
-      </Table>
-    </Segment>
-  );
+  useEffect(() => {
+    const fetchCentilesForMeasurement = async (array) => {
+      let url;
+      if (reference === 'uk-who') {
+        url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/calculation`;
+      }
+      if (reference === 'turner') {
+        url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/turner/calculation`;
+      }
+      if (reference === 'trisomy-21') {
+        url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/trisomy-21/calculation`;
+      }
+
+      const results = array.map(async (payload) => {
+        const response = await axios({
+          url: url,
+          data: payload,
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        return response.data;
+      });
+
+      return Promise.all(results);
+    };
+
+    let ignore = false;
+
+    if (isLoading) {
+      const submitArray = measurements[reference][measurementMethod];
+      if (submitArray.length > 0) {
+        fetchCentilesForMeasurement(submitArray)
+          .then((final) => {
+            if (!ignore) {
+              let error = '';
+              for (const result of final) {
+                if (
+                  result.measurement_calculated_values
+                    .corrected_measurement_error
+                ) {
+                  error =
+                    result.measurement_calculated_values
+                      .corrected_measurement_error;
+                  break;
+                }
+              }
+              if (error) {
+                removeLast();
+                setErrorModal({
+                  visible: true,
+                  title: 'Incompatible measurement',
+                  body: `Measurement entered has been rejected by the server. Reason given: ${error}`,
+                  handleClose: () => setErrorModal(InitalErrorModalState()),
+                });
+              } else {
+                setAPIResult((old) => {
+                  const mutable = {
+                    turner: { ...old.turner },
+                    'trisomy-21': { ...old['trisomy-21'] },
+                    'uk-who': { ...old['uk-who'] },
+                  };
+                  mutable[reference][measurementMethod] = final;
+                  return mutable;
+                });
+                setCommands((old) => {
+                  return { ...old, clearMeasurement: true };
+                });
+              }
+              setIsLoading(false);
+            }
+          })
+          .catch((error) => {
+            const errorForUser = `There has been a problem fetching the result from the server. Error details: ${error.message} `;
+            removeLast();
+            setErrorModal({
+              visible: true,
+              title: 'Server error',
+              body: errorForUser,
+              handleClose: () => setErrorModal(InitalErrorModalState()),
+            });
+            setIsLoading(false);
+          });
+      }
+    }
+
+    return () => {
+      // this prevents data being added to state if unmounted
+      ignore = true;
+    };
+  }, [
+    isLoading,
+    measurementMethod,
+    reference,
+    apiResult,
+    measurements,
+    removeLast,
+  ]);
 
   return (
     <React.Fragment>
@@ -503,8 +542,8 @@ function MeasurementSegment() {
                   handleChangeSex={changeSex}
                   measurementMethod={measurementMethod}
                   setMeasurementMethod={setMeasurementMethod}
-                  clearMeasurement={clearMeasurement}
-                  setClearMeasurement={setClearMeasurement}
+                  commands={commands}
+                  setCommands={setCommands}
                   className="measurement-form"
                 />
               </Segment>
@@ -532,7 +571,7 @@ function MeasurementSegment() {
           <Grid.Column width={10}>
             <Segment raised>
               {flip ? (
-                <ResultsSegment selectedMeasurement={measurementMethod} />
+                <ResultsSegment apiResult={apiResult} reference={reference} />
               ) : (
                 <TabPanes />
               )}
@@ -559,7 +598,8 @@ function MeasurementSegment() {
         title={errorModal.title}
         body={errorModal.body}
         visible={errorModal.visible}
-        handleClose={() => setErrorModal(InitalErrorModalState())}
+        handleClose={errorModal.handleClose}
+        handleCancel={errorModal.handleCancel}
       />
     </React.Fragment>
   );
@@ -675,13 +715,77 @@ const TableBody = (props) => {
   );
 };
 
-const ErrorModal = ({ title, body, handleClose, visible }) => {
+const ResultsSegment = ({ apiResult, reference }) => (
+  <Segment>
+    <Table basic="very" celled collapsing compact>
+      <Table.Header>
+        <Table.Row>
+          <Table.HeaderCell></Table.HeaderCell>
+          <Table.HeaderCell>Corrected Results</Table.HeaderCell>
+          <Table.HeaderCell>Chronological Results</Table.HeaderCell>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        {apiResult[reference].height.length > 0 && (
+          <Table.Row>
+            <Table.HeaderCell></Table.HeaderCell>
+            <Table.HeaderCell>Heights</Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
+          </Table.Row>
+        )}
+        {apiResult[reference].height.length > 0 &&
+          apiResult[reference].height.map((measurement, index) => {
+            return <TableBody measurement={measurement} key={index} />;
+          })}
+        {apiResult[reference].weight.length > 0 && (
+          <Table.Row>
+            <Table.HeaderCell></Table.HeaderCell>
+            <Table.HeaderCell>Weights</Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
+          </Table.Row>
+        )}
+        {apiResult[reference].weight.length > 0 &&
+          apiResult[reference].weight.map((measurement, index) => {
+            return <TableBody key={index} measurement={measurement} />;
+          })}
+        {apiResult[reference].bmi.length > 0 && (
+          <Table.Row>
+            <Table.HeaderCell></Table.HeaderCell>
+            <Table.HeaderCell>BMIs</Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
+          </Table.Row>
+        )}
+        {apiResult[reference].bmi.length > 0 &&
+          apiResult.bmi.map((measurement, index) => {
+            return <TableBody key={index} measurement={measurement} />;
+          })}
+        {apiResult[reference].ofc.length > 0 && (
+          <Table.Row>
+            <Table.HeaderCell></Table.HeaderCell>
+            <Table.HeaderCell>Head Circumferences</Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
+          </Table.Row>
+        )}
+        {apiResult[reference].ofc.length > 0 &&
+          apiResult[reference].ofc.map((measurement, index) => {
+            return <TableBody key={index} measurement={measurement} />;
+          })}
+      </Table.Body>
+    </Table>
+  </Segment>
+);
+
+const ErrorModal = ({ title, body, handleClose, visible, handleCancel }) => {
+  const showCancel = handleCancel ? true : false;
   return (
     <Modal title={title} open={visible} size="small" closeOnEscape={true}>
       <Modal.Header>{title}</Modal.Header>
       <Modal.Content>{body}</Modal.Content>
       <Modal.Actions>
-        <Button onClick={handleClose}>OK</Button>
+        <Button negative onClick={handleClose}>
+          OK
+        </Button>
+        {showCancel && <Button onClick={handleCancel}>Cancel</Button>}
       </Modal.Actions>
     </Modal>
   );
@@ -692,6 +796,8 @@ function InitalErrorModalState() {
     visible: false,
     title: '',
     body: '',
+    handleClose: null,
+    handleCancel: null,
   };
 }
 
