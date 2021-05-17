@@ -232,7 +232,8 @@ function MeasurementSegment() {
   };
 
   const changeSex = (newSex, isTurner = false) => {
-    // call back from MeasurementForm
+    // call back for MeasurementForm
+    // isTurner param is used when changing chart to turner and forcing change in sex
     const existingResults = [...measurements[reference][measurementMethod]];
     if (existingResults.length > 0 && !isTurner) {
       for (const oldResult of existingResults) {
@@ -245,6 +246,16 @@ function MeasurementSegment() {
           return false;
         }
       }
+    }
+    if (theme.value === 'trad') {
+      const selectedTheme =
+        newSex === 'male'
+          ? RCPCHThemeTraditionalBoy
+          : RCPCHThemeTraditionalGirl;
+      setCentileStyle(selectedTheme.centiles);
+      setChartSyle(selectedTheme.chart);
+      setMeasurementStyle(selectedTheme.measurements);
+      setAxisStyle(selectedTheme.axes);
     }
     setSex(newSex);
     return true;
