@@ -337,7 +337,12 @@ class MeasurementForm extends React.Component {
       sex: this.state.sex,
     };
     measurementArray.push(formData);
-
+    const newMeasurement = { ...this.state.measurement };
+    newMeasurement.observation_value = '';
+    this.setState({
+      measurement: newMeasurement,
+      observation_value_error: null,
+    });
     this.handleGrowthResults(measurementArray);
   }
 
@@ -472,7 +477,7 @@ class MeasurementForm extends React.Component {
                   type="decimal"
                   name="observation_value"
                   placeholder="Measurement"
-                  value={this.state.measurement.observationValue}
+                  value={this.state.measurement.observation_value}
                   label={{
                     content: this.state.measurement.units.toString(),
                     basic: true,
