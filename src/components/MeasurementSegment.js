@@ -35,7 +35,6 @@ function MeasurementSegment() {
   const [chartStyle, setChartSyle] = useState(defaultTheme.chart);
   const [axisStyle, setAxisStyle] = useState(defaultTheme.axes);
   const [centileStyle, setCentileStyle] = useState(defaultTheme.centiles);
-  const [gridlineStyle, setGridlineStyle] = useState(defaultTheme.gridlines);
   const [measurementStyle, setMeasurementStyle] = useState(
     defaultTheme.measurements
   );
@@ -248,20 +247,6 @@ function MeasurementSegment() {
       }
     }
     setSex(newSex);
-    let selectedTheme;
-    if (reference === 'uk-who') {
-      if (newSex === 'male') {
-        selectedTheme = RCPCHThemeTraditionalBoy;
-      } else {
-        selectedTheme = RCPCHThemeTraditionalGirl;
-      }
-      setCentileStyle(selectedTheme.centiles);
-      setChartSyle(selectedTheme.chart);
-      setMeasurementStyle(selectedTheme.measurements);
-      setAxisStyle(selectedTheme.axes);
-      setGridlineStyle(selectedTheme.gridlines);
-      setTheme({ value: 'tanner1', text: 'Tanner 1' });
-    }
     return true;
   };
 
@@ -386,7 +371,7 @@ function MeasurementSegment() {
             measurementsArray={apiResult[reference][details.measurementName]} // an array of Measurement class objects from dGC Optional
             chartStyle={chartStyle}
             axisStyle={axisStyle}
-            gridlineStyle={gridlineStyle}
+            gridlineStyle={defaultTheme.gridlines}
             centileStyle={centileStyle}
             measurementStyle={measurementStyle}
             isLoading={isLoading}

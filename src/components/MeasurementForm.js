@@ -136,14 +136,14 @@ class MeasurementForm extends React.Component {
       this.disableMeasurement('ofc', true);
       this.disableMeasurement('bmi', true);
       this.setState({
-        sex: callbackReturn.newSex,
+        sex: 'female',
         observation_value_error: this.validateObservationValue(
           'height',
           this.state.measurement.observation_value
         ),
         reference: data.value,
       });
-      this.props.handleChangeSex({}, 'female', true);
+      this.props.handleChangeSex('female', true);
       this.props.setMeasurementMethod('height');
     } else {
       this.disableMeasurement('weight', false);
