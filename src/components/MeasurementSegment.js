@@ -182,6 +182,7 @@ function MeasurementSegment() {
         body: "Only height data is available for Turner's Syndrome.",
         handleClose: () => setErrorModal(InitalErrorModalState()),
       });
+      return null;
     }
     let newMeasurementMethod = '';
     switch (activeIndex) {
@@ -422,11 +423,11 @@ function MeasurementSegment() {
   );
 
   const themeOptions = [
+    { key: 'monochrome', value: 'monochrome', text: 'Monochrome' },
     { key: 'trad', value: 'trad', text: 'Traditional' },
     { key: 'tanner1', value: 'tanner1', text: 'Tanner 1' },
     { key: 'tanner2', value: 'tanner2', text: 'Tanner 2' },
     { key: 'tanner3', value: 'tanner3', text: 'Tanner 3' },
-    { key: 'monochrome', value: 'monochrome', text: 'Monochrome' },
   ];
 
   const ThemeSelection = () => (
@@ -484,11 +485,15 @@ function MeasurementSegment() {
               for (const result of final) {
                 if (
                   result.measurement_calculated_values
-                    .corrected_measurement_error
+                    .corrected_measurement_error ||
+                  result.measurement_calculated_values
+                    .chronological_measurement_error
                 ) {
                   error =
                     result.measurement_calculated_values
-                      .corrected_measurement_error;
+                      .corrected_measurement_error ||
+                    result.measurement_calculated_values
+                      .chronological_measurement_error;
                   break;
                 }
               }
