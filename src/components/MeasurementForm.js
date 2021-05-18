@@ -445,6 +445,12 @@ class MeasurementForm extends React.Component {
         return { ...old, clearMeasurement: false };
       });
     }
+    if (this.props.commands.newSex) {
+      this.setState({ sex: this.props.commands.newSex });
+      this.props.setCommands((old) => {
+        return { ...old, newSex: '' };
+      });
+    }
   }
 
   render() {
@@ -584,7 +590,7 @@ class MeasurementForm extends React.Component {
           </Form>
           <Segment>
             <Button
-              content="Reset Graph"
+              content="Reset Chart"
               icon="power off"
               onClick={this.handleResetCurrentGraph}
             />

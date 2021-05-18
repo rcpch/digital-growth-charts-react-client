@@ -62,6 +62,7 @@ function MeasurementSegment() {
     clearMeasurement: false,
     resetCurrent: false,
     undoLast: false,
+    newSex: '',
   });
 
   let activeIndex;
@@ -160,6 +161,19 @@ function MeasurementSegment() {
     });
   }
 
+  const customSetMeasurementMethod = (newMeasurementMethod) => {
+    if (measurements[reference][newMeasurementMethod].length > 0) {
+      const existingSex = measurements[reference][newMeasurementMethod][0].sex;
+      if (existingSex !== sex) {
+        changeSex(existingSex, true);
+        setCommands((old) => {
+          return { ...old, newSex: existingSex };
+        });
+      }
+    }
+    setMeasurementMethod(newMeasurementMethod);
+  };
+
   const handleTabChange = (e, { activeIndex }) => {
     if (reference === 'turner' && activeIndex !== 0) {
       setErrorModal({
@@ -169,22 +183,24 @@ function MeasurementSegment() {
         handleClose: () => setErrorModal(InitalErrorModalState()),
       });
     }
+    let newMeasurementMethod = '';
     switch (activeIndex) {
       case 0:
-        setMeasurementMethod('height');
+        newMeasurementMethod = 'height';
         break;
       case 1:
-        setMeasurementMethod('weight');
+        newMeasurementMethod = 'weight';
         break;
       case 2:
-        setMeasurementMethod('bmi');
+        newMeasurementMethod = 'bmi';
         break;
       case 3:
-        setMeasurementMethod('ofc');
+        newMeasurementMethod = 'ofc';
         break;
       default:
         console.warn('Handle tab change did not pick up valid active index');
     }
+    customSetMeasurementMethod(newMeasurementMethod);
   };
 
   const changeReference = (newReference) => {
@@ -221,11 +237,10 @@ function MeasurementSegment() {
     }
   };
 
-  const changeSex = (newSex, isTurner = false) => {
+  const changeSex = (newSex, ignoreError = false) => {
     // call back for MeasurementForm
-    // isTurner param is used when changing chart to turner and forcing change in sex
     const existingResults = [...measurements[reference][measurementMethod]];
-    if (existingResults.length > 0 && !isTurner) {
+    if (existingResults.length > 0 && !ignoreError) {
       for (const oldResult of existingResults) {
         if (newSex !== oldResult.sex) {
           setErrorModal({
@@ -541,7 +556,7 @@ function MeasurementSegment() {
                   handleChangeReference={changeReference}
                   handleChangeSex={changeSex}
                   measurementMethod={measurementMethod}
-                  setMeasurementMethod={setMeasurementMethod}
+                  setMeasurementMethod={customSetMeasurementMethod}
                   commands={commands}
                   setCommands={setCommands}
                   className="measurement-form"
