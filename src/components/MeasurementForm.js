@@ -47,7 +47,7 @@ const ROBERT_WADLOW = 272; // interesting fact - Robert Wadlow (22/2/1918 – 15
 const JON_BROWER_MINNOCH = 635; // interesting fact -  Jon Brower Minnoch (Born USA) was the world's heaviest man
 const KHALID_BIN_MOHSEN_SHAARI = 204; // Khalid bin Mohsen Shaari (2/8/1991) from Saudi Arabia had the highest recorded BMI
 
-let measurementOptions = [
+const measurementOptions = [
   { key: 'height', value: 'height', text: 'Height (cm)', disabled: false },
   { key: 'weight', value: 'weight', text: 'Weight (kg)', disabled: false },
   { key: 'bmi', value: 'bmi', text: 'BMI (kg/m²)', disabled: false },
@@ -65,6 +65,7 @@ const formatDate = (inputDate) => {
   let day;
   let year;
   try {
+    inputDate.getTime();
     date = new Date(inputDate);
     month = '' + (date.getMonth() + 1);
     day = '' + date.getDate();
@@ -82,14 +83,36 @@ const formatDate = (inputDate) => {
   }
 };
 
-const isValidDate = (inputDate) => {
+const parseDate = (inputDate) => {
   try {
-    const workingDate = new Date(inputDate);
+    const dateArray = inputDate.split('-');
+    const finalArray = dateArray.map((element, index) => {
+      if (element !== '') {
+        const madeNumber = Number(element);
+        if (Number.isNaN(madeNumber)) {
+          throw new Error();
+        } else {
+          return index === 1 ? madeNumber - 1 : madeNumber;
+        }
+      } else {
+        throw new Error();
+      }
+    });
+    if (
+      finalArray.length !== 3 ||
+      finalArray[1] < 0 ||
+      finalArray[1] > 11 ||
+      finalArray[2] < 1 ||
+      finalArray[2] > 31
+    ) {
+      throw new Error();
+    }
+    const workingDate = new Date(...finalArray);
     if (typeof workingDate.getTime() === 'number') {
-      return true;
+      return workingDate;
     }
   } catch (error) {
-    return false;
+    return null;
   }
 };
 
@@ -197,15 +220,16 @@ class MeasurementForm extends React.Component {
 
   handleChangeDate(event) {
     this.setState({ [event.target.name]: event.target.value });
-    if (isValidDate(event.target.value)) {
+    const newDate = parseDate(event.target.value);
+    if (newDate) {
       const observation_date_object =
         event.target.name === 'birth_date'
-          ? new Date(this.state.observation_date)
-          : new Date(event.target.value);
+          ? parseDate(this.state.observation_date)
+          : newDate;
       const birth_date_object =
         event.target.name === 'birth_date'
-          ? new Date(event.target.value)
-          : new Date(this.state.birth_date);
+          ? newDate
+          : parseDate(this.state.birth_date);
       const timeInterval =
         observation_date_object.getTime() - birth_date_object.getTime();
       if (timeInterval < 0) {
@@ -236,17 +260,11 @@ class MeasurementForm extends React.Component {
       } else {
         this.setState({ birth_date_error: '' });
         this.setState({ observation_date_error: '' });
-        if (
-          this.state.observation_value_error === '' &&
-          this.state.measurement.observation_value
-        ) {
-          this.setState({ form_valid: true });
-        } else {
-          this.setState({ form_valid: false });
-        }
       }
     } else {
-      this.setState({ form_valid: false });
+      this.setState({
+        [`${event.target.name}_error`]: 'Please enter a valid date.',
+      });
     }
   }
 
@@ -264,15 +282,6 @@ class MeasurementForm extends React.Component {
       measurement: measurement,
       observation_value_error: observation_value_error,
     });
-    if (
-      this.state.birth_date_error === '' &&
-      this.state.observation_date_error === '' &&
-      observation_value_error === ''
-    ) {
-      this.setState({ form_valid: true });
-    } else {
-      this.setState({ form_valid: false });
-    }
   };
 
   validateObservationValue(measurement_method, observation_value) {
@@ -280,7 +289,7 @@ class MeasurementForm extends React.Component {
       return null;
     }
     if (Number.isNaN(Number(observation_value))) {
-      return 'Please enter a valid number';
+      return 'Please enter a valid number.';
     }
     if (measurement_method === 'height') {
       if (observation_value < 20) {
