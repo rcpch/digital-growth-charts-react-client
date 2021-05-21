@@ -1,5 +1,7 @@
 // React
 import React, { useState, useEffect, useCallback } from 'react';
+
+//themes
 import RCPCHTheme1 from '../components/chartThemes/rcpchTheme1';
 import RCPCHTheme2 from '../components/chartThemes/rcpchTheme2';
 import RCPCHTheme3 from '../components/chartThemes/rcpchTheme3';
@@ -16,15 +18,14 @@ import {
   Tab,
   Dropdown,
   Button,
-  Table,
-  List,
-  Modal,
 } from 'semantic-ui-react';
+import axios from 'axios';
+
 import ChartData from '../api/Chart';
 import MeasurementForm from '../components/MeasurementForm';
+import deepCopy from '../functions/deepCopy';
+import { Acknowledgements, ResultsSegment, ErrorModal } from './SubComponents';
 import '../index.css';
-
-import axios from 'axios';
 
 function MeasurementSegment() {
   const defaultTheme = RCPCHThemeMonochrome;
@@ -62,7 +63,7 @@ function MeasurementSegment() {
     clearMeasurement: false,
     resetCurrent: false,
     undoLast: false,
-    newSex: '',
+    changeSex: false,
   });
 
   let activeIndex;
@@ -84,26 +85,20 @@ function MeasurementSegment() {
 
   const removeLast = useCallback(
     (both = false) => {
-      const newMeasurements = [...measurements[reference][measurementMethod]];
+      const newMeasurements = deepCopy(
+        measurements[reference][measurementMethod]
+      );
       newMeasurements.pop();
       setMeasurements((old) => {
-        const mutable = {
-          turner: { ...old.turner },
-          'trisomy-21': { ...old['trisomy-21'] },
-          'uk-who': { ...old['uk-who'] },
-        };
+        const mutable = deepCopy(old);
         mutable[reference][measurementMethod] = newMeasurements;
         return mutable;
       });
       if (both) {
-        const newApi = [...apiResult[reference][measurementMethod]];
+        const newApi = deepCopy(apiResult[reference][measurementMethod]);
         newApi.pop();
         setAPIResult((old) => {
-          const mutable = {
-            turner: { ...old.turner },
-            'trisomy-21': { ...old['trisomy-21'] },
-            'uk-who': { ...old['uk-who'] },
-          };
+          const mutable = deepCopy(old);
           mutable[reference][measurementMethod] = newApi;
           return mutable;
         });
@@ -113,30 +108,19 @@ function MeasurementSegment() {
   );
 
   if (commands.resetCurrent) {
+    const resetCurrent = (old) => {
+      const mutable = deepCopy(old);
+      mutable[reference][measurementMethod] = [];
+      return mutable;
+    };
     setErrorModal({
       visible: true,
       title: 'Are you sure you want to reset?',
       body: 'This will remove all measurements from the current chart.',
       handleCancel: () => setErrorModal(InitalErrorModalState()),
       handleClose: () => {
-        setMeasurements((old) => {
-          const mutable = {
-            turner: { ...old.turner },
-            'trisomy-21': { ...old['trisomy-21'] },
-            'uk-who': { ...old['uk-who'] },
-          };
-          mutable[reference][measurementMethod] = [];
-          return mutable;
-        });
-        setAPIResult((old) => {
-          const mutable = {
-            turner: { ...old.turner },
-            'trisomy-21': { ...old['trisomy-21'] },
-            'uk-who': { ...old['uk-who'] },
-          };
-          mutable[reference][measurementMethod] = [];
-          return mutable;
-        });
+        setMeasurements(resetCurrent);
+        setAPIResult(resetCurrent);
         setErrorModal(InitalErrorModalState());
       },
     });
@@ -167,7 +151,7 @@ function MeasurementSegment() {
       if (existingSex !== sex) {
         changeSex(existingSex, true);
         setCommands((old) => {
-          return { ...old, newSex: existingSex };
+          return { ...old, changeSex: true };
         });
       }
     }
@@ -271,8 +255,10 @@ function MeasurementSegment() {
   const handleResults = (results) => {
     // delegate function from MeasurementForm
     // receives form data and stores in the correct measurement array
-    // checks for mismatching dobs, sexes and gestations
-    const existingResults = [...measurements[reference][measurementMethod]];
+    // checks for duplicates, mismatching dobs, sexes and gestations
+    const existingResults = deepCopy(
+      measurements[reference][measurementMethod]
+    );
     let errorString = '';
     if (existingResults.length > 0) {
       const latestResult = results[0];
@@ -325,11 +311,7 @@ function MeasurementSegment() {
       return false;
     } else {
       setMeasurements((old) => {
-        const mutable = {
-          turner: { ...old.turner },
-          'trisomy-21': { ...old['trisomy-21'] },
-          'uk-who': { ...old['uk-who'] },
-        };
+        const mutable = deepCopy(old);
         const newArray = mutable[reference][measurementMethod].concat(results);
         mutable[reference][measurementMethod] = newArray;
         return mutable;
@@ -379,16 +361,6 @@ function MeasurementSegment() {
     setFlip(!flip);
   };
 
-  const panesBlueprint = [
-    { menuItem: 'Height', measurementName: 'height' },
-    { menuItem: 'Weight', measurementName: 'weight' },
-    { menuItem: 'BMI', measurementName: 'bmi' },
-    {
-      menuItem: 'Head Circumference',
-      measurementName: 'ofc',
-    },
-  ];
-
   const panes = panesBlueprint.map((details) => {
     return {
       menuItem: details.menuItem,
@@ -396,10 +368,10 @@ function MeasurementSegment() {
         <Tab.Pane attached="top" disabled={disabled[details.measurementName]}>
           <ChartData
             key={details.measurementName}
-            reference={reference} //the choices are ["uk-who", "turner", "trisomy-21"] REQUIRED
-            sex={sex} //the choices are ["male", "female"] REQUIRED
-            measurementMethod={details.measurementName} //the choices are ["height", "weight", "ofc", "bmi"] REQUIRED
-            measurementsArray={apiResult[reference][details.measurementName]} // an array of Measurement class objects from dGC Optional
+            reference={reference}
+            sex={sex}
+            measurementMethod={details.measurementName}
+            measurementsArray={apiResult[reference][details.measurementName]}
             chartStyle={chartStyle}
             axisStyle={axisStyle}
             gridlineStyle={defaultTheme.gridlines}
@@ -422,14 +394,6 @@ function MeasurementSegment() {
     />
   );
 
-  const themeOptions = [
-    { key: 'monochrome', value: 'monochrome', text: 'Monochrome' },
-    { key: 'trad', value: 'trad', text: 'Traditional' },
-    { key: 'tanner1', value: 'tanner1', text: 'Tanner 1' },
-    { key: 'tanner2', value: 'tanner2', text: 'Tanner 2' },
-    { key: 'tanner3', value: 'tanner3', text: 'Tanner 3' },
-  ];
-
   const ThemeSelection = () => (
     // <Menu compact className="selectUpperMargin">
     <span>
@@ -446,94 +410,76 @@ function MeasurementSegment() {
   );
 
   useEffect(() => {
-    const fetchCentilesForMeasurement = async (array) => {
-      let url;
-      if (reference === 'uk-who') {
-        url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/uk-who/calculation`;
-      }
-      if (reference === 'turner') {
-        url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/turner/calculation`;
-      }
-      if (reference === 'trisomy-21') {
-        url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/trisomy-21/calculation`;
-      }
-
-      const results = array.map(async (payload) => {
-        const response = await axios({
-          url: url,
-          data: payload,
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        return response.data;
+    const fetchCentilesForMeasurement = async (singleMeasurement) => {
+      const url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/${reference}/calculation`;
+      const response = await axios({
+        url: url,
+        data: singleMeasurement,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
-
-      return Promise.all(results);
+      return response.data;
     };
 
     let ignore = false;
 
     if (isLoading) {
-      const submitArray = measurements[reference][measurementMethod];
-      if (submitArray.length > 0) {
-        fetchCentilesForMeasurement(submitArray)
-          .then((final) => {
-            if (!ignore) {
-              let error = '';
-              for (const result of final) {
-                if (
-                  result.measurement_calculated_values
-                    .corrected_measurement_error ||
-                  result.measurement_calculated_values
-                    .chronological_measurement_error
-                ) {
-                  error =
-                    result.measurement_calculated_values
-                      .corrected_measurement_error ||
-                    result.measurement_calculated_values
-                      .chronological_measurement_error;
-                  break;
-                }
-              }
-              if (error) {
-                removeLast();
-                setErrorModal({
-                  visible: true,
-                  title: 'Incompatible measurement',
-                  body: `Measurement entered has been rejected by the server. Reason given: ${error}`,
-                  handleClose: () => setErrorModal(InitalErrorModalState()),
-                });
-              } else {
-                setAPIResult((old) => {
-                  const mutable = {
-                    turner: { ...old.turner },
-                    'trisomy-21': { ...old['trisomy-21'] },
-                    'uk-who': { ...old['uk-who'] },
-                  };
-                  mutable[reference][measurementMethod] = final;
-                  return mutable;
-                });
-                setCommands((old) => {
-                  return { ...old, clearMeasurement: true };
-                });
-              }
+      const relevantArray = measurements[reference][measurementMethod];
+      const latestMeasurement = deepCopy(
+        relevantArray[relevantArray.length - 1]
+      );
+      fetchCentilesForMeasurement(latestMeasurement)
+        .then((result) => {
+          if (!ignore) {
+            if (
+              result.measurement_calculated_values
+                .corrected_measurement_error ||
+              result.measurement_calculated_values
+                .chronological_measurement_error
+            ) {
+              const measurementError =
+                result.measurement_calculated_values
+                  .corrected_measurement_error ||
+                result.measurement_calculated_values
+                  .chronological_measurement_error;
               setIsLoading(false);
+              removeLast();
+              setErrorModal({
+                visible: true,
+                title: 'Unable to plot',
+                body: `Measurement entered cannot be processed by the server. Reason given: ${measurementError}`,
+                handleClose: () => setErrorModal(InitalErrorModalState()),
+              });
+            } else {
+              setIsLoading(false);
+              setAPIResult((old) => {
+                const mutable = deepCopy(old);
+                const workingArray = deepCopy(
+                  mutable[reference][measurementMethod]
+                );
+                workingArray.push(result);
+                mutable[reference][measurementMethod] = workingArray;
+                return mutable;
+              });
+              setCommands((old) => {
+                return { ...old, clearMeasurement: true };
+              });
             }
-          })
-          .catch((error) => {
-            const errorForUser = `There has been a problem fetching the result from the server. Error details: ${error.message} `;
-            removeLast();
-            setErrorModal({
-              visible: true,
-              title: 'Server error',
-              body: errorForUser,
-              handleClose: () => setErrorModal(InitalErrorModalState()),
-            });
-            setIsLoading(false);
+          }
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          const errorForUser = `There has been a problem fetching the result from the server. Error details: ${error.message} `;
+          removeLast();
+          setErrorModal({
+            visible: true,
+            title: 'Server error',
+            body: errorForUser,
+            handleClose: () => setErrorModal(InitalErrorModalState()),
           });
-      }
+        });
     }
 
     return () => {
@@ -575,9 +521,8 @@ function MeasurementSegment() {
                     <Flag name="gb" />
                     This calculator uses the UK-WHO references to calculate gold
                     standard accurate child growth parameters. In the future we
-                    are planning to add other growth references such as
-                    specialist Trisomy 21 and Turner's Syndrome references, CDC
-                    and WHO.
+                    are planning to add other growth references such as CDC and
+                    WHO.
                   </Message>
 
                   <Message color="red">
@@ -625,6 +570,24 @@ function MeasurementSegment() {
   );
 }
 
+const panesBlueprint = [
+  { menuItem: 'Height', measurementName: 'height' },
+  { menuItem: 'Weight', measurementName: 'weight' },
+  { menuItem: 'BMI', measurementName: 'bmi' },
+  {
+    menuItem: 'Head Circumference',
+    measurementName: 'ofc',
+  },
+];
+
+const themeOptions = [
+  { key: 'monochrome', value: 'monochrome', text: 'Monochrome' },
+  { key: 'trad', value: 'trad', text: 'Traditional' },
+  { key: 'tanner1', value: 'tanner1', text: 'Tanner 1' },
+  { key: 'tanner2', value: 'tanner2', text: 'Tanner 2' },
+  { key: 'tanner3', value: 'tanner3', text: 'Tanner 3' },
+];
+
 function InitialMeasurementState() {
   return {
     turner: {
@@ -647,169 +610,6 @@ function InitialMeasurementState() {
     },
   };
 }
-
-const units = (measurementMethod) => {
-  if (measurementMethod === 'height') {
-    return 'cm';
-  }
-  if (measurementMethod === 'weight') {
-    return 'kg';
-  }
-  if (measurementMethod === 'bmi') {
-    return 'kg/m²';
-  }
-  if (measurementMethod === 'ofc') {
-    return 'cm';
-  }
-};
-
-const Acknowledgements = () => {
-  // list={["Freeman JV, Cole TJ, Chinn S, Jones PRM, White EM, Preece MA. Cross sectional stature and weight reference curves for the UK, 1990. Arch Dis Child 1995; 73:17-24.", "<a href='www.who.int/childgrowth/en'>www.who.int/childgrowth/en</a>", "For further relevant references see fact sheet downloadable from www.growthcharts.RCPCH.ac.uk"]}
-  return (
-    <Message>
-      <Message.Header>References</Message.Header>
-      <List>
-        <List.Item>
-          Freeman JV, Cole TJ, Chinn S, Jones PRM, White EM, Preece MA. Cross
-          sectional stature and weight reference curves for the UK, 1990. Arch
-          Dis Child 1995; 73:17-24.
-        </List.Item>
-        <List.Item>
-          <a href="www.who.int/childgrowth/en">www.who.int/childgrowth/en</a>
-        </List.Item>
-        <List.Item>
-          For further relevant references see fact sheet downloadable from{' '}
-          <a href="www.growthcharts.RCPCH.ac.uk">
-            www.growthcharts.RCPCH.ac.uk
-          </a>
-        </List.Item>
-      </List>
-    </Message>
-  );
-};
-
-const TableBody = (props) => {
-  const measurement = props.measurement;
-  return (
-    <React.Fragment>
-      <Table.Row>
-        <Table.Cell>Ages</Table.Cell>
-        <Table.Cell>
-          {measurement.measurement_dates.chronological_calendar_age}
-        </Table.Cell>
-        <Table.Cell>
-          {measurement.measurement_dates.corrected_calendar_age}
-        </Table.Cell>
-      </Table.Row>
-      <Table.Row>
-        <Table.Cell>Measurement</Table.Cell>
-        <Table.Cell>
-          {measurement.child_observation_value.observation_value}{' '}
-          {units(measurement.child_observation_value.measurement_method)}
-        </Table.Cell>
-        <Table.Cell></Table.Cell>
-      </Table.Row>
-      <Table.Row>
-        <Table.Cell>SDS</Table.Cell>
-        <Table.Cell>
-          {Math.round(
-            measurement.measurement_calculated_values.corrected_sds * 1000
-          ) / 1000}
-        </Table.Cell>
-        <Table.Cell>
-          {Math.round(
-            measurement.measurement_calculated_values.chronological_sds * 1000
-          ) / 1000}
-        </Table.Cell>
-      </Table.Row>
-      <Table.Row>
-        <Table.Cell>Centiles</Table.Cell>
-        <Table.Cell>
-          {measurement.measurement_calculated_values.corrected_centile}
-        </Table.Cell>
-        <Table.Cell>
-          {measurement.measurement_calculated_values.chronological_centile}
-        </Table.Cell>
-      </Table.Row>
-    </React.Fragment>
-  );
-};
-
-const ResultsSegment = ({ apiResult, reference }) => (
-  <Segment>
-    <Table basic="very" celled collapsing compact>
-      <Table.Header>
-        <Table.Row>
-          <Table.HeaderCell></Table.HeaderCell>
-          <Table.HeaderCell>Corrected Results</Table.HeaderCell>
-          <Table.HeaderCell>Chronological Results</Table.HeaderCell>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body>
-        {apiResult[reference].height.length > 0 && (
-          <Table.Row>
-            <Table.HeaderCell></Table.HeaderCell>
-            <Table.HeaderCell>Heights</Table.HeaderCell>
-            <Table.HeaderCell></Table.HeaderCell>
-          </Table.Row>
-        )}
-        {apiResult[reference].height.length > 0 &&
-          apiResult[reference].height.map((measurement, index) => {
-            return <TableBody measurement={measurement} key={index} />;
-          })}
-        {apiResult[reference].weight.length > 0 && (
-          <Table.Row>
-            <Table.HeaderCell></Table.HeaderCell>
-            <Table.HeaderCell>Weights</Table.HeaderCell>
-            <Table.HeaderCell></Table.HeaderCell>
-          </Table.Row>
-        )}
-        {apiResult[reference].weight.length > 0 &&
-          apiResult[reference].weight.map((measurement, index) => {
-            return <TableBody key={index} measurement={measurement} />;
-          })}
-        {apiResult[reference].bmi.length > 0 && (
-          <Table.Row>
-            <Table.HeaderCell></Table.HeaderCell>
-            <Table.HeaderCell>BMIs</Table.HeaderCell>
-            <Table.HeaderCell></Table.HeaderCell>
-          </Table.Row>
-        )}
-        {apiResult[reference].bmi.length > 0 &&
-          apiResult.bmi.map((measurement, index) => {
-            return <TableBody key={index} measurement={measurement} />;
-          })}
-        {apiResult[reference].ofc.length > 0 && (
-          <Table.Row>
-            <Table.HeaderCell></Table.HeaderCell>
-            <Table.HeaderCell>Head Circumferences</Table.HeaderCell>
-            <Table.HeaderCell></Table.HeaderCell>
-          </Table.Row>
-        )}
-        {apiResult[reference].ofc.length > 0 &&
-          apiResult[reference].ofc.map((measurement, index) => {
-            return <TableBody key={index} measurement={measurement} />;
-          })}
-      </Table.Body>
-    </Table>
-  </Segment>
-);
-
-const ErrorModal = ({ title, body, handleClose, visible, handleCancel }) => {
-  const showCancel = handleCancel ? true : false;
-  return (
-    <Modal title={title} open={visible} size="small" closeOnEscape={true}>
-      <Modal.Header>{title}</Modal.Header>
-      <Modal.Content>{body}</Modal.Content>
-      <Modal.Actions>
-        <Button negative onClick={handleClose}>
-          OK
-        </Button>
-        {showCancel && <Button onClick={handleCancel}>Cancel</Button>}
-      </Modal.Actions>
-    </Modal>
-  );
-};
 
 function InitalErrorModalState() {
   return {

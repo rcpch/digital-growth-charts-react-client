@@ -110,6 +110,8 @@ const parseDate = (inputDate) => {
     const workingDate = new Date(...finalArray);
     if (typeof workingDate.getTime() === 'number') {
       return workingDate;
+    } else {
+      return null;
     }
   } catch (error) {
     return null;
@@ -131,7 +133,7 @@ class MeasurementForm extends React.Component {
       gestation_days: 0,
       birth_date_error: '',
       observation_date_error: '',
-      observation_value_error: null,
+      observation_value_error: 'empty',
       form_valid: false,
       measurementResult: [],
       reference: 'uk-who',
@@ -244,22 +246,13 @@ class MeasurementForm extends React.Component {
               'Date of measurement cannot come before the date of birth.',
           });
         }
-        this.setState({ form_valid: false });
       } else if (timeInterval > 631139040000) {
-        if (event.target.name === 'birth_date') {
-          this.setState({
-            birth_date_error: 'No centile data exists over 20 years of age.',
-          });
-        } else if (event.target.name === 'observation_date') {
-          this.setState({
-            observation_date_error:
-              'No centile data exists over 20 years of age.',
-          });
-        }
-        this.setState({ form_valid: false });
+        this.setState({
+          [`${event.target.name}_error`]:
+            'No centile data exists over 20 years of age.',
+        });
       } else {
-        this.setState({ birth_date_error: '' });
-        this.setState({ observation_date_error: '' });
+        this.setState({ birth_date_error: '', observation_date_error: '' });
       }
     } else {
       this.setState({
@@ -286,7 +279,7 @@ class MeasurementForm extends React.Component {
 
   validateObservationValue(measurement_method, observation_value) {
     if (observation_value === '') {
-      return null;
+      return 'empty';
     }
     if (Number.isNaN(Number(observation_value))) {
       return 'Please enter a valid number.';
@@ -319,7 +312,7 @@ class MeasurementForm extends React.Component {
       }
     }
     if (measurement_method === 'ofc') {
-      if (observation_value < 30) {
+      if (observation_value < 25) {
         return 'The ' + measurement_method + ' you entered is too low.';
       } else if (observation_value > 70) {
         return 'The ' + measurement_method + ' you entered is too high.';
@@ -447,17 +440,17 @@ class MeasurementForm extends React.Component {
       newMeasurement.observation_value = '';
       this.setState({
         measurement: newMeasurement,
-        observation_value_error: null,
+        observation_value_error: 'empty',
         form_valid: false,
       });
       this.props.setCommands((old) => {
         return { ...old, clearMeasurement: false };
       });
     }
-    if (this.props.commands.newSex) {
-      this.setState({ sex: this.props.commands.newSex });
+    if (this.props.commands.changeSex) {
+      this.setState({ sex: this.state.sex === 'male' ? 'female' : 'male' });
       this.props.setCommands((old) => {
-        return { ...old, newSex: '' };
+        return { ...old, changeSex: false };
       });
     }
   }
@@ -533,11 +526,12 @@ class MeasurementForm extends React.Component {
                 />
               </Form.Field>
             </Form.Group>
-            {this.state.observation_value_error ? (
-              <Message color="red">
-                {this.state.observation_value_error}
-              </Message>
-            ) : null}
+            {this.state.observation_value_error &&
+              this.state.observation_value_error !== 'empty' && (
+                <Message color="red">
+                  {this.state.observation_value_error}
+                </Message>
+              )}
             {this.state.observation_date_error ? (
               <Message color="red">{this.state.observation_date_error}</Message>
             ) : null}
