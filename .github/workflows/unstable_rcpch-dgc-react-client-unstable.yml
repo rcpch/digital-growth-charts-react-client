@@ -6,7 +6,7 @@ name: Build and deploy Node.js app to Azure Web App - rcpch-dgc-react-client-uns
 on:
   push:
     branches:
-      - unstable
+      - staging
 
 jobs:
   build-and-deploy:
