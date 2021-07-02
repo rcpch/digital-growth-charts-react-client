@@ -3,7 +3,7 @@ name: GitHub Pages Build & Deploy
 on:
   push:
     branches:
-      - live
+      - remove
 
 jobs:
   build:
