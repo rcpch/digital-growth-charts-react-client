@@ -13,8 +13,7 @@ import RCPCHThemeTraditionalGirl from '../components/chartThemes/RCPCHThemeTradi
 import {
   Grid,
   Segment,
-  Message,
-  Flag,
+  Container,
   Tab,
   Dropdown,
   Button,
@@ -24,7 +23,7 @@ import axios from 'axios';
 import ChartData from '../api/Chart';
 import MeasurementForm from '../components/MeasurementForm';
 import deepCopy from '../functions/deepCopy';
-import { Acknowledgements, ResultsSegment, ErrorModal } from './SubComponents';
+import { ResultsSegment, ErrorModal } from './SubComponents';
 import '../index.css';
 
 function MeasurementSegment() {
@@ -379,7 +378,7 @@ function MeasurementSegment() {
             measurementStyle={measurementStyle}
             isLoading={isLoading}
           />
-          <Acknowledgements />
+          {/* <Acknowledgements /> */}
         </Tab.Pane>
       ),
     };
@@ -497,11 +496,10 @@ function MeasurementSegment() {
 
   return (
     <React.Fragment>
+          <Container>
       <Grid padded>
         <Grid.Row>
-          <Grid.Column width={6}>
-            <Grid.Row>
-              <Segment raised>
+          <Grid.Column width={6}> 
                 <MeasurementForm
                   measurementResult={handleResults}
                   handleChangeReference={changeReference}
@@ -512,29 +510,9 @@ function MeasurementSegment() {
                   setCommands={setCommands}
                   className="measurement-form"
                 />
-              </Segment>
-            </Grid.Row>
-            <Grid.Row>
-              <Grid.Column width={5}>
-                <Segment raised>
-                  <Message>
-                    <Flag name="gb" />
-                    This calculator uses the UK-WHO references to calculate gold
-                    standard accurate child growth parameters. In the future we
-                    are planning to add other growth references such as CDC and
-                    WHO.
-                  </Message>
-
-                  <Message color="red">
-                    This site is under development. No responsibility is
-                    accepted for the accuracy of results produced by this tool.
-                  </Message>
-                </Segment>
-              </Grid.Column>
-            </Grid.Row>
           </Grid.Column>
           <Grid.Column width={10}>
-            <Segment raised>
+            <Segment>
               {flip ? (
                 <ResultsSegment apiResult={apiResult} reference={reference} />
               ) : (
@@ -555,10 +533,11 @@ function MeasurementSegment() {
                   </Grid.Column>
                 </Grid.Row>
               </Grid>
-            </Segment>
+              </Segment>
           </Grid.Column>
         </Grid.Row>
-      </Grid>
+      </Grid> 
+      </Container>
       <ErrorModal
         title={errorModal.title}
         body={errorModal.body}
