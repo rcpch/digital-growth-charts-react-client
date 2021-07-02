@@ -7,6 +7,7 @@
     "type": "git",
     "url": "https://github.com/rcpch/digital-growth-charts-react-client"
   },
+  "homepage": "http://rcpch.github.io/digital-growth-charts-react-client",
   "dependencies": {
     "@rcpch/digital-growth-charts-react-component-library": "4.0.13",
     "@testing-library/jest-dom": "^4.2.4",
