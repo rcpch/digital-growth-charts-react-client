@@ -24,6 +24,8 @@ jobs:
     
     - name: Build project
       run: npm run build
+      env:
+        REACT_APP_GROWTH_API_BASEURL: ${{ secrets.REACT_APP_LIVE_GROWTH_API_BASEURL }}
 
     - name: Upload production-ready build files
       uses: actions/upload-artifact@v2
