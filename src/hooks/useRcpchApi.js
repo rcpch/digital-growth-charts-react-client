@@ -4,7 +4,6 @@ import axios from 'axios';
 import deepCopy from '../functions/deepCopy';
 
 const fetchFromApi = async (inputParameters, reference, mode) => {
-  console.log(JSON.stringify(inputParameters));
   const url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/${reference}/${mode}/`;
   const response = await axios({
     url: url,
@@ -139,6 +138,7 @@ const useRcpchApi = (measurementMethod, reference, mode = 'calculation') => {
                 const mutable = deepCopy(old);
                 if (mode === 'fictional_child_data') {
                   console.log(JSON.stringify(result));
+                  // mutable[mode].output[reference][measurementMethod] = result;
                 } else {
                   mutable[mode].output[reference][measurementMethod].push(
                     result
