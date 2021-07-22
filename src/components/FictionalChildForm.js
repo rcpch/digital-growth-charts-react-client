@@ -235,8 +235,8 @@ const FictionalChildForm = (props) => {
       {driftFlag && (
         <Form.Field width={14}>
           <Slider
-            min={-2}
-            max={2}
+            min={-3}
+            max={3}
             value={drift}
             step={0.01}
             onChange={handleDriftChange}
@@ -257,7 +257,7 @@ const FictionalChildForm = (props) => {
         <Form.Field width={14}>
           <Slider
             min={0}
-            max={0.05}
+            max={2.0}
             value={noise}
             step={0.01}
             onChange={handleNoiseChange}

@@ -3,9 +3,9 @@ import axios from 'axios';
 
 import deepCopy from '../functions/deepCopy';
 
-if (!process.env.REACT_APP_API_KEY) {
-  console.error('No API key found in environment variable');
-}
+// if (!process.env.REACT_APP_API_KEY) {
+//   console.error('No API key found in environment variable');
+// }
 
 const fetchFromApi = async (inputParameters, reference, mode) => {
   const url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/${reference}/${mode}/`;
@@ -15,7 +15,7 @@ const fetchFromApi = async (inputParameters, reference, mode) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Subscription-Key': process.env.REACT_APP_API_KEY,
+      // 'Subscription-Key': process.env.REACT_APP_API_KEY,
     },
   });
   return response.data;
@@ -133,39 +133,40 @@ const useRcpchApi = (measurementMethod, reference, mode = 'calculation') => {
       fetchFromApi(latestInput, reference, mode)
         .then((result) => {
           if (!ignore) {
-            const measurementError =
-              result.measurement_calculated_values
-                .corrected_measurement_error ||
-              result.measurement_calculated_values
-                .chronological_measurement_error;
-            if (!measurementError) {
+            let measurementError = ""
               setApiState((old) => {
                 const mutable = deepCopy(old);
                 if (mode === 'fictional_child_data') {
-                  console.log(JSON.stringify(result));
-                  // mutable[mode].output[reference][measurementMethod] = result;
+                  console.log(result);
+                  // console.log(JSON.stringify(result));
+                  mutable[mode].output[reference][measurementMethod] = result;
                 } else {
-                  mutable[mode].output[reference][measurementMethod].push(
-                    result
-                  );
+                  measurementError = result.measurement_calculated_values
+                .corrected_measurement_error ||
+              result.measurement_calculated_values
+                .chronological_measurement_error;
+                if(!measurementError){
+                    mutable[mode].output[reference][measurementMethod].push(
+                      result
+                    );
+                  } else {
+                    setApiState((old) => {
+                      const mutable = deepCopy(old);
+                      const { newInput } = removeLastFromArrays(old);
+                      mutable[mode].input[reference][measurementMethod] = newInput;
+                      mutable.isLoading = false;
+                      mutable.errors = {
+                        errors: true,
+                        message: `The server could not process the measurements. Details: ${measurementError}`,
+                      };
+                      return mutable;
+                    });
+                  } 
                 }
                 mutable.isLoading = false;
                 mutable.errors = { errors: false, message: 'success' };
                 return mutable;
               });
-            } else {
-              setApiState((old) => {
-                const mutable = deepCopy(old);
-                const { newInput } = removeLastFromArrays(old);
-                mutable[mode].input[reference][measurementMethod] = newInput;
-                mutable.isLoading = false;
-                mutable.errors = {
-                  errors: true,
-                  message: `The server could not process the measurements. Details: ${measurementError}`,
-                };
-                return mutable;
-              });
-            }
           }
         })
         .catch((error) => {

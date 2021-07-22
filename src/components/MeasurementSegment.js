@@ -313,7 +313,7 @@ function MeasurementSegment() {
   };
 
   const fictionalFormDataSubmit = (formData) => {
-    fetchResult(formData);
+    fetchResult(formData)
   };
 
   const handleChangeTheme = (event, { value }) => {
