@@ -10,7 +10,7 @@ function SexSelect(props){
         name="sex"
         placeholder="Sex"
         value={props.sex}
-        onChange={props.handleSexChange}
+        onChange={(e, val)=>props.handleSexChange(val)}
         options={props.sexOptions}
     />
 }

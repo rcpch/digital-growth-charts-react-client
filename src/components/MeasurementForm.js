@@ -361,7 +361,7 @@ class MeasurementForm extends React.Component {
     }
   }
 
-  handleChangeSex(event, data) {
+  handleChangeSex(data) {
     const success = this.props.handleChangeSex(data.value);
     if (success) {
       this.setState({ sex: data.value });
@@ -526,7 +526,7 @@ class MeasurementForm extends React.Component {
               /> */}
               <SexSelect 
                 sex={this.state.sex}
-                handleChangeSex={this.handleChangeSex}
+                handleSexChange={this.handleChangeSex}
                 sexOptions={this.state.sexOptions}
               />
             </Form.Field>
