@@ -318,15 +318,15 @@ class MeasurementForm extends React.Component {
     this.props.measurementResult(measurementArray);
   }
 
-  handleChangeMeasurementMethod(event, data) {
+  handleChangeMeasurementMethod(data) {
     let measurement = { ...this.state.measurement };
-    if (data.value !== this.props.measurementMethod) {
-      measurement.units = this.changeUnits(data.value);
-      this.props.setMeasurementMethod(data.value);
+    if (data !== this.props.measurementMethod) {
+      measurement.units = this.changeUnits(data);
+      this.props.setMeasurementMethod(data);
       this.setState({
         measurement: measurement,
         observation_value_error: this.validateObservationValue(
-          data.value,
+          data,
           measurement.observation_value
         ),
       });
