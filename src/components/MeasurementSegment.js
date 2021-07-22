@@ -1,5 +1,5 @@
 // React
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 
 //themes
 import RCPCHTheme1 from '../components/chartThemes/rcpchTheme1';
@@ -10,14 +10,7 @@ import RCPCHThemeTraditionalBoy from '../components/chartThemes/RCPCHThemeTradit
 import RCPCHThemeTraditionalGirl from '../components/chartThemes/RCPCHThemeTraditionalGirl';
 
 // Semantic UI React
-import {
-  Grid,
-  Segment,
-  Tab,
-  Dropdown,
-  Button,
-} from 'semantic-ui-react';
-import axios from 'axios';
+import { Grid, Segment, Tab, Dropdown, Button } from 'semantic-ui-react';
 
 import ChartData from '../api/Chart';
 import MeasurementForm from '../components/MeasurementForm';
@@ -25,6 +18,7 @@ import deepCopy from '../functions/deepCopy';
 import { ResultsSegment, ErrorModal } from './SubComponents';
 import '../index.css';
 import FictionalChildForm from './FictionalChildForm';
+import useRcpchApi from '../hooks/useRcpchApi';
 
 function MeasurementSegment() {
   const defaultTheme = RCPCHThemeMonochrome;
@@ -52,16 +46,48 @@ function MeasurementSegment() {
   const [measurementMethod, setMeasurementMethod] = useState('height');
   const [reference, setReference] = useState('uk-who');
   const [sex, setSex] = useState('male');
-  const [measurements, setMeasurements] = useState(InitialMeasurementState());
-  const [apiResult, setAPIResult] = useState(InitialMeasurementState());
+
+  const [mode, setMode] = useState('calculation');
+
   const [errorModal, setErrorModal] = useState(InitalErrorModalState());
-  const [isLoading, setIsLoading] = useState(false);
   const [commands, setCommands] = useState({
     clearMeasurement: false,
     resetCurrent: false,
     undoLast: false,
     changeSex: false,
   });
+
+  const {
+    fetchResult,
+    removeLastActiveItem,
+    clearBothActiveArrays,
+    clearApiErrors,
+    measurements,
+    results,
+    apiErrors,
+    isLoading,
+  } = useRcpchApi(measurementMethod, reference, mode);
+
+  useEffect(() => {
+    if (apiErrors.errors) {
+      setErrorModal({
+        visible: true,
+        title: 'Unable to plot',
+        body: apiErrors.message,
+        handleClose: () => {
+          clearApiErrors();
+          setErrorModal(InitalErrorModalState());
+        },
+      });
+    } else if (apiErrors.message === 'success') {
+      setCommands((old) => {
+        const mutable = deepCopy(old);
+        mutable.clearMeasurement = true;
+        return mutable;
+      });
+      clearApiErrors();
+    }
+  }, [apiErrors, clearApiErrors]);
 
   let activeIndex;
 
@@ -80,44 +106,14 @@ function MeasurementSegment() {
       activeIndex = 0;
   }
 
-  const removeLast = useCallback(
-    (both = false) => {
-      const newMeasurements = deepCopy(
-        measurements[reference][measurementMethod]
-      );
-      newMeasurements.pop();
-      setMeasurements((old) => {
-        const mutable = deepCopy(old);
-        mutable[reference][measurementMethod] = newMeasurements;
-        return mutable;
-      });
-      if (both) {
-        const newApi = deepCopy(apiResult[reference][measurementMethod]);
-        newApi.pop();
-        setAPIResult((old) => {
-          const mutable = deepCopy(old);
-          mutable[reference][measurementMethod] = newApi;
-          return mutable;
-        });
-      }
-    },
-    [measurements, reference, measurementMethod, apiResult]
-  );
-
   if (commands.resetCurrent) {
-    const resetCurrent = (old) => {
-      const mutable = deepCopy(old);
-      mutable[reference][measurementMethod] = [];
-      return mutable;
-    };
     setErrorModal({
       visible: true,
       title: 'Are you sure you want to reset?',
       body: 'This will remove all measurements from the current chart.',
       handleCancel: () => setErrorModal(InitalErrorModalState()),
       handleClose: () => {
-        setMeasurements(resetCurrent);
-        setAPIResult(resetCurrent);
+        clearBothActiveArrays();
         setErrorModal(InitalErrorModalState());
       },
     });
@@ -133,7 +129,7 @@ function MeasurementSegment() {
       body: 'This will remove the last measurement entered on the chart.',
       handleCancel: () => setErrorModal(InitalErrorModalState()),
       handleClose: () => {
-        removeLast(true);
+        removeLastActiveItem(true);
         setErrorModal(InitalErrorModalState());
       },
     });
@@ -185,6 +181,10 @@ function MeasurementSegment() {
     customSetMeasurementMethod(newMeasurementMethod);
   };
 
+  const handleModeChange = (e, { activeIndex }) => {
+    setMode(activeIndex === 0 ? 'calculation' : 'fictional_child_data');
+  };
+
   const changeReference = (newReference) => {
     // call back from MeasurementForm
     setReference(newReference);
@@ -206,12 +206,12 @@ function MeasurementSegment() {
         ofc: false,
       });
       if (
-        apiResult[newReference][measurementMethod].length > 0 &&
-        apiResult[newReference][measurementMethod][0]?.birth_data.sex !== sex
+        results[newReference][measurementMethod].length > 0 &&
+        results[newReference][measurementMethod][0]?.birth_data.sex !== sex
       ) {
-        setSex(apiResult[newReference][measurementMethod][0].birth_data.sex);
+        setSex(results[newReference][measurementMethod][0].birth_data.sex);
         return {
-          newSex: apiResult[newReference][measurementMethod][0].birth_data.sex,
+          newSex: results[newReference][measurementMethod][0].birth_data.sex,
         };
       } else {
         return { newSex: sex };
@@ -249,7 +249,7 @@ function MeasurementSegment() {
     return true;
   };
 
-  const handleResults = (results) => {
+  const handleResults = (newResultInArray) => {
     // delegate function from MeasurementForm
     // receives form data and stores in the correct measurement array
     // checks for duplicates, mismatching dobs, sexes and gestations
@@ -257,8 +257,8 @@ function MeasurementSegment() {
       measurements[reference][measurementMethod]
     );
     let errorString = '';
+    const latestResult = newResultInArray[0];
     if (existingResults.length > 0) {
-      const latestResult = results[0];
       const newGestation =
         latestResult.gestation_weeks * 7 + latestResult.gestation_days;
       const errors = [];
@@ -307,21 +307,14 @@ function MeasurementSegment() {
       }
       return false;
     } else {
-      setMeasurements((old) => {
-        const mutable = deepCopy(old);
-        const newArray = mutable[reference][measurementMethod].concat(results);
-        mutable[reference][measurementMethod] = newArray;
-        return mutable;
-      });
-      setIsLoading(true);
+      fetchResult(latestResult);
       return true;
     }
   };
 
   const fictionalFormDataSubmit = (formData) => {
-    // call back from fictionaChildForm
-    console.log(formData);
-  }
+    fetchResult(formData);
+  };
 
   const handleChangeTheme = (event, { value }) => {
     let selectedTheme;
@@ -373,7 +366,7 @@ function MeasurementSegment() {
             reference={reference}
             sex={sex}
             measurementMethod={details.measurementName}
-            measurementsArray={apiResult[reference][details.measurementName]}
+            measurementsArray={results[reference][details.measurementName]}
             chartStyle={chartStyle}
             axisStyle={axisStyle}
             gridlineStyle={defaultTheme.gridlines}
@@ -395,30 +388,36 @@ function MeasurementSegment() {
       onTabChange={handleTabChange}
     />
   );
-  
 
   const FormPanes = [
-    { menuItem: ' Measurements', render: () => 
-      <Tab.Pane attached={false}>
-        <MeasurementForm
-          measurementResult={handleResults}
-          handleChangeReference={changeReference}
-          handleChangeSex={changeSex}
-          measurementMethod={measurementMethod}
-          setMeasurementMethod={customSetMeasurementMethod}
-          commands={commands}
-          setCommands={setCommands}
-          className="measurement-form"
-        />
-      </Tab.Pane> },
-    { menuItem: 'Demo Children', render: () => 
-      <Tab.Pane>
-        <FictionalChildForm
-          fictionalFormDataSubmit={fictionalFormDataSubmit}
-        />
-      </Tab.Pane> 
+    {
+      menuItem: ' Measurements',
+      render: () => (
+        <Tab.Pane attached={false}>
+          <MeasurementForm
+            measurementResult={handleResults}
+            handleChangeReference={changeReference}
+            handleChangeSex={changeSex}
+            measurementMethod={measurementMethod}
+            setMeasurementMethod={customSetMeasurementMethod}
+            commands={commands}
+            setCommands={setCommands}
+            className="measurement-form"
+          />
+        </Tab.Pane>
+      ),
     },
-  ]
+    {
+      menuItem: 'Demo Children',
+      render: () => (
+        <Tab.Pane>
+          <FictionalChildForm
+            fictionalFormDataSubmit={fictionalFormDataSubmit}
+          />
+        </Tab.Pane>
+      ),
+    },
+  ];
 
   const ThemeSelection = () => (
     // <Menu compact className="selectUpperMargin">
@@ -435,128 +434,46 @@ function MeasurementSegment() {
     // </Menu>
   );
 
-  useEffect(() => {
-    const fetchCentilesForMeasurement = async (singleMeasurement) => {
-      const url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/${reference}/calculation`;
-      const response = await axios({
-        url: url,
-        data: singleMeasurement,
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      return response.data;
-    };
-
-    let ignore = false;
-
-    if (isLoading) {
-      const relevantArray = measurements[reference][measurementMethod];
-      const latestMeasurement = deepCopy(
-        relevantArray[relevantArray.length - 1]
-      );
-      fetchCentilesForMeasurement(latestMeasurement)
-        .then((result) => {
-          if (!ignore) {
-            if (
-              result.measurement_calculated_values
-                .corrected_measurement_error ||
-              result.measurement_calculated_values
-                .chronological_measurement_error
-            ) {
-              const measurementError =
-                result.measurement_calculated_values
-                  .corrected_measurement_error ||
-                result.measurement_calculated_values
-                  .chronological_measurement_error;
-              setIsLoading(false);
-              removeLast();
-              setErrorModal({
-                visible: true,
-                title: 'Unable to plot',
-                body: `Measurement entered cannot be processed by the server. Reason given: ${measurementError}`,
-                handleClose: () => setErrorModal(InitalErrorModalState()),
-              });
-            } else {
-              setIsLoading(false);
-              setAPIResult((old) => {
-                const mutable = deepCopy(old);
-                const workingArray = deepCopy(
-                  mutable[reference][measurementMethod]
-                );
-                workingArray.push(result);
-                mutable[reference][measurementMethod] = workingArray;
-                return mutable;
-              });
-              setCommands((old) => {
-                return { ...old, clearMeasurement: true };
-              });
-            }
-          }
-        })
-        .catch((error) => {
-          setIsLoading(false);
-          const errorForUser = `There has been a problem fetching the result from the server. Error details: ${error.message} `;
-          removeLast();
-          setErrorModal({
-            visible: true,
-            title: 'Server error',
-            body: errorForUser,
-            handleClose: () => setErrorModal(InitalErrorModalState()),
-          });
-        });
-    }
-
-    return () => {
-      // this prevents data being added to state if unmounted
-      ignore = true;
-    };
-  }, [
-    isLoading,
-    measurementMethod,
-    reference,
-    apiResult,
-    measurements,
-    removeLast,
-  ]);
-
   return (
     <React.Fragment>
       {/* <Container> */}
-        <Grid padded>
-          <Grid.Row>
-            <Grid.Column width={6}>
-              <Segment textAlign={'center'}>
-                  <Tab panes={FormPanes} menu={{ attached: false }}></Tab>
-                </Segment>
-            </Grid.Column>
-            <Grid.Column width={10}>
-              <Segment>
-                {flip ? (
-                  <ResultsSegment apiResult={apiResult} reference={reference} />
-                ) : (
-                  <TabPanes />
-                )}
-                <Grid verticalAlign="middle">
-                  <Grid.Row columns={2}>
-                    <Grid.Column textAlign="left">
-                      <ThemeSelection />
-                    </Grid.Column>
-                    <Grid.Column textAlign="right">
-                      <Button
-                        className="selectUpperMargin"
-                        onClick={handleFlipResults}
-                      >
-                        Results
-                      </Button>
-                    </Grid.Column>
-                  </Grid.Row>
-                </Grid>
-                </Segment>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+      <Grid padded>
+        <Grid.Row>
+          <Grid.Column width={6}>
+            <Segment textAlign={'center'}>
+              <Tab
+                panes={FormPanes}
+                menu={{ attached: false }}
+                onTabChange={handleModeChange}
+              />
+            </Segment>
+          </Grid.Column>
+          <Grid.Column width={10}>
+            <Segment>
+              {flip ? (
+                <ResultsSegment apiResult={results} reference={reference} />
+              ) : (
+                <TabPanes />
+              )}
+              <Grid verticalAlign="middle">
+                <Grid.Row columns={2}>
+                  <Grid.Column textAlign="left">
+                    <ThemeSelection />
+                  </Grid.Column>
+                  <Grid.Column textAlign="right">
+                    <Button
+                      className="selectUpperMargin"
+                      onClick={handleFlipResults}
+                    >
+                      Results
+                    </Button>
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+            </Segment>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
       {/* </Container> */}
       <ErrorModal
         title={errorModal.title}
@@ -586,29 +503,6 @@ const themeOptions = [
   { key: 'tanner2', value: 'tanner2', text: 'Tanner 2' },
   { key: 'tanner3', value: 'tanner3', text: 'Tanner 3' },
 ];
-
-function InitialMeasurementState() {
-  return {
-    turner: {
-      height: [],
-      weight: [],
-      bmi: [],
-      ofc: [],
-    },
-    'trisomy-21': {
-      height: [],
-      weight: [],
-      bmi: [],
-      ofc: [],
-    },
-    'uk-who': {
-      height: [],
-      weight: [],
-      bmi: [],
-      ofc: [],
-    },
-  };
-}
 
 function InitalErrorModalState() {
   return {
