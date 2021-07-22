@@ -10,11 +10,15 @@ function isES6() {
 if (!isES6()) {
   var errorContainer = document.createElement('div');
 
-  errorContainer.style = 'margin: auto; height: 100vh; width: 100vh;';
+  errorContainer.style.margin = 'auto';
+  errorContainer.style.height = '100vh';
+  errorContainer.style.width = '100vh';
 
   var heading = document.createElement('h2');
 
-  heading.style = 'position: relative; top: 50%; transform: translateY(-50%);';
+  heading.style.position = 'relative';
+  heading.style.top = '50%';
+  heading.style.transform = 'translateY(-50%)';
 
   errorContainer.appendChild(heading);
 
