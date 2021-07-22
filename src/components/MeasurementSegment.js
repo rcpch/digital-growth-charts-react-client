@@ -13,7 +13,6 @@ import RCPCHThemeTraditionalGirl from '../components/chartThemes/RCPCHThemeTradi
 import {
   Grid,
   Segment,
-  Container,
   Tab,
   Dropdown,
   Button,
@@ -25,6 +24,7 @@ import MeasurementForm from '../components/MeasurementForm';
 import deepCopy from '../functions/deepCopy';
 import { ResultsSegment, ErrorModal } from './SubComponents';
 import '../index.css';
+import FictionalChildForm from './FictionalChildForm';
 
 function MeasurementSegment() {
   const defaultTheme = RCPCHThemeMonochrome;
@@ -54,9 +54,7 @@ function MeasurementSegment() {
   const [sex, setSex] = useState('male');
   const [measurements, setMeasurements] = useState(InitialMeasurementState());
   const [apiResult, setAPIResult] = useState(InitialMeasurementState());
-
   const [errorModal, setErrorModal] = useState(InitalErrorModalState());
-
   const [isLoading, setIsLoading] = useState(false);
   const [commands, setCommands] = useState({
     clearMeasurement: false,
@@ -320,6 +318,11 @@ function MeasurementSegment() {
     }
   };
 
+  const fictionalFormDataSubmit = (formData) => {
+    // call back from fictionaChildForm
+    console.log(formData);
+  }
+
   const handleChangeTheme = (event, { value }) => {
     let selectedTheme;
     let text;
@@ -392,6 +395,30 @@ function MeasurementSegment() {
       onTabChange={handleTabChange}
     />
   );
+  
+
+  const FormPanes = [
+    { menuItem: ' Measurements', render: () => 
+      <Tab.Pane attached={false}>
+        <MeasurementForm
+          measurementResult={handleResults}
+          handleChangeReference={changeReference}
+          handleChangeSex={changeSex}
+          measurementMethod={measurementMethod}
+          setMeasurementMethod={customSetMeasurementMethod}
+          commands={commands}
+          setCommands={setCommands}
+          className="measurement-form"
+        />
+      </Tab.Pane> },
+    { menuItem: 'Demo Children', render: () => 
+      <Tab.Pane>
+        <FictionalChildForm
+          fictionalFormDataSubmit={fictionalFormDataSubmit}
+        />
+      </Tab.Pane> 
+    },
+  ]
 
   const ThemeSelection = () => (
     // <Menu compact className="selectUpperMargin">
@@ -496,48 +523,41 @@ function MeasurementSegment() {
 
   return (
     <React.Fragment>
-          <Container>
-      <Grid padded>
-        <Grid.Row>
-          <Grid.Column width={6}> 
-                <MeasurementForm
-                  measurementResult={handleResults}
-                  handleChangeReference={changeReference}
-                  handleChangeSex={changeSex}
-                  measurementMethod={measurementMethod}
-                  setMeasurementMethod={customSetMeasurementMethod}
-                  commands={commands}
-                  setCommands={setCommands}
-                  className="measurement-form"
-                />
-          </Grid.Column>
-          <Grid.Column width={10}>
-            <Segment>
-              {flip ? (
-                <ResultsSegment apiResult={apiResult} reference={reference} />
-              ) : (
-                <TabPanes />
-              )}
-              <Grid verticalAlign="middle">
-                <Grid.Row columns={2}>
-                  <Grid.Column textAlign="left">
-                    <ThemeSelection />
-                  </Grid.Column>
-                  <Grid.Column textAlign="right">
-                    <Button
-                      className="selectUpperMargin"
-                      onClick={handleFlipResults}
-                    >
-                      Results
-                    </Button>
-                  </Grid.Column>
-                </Grid.Row>
-              </Grid>
-              </Segment>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid> 
-      </Container>
+      {/* <Container> */}
+        <Grid padded>
+          <Grid.Row>
+            <Grid.Column width={6}>
+              <Segment textAlign={'center'}>
+                  <Tab panes={FormPanes} menu={{ attached: false }}></Tab>
+                </Segment>
+            </Grid.Column>
+            <Grid.Column width={10}>
+              <Segment>
+                {flip ? (
+                  <ResultsSegment apiResult={apiResult} reference={reference} />
+                ) : (
+                  <TabPanes />
+                )}
+                <Grid verticalAlign="middle">
+                  <Grid.Row columns={2}>
+                    <Grid.Column textAlign="left">
+                      <ThemeSelection />
+                    </Grid.Column>
+                    <Grid.Column textAlign="right">
+                      <Button
+                        className="selectUpperMargin"
+                        onClick={handleFlipResults}
+                      >
+                        Results
+                      </Button>
+                    </Grid.Column>
+                  </Grid.Row>
+                </Grid>
+                </Segment>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      {/* </Container> */}
       <ErrorModal
         title={errorModal.title}
         body={errorModal.body}

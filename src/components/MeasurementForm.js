@@ -5,59 +5,21 @@ import {
   Segment,
   Form,
   Input,
-  Select,
   Button,
   Header,
   Message,
 } from 'semantic-ui-react';
-
-const sexOptions = [
-  { key: 'male', value: 'male', text: 'Boy', disabled: false },
-  { key: 'female', value: 'female', text: 'Girl', disabled: false },
-];
-
-let gestationWeeksOptions = [];
-let gestWeeks = 23;
-while (gestWeeks <= 42) {
-  gestationWeeksOptions.push({
-    key: gestWeeks.toString(10),
-    value: gestWeeks,
-    text: gestWeeks.toString(10),
-  });
-  gestWeeks++;
-}
-
-const gestationDaysOptions = [
-  { key: '0', value: 0, text: '0' },
-  { key: '1', value: 1, text: '1' },
-  { key: '2', value: 2, text: '2' },
-  { key: '3', value: 3, text: '3' },
-  { key: '4', value: 4, text: '4' },
-  { key: '5', value: 5, text: '5' },
-  { key: '6', value: 6, text: '6' },
-];
-
-const references = [
-  { key: 'uk-who', value: 'uk-who', text: 'UK-WHO' },
-  { key: 'trisomy-21', value: 'trisomy-21', text: "Down's Syndrome" },
-  { key: 'turner', value: 'turner', text: "Turner's syndrome" },
-];
+import GestationSelect from './subcomponents/GestationSelect';
+import MeasurementMethodSelect from './subcomponents/MeasurementMethodSelect';
+import ReferenceSelect from './subcomponents/ReferenceSelect';
+import SexSelect from './subcomponents/SexChoice';
+import measurementOptions from '../selectData/measurementOptions';
+import sexOptions from '../selectData/sexOptions';
+import referenceOptions from '../selectData/referenceOptions';
 
 const ROBERT_WADLOW = 272; // interesting fact - Robert Wadlow (22/2/1918 – 15/7/1940) was the world's tallest man
 const JON_BROWER_MINNOCH = 635; // interesting fact -  Jon Brower Minnoch (Born USA) was the world's heaviest man
 const KHALID_BIN_MOHSEN_SHAARI = 204; // Khalid bin Mohsen Shaari (2/8/1991) from Saudi Arabia had the highest recorded BMI
-
-const measurementOptions = [
-  { key: 'height', value: 'height', text: 'Height (cm)', disabled: false },
-  { key: 'weight', value: 'weight', text: 'Weight (kg)', disabled: false },
-  { key: 'bmi', value: 'bmi', text: 'BMI (kg/m²)', disabled: false },
-  {
-    key: 'ofc',
-    value: 'ofc',
-    text: 'Head Circumference (cm)',
-    disabled: false,
-  },
-];
 
 const formatDate = (inputDate) => {
   let date;
@@ -137,8 +99,9 @@ class MeasurementForm extends React.Component {
       form_valid: false,
       measurementResult: [],
       reference: 'uk-who',
-      measurementOptions: measurementOptions,
       sexOptions: sexOptions,
+      measurementOptions: measurementOptions,
+      referenceOptions: referenceOptions
     };
 
     this.handleChangeDate = this.handleChangeDate.bind(this);
@@ -153,10 +116,11 @@ class MeasurementForm extends React.Component {
     this.handleUndoLast = this.handleUndoLast.bind(this);
   }
 
-  handleChangeReference = (ref, data) => {
+  handleChangeReference = ({value}) => {
     //call back, returns new sex if already measurements charted with different sex
-    const callbackReturn = this.props.handleChangeReference(data.value);
-    if (data.value === 'turner') {
+    
+    const callbackReturn = this.props.handleChangeReference(value);
+    if (value === 'turner') {
       this.disableMeasurement('weight', true);
       this.disableMeasurement('ofc', true);
       this.disableMeasurement('bmi', true);
@@ -171,7 +135,7 @@ class MeasurementForm extends React.Component {
           'height',
           this.state.measurement.observation_value
         ),
-        reference: data.value,
+        reference: value,
         sexOptions: newSexOptions,
       });
       this.props.handleChangeSex('female', true);
@@ -191,8 +155,8 @@ class MeasurementForm extends React.Component {
           this.state.measurement.observation_value
         ),
         sex: callbackReturn.newSex,
-        reference: data.value,
-        sexOptions: newSexOptions,
+        reference: value,
+        sexOptions: newSexOptions
       });
     }
   };
@@ -397,8 +361,8 @@ class MeasurementForm extends React.Component {
     }
   }
 
-  handleChangeSex(event, data, isTurner = false) {
-    const success = this.props.handleChangeSex(data.value, isTurner);
+  handleChangeSex(event, data) {
+    const success = this.props.handleChangeSex(data.value);
     if (success) {
       this.setState({ sex: data.value });
     }
@@ -464,12 +428,17 @@ class MeasurementForm extends React.Component {
               <Header as="h5" textAlign="left">
                 Reference
               </Header>
-              <Select
+              {/* <Select
                 name="reference"
                 value={this.state.reference}
                 options={references}
                 onChange={this.handleChangeReference}
                 placeholder="Select reference"
+              /> */}
+              <ReferenceSelect 
+                reference={this.state.reference}
+                handleChangeReference={this.handleChangeReference}
+                referenceOptions={this.state.referenceOptions}
               />
             </Form.Field>
             <Form.Field required>
@@ -502,12 +471,17 @@ class MeasurementForm extends React.Component {
 
             <Form.Group>
               <Form.Field required>
-                <Select
+                {/* <Select
                   value={this.props.measurementMethod}
                   name="measurement_method"
                   placeholder="Measurement Type"
                   options={measurementOptions}
                   onChange={this.handleChangeMeasurementMethod}
+                /> */}
+                <MeasurementMethodSelect 
+                  measurementMethod={this.props.measurementMethod}
+                  handleChangeMeasurementMethod={this.handleChangeMeasurementMethod}
+                  measurementOptions={this.state.measurementOptions}
                 />
               </Form.Field>
               <Form.Field required width={8}>
@@ -543,12 +517,17 @@ class MeasurementForm extends React.Component {
               Sex
             </Header>
             <Form.Field required>
-              <Select
+              {/* <Select
                 name="sex"
                 placeholder="Sex"
                 value={this.state.sex}
                 onChange={this.handleChangeSex}
                 options={this.state.sexOptions}
+              /> */}
+              <SexSelect 
+                sex={this.state.sex}
+                handleChangeSex={this.handleChangeSex}
+                sexOptions={this.state.sexOptions}
               />
             </Form.Field>
 
@@ -557,7 +536,13 @@ class MeasurementForm extends React.Component {
                 <Header as="h5" textAlign="left">
                   Gestation
                 </Header>
-                <span>
+                <GestationSelect 
+                  name="gestation_select"
+                  weeks={this.state.gestation_weeks}
+                  days={this.state.gestation_days}
+                  handleChangeGestation={this.handleChangeGestation}
+                />
+                {/* <span>
                   <Select
                     compact
                     name="gestation_weeks"
@@ -574,7 +559,7 @@ class MeasurementForm extends React.Component {
                     onChange={this.handleChangeGestation}
                   />
                   &nbsp; weeks
-                </span>
+                </span> */}
               </Form.Field>
               {/* </Segment> */}
             </Form.Group>
