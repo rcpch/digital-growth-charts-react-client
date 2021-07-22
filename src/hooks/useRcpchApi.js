@@ -3,6 +3,10 @@ import axios from 'axios';
 
 import deepCopy from '../functions/deepCopy';
 
+if (!process.env.REACT_APP_API_KEY) {
+  console.error('No API key found in environment variable');
+}
+
 const fetchFromApi = async (inputParameters, reference, mode) => {
   const url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/${reference}/${mode}/`;
   const response = await axios({
@@ -11,6 +15,7 @@ const fetchFromApi = async (inputParameters, reference, mode) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Subscription-Key': process.env.REACT_APP_API_KEY,
     },
   });
   return response.data;
