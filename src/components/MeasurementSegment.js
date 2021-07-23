@@ -1,5 +1,5 @@
 // React
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 //themes
 import RCPCHTheme1 from '../components/chartThemes/rcpchTheme1';
@@ -19,43 +19,39 @@ import { ResultsSegment, ErrorModal } from './SubComponents';
 import '../index.css';
 import FictionalChildForm from './FictionalChildForm';
 import useRcpchApi from '../hooks/useRcpchApi';
+import useGlobalState from '../hooks/useGlobalState';
+
+const defaultTheme = RCPCHThemeMonochrome;
 
 function MeasurementSegment() {
-  const defaultTheme = RCPCHThemeMonochrome;
-
   const [chartStyle, setChartSyle] = useState(defaultTheme.chart);
   const [axisStyle, setAxisStyle] = useState(defaultTheme.axes);
   const [centileStyle, setCentileStyle] = useState(defaultTheme.centiles);
   const [measurementStyle, setMeasurementStyle] = useState(
     defaultTheme.measurements
   );
-
   const [theme, setTheme] = useState({
     value: 'tanner4',
     text: 'Monochrome',
   });
 
   const [flip, setFlip] = useState(false); // flag to determine if results or chart showing
-  const [disabled, setDisabled] = useState({
-    height: false,
-    weight: false,
-    bmi: false,
-    ofc: false,
-  });
-
-  const [measurementMethod, setMeasurementMethod] = useState('height');
-  const [reference, setReference] = useState('uk-who');
-  const [sex, setSex] = useState('male');
-
-  const [mode, setMode] = useState('calculation');
-
   const [errorModal, setErrorModal] = useState(InitalErrorModalState());
-  const [commands, setCommands] = useState({
-    clearMeasurement: false,
-    resetCurrent: false,
-    undoLast: false,
-    changeSex: false,
-  });
+
+  const { globalState, makeGlobalStateUpdater } = useGlobalState();
+
+  const {
+    mode,
+    modeActiveIndex,
+    reference,
+    measurementMethod,
+    measurementMethodActiveIndex,
+    sex,
+    disabled,
+    errors,
+    resetCurrent,
+    undoLast,
+  } = globalState;
 
   const {
     fetchResult,
@@ -67,6 +63,11 @@ function MeasurementSegment() {
     apiErrors,
     isLoading,
   } = useRcpchApi(measurementMethod, reference, mode);
+
+  const updateGlobalState = useMemo(
+    () => makeGlobalStateUpdater(results),
+    [results, makeGlobalStateUpdater]
+  );
 
   useEffect(() => {
     if (apiErrors.errors) {
@@ -80,33 +81,45 @@ function MeasurementSegment() {
         },
       });
     } else if (apiErrors.message === 'success') {
-      setCommands((old) => {
-        const mutable = deepCopy(old);
-        mutable.clearMeasurement = true;
-        return mutable;
-      });
+      updateGlobalState('clearMeasurement', true);
       clearApiErrors();
     }
-  }, [apiErrors, clearApiErrors]);
+    if (errors.errors) {
+      let body = 'Only height data is available for Turner Syndrome.';
+      if (errors.message === 'Unable to change sex') {
+        body =
+          'Each chart can only display measurements from one patient at a time. Please reset the chart before entering measurements from a new patient.';
+      }
+      setErrorModal({
+        visible: true,
+        title: errors.message,
+        body: body,
+        handleClose: () => setErrorModal(InitalErrorModalState()),
+      });
+      updateGlobalState('errors', { errors: false, message: '' });
+    }
+  }, [errors, apiErrors, clearApiErrors, updateGlobalState]);
 
-  let activeIndex;
+  useEffect(() => {
+    if (theme.value === 'trad') {
+      const selectedTheme =
+        sex === 'male' ? RCPCHThemeTraditionalBoy : RCPCHThemeTraditionalGirl;
+      setCentileStyle(selectedTheme.centiles);
+      setChartSyle(selectedTheme.chart);
+      setMeasurementStyle(selectedTheme.measurements);
+      setAxisStyle(selectedTheme.axes);
+    }
+  }, [sex, theme.value]);
 
-  switch (measurementMethod) {
-    case 'weight':
-      activeIndex = 1;
-      break;
-    case 'bmi':
-      activeIndex = 2;
-      break;
-    case 'ofc':
-      activeIndex = 3;
-      break;
-    default:
-      //height
-      activeIndex = 0;
-  }
+  useEffect(() => {
+    if (results[reference][measurementMethod].length > 0) {
+      updateGlobalState('isDataPresent', true);
+    } else {
+      updateGlobalState('isDataPresent', false);
+    }
+  }, [results, reference, measurementMethod, updateGlobalState]);
 
-  if (commands.resetCurrent) {
+  if (resetCurrent) {
     setErrorModal({
       visible: true,
       title: 'Are you sure you want to reset?',
@@ -117,12 +130,10 @@ function MeasurementSegment() {
         setErrorModal(InitalErrorModalState());
       },
     });
-    setCommands((old) => {
-      return { ...old, resetCurrent: false };
-    });
+    updateGlobalState('resetCurrent', false);
   }
 
-  if (commands.undoLast) {
+  if (undoLast) {
     setErrorModal({
       visible: true,
       title: 'Are you sure you want to remove the last measurement?',
@@ -133,187 +144,19 @@ function MeasurementSegment() {
         setErrorModal(InitalErrorModalState());
       },
     });
-    setCommands((old) => {
-      return { ...old, undoLast: false };
-    });
+    updateGlobalState('undoLast', false);
   }
 
-  const customSetMeasurementMethod = (newMeasurementMethod) => {
-    if (measurements[reference][newMeasurementMethod].length > 0) {
-      const existingSex = measurements[reference][newMeasurementMethod][0].sex;
-      if (existingSex !== sex) {
-        changeSex(existingSex, true);
-        setCommands((old) => {
-          return { ...old, changeSex: true };
-        });
-      }
-    }
-    setMeasurementMethod(newMeasurementMethod);
-  };
-
   const handleTabChange = (e, { activeIndex }) => {
-    if (reference === 'turner' && activeIndex !== 0) {
-      setErrorModal({
-        visible: true,
-        title: 'Measurement unavailable',
-        body: "Only height data is available for Turner's Syndrome.",
-        handleClose: () => setErrorModal(InitalErrorModalState()),
-      });
-      return null;
-    }
-    let newMeasurementMethod = '';
-    switch (activeIndex) {
-      case 0:
-        newMeasurementMethod = 'height';
-        break;
-      case 1:
-        newMeasurementMethod = 'weight';
-        break;
-      case 2:
-        newMeasurementMethod = 'bmi';
-        break;
-      case 3:
-        newMeasurementMethod = 'ofc';
-        break;
-      default:
-        console.warn('Handle tab change did not pick up valid active index');
-    }
-    customSetMeasurementMethod(newMeasurementMethod);
+    updateGlobalState('measurementMethodActiveIndex', activeIndex);
   };
 
   const handleModeChange = (e, { activeIndex }) => {
-    setMode(activeIndex === 0 ? 'calculation' : 'fictional_child_data');
-  };
-
-  const changeReference = (newReference) => {
-    // call back from MeasurementForm
-    setReference(newReference);
-    if (newReference === 'turner') {
-      setMeasurementMethod('height');
-      setSex('female');
-      setDisabled({
-        height: false,
-        weight: true,
-        bmi: true,
-        ofc: true,
-      });
-      return { newSex: 'female' };
-    } else {
-      setDisabled({
-        height: false,
-        weight: false,
-        bmi: false,
-        ofc: false,
-      });
-      if (
-        results[newReference][measurementMethod].length > 0 &&
-        results[newReference][measurementMethod][0]?.birth_data.sex !== sex
-      ) {
-        setSex(results[newReference][measurementMethod][0].birth_data.sex);
-        return {
-          newSex: results[newReference][measurementMethod][0].birth_data.sex,
-        };
-      } else {
-        return { newSex: sex };
-      }
-    }
-  };
-
-  const changeSex = (newSex, ignoreError = false) => {
-    // call back for MeasurementForm
-    const existingResults = [...measurements[reference][measurementMethod]];
-    if (existingResults.length > 0 && !ignoreError) {
-      for (const oldResult of existingResults) {
-        if (newSex !== oldResult.sex) {
-          setErrorModal({
-            visible: true,
-            title: 'Unable to change sex',
-            body: `Each chart can only display measurements from one patient at a time. Please reset the chart before entering measurements from a new patient.`,
-            handleClose: () => setErrorModal(InitalErrorModalState()),
-          });
-          return false;
-        }
-      }
-    }
-    if (theme.value === 'trad') {
-      const selectedTheme =
-        newSex === 'male'
-          ? RCPCHThemeTraditionalBoy
-          : RCPCHThemeTraditionalGirl;
-      setCentileStyle(selectedTheme.centiles);
-      setChartSyle(selectedTheme.chart);
-      setMeasurementStyle(selectedTheme.measurements);
-      setAxisStyle(selectedTheme.axes);
-    }
-    setSex(newSex);
-    return true;
-  };
-
-  const handleResults = (newResultInArray) => {
-    // delegate function from MeasurementForm
-    // receives form data and stores in the correct measurement array
-    // checks for duplicates, mismatching dobs, sexes and gestations
-    const existingResults = deepCopy(
-      measurements[reference][measurementMethod]
-    );
-    let errorString = '';
-    const latestResult = newResultInArray[0];
-    if (existingResults.length > 0) {
-      const newGestation =
-        latestResult.gestation_weeks * 7 + latestResult.gestation_days;
-      const errors = [];
-      for (const oldResult of existingResults) {
-        if (JSON.stringify(oldResult) === JSON.stringify(latestResult)) {
-          errorString = 'duplicate';
-          break;
-        }
-        const oldGestation =
-          oldResult.gestation_weeks * 7 + oldResult.gestation_days;
-        if (oldResult.sex !== latestResult.sex) {
-          errors.push('differing sexes');
-        }
-        if (oldResult.birth_date !== latestResult.birth_date) {
-          errors.push('differing date of births');
-        }
-        if (oldGestation !== newGestation) {
-          errors.push('differing gestations');
-        }
-        if (errors.length > 0) {
-          errorString = errors[0];
-          if (errors.length === 2) {
-            errorString = errors.join(' and ');
-          } else if (errors.length === 3) {
-            errorString = `${errors[0]}, ${errors[1]} and ${errors[2]}`;
-          }
-          break;
-        }
-      }
-    }
-    if (errorString) {
-      if (errorString === 'duplicate') {
-        setErrorModal({
-          visible: true,
-          title: 'Duplicate entries',
-          body: `Please check the last measurement entry as it appears to be identical to a measurement already entered.`,
-          handleClose: () => setErrorModal(InitalErrorModalState()),
-        });
-      } else {
-        setErrorModal({
-          visible: true,
-          title: 'Please check entries',
-          body: `Each chart can only display measurements from one patient at a time: ${errorString} were detected.`,
-          handleClose: () => setErrorModal(InitalErrorModalState()),
-        });
-      }
-      return false;
-    } else {
-      fetchResult(latestResult);
-      return true;
-    }
+    updateGlobalState('modeActiveIndex', activeIndex);
   };
 
   const fictionalFormDataSubmit = (formData) => {
-    fetchResult(formData)
+    fetchResult(formData);
   };
 
   const handleChangeTheme = (event, { value }) => {
@@ -356,6 +199,70 @@ function MeasurementSegment() {
     setFlip(!flip);
   };
 
+  const handleResults = (latestResult) => {
+    // delegate function from MeasurementForm
+    // receives form data and stores in the correct measurement array
+    // checks for duplicates, mismatching dobs, sexes and gestations
+    if (!isLoading) {
+      const existingResults = deepCopy(
+        measurements[reference][measurementMethod]
+      );
+      let errorString = '';
+      if (existingResults.length > 0) {
+        const newGestation =
+          latestResult.gestation_weeks * 7 + latestResult.gestation_days;
+        const newErrors = [];
+        for (const oldResult of existingResults) {
+          if (JSON.stringify(oldResult) === JSON.stringify(latestResult)) {
+            errorString = 'duplicate';
+            break;
+          }
+          const oldGestation =
+            oldResult.gestation_weeks * 7 + oldResult.gestation_days;
+          if (oldResult.sex !== latestResult.sex) {
+            newErrors.push('differing sexes');
+          }
+          if (oldResult.birth_date !== latestResult.birth_date) {
+            newErrors.push('differing date of births');
+          }
+          if (oldGestation !== newGestation) {
+            newErrors.push('differing gestations');
+          }
+          if (newErrors.length > 0) {
+            errorString = newErrors[0];
+            if (newErrors.length === 2) {
+              errorString = newErrors.join(' and ');
+            } else if (newErrors.length === 3) {
+              errorString = `${newErrors[0]}, ${newErrors[1]} and ${newErrors[2]}`;
+            }
+            break;
+          }
+        }
+      }
+      if (errorString) {
+        if (errorString === 'duplicate') {
+          setErrorModal({
+            visible: true,
+            title: 'Duplicate entries',
+            body: `Please check the last measurement entry as it appears to be identical to a measurement already entered.`,
+            handleClose: () => setErrorModal(InitalErrorModalState()),
+          });
+        } else {
+          setErrorModal({
+            visible: true,
+            title: 'Please check entries',
+            body: `Each chart can only display measurements from one patient at a time: ${errorString} were detected.`,
+            handleClose: () => setErrorModal(InitalErrorModalState()),
+          });
+        }
+        return false;
+      } else {
+        fetchResult(latestResult);
+        return true;
+      }
+    }
+  };
+
   const panes = panesBlueprint.map((details) => {
     return {
       menuItem: details.menuItem,
@@ -374,7 +281,6 @@ function MeasurementSegment() {
             measurementStyle={measurementStyle}
             isLoading={isLoading}
           />
-          {/* <Acknowledgements /> */}
         </Tab.Pane>
       ),
     };
@@ -384,24 +290,20 @@ function MeasurementSegment() {
     <Tab
       menu={{ attached: 'top' }}
       panes={panes}
-      activeIndex={activeIndex}
+      activeIndex={measurementMethodActiveIndex}
       onTabChange={handleTabChange}
     />
   );
 
   const FormPanes = [
     {
-      menuItem: ' Measurements',
+      menuItem: 'Measurements',
       render: () => (
         <Tab.Pane attached={false}>
           <MeasurementForm
-            measurementResult={handleResults}
-            handleChangeReference={changeReference}
-            handleChangeSex={changeSex}
-            measurementMethod={measurementMethod}
-            setMeasurementMethod={customSetMeasurementMethod}
-            commands={commands}
-            setCommands={setCommands}
+            handleMeasurementResult={handleResults}
+            globalState={globalState}
+            updateGlobalState={updateGlobalState}
             className="measurement-form"
           />
         </Tab.Pane>
@@ -413,6 +315,8 @@ function MeasurementSegment() {
         <Tab.Pane>
           <FictionalChildForm
             fictionalFormDataSubmit={fictionalFormDataSubmit}
+            globalState={globalState}
+            updateGlobalState={updateGlobalState}
           />
         </Tab.Pane>
       ),
@@ -445,6 +349,7 @@ function MeasurementSegment() {
                 panes={FormPanes}
                 menu={{ attached: false }}
                 onTabChange={handleModeChange}
+                activeIndex={modeActiveIndex}
               />
             </Segment>
           </Grid.Column>

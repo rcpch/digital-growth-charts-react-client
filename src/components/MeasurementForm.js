@@ -46,9 +46,29 @@ const formatDate = (inputDate) => {
 };
 
 const parseDate = (inputDate) => {
+  const isDaysInMonthValid = (parsedArray) => {
+    const [jsYear, jsMonth, jsDay] = parsedArray;
+    if (jsMonth === 1 && jsDay === 29) {
+      if (jsYear % 4 === 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      const daysInMonthLookup = [
+        31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31,
+      ];
+      const validMaxDaysInMonth = daysInMonthLookup[jsMonth];
+      if (validMaxDaysInMonth !== undefined && jsDay <= validMaxDaysInMonth) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  };
   try {
     const dateArray = inputDate.split('-');
-    const finalArray = dateArray.map((element, index) => {
+    const workingArray = dateArray.map((element, index) => {
       if (element !== '') {
         const madeNumber = Number(element);
         if (Number.isNaN(madeNumber)) {
@@ -61,19 +81,18 @@ const parseDate = (inputDate) => {
       }
     });
     if (
-      finalArray.length !== 3 ||
-      finalArray[1] < 0 ||
-      finalArray[1] > 11 ||
-      finalArray[2] < 1 ||
-      finalArray[2] > 31
+      workingArray.length !== 3 ||
+      workingArray[1] < 0 ||
+      workingArray[1] > 11 ||
+      workingArray[2] < 1 ||
+      workingArray[2] > 31
     ) {
       throw new Error();
     }
-    const workingDate = new Date(...finalArray);
-    if (typeof workingDate.getTime() === 'number') {
-      return workingDate;
+    if (isDaysInMonthValid(workingArray)) {
+      return new Date(...workingArray);
     } else {
-      return null;
+      throw new Error();
     }
   } catch (error) {
     return null;
@@ -90,7 +109,6 @@ class MeasurementForm extends React.Component {
         observation_value: '',
         units: 'cm',
       },
-      sex: 'male',
       gestation_weeks: 40,
       gestation_days: 0,
       birth_date_error: '',
@@ -98,10 +116,6 @@ class MeasurementForm extends React.Component {
       observation_value_error: 'empty',
       form_valid: false,
       measurementResult: [],
-      reference: 'uk-who',
-      sexOptions: sexOptions,
-      measurementOptions: measurementOptions,
-      referenceOptions: referenceOptions
     };
 
     this.handleChangeDate = this.handleChangeDate.bind(this);
@@ -116,72 +130,8 @@ class MeasurementForm extends React.Component {
     this.handleUndoLast = this.handleUndoLast.bind(this);
   }
 
-  handleChangeReference = ({value}) => {
-    //call back, returns new sex if already measurements charted with different sex
-    
-    const callbackReturn = this.props.handleChangeReference(value);
-    if (value === 'turner') {
-      this.disableMeasurement('weight', true);
-      this.disableMeasurement('ofc', true);
-      this.disableMeasurement('bmi', true);
-      const newSexOptions = [
-        { ...this.state.sexOptions[0] },
-        { ...this.state.sexOptions[1] },
-      ];
-      newSexOptions[0].disabled = true;
-      this.setState({
-        sex: 'female',
-        observation_value_error: this.validateObservationValue(
-          'height',
-          this.state.measurement.observation_value
-        ),
-        reference: value,
-        sexOptions: newSexOptions,
-      });
-      this.props.handleChangeSex('female', true);
-      this.props.setMeasurementMethod('height');
-    } else {
-      this.disableMeasurement('weight', false);
-      this.disableMeasurement('ofc', false);
-      this.disableMeasurement('bmi', false);
-      const newSexOptions = [
-        { ...this.state.sexOptions[0] },
-        { ...this.state.sexOptions[1] },
-      ];
-      newSexOptions[0].disabled = false;
-      this.setState({
-        observation_value_error: this.validateObservationValue(
-          this.props.measurementMethod,
-          this.state.measurement.observation_value
-        ),
-        sex: callbackReturn.newSex,
-        reference: value,
-        sexOptions: newSexOptions
-      });
-    }
-  };
-
-  disableMeasurement = (measurement_method, disable) => {
-    if (measurement_method === 'height') {
-      let options = this.state.measurementOptions;
-      options[0].disabled = disable;
-      this.setState({ measurementOptions: options });
-    }
-    if (measurement_method === 'weight') {
-      let options = this.state.measurementOptions;
-      options[1].disabled = disable;
-      this.setState({ measurementOptions: options });
-    }
-    if (measurement_method === 'ofc') {
-      let options = this.state.measurementOptions;
-      options[2].disabled = disable;
-      this.setState({ measurementOptions: options });
-    }
-    if (measurement_method === 'bmi') {
-      let options = this.state.measurementOptions;
-      options[3].disabled = disable;
-      this.setState({ measurementOptions: options });
-    }
+  handleChangeReference = ({ value }) => {
+    this.props.updateGlobalState('reference', value);
   };
 
   handleChangeDate(event) {
@@ -227,12 +177,11 @@ class MeasurementForm extends React.Component {
 
   handleObservationChange = (observation, data) => {
     // this is updating an observation value
-
     const observation_value = data.value;
     let { measurement, observation_value_error } = this.state;
     measurement.observation_value = observation_value;
     observation_value_error = this.validateObservationValue(
-      this.props.measurementMethod,
+      this.props.globalState.measurementMethod,
       observation_value
     );
     this.setState({
@@ -288,12 +237,6 @@ class MeasurementForm extends React.Component {
 
   formIsValid() {
     if (
-      this.state.reference === 'turner' &&
-      this.props.measurementMethod !== 'height'
-    ) {
-      return false;
-    }
-    if (
       this.state.birth_date_error === '' &&
       this.state.observation_date_error === '' &&
       this.state.observation_value_error === ''
@@ -302,47 +245,22 @@ class MeasurementForm extends React.Component {
     }
   }
 
-  handleSubmit(event) {
+  handleSubmit() {
     // passes the form data back to the parent (measurement segment)
-    const measurementArray = [];
     const formData = {
       birth_date: this.state.birth_date,
       observation_date: this.state.observation_date,
-      measurement_method: this.props.measurementMethod,
+      measurement_method: this.props.globalState.measurementMethod,
       observation_value: this.state.measurement.observation_value,
       gestation_weeks: this.state.gestation_weeks,
       gestation_days: this.state.gestation_days,
-      sex: this.state.sex,
+      sex: this.props.globalState.sex,
     };
-    measurementArray.push(formData);
-    this.props.measurementResult(measurementArray);
+    this.props.handleMeasurementResult(formData);
   }
 
-  handleChangeMeasurementMethod(data) {
-    let measurement = { ...this.state.measurement };
-    if (data !== this.props.measurementMethod) {
-      measurement.units = this.changeUnits(data);
-      this.props.setMeasurementMethod(data);
-      this.setState({
-        measurement: measurement,
-        observation_value_error: this.validateObservationValue(
-          data,
-          measurement.observation_value
-        ),
-      });
-      if (
-        this.state.reference === 'turner' &&
-        this.props.measurementMethod !== 'height'
-      ) {
-        this.disableMeasurement('weight', true);
-        this.disableMeasurement('bmi', true);
-        this.disableMeasurement('ofc', true);
-      } else {
-        this.disableMeasurement('weight', false);
-        this.disableMeasurement('bmi', false);
-        this.disableMeasurement('ofc', false);
-      }
-    }
+  handleChangeMeasurementMethod(newMeasurementMethod) {
+    this.props.updateGlobalState('measurementMethod', newMeasurementMethod);
   }
 
   handleChangeGestation(event, data) {
@@ -361,11 +279,8 @@ class MeasurementForm extends React.Component {
     }
   }
 
-  handleChangeSex(data) {
-    const success = this.props.handleChangeSex(data.value);
-    if (success) {
-      this.setState({ sex: data.value });
-    }
+  handleChangeSex(val) {
+    this.props.updateGlobalState('sex', val.value);
   }
 
   changeUnits(measurement_method) {
@@ -384,22 +299,18 @@ class MeasurementForm extends React.Component {
   }
 
   handleResetCurrentGraph() {
-    this.props.setCommands((old) => {
-      return { ...old, resetCurrent: true };
-    });
+    this.props.updateGlobalState('resetCurrent', true);
   }
 
   handleUndoLast() {
-    this.props.setCommands((old) => {
-      return { ...old, undoLast: true };
-    });
+    this.props.updateGlobalState('undoLast', true);
   }
 
   componentDidUpdate() {
     if (this.state.form_valid !== this.formIsValid()) {
       this.setState({ form_valid: this.formIsValid() });
     }
-    if (this.props.commands.clearMeasurement) {
+    if (this.props.globalState.clearMeasurement) {
       const newMeasurement = { ...this.state.measurement };
       newMeasurement.observation_value = '';
       this.setState({
@@ -407,19 +318,19 @@ class MeasurementForm extends React.Component {
         observation_value_error: 'empty',
         form_valid: false,
       });
-      this.props.setCommands((old) => {
-        return { ...old, clearMeasurement: false };
-      });
-    }
-    if (this.props.commands.changeSex) {
-      this.setState({ sex: this.state.sex === 'male' ? 'female' : 'male' });
-      this.props.setCommands((old) => {
-        return { ...old, changeSex: false };
-      });
+      this.props.updateGlobalState('clearMeasurement', false);
     }
   }
 
   render() {
+    const makeDynamic = (option) => {
+      const newDisabled = this.props.globalState.disabled[option.key];
+      return { ...option, disabled: newDisabled };
+    };
+    const dynamicMeasurementOptions = measurementOptions.map(makeDynamic);
+
+    const dynamicSexOptions = sexOptions.map(makeDynamic);
+
     return (
       <Container>
         <Segment textAlign={'center'}>
@@ -428,17 +339,10 @@ class MeasurementForm extends React.Component {
               <Header as="h5" textAlign="left">
                 Reference
               </Header>
-              {/* <Select
-                name="reference"
-                value={this.state.reference}
-                options={references}
-                onChange={this.handleChangeReference}
-                placeholder="Select reference"
-              /> */}
-              <ReferenceSelect 
-                reference={this.state.reference}
+              <ReferenceSelect
+                reference={this.props.globalState.reference}
                 handleChangeReference={this.handleChangeReference}
-                referenceOptions={this.state.referenceOptions}
+                referenceOptions={referenceOptions}
               />
             </Form.Field>
             <Form.Field required>
@@ -471,17 +375,12 @@ class MeasurementForm extends React.Component {
 
             <Form.Group>
               <Form.Field required>
-                {/* <Select
-                  value={this.props.measurementMethod}
-                  name="measurement_method"
-                  placeholder="Measurement Type"
-                  options={measurementOptions}
-                  onChange={this.handleChangeMeasurementMethod}
-                /> */}
-                <MeasurementMethodSelect 
-                  measurementMethod={this.props.measurementMethod}
-                  handleChangeMeasurementMethod={this.handleChangeMeasurementMethod}
-                  measurementOptions={this.state.measurementOptions}
+                <MeasurementMethodSelect
+                  measurementMethod={this.props.globalState.measurementMethod}
+                  handleChangeMeasurementMethod={
+                    this.handleChangeMeasurementMethod
+                  }
+                  measurementOptions={dynamicMeasurementOptions}
                 />
               </Form.Field>
               <Form.Field required width={8}>
@@ -517,51 +416,24 @@ class MeasurementForm extends React.Component {
               Sex
             </Header>
             <Form.Field required>
-              {/* <Select
-                name="sex"
-                placeholder="Sex"
-                value={this.state.sex}
-                onChange={this.handleChangeSex}
-                options={this.state.sexOptions}
-              /> */}
-              <SexSelect 
-                sex={this.state.sex}
+              <SexSelect
+                sex={this.props.globalState.sex}
                 handleSexChange={this.handleChangeSex}
-                sexOptions={this.state.sexOptions}
+                sexOptions={dynamicSexOptions}
               />
             </Form.Field>
-
             <Form.Group>
               <Form.Field>
                 <Header as="h5" textAlign="left">
                   Gestation
                 </Header>
-                <GestationSelect 
+                <GestationSelect
                   name="gestation_select"
                   weeks={this.state.gestation_weeks}
                   days={this.state.gestation_days}
                   handleChangeGestation={this.handleChangeGestation}
                 />
-                {/* <span>
-                  <Select
-                    compact
-                    name="gestation_weeks"
-                    value={this.state.gestation_weeks}
-                    options={gestationWeeksOptions}
-                    onChange={this.handleChangeGestation}
-                  />
-                  &nbsp;+
-                  <Select
-                    compact
-                    name="gestation_days"
-                    value={this.state.gestation_days}
-                    options={gestationDaysOptions}
-                    onChange={this.handleChangeGestation}
-                  />
-                  &nbsp; weeks
-                </span> */}
               </Form.Field>
-              {/* </Segment> */}
             </Form.Group>
 
             <Form.Field>
@@ -576,18 +448,20 @@ class MeasurementForm extends React.Component {
               />
             </Form.Field>
           </Form>
-          <Segment>
-            <Button
-              content="Reset Chart"
-              icon="power off"
-              onClick={this.handleResetCurrentGraph}
-            />
-            <Button
-              content="Remove Last"
-              icon="undo"
-              onClick={this.handleUndoLast}
-            />
-          </Segment>
+          {this.props.globalState.isDataPresent && (
+            <Segment>
+              <Button
+                content="Reset Chart"
+                icon="power off"
+                onClick={this.handleResetCurrentGraph}
+              />
+              <Button
+                content="Remove Last"
+                icon="undo"
+                onClick={this.handleUndoLast}
+              />
+            </Segment>
+          )}
         </Segment>
       </Container>
     );

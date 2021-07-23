@@ -15,8 +15,6 @@ import measurementOptions from '../selectData/measurementOptions';
 import intervalOptions from '../selectData/intervalOptions';
 
 const FictionalChildForm = (props) => {
-  const [measurementMethod, setMeasurementMethod] = useState('height');
-  const [sex, setSex] = useState('male');
   const [weeks, setWeeks] = useState(40);
   const [days, setDays] = useState(0);
   const [startingAge, setStartingAge] = useState(1.0);
@@ -28,53 +26,41 @@ const FictionalChildForm = (props) => {
   const [noiseFlag, setNoiseFlag] = useState(false);
   const [noise, setNoise] = useState(0.1);
   const [startSDS, setStartSDS] = useState(0);
-  const [reference, setReference] = useState('uk-who');
-  // const [formValid, setFormValid] = useState(false)
 
   const handleSubmit = ({ target }) => {
-    const formData = Object.fromEntries(new FormData(target));
-    const values = {
-      measurement_method: measurementMethod,
-      sex: sex,
-      start_chronological_age: formData.start_age,
-      end_age: formData.end_age,
-      gestation_weeks: weeks,
-      gestation_days: days,
-      measurement_interval_type: intervalType,
-      measurement_interval_number: formData.interval_value,
-      start_sds: 0.2,
-      noise: noiseFlag,
-      drift_range: drift,
-      drift: driftFlag,
-      noise_range: noise,
-      reference: reference,
-    };
-    props.fictionalFormDataSubmit(values);
-  };
-
-  const handleChangeReference = (val) => {
-    setReference(val.value);
-    if (val.value === 'turner') {
-      measurementOptions[1].disabled = true;
-      measurementOptions[2].disabled = true;
-      measurementOptions[3].disabled = true;
-      sexOptions[0].disabled = true;
-      setMeasurementMethod('height');
-      setSex('female');
-    } else {
-      measurementOptions[1].disabled = false;
-      measurementOptions[2].disabled = false;
-      measurementOptions[3].disabled = false;
-      sexOptions[0].disabled = false;
+    if (!props.globalState.isDataPresent) {
+      const formData = Object.fromEntries(new FormData(target));
+      const values = {
+        measurement_method: props.globalState.measurementMethod,
+        sex: props.globalState.sex,
+        start_chronological_age: formData.start_age,
+        end_age: formData.end_age,
+        gestation_weeks: weeks,
+        gestation_days: days,
+        measurement_interval_type: intervalType,
+        measurement_interval_number: formData.interval_value,
+        start_sds: startSDS,
+        noise: noiseFlag,
+        drift_range: drift,
+        drift: driftFlag,
+        noise_range: noise,
+        reference: props.globalState.reference,
+      };
+      console.log(values);
+      props.fictionalFormDataSubmit(values);
     }
   };
 
+  const handleChangeReference = (val) => {
+    props.updateGlobalState('reference', val.value);
+  };
+
   const handleChangeMeasurementMethod = (val) => {
-    setMeasurementMethod(val);
+    props.updateGlobalState('measurementMethod', val);
   };
 
   const handleSexChange = (val) => {
-    setSex(val.value);
+    props.updateGlobalState('sex', val.value);
   };
 
   const handleGestationChange = ({ name, value }) => {
@@ -92,22 +78,23 @@ const FictionalChildForm = (props) => {
     }
   };
 
-  const handleObservationChange = ({ name, val }) => {
+  const handleObservationChange = (e, { name, value }) => {
+    const newValue = value !== '' ? Number(value) : '';
     if (name === 'start_age') {
-      setStartingAge(val);
+      setStartingAge(newValue);
     }
     if (name === 'end_age') {
-      setEndingAge(val);
+      setEndingAge(newValue);
     }
     if (name === 'interval_value') {
-      setInterval(val);
+      setInterval(newValue);
     }
     if (name === 'startSDS') {
-      setStartSDS(val);
+      setStartSDS(newValue);
     }
   };
 
-  const handleChangeIntervalType = ({ value }) => {
+  const handleChangeIntervalType = (e, { value }) => {
     setIntervalType(value);
   };
 
@@ -127,27 +114,39 @@ const FictionalChildForm = (props) => {
     setNoiseFlag(checked);
   };
 
+  const handleResetCurrentGraph = () => {
+    props.updateGlobalState('resetCurrent', true);
+  };
+
+  const makeDynamic = (option) => {
+    const newDisabled = props.globalState.disabled[option.key];
+    return { ...option, disabled: newDisabled };
+  };
+  const dynamicMeasurementOptions = measurementOptions.map(makeDynamic);
+
+  const dynamicSexOptions = sexOptions.map(makeDynamic);
+
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Field>
         <ReferenceSelect
           handleChangeReference={handleChangeReference}
-          reference={reference}
+          reference={props.globalState.reference}
           referenceOptions={referenceOptions}
         />
       </Form.Field>
       <Form.Field>
         <MeasurementMethodSelect
           handleChangeMeasurementMethod={handleChangeMeasurementMethod}
-          measurementMethod={measurementMethod}
-          measurementOptions={measurementOptions}
+          measurementMethod={props.globalState.measurementMethod}
+          measurementOptions={dynamicMeasurementOptions}
         />
       </Form.Field>
       <Form.Field>
         <SexSelect
           handleSexChange={handleSexChange}
-          sex={sex}
-          sexOptions={sexOptions}
+          sex={props.globalState.sex}
+          sexOptions={dynamicSexOptions}
         />
       </Form.Field>
       <Form.Field>
@@ -206,12 +205,11 @@ const FictionalChildForm = (props) => {
           name="interval_value"
           placeholder="Interval amount"
           value={interval}
-          labelPosition="right"
           onChange={handleObservationChange}
-        ></Input>
+        />
       </Form.Field>
       <Header as="h5" textAlign={'left'}>
-        SDS
+        SDS (Standard Deviation Score)
       </Header>
       <Form.Field>
         <Form.Input
@@ -270,12 +268,22 @@ const FictionalChildForm = (props) => {
           content="Generate Growth Data"
           type="submit"
           fluid
-          // disabled={!formValid}
+          disabled={props.globalState.isDataPresent}
           color="pink"
           icon="line graph"
           labelPosition="right"
         />
       </Form.Field>
+      {props.globalState.isDataPresent && (
+        <Form.Field>
+          <Button
+            content="Reset Chart"
+            icon="power off"
+            onClick={handleResetCurrentGraph}
+            style={{ width: '100%' }}
+          />
+        </Form.Field>
+      )}
     </Form>
   );
 };
