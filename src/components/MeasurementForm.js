@@ -180,6 +180,7 @@ class MeasurementForm extends React.Component {
     const observation_value = data.value;
     let { measurement, observation_value_error } = this.state;
     measurement.observation_value = observation_value;
+    measurement.units = this.changeUnits(this.props.globalState.measurementMethod);
     observation_value_error = this.validateObservationValue(
       this.props.globalState.measurementMethod,
       observation_value
@@ -261,6 +262,7 @@ class MeasurementForm extends React.Component {
 
   handleChangeMeasurementMethod(newMeasurementMethod) {
     this.props.updateGlobalState('measurementMethod', newMeasurementMethod);
+    this.props.updateGlobalState('units', this.changeUnits(newMeasurementMethod));
   }
 
   handleChangeGestation(data) {
@@ -390,7 +392,7 @@ class MeasurementForm extends React.Component {
                   placeholder="Measurement"
                   value={this.state.measurement.observation_value}
                   label={{
-                    content: this.state.measurement.units.toString(),
+                    content: this.props.globalState.units.toString(),
                     basic: true,
                     color: 'blue',
                   }}

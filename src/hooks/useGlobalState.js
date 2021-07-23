@@ -7,6 +7,7 @@ const makeGlobalState = () => {
     modeActiveIndex: 0,
     reference: 'uk-who',
     measurementMethod: 'height',
+    units: "cm",
     measurementMethodActiveIndex: 0,
     sex: 'male',
     disabled: {
