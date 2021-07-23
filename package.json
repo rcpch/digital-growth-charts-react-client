@@ -24,7 +24,7 @@
     "react-scripts": "^4.0.3",
     "semantic-ui-react": "^0.88.2",
     "styled-components": "^5.2.3",
-    "xlsx": "^0.16.8"
+    "xlsx": "^0.17.0"
   },
   "scripts": {
     "start": "craco start",
