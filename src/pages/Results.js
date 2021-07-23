@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Container, Table, Grid, Popup, Icon, Header, Menu } from "semantic-ui-react";
-import { withRouter } from "react-router-dom";
 
 class Results extends Component {
     constructor(props){
@@ -40,7 +39,7 @@ class Results extends Component {
     }
 }
 
-export default withRouter(Results);
+export default Results;
 
 function Tables(props){
     return (

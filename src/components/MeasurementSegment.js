@@ -1,5 +1,5 @@
 // React
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 //themes
 import RCPCHTheme1 from '../components/chartThemes/rcpchTheme1';
@@ -10,315 +10,153 @@ import RCPCHThemeTraditionalBoy from '../components/chartThemes/RCPCHThemeTradit
 import RCPCHThemeTraditionalGirl from '../components/chartThemes/RCPCHThemeTraditionalGirl';
 
 // Semantic UI React
-import {
-  Grid,
-  Segment,
-  Message,
-  Flag,
-  Tab,
-  Dropdown,
-  Button,
-} from 'semantic-ui-react';
-import axios from 'axios';
+import { Grid, Segment, Tab, Dropdown, Button } from 'semantic-ui-react';
 
 import ChartData from '../api/Chart';
 import MeasurementForm from '../components/MeasurementForm';
 import deepCopy from '../functions/deepCopy';
-import { Acknowledgements, ResultsSegment, ErrorModal } from './SubComponents';
+import { ResultsSegment, ErrorModal } from './SubComponents';
 import '../index.css';
+import FictionalChildForm from './FictionalChildForm';
+import useRcpchApi from '../hooks/useRcpchApi';
+import useGlobalState from '../hooks/useGlobalState';
+
+const defaultTheme = RCPCHThemeMonochrome;
 
 function MeasurementSegment() {
-  const defaultTheme = RCPCHThemeMonochrome;
-
   const [chartStyle, setChartSyle] = useState(defaultTheme.chart);
   const [axisStyle, setAxisStyle] = useState(defaultTheme.axes);
   const [centileStyle, setCentileStyle] = useState(defaultTheme.centiles);
   const [measurementStyle, setMeasurementStyle] = useState(
     defaultTheme.measurements
   );
-
   const [theme, setTheme] = useState({
     value: 'tanner4',
     text: 'Monochrome',
   });
 
   const [flip, setFlip] = useState(false); // flag to determine if results or chart showing
-  const [disabled, setDisabled] = useState({
-    height: false,
-    weight: false,
-    bmi: false,
-    ofc: false,
-  });
-
-  const [measurementMethod, setMeasurementMethod] = useState('height');
-  const [reference, setReference] = useState('uk-who');
-  const [sex, setSex] = useState('male');
-  const [measurements, setMeasurements] = useState(InitialMeasurementState());
-  const [apiResult, setAPIResult] = useState(InitialMeasurementState());
-
   const [errorModal, setErrorModal] = useState(InitalErrorModalState());
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [commands, setCommands] = useState({
-    clearMeasurement: false,
-    resetCurrent: false,
-    undoLast: false,
-    changeSex: false,
-  });
+  const { globalState, makeGlobalStateUpdater } = useGlobalState();
 
-  let activeIndex;
+  const {
+    mode,
+    modeActiveIndex,
+    reference,
+    measurementMethod,
+    measurementMethodActiveIndex,
+    sex,
+    disabled,
+    errors,
+    resetCurrent,
+    undoLast,
+  } = globalState;
 
-  switch (measurementMethod) {
-    case 'weight':
-      activeIndex = 1;
-      break;
-    case 'bmi':
-      activeIndex = 2;
-      break;
-    case 'ofc':
-      activeIndex = 3;
-      break;
-    default:
-      //height
-      activeIndex = 0;
-  }
+  const {
+    fetchResult,
+    removeLastActiveItem,
+    clearBothActiveArrays,
+    clearApiErrors,
+    measurements,
+    results,
+    apiErrors,
+    isLoading,
+  } = useRcpchApi(measurementMethod, reference, mode);
 
-  const removeLast = useCallback(
-    (both = false) => {
-      const newMeasurements = deepCopy(
-        measurements[reference][measurementMethod]
-      );
-      newMeasurements.pop();
-      setMeasurements((old) => {
-        const mutable = deepCopy(old);
-        mutable[reference][measurementMethod] = newMeasurements;
-        return mutable;
-      });
-      if (both) {
-        const newApi = deepCopy(apiResult[reference][measurementMethod]);
-        newApi.pop();
-        setAPIResult((old) => {
-          const mutable = deepCopy(old);
-          mutable[reference][measurementMethod] = newApi;
-          return mutable;
-        });
-      }
-    },
-    [measurements, reference, measurementMethod, apiResult]
+  const updateGlobalState = useMemo(
+    () => makeGlobalStateUpdater(results),
+    [results, makeGlobalStateUpdater]
   );
 
-  if (commands.resetCurrent) {
-    const resetCurrent = (old) => {
-      const mutable = deepCopy(old);
-      mutable[reference][measurementMethod] = [];
-      return mutable;
-    };
+  useEffect(() => {
+    if (apiErrors.errors) {
+      setErrorModal({
+        visible: true,
+        title: 'Unable to plot',
+        body: apiErrors.message,
+        handleClose: () => {
+          clearApiErrors();
+          setErrorModal(InitalErrorModalState());
+        },
+      });
+    } else if (apiErrors.message === 'success') {
+      updateGlobalState('clearMeasurement', true);
+      clearApiErrors();
+    }
+    if (errors.errors) {
+      let body = 'Only height data is available for Turner Syndrome.';
+      if (errors.message === 'Unable to change sex') {
+        body =
+          'Each chart can only display measurements from one patient at a time. Please reset the chart before entering measurements from a new patient.';
+      }
+      setErrorModal({
+        visible: true,
+        title: errors.message,
+        body: body,
+        handleClose: () => setErrorModal(InitalErrorModalState()),
+      });
+      updateGlobalState('errors', { errors: false, message: '' });
+    }
+  }, [errors, apiErrors, clearApiErrors, updateGlobalState]);
+
+  useEffect(() => {
+    if (theme.value === 'trad') {
+      const selectedTheme =
+        sex === 'male' ? RCPCHThemeTraditionalBoy : RCPCHThemeTraditionalGirl;
+      setCentileStyle(selectedTheme.centiles);
+      setChartSyle(selectedTheme.chart);
+      setMeasurementStyle(selectedTheme.measurements);
+      setAxisStyle(selectedTheme.axes);
+    }
+  }, [sex, theme.value]);
+
+  useEffect(() => {
+    if (results[reference][measurementMethod].length > 0) {
+      updateGlobalState('isDataPresent', true);
+    } else {
+      updateGlobalState('isDataPresent', false);
+    }
+  }, [results, reference, measurementMethod, updateGlobalState]);
+
+  if (resetCurrent) {
     setErrorModal({
       visible: true,
       title: 'Are you sure you want to reset?',
       body: 'This will remove all measurements from the current chart.',
       handleCancel: () => setErrorModal(InitalErrorModalState()),
       handleClose: () => {
-        setMeasurements(resetCurrent);
-        setAPIResult(resetCurrent);
+        clearBothActiveArrays();
         setErrorModal(InitalErrorModalState());
       },
     });
-    setCommands((old) => {
-      return { ...old, resetCurrent: false };
-    });
+    updateGlobalState('resetCurrent', false);
   }
 
-  if (commands.undoLast) {
+  if (undoLast) {
     setErrorModal({
       visible: true,
       title: 'Are you sure you want to remove the last measurement?',
       body: 'This will remove the last measurement entered on the chart.',
       handleCancel: () => setErrorModal(InitalErrorModalState()),
       handleClose: () => {
-        removeLast(true);
+        removeLastActiveItem(true);
         setErrorModal(InitalErrorModalState());
       },
     });
-    setCommands((old) => {
-      return { ...old, undoLast: false };
-    });
+    updateGlobalState('undoLast', false);
   }
 
-  const customSetMeasurementMethod = (newMeasurementMethod) => {
-    if (measurements[reference][newMeasurementMethod].length > 0) {
-      const existingSex = measurements[reference][newMeasurementMethod][0].sex;
-      if (existingSex !== sex) {
-        changeSex(existingSex, true);
-        setCommands((old) => {
-          return { ...old, changeSex: true };
-        });
-      }
-    }
-    setMeasurementMethod(newMeasurementMethod);
-  };
-
   const handleTabChange = (e, { activeIndex }) => {
-    if (reference === 'turner' && activeIndex !== 0) {
-      setErrorModal({
-        visible: true,
-        title: 'Measurement unavailable',
-        body: "Only height data is available for Turner's Syndrome.",
-        handleClose: () => setErrorModal(InitalErrorModalState()),
-      });
-      return null;
-    }
-    let newMeasurementMethod = '';
-    switch (activeIndex) {
-      case 0:
-        newMeasurementMethod = 'height';
-        break;
-      case 1:
-        newMeasurementMethod = 'weight';
-        break;
-      case 2:
-        newMeasurementMethod = 'bmi';
-        break;
-      case 3:
-        newMeasurementMethod = 'ofc';
-        break;
-      default:
-        console.warn('Handle tab change did not pick up valid active index');
-    }
-    customSetMeasurementMethod(newMeasurementMethod);
+    updateGlobalState('measurementMethodActiveIndex', activeIndex);
   };
 
-  const changeReference = (newReference) => {
-    // call back from MeasurementForm
-    setReference(newReference);
-    if (newReference === 'turner') {
-      setMeasurementMethod('height');
-      setSex('female');
-      setDisabled({
-        height: false,
-        weight: true,
-        bmi: true,
-        ofc: true,
-      });
-      return { newSex: 'female' };
-    } else {
-      setDisabled({
-        height: false,
-        weight: false,
-        bmi: false,
-        ofc: false,
-      });
-      if (
-        apiResult[newReference][measurementMethod].length > 0 &&
-        apiResult[newReference][measurementMethod][0]?.birth_data.sex !== sex
-      ) {
-        setSex(apiResult[newReference][measurementMethod][0].birth_data.sex);
-        return {
-          newSex: apiResult[newReference][measurementMethod][0].birth_data.sex,
-        };
-      } else {
-        return { newSex: sex };
-      }
-    }
+  const handleModeChange = (e, { activeIndex }) => {
+    updateGlobalState('modeActiveIndex', activeIndex);
   };
 
-  const changeSex = (newSex, ignoreError = false) => {
-    // call back for MeasurementForm
-    const existingResults = [...measurements[reference][measurementMethod]];
-    if (existingResults.length > 0 && !ignoreError) {
-      for (const oldResult of existingResults) {
-        if (newSex !== oldResult.sex) {
-          setErrorModal({
-            visible: true,
-            title: 'Unable to change sex',
-            body: `Each chart can only display measurements from one patient at a time. Please reset the chart before entering measurements from a new patient.`,
-            handleClose: () => setErrorModal(InitalErrorModalState()),
-          });
-          return false;
-        }
-      }
-    }
-    if (theme.value === 'trad') {
-      const selectedTheme =
-        newSex === 'male'
-          ? RCPCHThemeTraditionalBoy
-          : RCPCHThemeTraditionalGirl;
-      setCentileStyle(selectedTheme.centiles);
-      setChartSyle(selectedTheme.chart);
-      setMeasurementStyle(selectedTheme.measurements);
-      setAxisStyle(selectedTheme.axes);
-    }
-    setSex(newSex);
-    return true;
-  };
-
-  const handleResults = (results) => {
-    // delegate function from MeasurementForm
-    // receives form data and stores in the correct measurement array
-    // checks for duplicates, mismatching dobs, sexes and gestations
-    const existingResults = deepCopy(
-      measurements[reference][measurementMethod]
-    );
-    let errorString = '';
-    if (existingResults.length > 0) {
-      const latestResult = results[0];
-      const newGestation =
-        latestResult.gestation_weeks * 7 + latestResult.gestation_days;
-      const errors = [];
-      for (const oldResult of existingResults) {
-        if (JSON.stringify(oldResult) === JSON.stringify(latestResult)) {
-          errorString = 'duplicate';
-          break;
-        }
-        const oldGestation =
-          oldResult.gestation_weeks * 7 + oldResult.gestation_days;
-        if (oldResult.sex !== latestResult.sex) {
-          errors.push('differing sexes');
-        }
-        if (oldResult.birth_date !== latestResult.birth_date) {
-          errors.push('differing date of births');
-        }
-        if (oldGestation !== newGestation) {
-          errors.push('differing gestations');
-        }
-        if (errors.length > 0) {
-          errorString = errors[0];
-          if (errors.length === 2) {
-            errorString = errors.join(' and ');
-          } else if (errors.length === 3) {
-            errorString = `${errors[0]}, ${errors[1]} and ${errors[2]}`;
-          }
-          break;
-        }
-      }
-    }
-    if (errorString) {
-      if (errorString === 'duplicate') {
-        setErrorModal({
-          visible: true,
-          title: 'Duplicate entries',
-          body: `Please check the last measurement entry as it appears to be identical to a measurement already entered.`,
-          handleClose: () => setErrorModal(InitalErrorModalState()),
-        });
-      } else {
-        setErrorModal({
-          visible: true,
-          title: 'Please check entries',
-          body: `Each chart can only display measurements from one patient at a time: ${errorString} were detected.`,
-          handleClose: () => setErrorModal(InitalErrorModalState()),
-        });
-      }
-      return false;
-    } else {
-      setMeasurements((old) => {
-        const mutable = deepCopy(old);
-        const newArray = mutable[reference][measurementMethod].concat(results);
-        mutable[reference][measurementMethod] = newArray;
-        return mutable;
-      });
-      setIsLoading(true);
-      return true;
-    }
+  const fictionalFormDataSubmit = (formData) => {
+    fetchResult(formData);
   };
 
   const handleChangeTheme = (event, { value }) => {
@@ -361,6 +199,70 @@ function MeasurementSegment() {
     setFlip(!flip);
   };
 
+  const handleResults = (latestResult) => {
+    // delegate function from MeasurementForm
+    // receives form data and stores in the correct measurement array
+    // checks for duplicates, mismatching dobs, sexes and gestations
+    if (!isLoading) {
+      const existingResults = deepCopy(
+        measurements[reference][measurementMethod]
+      );
+      let errorString = '';
+      if (existingResults.length > 0) {
+        const newGestation =
+          latestResult.gestation_weeks * 7 + latestResult.gestation_days;
+        const newErrors = [];
+        for (const oldResult of existingResults) {
+          if (JSON.stringify(oldResult) === JSON.stringify(latestResult)) {
+            errorString = 'duplicate';
+            break;
+          }
+          const oldGestation =
+            oldResult.gestation_weeks * 7 + oldResult.gestation_days;
+          if (oldResult.sex !== latestResult.sex) {
+            newErrors.push('differing sexes');
+          }
+          if (oldResult.birth_date !== latestResult.birth_date) {
+            newErrors.push('differing date of births');
+          }
+          if (oldGestation !== newGestation) {
+            newErrors.push('differing gestations');
+          }
+          if (newErrors.length > 0) {
+            errorString = newErrors[0];
+            if (newErrors.length === 2) {
+              errorString = newErrors.join(' and ');
+            } else if (newErrors.length === 3) {
+              errorString = `${newErrors[0]}, ${newErrors[1]} and ${newErrors[2]}`;
+            }
+            break;
+          }
+        }
+      }
+      if (errorString) {
+        if (errorString === 'duplicate') {
+          setErrorModal({
+            visible: true,
+            title: 'Duplicate entries',
+            body: `Please check the last measurement entry as it appears to be identical to a measurement already entered.`,
+            handleClose: () => setErrorModal(InitalErrorModalState()),
+          });
+        } else {
+          setErrorModal({
+            visible: true,
+            title: 'Please check entries',
+            body: `Each chart can only display measurements from one patient at a time: ${errorString} were detected.`,
+            handleClose: () => setErrorModal(InitalErrorModalState()),
+          });
+        }
+        return false;
+      } else {
+        fetchResult(latestResult);
+        return true;
+      }
+    }
+  };
+
   const panes = panesBlueprint.map((details) => {
     return {
       menuItem: details.menuItem,
@@ -371,7 +273,7 @@ function MeasurementSegment() {
             reference={reference}
             sex={sex}
             measurementMethod={details.measurementName}
-            measurementsArray={apiResult[reference][details.measurementName]}
+            measurementsArray={results[reference][details.measurementName]}
             chartStyle={chartStyle}
             axisStyle={axisStyle}
             gridlineStyle={defaultTheme.gridlines}
@@ -379,7 +281,6 @@ function MeasurementSegment() {
             measurementStyle={measurementStyle}
             isLoading={isLoading}
           />
-          <Acknowledgements />
         </Tab.Pane>
       ),
     };
@@ -389,10 +290,38 @@ function MeasurementSegment() {
     <Tab
       menu={{ attached: 'top' }}
       panes={panes}
-      activeIndex={activeIndex}
+      activeIndex={measurementMethodActiveIndex}
       onTabChange={handleTabChange}
     />
   );
+
+  const FormPanes = [
+    {
+      menuItem: 'Measurements',
+      render: () => (
+        <Tab.Pane attached={false}>
+          <MeasurementForm
+            handleMeasurementResult={handleResults}
+            globalState={globalState}
+            updateGlobalState={updateGlobalState}
+            className="measurement-form"
+          />
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: 'Demo Children',
+      render: () => (
+        <Tab.Pane>
+          <FictionalChildForm
+            fictionalFormDataSubmit={fictionalFormDataSubmit}
+            globalState={globalState}
+            updateGlobalState={updateGlobalState}
+          />
+        </Tab.Pane>
+      ),
+    },
+  ];
 
   const ThemeSelection = () => (
     // <Menu compact className="selectUpperMargin">
@@ -409,134 +338,25 @@ function MeasurementSegment() {
     // </Menu>
   );
 
-  useEffect(() => {
-    const fetchCentilesForMeasurement = async (singleMeasurement) => {
-      const url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/${reference}/calculation`;
-      const response = await axios({
-        url: url,
-        data: singleMeasurement,
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      return response.data;
-    };
-
-    let ignore = false;
-
-    if (isLoading) {
-      const relevantArray = measurements[reference][measurementMethod];
-      const latestMeasurement = deepCopy(
-        relevantArray[relevantArray.length - 1]
-      );
-      fetchCentilesForMeasurement(latestMeasurement)
-        .then((result) => {
-          if (!ignore) {
-            if (
-              result.measurement_calculated_values
-                .corrected_measurement_error ||
-              result.measurement_calculated_values
-                .chronological_measurement_error
-            ) {
-              const measurementError =
-                result.measurement_calculated_values
-                  .corrected_measurement_error ||
-                result.measurement_calculated_values
-                  .chronological_measurement_error;
-              setIsLoading(false);
-              removeLast();
-              setErrorModal({
-                visible: true,
-                title: 'Unable to plot',
-                body: `Measurement entered cannot be processed by the server. Reason given: ${measurementError}`,
-                handleClose: () => setErrorModal(InitalErrorModalState()),
-              });
-            } else {
-              setIsLoading(false);
-              setAPIResult((old) => {
-                const mutable = deepCopy(old);
-                const workingArray = deepCopy(
-                  mutable[reference][measurementMethod]
-                );
-                workingArray.push(result);
-                mutable[reference][measurementMethod] = workingArray;
-                return mutable;
-              });
-              setCommands((old) => {
-                return { ...old, clearMeasurement: true };
-              });
-            }
-          }
-        })
-        .catch((error) => {
-          setIsLoading(false);
-          const errorForUser = `There has been a problem fetching the result from the server. Error details: ${error.message} `;
-          removeLast();
-          setErrorModal({
-            visible: true,
-            title: 'Server error',
-            body: errorForUser,
-            handleClose: () => setErrorModal(InitalErrorModalState()),
-          });
-        });
-    }
-
-    return () => {
-      // this prevents data being added to state if unmounted
-      ignore = true;
-    };
-  }, [
-    isLoading,
-    measurementMethod,
-    reference,
-    apiResult,
-    measurements,
-    removeLast,
-  ]);
-
   return (
     <React.Fragment>
+      {/* <Container> */}
       <Grid padded>
         <Grid.Row>
           <Grid.Column width={6}>
-            <Grid.Row>
-              <Segment raised>
-                <MeasurementForm
-                  measurementResult={handleResults}
-                  handleChangeReference={changeReference}
-                  handleChangeSex={changeSex}
-                  measurementMethod={measurementMethod}
-                  setMeasurementMethod={customSetMeasurementMethod}
-                  commands={commands}
-                  setCommands={setCommands}
-                  className="measurement-form"
-                />
-              </Segment>
-            </Grid.Row>
-            <Grid.Row>
-              <Grid.Column width={5}>
-                <Segment raised>
-                  <Message>
-                    <Flag name="gb" />
-                    This calculator uses the UK-WHO references to calculate gold
-                    standard accurate child growth parameters. In the future we
-                    are planning to add other growth references such as CDC and
-                    WHO.
-                  </Message>
-
-                  <Message color="red">
-                    This site is under development. No responsibility is
-                    accepted for the accuracy of results produced by this tool.
-                  </Message>
-                </Segment>
-              </Grid.Column>
-            </Grid.Row>
+            <Segment textAlign={'center'}>
+              <Tab
+                panes={FormPanes}
+                menu={{ attached: false }}
+                onTabChange={handleModeChange}
+                activeIndex={modeActiveIndex}
+              />
+            </Segment>
           </Grid.Column>
           <Grid.Column width={10}>
-            <Segment raised>
+            <Segment>
               {flip ? (
-                <ResultsSegment apiResult={apiResult} reference={reference} />
+                <ResultsSegment apiResult={results} reference={reference} />
               ) : (
                 <TabPanes />
               )}
@@ -559,6 +379,7 @@ function MeasurementSegment() {
           </Grid.Column>
         </Grid.Row>
       </Grid>
+      {/* </Container> */}
       <ErrorModal
         title={errorModal.title}
         body={errorModal.body}
@@ -587,29 +408,6 @@ const themeOptions = [
   { key: 'tanner2', value: 'tanner2', text: 'Tanner 2' },
   { key: 'tanner3', value: 'tanner3', text: 'Tanner 3' },
 ];
-
-function InitialMeasurementState() {
-  return {
-    turner: {
-      height: [],
-      weight: [],
-      bmi: [],
-      ofc: [],
-    },
-    'trisomy-21': {
-      height: [],
-      weight: [],
-      bmi: [],
-      ofc: [],
-    },
-    'uk-who': {
-      height: [],
-      weight: [],
-      bmi: [],
-      ofc: [],
-    },
-  };
-}
 
 function InitalErrorModalState() {
   return {

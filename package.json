@@ -7,9 +7,9 @@
     "type": "git",
     "url": "https://github.com/rcpch/digital-growth-charts-react-client"
   },
+  "homepage": "http://rcpch.github.io/digital-growth-charts-react-client",
   "dependencies": {
     "@rcpch/digital-growth-charts-react-component-library": "4.0.13",
-    "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.21.1",
@@ -19,18 +19,17 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-dropzone": "^11.2.3",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
     "semantic-ui-react": "^0.88.2",
-    "styled-components": "^5.2.3",
-    "xlsx": "^0.16.8"
+    "styled-components": "^5.2.3"
   },
   "scripts": {
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "craco eject"
+    "eject": "craco eject",
+    "predeploy": "craco build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
