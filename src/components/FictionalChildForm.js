@@ -28,27 +28,25 @@ const FictionalChildForm = (props) => {
   const [startSDS, setStartSDS] = useState(0);
 
   const handleSubmit = ({ target }) => {
-    if (!props.globalState.isDataPresent) {
-      const formData = Object.fromEntries(new FormData(target));
-      const values = {
-        measurement_method: props.globalState.measurementMethod,
-        sex: props.globalState.sex,
-        start_chronological_age: formData.start_age,
-        end_age: formData.end_age,
-        gestation_weeks: weeks,
-        gestation_days: days,
-        measurement_interval_type: intervalType,
-        measurement_interval_number: formData.interval_value,
-        start_sds: startSDS,
-        noise: noiseFlag,
-        drift_range: drift,
-        drift: driftFlag,
-        noise_range: noise,
-        reference: props.globalState.reference,
-      };
-      console.log(values);
-      props.fictionalFormDataSubmit(values);
-    }
+    const formData = Object.fromEntries(new FormData(target));
+    const values = {
+      measurement_method: props.globalState.measurementMethod,
+      sex: props.globalState.sex,
+      start_chronological_age: formData.start_age,
+      end_age: formData.end_age,
+      gestation_weeks: weeks,
+      gestation_days: days,
+      measurement_interval_type: intervalType,
+      measurement_interval_number: formData.interval_value,
+      start_sds: startSDS,
+      noise: noiseFlag,
+      drift_range: drift,
+      drift: driftFlag,
+      noise_range: noise,
+      reference: props.globalState.reference,
+    };
+    console.log(values);
+    props.fictionalFormDataSubmit(values);
   };
 
   const handleChangeReference = (val) => {
@@ -166,7 +164,7 @@ const FictionalChildForm = (props) => {
           placeholder="Starting Decimal Age"
           value={startingAge}
           label={{
-            content: 'ys',
+            content: 'years',
             basic: true,
             color: 'blue',
           }}
@@ -181,7 +179,7 @@ const FictionalChildForm = (props) => {
           placeholder="Ending Decimal Age"
           value={endingAge}
           label={{
-            content: 'ys',
+            content: 'years',
             basic: true,
             color: 'blue',
           }}
@@ -268,7 +266,6 @@ const FictionalChildForm = (props) => {
           content="Generate Growth Data"
           type="submit"
           fluid
-          disabled={props.globalState.isDataPresent}
           color="pink"
           icon="line graph"
           labelPosition="right"

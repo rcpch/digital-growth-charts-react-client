@@ -8,7 +8,7 @@ import deepCopy from '../functions/deepCopy';
 // }
 
 const fetchFromApi = async (inputParameters, reference, mode) => {
-  const url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/${reference}/${mode}/`;
+  const url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/${reference}/${mode}`;
   const response = await axios({
     url: url,
     data: inputParameters,
