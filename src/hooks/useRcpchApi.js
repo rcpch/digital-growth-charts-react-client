@@ -47,7 +47,7 @@ const makeInitialState = () => {
       input: measurements,
       output: measurements,
     },
-    fictional_child_data: {
+    'fictional-child-data': {
       input: measurements,
       output: measurements,
     },
@@ -133,40 +133,35 @@ const useRcpchApi = (measurementMethod, reference, mode = 'calculation') => {
       fetchFromApi(latestInput, reference, mode)
         .then((result) => {
           if (!ignore) {
-            let measurementError = ""
-              setApiState((old) => {
-                const mutable = deepCopy(old);
-                if (mode === 'fictional_child_data') {
-                  console.log(result);
-                  // console.log(JSON.stringify(result));
-                  mutable[mode].output[reference][measurementMethod] = result;
-                } else {
-                  measurementError = result.measurement_calculated_values
-                .corrected_measurement_error ||
-              result.measurement_calculated_values
-                .chronological_measurement_error;
-                if(!measurementError){
-                    mutable[mode].output[reference][measurementMethod].push(
-                      result
-                    );
-                  } else {
-                    setApiState((old) => {
-                      const mutable = deepCopy(old);
-                      const { newInput } = removeLastFromArrays(old);
-                      mutable[mode].input[reference][measurementMethod] = newInput;
-                      mutable.isLoading = false;
-                      mutable.errors = {
-                        errors: true,
-                        message: `The server could not process the measurements. Details: ${measurementError}`,
-                      };
-                      return mutable;
-                    });
-                  } 
-                }
-                mutable.isLoading = false;
+            setApiState((old) => {
+              const mutable = deepCopy(old);
+              let measurementError = '';
+              if (mode === 'fictional-child-data') {
+                mutable[mode].output[reference][measurementMethod] = result;
                 mutable.errors = { errors: false, message: 'success' };
-                return mutable;
-              });
+              } else {
+                measurementError =
+                  result.measurement_calculated_values
+                    .corrected_measurement_error ||
+                  result.measurement_calculated_values
+                    .chronological_measurement_error;
+                if (!measurementError) {
+                  mutable[mode].output[reference][measurementMethod].push(
+                    result
+                  );
+                  mutable.errors = { errors: false, message: 'success' };
+                } else {
+                  const { newInput } = removeLastFromArrays(old);
+                  mutable[mode].input[reference][measurementMethod] = newInput;
+                  mutable.errors = {
+                    errors: true,
+                    message: `The server could not process the measurements. Details: ${measurementError}`,
+                  };
+                }
+              }
+              mutable.isLoading = false;
+              return mutable;
+            });
           }
         })
         .catch((error) => {
