@@ -263,7 +263,7 @@ class MeasurementForm extends React.Component {
     this.props.updateGlobalState('measurementMethod', newMeasurementMethod);
   }
 
-  handleChangeGestation(event, data) {
+  handleChangeGestation(data) {
     const { name, value } = data;
     if (name === 'gestation_weeks') {
       this.setState({ gestation_weeks: value });
@@ -431,7 +431,7 @@ class MeasurementForm extends React.Component {
                   name="gestation_select"
                   weeks={this.state.gestation_weeks}
                   days={this.state.gestation_days}
-                  handleChangeGestation={this.handleChangeGestation}
+                  handleGestationChange={this.handleChangeGestation}
                 />
               </Form.Field>
             </Form.Group>
