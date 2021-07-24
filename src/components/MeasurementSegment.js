@@ -157,6 +157,8 @@ function MeasurementSegment() {
   };
 
   const fictionalFormDataSubmit = (formData) => {
+    // convert percentage back to a decimal for the API
+    formData.noise_range = formData.noise_range / 100
     fetchResult(formData);
   };
 
@@ -325,7 +327,6 @@ function MeasurementSegment() {
   ];
 
   const ThemeSelection = () => (
-    // <Menu compact className="selectUpperMargin">
     <span>
       Theme{' '}
       <Dropdown
@@ -336,7 +337,6 @@ function MeasurementSegment() {
         text={theme.text}
       />
     </span>
-    // </Menu>
   );
 
   return (

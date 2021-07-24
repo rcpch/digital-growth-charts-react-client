@@ -24,7 +24,7 @@ const FictionalChildForm = (props) => {
   const [driftFlag, setDriftFlag] = useState(false);
   const [drift, setDrift] = useState(0.01);
   const [noiseFlag, setNoiseFlag] = useState(false);
-  const [noise, setNoise] = useState(0.1);
+  const [noise, setNoise] = useState(1.0); // note this is a percentage must be converted back to a decimal for the API
   const [startSDS, setStartSDS] = useState(0);
 
   const handleSubmit = ({ target }) => {
@@ -231,6 +231,7 @@ const FictionalChildForm = (props) => {
       {driftFlag && (
         <Form.Field width={14}>
           <Slider
+            isPercentage={false}
             min={-3}
             max={3}
             value={drift}
@@ -252,12 +253,13 @@ const FictionalChildForm = (props) => {
       {noiseFlag && (
         <Form.Field width={14}>
           <Slider
+            isPercentage={true}
             min={0}
-            max={2.0}
+            max={10}
             value={noise}
-            step={0.01}
+            step={0.1}
             onChange={handleNoiseChange}
-            label="SDS Error"
+            label="Percentage Error"
           />
         </Form.Field>
       )}
