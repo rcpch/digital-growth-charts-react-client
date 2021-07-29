@@ -29,25 +29,28 @@ const FictionalChildForm = (props) => {
   const [startSDS, setStartSDS] = useState('0');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = ({ target }) => {
-    const formData = Object.fromEntries(new FormData(target));
-    const values = {
-      measurement_method: props.globalState.measurementMethod,
-      sex: props.globalState.sex,
-      start_chronological_age: formData.start_age,
-      end_age: formData.end_age,
-      gestation_weeks: weeks,
-      gestation_days: days,
-      measurement_interval_type: intervalType,
-      measurement_interval_number: formData.interval_value,
-      start_sds: startSDS,
-      noise: noiseFlag,
-      drift_range: drift,
-      drift: driftFlag,
-      noise_range: noise,
-      reference: props.globalState.reference,
-    };
-    props.fictionalFormDataSubmit(values);
+  const handleBigButtonPress = ({ type }) => {
+    if (type === 'submit') {
+      const values = {
+        measurement_method: props.globalState.measurementMethod,
+        sex: props.globalState.sex,
+        start_chronological_age: startingAge,
+        end_age: endingAge,
+        gestation_weeks: weeks,
+        gestation_days: days,
+        measurement_interval_type: intervalType,
+        measurement_interval_number: interval,
+        start_sds: startSDS,
+        noise: noiseFlag,
+        drift_range: drift,
+        drift: driftFlag,
+        noise_range: noise,
+        reference: props.globalState.reference,
+      };
+      props.fictionalFormDataSubmit(values);
+    } else {
+      props.updateGlobalState('resetCurrent', true);
+    }
   };
 
   const handleChangeReference = (val) => {
@@ -112,10 +115,6 @@ const FictionalChildForm = (props) => {
     setNoiseFlag(checked);
   };
 
-  const handleResetCurrentGraph = () => {
-    props.updateGlobalState('resetCurrent', true);
-  };
-
   const makeDynamic = (option) => {
     const newDisabled = props.globalState.disabled[option.key];
     return { ...option, disabled: newDisabled };
@@ -151,7 +150,7 @@ const FictionalChildForm = (props) => {
   }, [startingAge, endingAge, interval, startSDS]);
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleBigButtonPress}>
       <Form.Field>
         <ReferenceSelect
           handleChangeReference={handleChangeReference}
@@ -305,8 +304,9 @@ const FictionalChildForm = (props) => {
           <Button
             content="Reset Chart"
             icon="power off"
-            onClick={handleResetCurrentGraph}
+            onClick={handleBigButtonPress}
             style={{ width: '100%' }}
+            type="reset"
           />
         </Form.Field>
       )}
