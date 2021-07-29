@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import deepCopy from '../functions/deepCopy';
+import { units } from '../functions/units';
 
 const makeGlobalState = () => {
   return {
@@ -7,7 +8,7 @@ const makeGlobalState = () => {
     modeActiveIndex: 0,
     reference: 'uk-who',
     measurementMethod: 'height',
-    units: "cm",
+    units: 'cm',
     measurementMethodActiveIndex: 0,
     sex: 'male',
     disabled: {
@@ -84,6 +85,7 @@ const useGlobalState = () => {
             break;
           case 'measurementMethod':
             mutable.measurementMethod = newValue;
+            mutable.units = units(newValue);
             for (
               let i = 0;
               i < measurementMethodActiveIndexLookup.length;
