@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Form, Input, Header, Checkbox, Button } from 'semantic-ui-react';
 
@@ -13,19 +13,21 @@ import referenceOptions from '../selectData/referenceOptions';
 import sexOptions from '../selectData/sexOptions';
 import measurementOptions from '../selectData/measurementOptions';
 import intervalOptions from '../selectData/intervalOptions';
+import ErrorText from './subcomponents/ErrorText';
 
 const FictionalChildForm = (props) => {
   const [weeks, setWeeks] = useState(40);
   const [days, setDays] = useState(0);
-  const [startingAge, setStartingAge] = useState(1.0);
-  const [endingAge, setEndingAge] = useState(20.0);
-  const [intervalType, setIntervalType] = useState('days');
-  const [interval, setInterval] = useState(30);
+  const [startingAge, setStartingAge] = useState('1');
+  const [endingAge, setEndingAge] = useState('20');
+  const [intervalType, setIntervalType] = useState('years');
+  const [interval, setInterval] = useState('1');
   const [driftFlag, setDriftFlag] = useState(false);
   const [drift, setDrift] = useState(0.01);
   const [noiseFlag, setNoiseFlag] = useState(false);
   const [noise, setNoise] = useState(1.0); // note this is a percentage must be converted back to a decimal for the API
-  const [startSDS, setStartSDS] = useState(0);
+  const [startSDS, setStartSDS] = useState('0');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = ({ target }) => {
     const formData = Object.fromEntries(new FormData(target));
@@ -45,7 +47,6 @@ const FictionalChildForm = (props) => {
       noise_range: noise,
       reference: props.globalState.reference,
     };
-    console.log(values);
     props.fictionalFormDataSubmit(values);
   };
 
@@ -77,18 +78,17 @@ const FictionalChildForm = (props) => {
   };
 
   const handleObservationChange = (e, { name, value }) => {
-    const newValue = value !== '' ? Number(value) : '';
     if (name === 'start_age') {
-      setStartingAge(newValue);
+      setStartingAge(value);
     }
     if (name === 'end_age') {
-      setEndingAge(newValue);
+      setEndingAge(value);
     }
     if (name === 'interval_value') {
-      setInterval(newValue);
+      setInterval(value);
     }
     if (name === 'startSDS') {
-      setStartSDS(newValue);
+      setStartSDS(value);
     }
   };
 
@@ -120,9 +120,35 @@ const FictionalChildForm = (props) => {
     const newDisabled = props.globalState.disabled[option.key];
     return { ...option, disabled: newDisabled };
   };
+
   const dynamicMeasurementOptions = measurementOptions.map(makeDynamic);
 
   const dynamicSexOptions = sexOptions.map(makeDynamic);
+
+  useEffect(() => {
+    switch (true) {
+      case Number(startingAge) < 0:
+        setErrorMessage('Starting age must be above 0.');
+        break;
+      case Number(endingAge) > 20:
+        setErrorMessage('Ending age must be under 20.');
+        break;
+      case Number.isNaN(Number(startingAge)):
+      case Number.isNaN(Number(endingAge)):
+      case Number.isNaN(Number(interval)):
+      case Number.isNaN(Number(startSDS)):
+        setErrorMessage('Please check that all entries have valid numbers.');
+        break;
+      case startingAge === '':
+      case endingAge === '':
+      case interval === '':
+      case startSDS === '':
+        setErrorMessage('Please check that all entries are filled in.');
+        break;
+      default:
+        setErrorMessage('');
+    }
+  }, [startingAge, endingAge, interval, startSDS]);
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -220,7 +246,7 @@ const FictionalChildForm = (props) => {
           onChange={handleObservationChange}
         ></Form.Input>
       </Form.Field>
-
+      <ErrorText errorText={errorMessage} />
       <Form.Field width={14} style={{ textAlign: 'left' }}>
         <Checkbox
           toggle
@@ -271,6 +297,7 @@ const FictionalChildForm = (props) => {
           color="pink"
           icon="line graph"
           labelPosition="right"
+          disabled={errorMessage !== ''}
         />
       </Form.Field>
       {props.globalState.isDataPresent && (
