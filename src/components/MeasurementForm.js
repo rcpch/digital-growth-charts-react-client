@@ -7,7 +7,6 @@ import {
   Input,
   Button,
   Header,
-  Message,
 } from 'semantic-ui-react';
 import GestationSelect from './subcomponents/GestationSelect';
 import MeasurementMethodSelect from './subcomponents/MeasurementMethodSelect';
@@ -16,88 +15,12 @@ import SexSelect from './subcomponents/SexChoice';
 import measurementOptions from '../selectData/measurementOptions';
 import sexOptions from '../selectData/sexOptions';
 import referenceOptions from '../selectData/referenceOptions';
+import ErrorText from './subcomponents/ErrorText';
+import { formatDate, parseDate } from '../functions/dateHelpers';
 
 const ROBERT_WADLOW = 272; // interesting fact - Robert Wadlow (22/2/1918 – 15/7/1940) was the world's tallest man
 const JON_BROWER_MINNOCH = 635; // interesting fact -  Jon Brower Minnoch (Born USA) was the world's heaviest man
 const KHALID_BIN_MOHSEN_SHAARI = 204; // Khalid bin Mohsen Shaari (2/8/1991) from Saudi Arabia had the highest recorded BMI
-
-const formatDate = (inputDate) => {
-  let date;
-  let month;
-  let day;
-  let year;
-  try {
-    inputDate.getTime();
-    date = new Date(inputDate);
-    month = '' + (date.getMonth() + 1);
-    day = '' + date.getDate();
-    year = date.getFullYear();
-    if (month.length < 2) {
-      month = '0' + month;
-    }
-    if (day.length < 2) {
-      day = '0' + day;
-    }
-
-    return [year, month, day].join('-');
-  } catch (error) {
-    throw new Error('Input date for formatDate not recognised');
-  }
-};
-
-const parseDate = (inputDate) => {
-  const isDaysInMonthValid = (parsedArray) => {
-    const [jsYear, jsMonth, jsDay] = parsedArray;
-    if (jsMonth === 1 && jsDay === 29) {
-      if (jsYear % 4 === 0) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      const daysInMonthLookup = [
-        31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31,
-      ];
-      const validMaxDaysInMonth = daysInMonthLookup[jsMonth];
-      if (validMaxDaysInMonth !== undefined && jsDay <= validMaxDaysInMonth) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  };
-  try {
-    const dateArray = inputDate.split('-');
-    const workingArray = dateArray.map((element, index) => {
-      if (element !== '') {
-        const madeNumber = Number(element);
-        if (Number.isNaN(madeNumber)) {
-          throw new Error();
-        } else {
-          return index === 1 ? madeNumber - 1 : madeNumber;
-        }
-      } else {
-        throw new Error();
-      }
-    });
-    if (
-      workingArray.length !== 3 ||
-      workingArray[1] < 0 ||
-      workingArray[1] > 11 ||
-      workingArray[2] < 1 ||
-      workingArray[2] > 31
-    ) {
-      throw new Error();
-    }
-    if (isDaysInMonthValid(workingArray)) {
-      return new Date(...workingArray);
-    } else {
-      throw new Error();
-    }
-  } catch (error) {
-    return null;
-  }
-};
 
 class MeasurementForm extends React.Component {
   constructor(props) {
@@ -107,7 +30,6 @@ class MeasurementForm extends React.Component {
       observation_date: formatDate(new Date()),
       measurement: {
         observation_value: '',
-        units: 'cm',
       },
       gestation_weeks: 40,
       gestation_days: 0,
@@ -180,7 +102,6 @@ class MeasurementForm extends React.Component {
     const observation_value = data.value;
     let { measurement, observation_value_error } = this.state;
     measurement.observation_value = observation_value;
-    measurement.units = this.changeUnits(this.props.globalState.measurementMethod);
     observation_value_error = this.validateObservationValue(
       this.props.globalState.measurementMethod,
       observation_value
@@ -243,6 +164,8 @@ class MeasurementForm extends React.Component {
       this.state.observation_value_error === ''
     ) {
       return true;
+    } else {
+      return false;
     }
   }
 
@@ -262,7 +185,6 @@ class MeasurementForm extends React.Component {
 
   handleChangeMeasurementMethod(newMeasurementMethod) {
     this.props.updateGlobalState('measurementMethod', newMeasurementMethod);
-    this.props.updateGlobalState('units', this.changeUnits(newMeasurementMethod));
   }
 
   handleChangeGestation(data) {
@@ -283,21 +205,6 @@ class MeasurementForm extends React.Component {
 
   handleChangeSex(val) {
     this.props.updateGlobalState('sex', val.value);
-  }
-
-  changeUnits(measurement_method) {
-    if (measurement_method === 'height') {
-      return 'cm';
-    }
-    if (measurement_method === 'weight') {
-      return 'kg';
-    }
-    if (measurement_method === 'bmi') {
-      return 'kg/m²';
-    }
-    if (measurement_method === 'ofc') {
-      return 'cm';
-    }
   }
 
   handleResetCurrentGraph() {
@@ -370,7 +277,6 @@ class MeasurementForm extends React.Component {
                 onChange={this.handleChangeDate}
               />
             </Form.Field>
-            {/* <Segment> */}
             <Header as="h5" textAlign="left">
               Measurements
             </Header>
@@ -401,19 +307,12 @@ class MeasurementForm extends React.Component {
                 />
               </Form.Field>
             </Form.Group>
-            {this.state.observation_value_error &&
-              this.state.observation_value_error !== 'empty' && (
-                <Message color="red">
-                  {this.state.observation_value_error}
-                </Message>
-              )}
-            {this.state.observation_date_error ? (
-              <Message color="red">{this.state.observation_date_error}</Message>
-            ) : null}
-            {this.state.birth_date_error ? (
-              <Message color="red">{this.state.birth_date_error}</Message>
-            ) : null}
-            {/* </Segment> */}
+            <ErrorText
+              showError={this.state.observation_value_error !== 'empty'}
+              errorText={this.state.observation_value_error}
+            />
+            <ErrorText errorText={this.state.observation_date_error} />
+            <ErrorText errorText={this.state.birth_date_error} />
             <Header as="h5" textAlign="left">
               Sex
             </Header>

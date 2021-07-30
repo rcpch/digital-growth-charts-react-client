@@ -3,20 +3,19 @@ import axios from 'axios';
 
 import deepCopy from '../functions/deepCopy';
 
-// if (!process.env.REACT_APP_API_KEY) {
-//   console.error('No API key found in environment variable');
-// }
-
 const fetchFromApi = async (inputParameters, reference, mode) => {
   const url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/${reference}/${mode}`;
+  const headers = process.env.REACT_APP_API_KEY
+    ? {
+        'Content-Type': 'application/json',
+        'Subscription-Key': process.env.REACT_APP_API_KEY,
+      }
+    : { 'Content-Type': 'application/json' };
   const response = await axios({
     url: url,
     data: inputParameters,
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      // 'Subscription-Key': process.env.REACT_APP_API_KEY,
-    },
+    headers,
   });
   return response.data;
 };
@@ -136,29 +135,39 @@ const useRcpchApi = (measurementMethod, reference, mode = 'calculation') => {
             setApiState((old) => {
               const mutable = deepCopy(old);
               let measurementError = '';
+              let resultAsArray = null;
               if (mode === 'fictional-child-data') {
-                mutable[mode].output[reference][measurementMethod] = result;
-                mutable.errors = { errors: false, message: 'success' };
+                resultAsArray = result;
               } else {
+                resultAsArray = mutable[mode].output[reference][
+                  measurementMethod
+                ].concat([result]);
+              }
+              for (const singleResult of resultAsArray) {
                 measurementError =
-                  result.measurement_calculated_values
+                  singleResult.measurement_calculated_values
                     .corrected_measurement_error ||
-                  result.measurement_calculated_values
+                  singleResult.measurement_calculated_values
                     .chronological_measurement_error;
-                if (!measurementError) {
-                  mutable[mode].output[reference][measurementMethod].push(
-                    result
-                  );
-                  mutable.errors = { errors: false, message: 'success' };
-                } else {
-                  const { newInput } = removeLastFromArrays(old);
-                  mutable[mode].input[reference][measurementMethod] = newInput;
+                if (measurementError) {
+                  if (mode === 'fictional-child-data') {
+                    mutable[mode].input[reference][measurementMethod] = [];
+                  } else {
+                    const { newInput } = removeLastFromArrays(old);
+                    mutable[mode].input[reference][measurementMethod] =
+                      newInput;
+                  }
                   mutable.errors = {
                     errors: true,
                     message: `The server could not process the measurements. Details: ${measurementError}`,
                   };
+                  mutable.isLoading = false;
+                  return mutable;
                 }
               }
+              mutable[mode].output[reference][measurementMethod] =
+                resultAsArray;
+              mutable.errors = { errors: false, message: 'success' };
               mutable.isLoading = false;
               return mutable;
             });
