@@ -38,7 +38,7 @@ jobs:
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/remove-hero'
+    if: github.ref == 'refs/heads/live'
     
     steps:
     - name: Download artifact
