@@ -1,8 +1,9 @@
 <p align="center">
-  <img width="200" src="https://github.com/rcpch/digital-growth-charts-server/raw/alpha/static/rcpch-logo.png">
+  <img width="200" src="https://github.com/rcpch/digital-growth-charts-react-client/raw/live/public/rcpch_logo.png"><br/>
+  <img width="150" src="https://github.com/rcpch/digital-growth-charts-react-client/raw/live/public/htn-awards-winner-2020-logo.jpg">
 </p>
 
-<img width="200" src="public/htn-awards-winner-202-logo.jpg">
+
 
 # RCPCH Growth Charts - React Demo Client
 
