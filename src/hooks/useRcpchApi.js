@@ -144,11 +144,14 @@ const useRcpchApi = (measurementMethod, reference, mode = 'calculation') => {
                 ].concat([result]);
               }
               for (const singleResult of resultAsArray) {
-                measurementError =
-                  singleResult.measurement_calculated_values
-                    .corrected_measurement_error ||
-                  singleResult.measurement_calculated_values
-                    .chronological_measurement_error;
+                if (resultAsArray.length < 2){
+                  // only register errors for individual measurements
+                  measurementError =
+                    singleResult.measurement_calculated_values
+                      .corrected_measurement_error ||
+                    singleResult.measurement_calculated_values
+                      .chronological_measurement_error;
+                }
                 if (measurementError) {
                   if (mode === 'fictional-child-data') {
                     mutable[mode].input[reference][measurementMethod] = [];
