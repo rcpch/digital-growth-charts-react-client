@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/digital-growth-charts-react-client/static/css/main.c856c4ca.chunk.css",
-    "main.js": "/digital-growth-charts-react-client/static/js/main.24173ed3.chunk.js",
-    "main.js.map": "/digital-growth-charts-react-client/static/js/main.24173ed3.chunk.js.map",
+    "main.js": "/digital-growth-charts-react-client/static/js/main.15317b77.chunk.js",
+    "main.js.map": "/digital-growth-charts-react-client/static/js/main.15317b77.chunk.js.map",
     "runtime-main.js": "/digital-growth-charts-react-client/static/js/runtime-main.af95c5bd.js",
     "runtime-main.js.map": "/digital-growth-charts-react-client/static/js/runtime-main.af95c5bd.js.map",
     "static/css/2.56471724.chunk.css": "/digital-growth-charts-react-client/static/css/2.56471724.chunk.css",
@@ -19,6 +19,6 @@
     "static/css/2.56471724.chunk.css",
     "static/js/2.1a3f2fa6.chunk.js",
     "static/css/main.c856c4ca.chunk.css",
-    "static/js/main.24173ed3.chunk.js"
+    "static/js/main.15317b77.chunk.js"
   ]
 }
