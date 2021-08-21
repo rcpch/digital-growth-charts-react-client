@@ -17,6 +17,7 @@ import measurementOptions from '../selectData/measurementOptions';
 import sexOptions from '../selectData/sexOptions';
 import referenceOptions from '../selectData/referenceOptions';
 import ErrorText from './subcomponents/ErrorText';
+import BoneAgeTypeSelect from './subcomponents/BoneAge';
 import { formatDate, parseDate } from '../functions/dateHelpers';
 
 const ROBERT_WADLOW = 272; // interesting fact - Robert Wadlow (22/2/1918 – 15/7/1940) was the world's tallest man
@@ -39,7 +40,11 @@ class MeasurementForm extends React.Component {
       observation_value_error: 'empty',
       form_valid: false,
       measurementResult: [],
-      boneAge: null,
+      boneAge: '',
+      boneAgeType: 'greulich-pyle',
+      boneAgeSDS: '',
+      boneAgeCentile: '',
+      boneAgeText: '',
       events:[""],
       showBoneAge: false,
       showEvents: false
@@ -57,11 +62,40 @@ class MeasurementForm extends React.Component {
     this.handleUndoLast = this.handleUndoLast.bind(this);
     this.handleShowBoneAge = this.handleShowBoneAge.bind(this);
     this.handleShowEvents = this.handleShowEvents.bind(this);
+    this.handleBoneAgeChange = this.handleBoneAgeChange.bind(this);
+    this.handleBoneAgeTypeChange = this.handleBoneAgeTypeChange.bind(this);
+    this.handleBoneAgeSDSChange = this.handleBoneAgeSDSChange.bind(this);
+    this.handleBoneAgeCentileChange = this.handleBoneAgeCentileChange.bind(this);
+    this.handleBoneAgeTextChange = this.handleBoneAgeTextChange.bind(this);
   }
 
   handleChangeReference = ({ value }) => { 
     this.props.updateGlobalState('reference', value);
   };
+
+  handleBoneAgeTypeChange = ({ value }) => {
+    this.setState({boneAgeType: value})
+  }
+
+  handleBoneAgeChange = (event, data) => {
+    const boneAge = data.value;
+    this.setState({boneAge: boneAge})
+  }
+
+  handleBoneAgeSDSChange = (event, data) => {
+    const boneAgeSDS = data.value;
+    this.setState({boneAgeSDS: boneAgeSDS})
+  }
+  
+  handleBoneAgeCentileChange = (event, data) => {
+    const boneAgeCentile = data.value;
+    this.setState({boneAgeCentile: boneAgeCentile})
+  }
+  
+  handleBoneAgeTextChange = (event, data) => {
+    const boneAgeText = data.value;
+    this.setState({boneAgeText: boneAgeText})
+  }
 
   handleChangeDate(event) {
     this.setState({ [event.target.name]: event.target.value });
@@ -224,14 +258,24 @@ class MeasurementForm extends React.Component {
 
   handleShowEvents(e) {
     e.preventDefault();
-    const isPressed = this.state.showEvents
-    this.setState({showEvents: !isPressed})
+    const isPressed = this.state.showEvents;
+    this.setState({
+      showEvents: !isPressed,
+      events: ['']
+    });
   }
   
   handleShowBoneAge(e) {
     e.preventDefault();
-    const isPressed = this.state.showBoneAge
-    this.setState({showBoneAge: !isPressed})
+    const isPressed = this.state.showBoneAge;
+    this.setState({
+      showBoneAge: !isPressed,
+      boneAge: '',
+      boneAgeCentile: '',
+      boneAgeSDS: '',
+      boneAgeType: '',
+      boneAgeText: ''
+    });
   }
 
   componentDidUpdate() {
@@ -245,6 +289,14 @@ class MeasurementForm extends React.Component {
         measurement: newMeasurement,
         observation_value_error: 'empty',
         form_valid: false,
+        showBoneAge: false,
+        showEvents: false,
+        events: [''],
+        boneAge: '',
+        boneAgeCentile: '',
+        boneAgeSDS: '',
+        boneAgeType: '',
+        boneAgeText: ''
       });
       this.props.updateGlobalState('clearMeasurement', false);
     }
@@ -369,64 +421,69 @@ class MeasurementForm extends React.Component {
             </Form.Group>
             
             { this.state.showBoneAge &&
-              <Form.Group>
-                <Form.Field style={{textAlign:'left'}}>
-                  <Input
-                    type="decimal"
-                    name="boneAge"
-                    placeholder="e.g. 3.5"
-                    labelPosition="right"
-                    label="years"
-                  />
-                </Form.Field>
-              </Form.Group>
+              <Segment>
+                <BoneAgeTypeSelect 
+                  boneAge={this.state.boneAge}
+                  handleBoneAgeChange={this.handleBoneAgeChange}
+                  boneAgeType={this.state.boneAgeType}
+                  handleChangeBoneAgeType={this.handleBoneAgeTypeChange}
+                  boneAgeCentile={this.state.boneAgeCentile}
+                  handleBoneAgeCentileChange = {this.handleBoneAgeCentileChange}
+                  boneAgeSDS={this.state.boneAgeSDS}
+                  handleBoneAgeSDSChange={this.handleBoneAgeSDSChange}
+                  boneAgeText = {this.state.boneAgeText}
+                  handleBoneAgeTextChange = {this.handleBoneAgeTextChange}
+                />
+              </Segment>
             }
            
             {this.state.showEvents && (
-              this.state.events.map((anEvent, index) => {
-                return (
-                  <Form.Group key={index}>
-                    <Form.Field style={{textAlign:'left'}} width="14">
-                        <Input
-                          name="event"
-                          placeholder="e.g. diagnosis"
-                          value={anEvent}
-                          onChange={(data)=> { 
-                            let thisEvent = this.state.events;
-                            thisEvent[index]=data.target.value;
-                            this.setState({events: thisEvent})
-                          }}
-                        />
-                    </Form.Field>
-                    <Button icon onClick={(e)=>{
-                      e.preventDefault();
-                      if (this.state.events[index]===''){
-                        return
-                      }
-                      let theEvents = this.state.events;
-                      theEvents.push('');
-                      this.setState({events: theEvents})
-                    }}>
-                          <Icon name="plus circle"/>
-                    </Button>
-                    {
-                      index === this.state.events.length-1 && 
-                        <Button icon onClick={(e) => {
-                          e.preventDefault();
-                          if(index===0){
-                            this.setState({events:['']});
-                            return
-                          }
-                          let setEvents = this.state.events;
-                          setEvents.splice(index, 1);
-                          this.setState({events: setEvents});
-                        }}>
-                        <Icon name="minus circle"/>
+              <Segment>
+                {this.state.events.map((anEvent, index) => {
+                  return (
+                    <Form.Group key={index}>
+                      <Form.Field style={{textAlign:'left'}} width="14">
+                          <Input
+                            name="event"
+                            placeholder="e.g. diagnosis"
+                            value={anEvent}
+                            onChange={(data)=> { 
+                              let thisEvent = this.state.events;
+                              thisEvent[index]=data.target.value;
+                              this.setState({events: thisEvent})
+                            }}
+                          />
+                      </Form.Field>
+                      <Button icon onClick={(e)=>{
+                        e.preventDefault();
+                        if (this.state.events[index]===''){
+                          return
+                        }
+                        let theEvents = this.state.events;
+                        theEvents.push('');
+                        this.setState({events: theEvents})
+                      }}>
+                            <Icon name="plus circle"/>
                       </Button>
-                    }
-                  </Form.Group>
-                )
-              })
+                      {
+                        index === this.state.events.length-1 && 
+                          <Button icon onClick={(e) => {
+                            e.preventDefault();
+                            if(index===0){
+                              this.setState({events:['']});
+                              return
+                            }
+                            let setEvents = this.state.events;
+                            setEvents.splice(index, 1);
+                            this.setState({events: setEvents});
+                          }}>
+                          <Icon name="minus circle"/>
+                        </Button>
+                      }
+                    </Form.Group>
+                  )
+                })}
+              </Segment>
             )}
           
 
