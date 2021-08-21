@@ -7,6 +7,7 @@ import {
   Input,
   Button,
   Header,
+  Icon,
 } from 'semantic-ui-react';
 import GestationSelect from './subcomponents/GestationSelect';
 import MeasurementMethodSelect from './subcomponents/MeasurementMethodSelect';
@@ -38,6 +39,10 @@ class MeasurementForm extends React.Component {
       observation_value_error: 'empty',
       form_valid: false,
       measurementResult: [],
+      boneAge: null,
+      events:[""],
+      showBoneAge: false,
+      showEvents: false
     };
 
     this.handleChangeDate = this.handleChangeDate.bind(this);
@@ -50,9 +55,11 @@ class MeasurementForm extends React.Component {
     this.handleChangeReference = this.handleChangeReference.bind(this);
     this.handleResetCurrentGraph = this.handleResetCurrentGraph.bind(this);
     this.handleUndoLast = this.handleUndoLast.bind(this);
+    this.handleShowBoneAge = this.handleShowBoneAge.bind(this);
+    this.handleShowEvents = this.handleShowEvents.bind(this);
   }
 
-  handleChangeReference = ({ value }) => {
+  handleChangeReference = ({ value }) => { 
     this.props.updateGlobalState('reference', value);
   };
 
@@ -215,6 +222,18 @@ class MeasurementForm extends React.Component {
     this.props.updateGlobalState('undoLast', true);
   }
 
+  handleShowEvents(e) {
+    e.preventDefault();
+    const isPressed = this.state.showEvents
+    this.setState({showEvents: !isPressed})
+  }
+  
+  handleShowBoneAge(e) {
+    e.preventDefault();
+    const isPressed = this.state.showBoneAge
+    this.setState({showBoneAge: !isPressed})
+  }
+
   componentDidUpdate() {
     if (this.state.form_valid !== this.formIsValid()) {
       this.setState({ form_valid: this.formIsValid() });
@@ -277,6 +296,31 @@ class MeasurementForm extends React.Component {
                 onChange={this.handleChangeDate}
               />
             </Form.Field>
+            <ErrorText errorText={this.state.observation_date_error} />
+            <ErrorText errorText={this.state.birth_date_error} />
+
+            <Form.Group style={{textAlign: 'left'}}>
+              <Form.Field required style={{marginRight: 20}}>
+                <label>Sex</label>
+                <SexSelect
+                  sex={this.props.globalState.sex}
+                  handleSexChange={this.handleChangeSex}
+                  sexOptions={dynamicSexOptions}
+                />
+              </Form.Field>
+              <Form.Group>
+                <Form.Field >
+                  <label>Gestation</label>
+                  <GestationSelect
+                    name="gestation_select"
+                    weeks={this.state.gestation_weeks}
+                    days={this.state.gestation_days}
+                    handleGestationChange={this.handleChangeGestation}
+                  />
+                </Form.Field>
+              </Form.Group>
+            </Form.Group>
+            
             <Header as="h5" textAlign="left">
               Measurements
             </Header>
@@ -311,31 +355,80 @@ class MeasurementForm extends React.Component {
               showError={this.state.observation_value_error !== 'empty'}
               errorText={this.state.observation_value_error}
             />
-            <ErrorText errorText={this.state.observation_date_error} />
-            <ErrorText errorText={this.state.birth_date_error} />
-            <Header as="h5" textAlign="left">
-              Sex
-            </Header>
-            <Form.Field required>
-              <SexSelect
-                sex={this.props.globalState.sex}
-                handleSexChange={this.handleChangeSex}
-                sexOptions={dynamicSexOptions}
-              />
-            </Form.Field>
             <Form.Group>
-              <Form.Field>
-                <Header as="h5" textAlign="left">
-                  Gestation
-                </Header>
-                <GestationSelect
-                  name="gestation_select"
-                  weeks={this.state.gestation_weeks}
-                  days={this.state.gestation_days}
-                  handleGestationChange={this.handleChangeGestation}
-                />
-              </Form.Field>
+              { this.props.globalState.measurementMethod === 'height' &&
+                <Button icon labelPosition="left" onClick={this.handleShowBoneAge }>
+                  <Icon name="hand paper outline"/>
+                  Add Bone Age
+                </Button>
+              }
+              <Button icon labelPosition="left" onClick={this.handleShowEvents}>
+                <Icon name="bookmark outline"/>
+                Add Event
+              </Button>
             </Form.Group>
+            
+            { this.state.showBoneAge &&
+              <Form.Group>
+                <Form.Field style={{textAlign:'left'}}>
+                  <Input
+                    type="decimal"
+                    name="boneAge"
+                    placeholder="e.g. 3.5"
+                    labelPosition="right"
+                    label="years"
+                  />
+                </Form.Field>
+              </Form.Group>
+            }
+           
+            {this.state.showEvents && (
+              this.state.events.map((anEvent, index) => {
+                return (
+                  <Form.Group key={index}>
+                    <Form.Field style={{textAlign:'left'}} width="14">
+                        <Input
+                          name="event"
+                          placeholder="e.g. diagnosis"
+                          value={anEvent}
+                          onChange={(data)=> { 
+                            let thisEvent = this.state.events;
+                            thisEvent[index]=data.target.value;
+                            this.setState({events: thisEvent})
+                          }}
+                        />
+                    </Form.Field>
+                    <Button icon onClick={(e)=>{
+                      e.preventDefault();
+                      if (this.state.events[index]===''){
+                        return
+                      }
+                      let theEvents = this.state.events;
+                      theEvents.push('');
+                      this.setState({events: theEvents})
+                    }}>
+                          <Icon name="plus circle"/>
+                    </Button>
+                    {
+                      index === this.state.events.length-1 && 
+                        <Button icon onClick={(e) => {
+                          e.preventDefault();
+                          if(index===0){
+                            this.setState({events:['']});
+                            return
+                          }
+                          let setEvents = this.state.events;
+                          setEvents.splice(index, 1);
+                          this.setState({events: setEvents});
+                        }}>
+                        <Icon name="minus circle"/>
+                      </Button>
+                    }
+                  </Form.Group>
+                )
+              })
+            )}
+          
 
             <Form.Field>
               <Button
