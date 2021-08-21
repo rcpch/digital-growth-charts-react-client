@@ -212,15 +212,37 @@ class MeasurementForm extends React.Component {
 
   handleSubmit() {
     // passes the form data back to the parent (measurement segment)
-    const formData = {
+    let boneageData = {}
+    let eventText = {
+      events: []
+    }
+    if (this.state.events.length > 0 && this.state.events[0].length > 0){
+      eventText = {
+        events: this.state.events
+      }
+    }
+    if (this.state.showBoneAge) {
+      if (!isNaN(parseFloat(this.state.boneAge))){
+        boneageData = {
+          bone_age: parseFloat(this.state.boneAge),
+          bone_age_type: this.state.boneAgeType,
+          bone_age_centile: isNaN(parseFloat(this.state.boneAgeCentile)) ? null : parseFloat(this.state.boneAgeCentile),
+          bone_age_sds: isNaN(parseFloat(this.state.boneAgeSDS)) ? null : parseFloat(this.state.boneAgeSDS),
+          bone_age_text: this.state.boneAgeText
+        }
+      }
+    }
+    const measurementFormData = {
       birth_date: this.state.birth_date,
       observation_date: this.state.observation_date,
       measurement_method: this.props.globalState.measurementMethod,
       observation_value: this.state.measurement.observation_value,
       gestation_weeks: this.state.gestation_weeks,
       gestation_days: this.state.gestation_days,
-      sex: this.props.globalState.sex,
+      sex: this.props.globalState.sex
     };
+
+    const formData = Object.assign(measurementFormData, boneageData, eventText);
     this.props.handleMeasurementResult(formData);
   }
 
@@ -295,7 +317,7 @@ class MeasurementForm extends React.Component {
         boneAge: '',
         boneAgeCentile: '',
         boneAgeSDS: '',
-        boneAgeType: '',
+        boneAgeType: 'greulich-pyle',
         boneAgeText: ''
       });
       this.props.updateGlobalState('clearMeasurement', false);
@@ -409,15 +431,19 @@ class MeasurementForm extends React.Component {
             />
             <Form.Group>
               { this.props.globalState.measurementMethod === 'height' &&
-                <Button icon labelPosition="left" onClick={this.handleShowBoneAge }>
-                  <Icon name="hand paper outline"/>
-                  Add Bone Age
-                </Button>
+                <Form.Field>
+                  <Button icon labelPosition="left" onClick={this.handleShowBoneAge }>
+                    <Icon name="hand paper outline"/>
+                    Add Bone Age
+                  </Button>
+                </Form.Field>
               }
-              <Button icon labelPosition="left" onClick={this.handleShowEvents}>
-                <Icon name="bookmark outline"/>
-                Add Event
-              </Button>
+              <Form.Field>
+                <Button icon labelPosition="left" onClick={this.handleShowEvents}>
+                  <Icon name="bookmark outline"/>
+                  Add Event
+                </Button>
+              </Form.Field>
             </Form.Group>
             
             { this.state.showBoneAge &&

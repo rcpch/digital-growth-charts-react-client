@@ -68,7 +68,7 @@ function BoneAgeTypeSelect(props) {
                     name="boneagetype"
                     placeholder="e.g. G&P"
                     value={props.boneAgeType}
-                    onChange={props.handleChangeBoneAgeType}
+                    onChange={(e, val) => props.handleChangeBoneAgeType(val)}
                     options={boneAgeOptions}
                 />
             </Form.Field>

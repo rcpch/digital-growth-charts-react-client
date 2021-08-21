@@ -6,7 +6,7 @@ import { RCPCHChart } from '@rcpch/digital-growth-charts-react-component-library
 function ChartData(props) {
   const isLoading = props.isLoading;
   const titles = setTitle(props);
-
+  
   return (
     <div>
       <Dimmer active={isLoading}>
@@ -19,6 +19,7 @@ function ChartData(props) {
         title={titles.title}
         subtitle={titles.subtitle}
         measurementsArray={props.measurementsArray} // this is the plottable child data
+        
         chartStyle={props.chartStyle}
         measurementStyle={props.measurementStyle}
         centileStyle={props.centileStyle}
