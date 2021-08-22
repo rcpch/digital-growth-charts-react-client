@@ -193,8 +193,6 @@ const useRcpchApi = (measurementMethod, reference, mode = 'calculation') => {
     };
   }, [apiState, measurementMethod, mode, reference, removeLastFromArrays]);
 
-  console.log(apiState[mode].output);
-
   return {
     fetchResult,
     removeLastActiveItem,

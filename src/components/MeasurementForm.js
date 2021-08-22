@@ -218,7 +218,7 @@ class MeasurementForm extends React.Component {
     }
     if (this.state.events.length > 0 && this.state.events[0].length > 0){
       eventText = {
-        events: this.state.events
+        events_text: this.state.events
       }
     }
     if (this.state.showBoneAge) {
@@ -295,7 +295,7 @@ class MeasurementForm extends React.Component {
       boneAge: '',
       boneAgeCentile: '',
       boneAgeSDS: '',
-      boneAgeType: '',
+      boneAgeType: 'greulich-pyle',
       boneAgeText: ''
     });
   }

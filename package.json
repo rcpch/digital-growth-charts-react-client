@@ -9,7 +9,7 @@
   },
   "homepage": "http://rcpch.github.io/digital-growth-charts-react-client",
   "dependencies": {
-    "@rcpch/digital-growth-charts-react-component-library": "4.0.15",
+    "@rcpch/digital-growth-charts-react-component-library": "file:~/Users/SimonChapman/Development/RCPCHProjects/digital-growth-charts-react-component-library",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.21.1",
