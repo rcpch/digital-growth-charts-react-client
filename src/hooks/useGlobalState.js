@@ -11,6 +11,11 @@ const makeGlobalState = () => {
     units: 'cm',
     measurementMethodActiveIndex: 0,
     sex: 'male',
+    midparentalHeightData: {
+      mid_parental_height: null,
+      mid_parental_height_sds: null,
+      mid_parental_height_centile: null,
+    },
     disabled: {
       height: false,
       weight: false,
@@ -45,8 +50,20 @@ const useGlobalState = () => {
             break;
           case 'modeActiveIndex':
             mutable.modeActiveIndex = newValue;
-            mutable.mode =
-              newValue === 0 ? 'calculation' : 'fictional-child-data';
+            switch (newValue){
+              case 0:
+                mutable.mode = 'calculation';
+                break;
+              case 1: 
+                mutable.mode = 'fictional-child-data';
+                break;
+              case 2: 
+                mutable.mode = 'mid-parental-height';
+                break;
+              default:
+                mutable.mode = 'calculation';
+                break;
+            }
             break;
           case 'reference':
             mutable.reference = newValue;

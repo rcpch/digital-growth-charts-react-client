@@ -20,7 +20,9 @@ import { ErrorModal }   from '../components/subcomponents/ErrorModal';
 import '../index.css';
 import FictionalChildForm from './FictionalChildForm';
 import useRcpchApi from '../hooks/useRcpchApi';
+import returnMidParentalHeight from '../hooks/returnMidParentalHeight';
 import useGlobalState from '../hooks/useGlobalState';
+import UtilitiesForm from './UtilitiesForm';
 
 const defaultTheme = RCPCHThemeMonochrome;
 
@@ -162,6 +164,15 @@ function MeasurementSegment() {
     fetchResult(formData);
   };
 
+  const utilitiesFormDataSubmit = (formData) => {
+    const result = returnMidParentalHeight(formData)
+    result.then(final => {
+      updateGlobalState('midparentalHeightData', final);
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+
   const handleChangeTheme = (event, { value }) => {
     let selectedTheme;
     let text;
@@ -277,6 +288,7 @@ function MeasurementSegment() {
             sex={sex}
             measurementMethod={details.measurementName}
             measurementsArray={results[reference][details.measurementName]}
+            midParentalHeightData={globalState.midparentalHeightData}
             chartStyle={chartStyle}
             axisStyle={axisStyle}
             gridlineStyle={defaultTheme.gridlines}
@@ -313,11 +325,23 @@ function MeasurementSegment() {
       ),
     },
     {
-      menuItem: 'Demo Children',
+      menuItem: 'Examples',
       render: () => (
         <Tab.Pane>
           <FictionalChildForm
             fictionalFormDataSubmit={fictionalFormDataSubmit}
+            globalState={globalState}
+            updateGlobalState={updateGlobalState}
+          />
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: 'Utilities',
+      render: () => (
+        <Tab.Pane>
+          <UtilitiesForm
+            utilitiesFormDataSubmit={utilitiesFormDataSubmit}
             globalState={globalState}
             updateGlobalState={updateGlobalState}
           />
