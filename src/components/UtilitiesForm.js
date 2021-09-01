@@ -39,6 +39,7 @@ const UtilitiesForm = (props) => {
                         </label>
                         <Input
                             onChange={handleUpdateMaternalHeight}
+                            placeholder="e.g. 167"
                         />
                     </Form.Field>
                     <Form.Field>
@@ -46,6 +47,7 @@ const UtilitiesForm = (props) => {
                         Paternal height (cm)
                         </label>
                         <Input
+                            placeholder="e.g. 179"
                             onChange={handleUpdatePaternalHeight}
                         />
                     </Form.Field>
