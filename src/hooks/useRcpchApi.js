@@ -4,7 +4,7 @@ import axios from 'axios';
 import deepCopy from '../functions/deepCopy';
 
 const fetchFromApi = async (inputParameters, reference, mode) => {
-  const url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/${reference}/${mode}`;
+  let url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/${reference}/${mode}`;
   const headers = process.env.REACT_APP_API_KEY
     ? {
         'Content-Type': 'application/json',
@@ -45,6 +45,10 @@ const makeInitialState = () => {
     calculation: {
       input: measurements,
       output: measurements,
+    },
+    'mid-parental-height': {
+      input: measurements,
+      output: measurements
     },
     'fictional-child-data': {
       input: measurements,
@@ -128,7 +132,7 @@ const useRcpchApi = (measurementMethod, reference, mode = 'calculation') => {
     let ignore = false;
     if (apiState.isLoading) {
       const relevantArray = apiState[mode].input[reference][measurementMethod];
-      const latestInput = deepCopy(relevantArray[relevantArray.length - 1]);
+      let latestInput = deepCopy(relevantArray[relevantArray.length - 1]);
       fetchFromApi(latestInput, reference, mode)
         .then((result) => {
           if (!ignore) {
@@ -138,7 +142,8 @@ const useRcpchApi = (measurementMethod, reference, mode = 'calculation') => {
               let resultAsArray = null;
               if (mode === 'fictional-child-data') {
                 resultAsArray = result;
-              } else {
+              } 
+              if (mode === 'calculation') {
                 resultAsArray = mutable[mode].output[reference][
                   measurementMethod
                 ].concat([result]);
@@ -168,8 +173,8 @@ const useRcpchApi = (measurementMethod, reference, mode = 'calculation') => {
                   return mutable;
                 }
               }
-              mutable[mode].output[reference][measurementMethod] =
-                resultAsArray;
+              mutable[mode].output[reference][measurementMethod] = resultAsArray;
+              
               mutable.errors = { errors: false, message: 'success' };
               mutable.isLoading = false;
               return mutable;

@@ -7,6 +7,7 @@ import {
   Input,
   Button,
   Header,
+  Icon,
 } from 'semantic-ui-react';
 import GestationSelect from './subcomponents/GestationSelect';
 import MeasurementMethodSelect from './subcomponents/MeasurementMethodSelect';
@@ -16,6 +17,7 @@ import measurementOptions from '../selectData/measurementOptions';
 import sexOptions from '../selectData/sexOptions';
 import referenceOptions from '../selectData/referenceOptions';
 import ErrorText from './subcomponents/ErrorText';
+import BoneAgeTypeSelect from './subcomponents/BoneAge';
 import { formatDate, parseDate } from '../functions/dateHelpers';
 
 const ROBERT_WADLOW = 272; // interesting fact - Robert Wadlow (22/2/1918 – 15/7/1940) was the world's tallest man
@@ -38,6 +40,14 @@ class MeasurementForm extends React.Component {
       observation_value_error: 'empty',
       form_valid: false,
       measurementResult: [],
+      boneAge: '',
+      boneAgeType: 'greulich-pyle',
+      boneAgeSDS: '',
+      boneAgeCentile: '',
+      boneAgeText: '',
+      events:[""],
+      showBoneAge: false,
+      showEvents: false
     };
 
     this.handleChangeDate = this.handleChangeDate.bind(this);
@@ -50,11 +60,42 @@ class MeasurementForm extends React.Component {
     this.handleChangeReference = this.handleChangeReference.bind(this);
     this.handleResetCurrentGraph = this.handleResetCurrentGraph.bind(this);
     this.handleUndoLast = this.handleUndoLast.bind(this);
+    this.handleShowBoneAge = this.handleShowBoneAge.bind(this);
+    this.handleShowEvents = this.handleShowEvents.bind(this);
+    this.handleBoneAgeChange = this.handleBoneAgeChange.bind(this);
+    this.handleBoneAgeTypeChange = this.handleBoneAgeTypeChange.bind(this);
+    this.handleBoneAgeSDSChange = this.handleBoneAgeSDSChange.bind(this);
+    this.handleBoneAgeCentileChange = this.handleBoneAgeCentileChange.bind(this);
+    this.handleBoneAgeTextChange = this.handleBoneAgeTextChange.bind(this);
   }
 
-  handleChangeReference = ({ value }) => {
+  handleChangeReference = ({ value }) => { 
     this.props.updateGlobalState('reference', value);
   };
+
+  handleBoneAgeTypeChange = ({ value }) => {
+    this.setState({boneAgeType: value})
+  }
+
+  handleBoneAgeChange = (event, data) => {
+    const boneAge = data.value;
+    this.setState({boneAge: boneAge})
+  }
+
+  handleBoneAgeSDSChange = (event, data) => {
+    const boneAgeSDS = data.value;
+    this.setState({boneAgeSDS: boneAgeSDS})
+  }
+  
+  handleBoneAgeCentileChange = (event, data) => {
+    const boneAgeCentile = data.value;
+    this.setState({boneAgeCentile: boneAgeCentile})
+  }
+  
+  handleBoneAgeTextChange = (event, data) => {
+    const boneAgeText = data.value;
+    this.setState({boneAgeText: boneAgeText})
+  }
 
   handleChangeDate(event) {
     this.setState({ [event.target.name]: event.target.value });
@@ -171,15 +212,37 @@ class MeasurementForm extends React.Component {
 
   handleSubmit() {
     // passes the form data back to the parent (measurement segment)
-    const formData = {
+    let boneageData = {}
+    let eventText = {
+      events: []
+    }
+    if (this.state.events.length > 0 && this.state.events[0].length > 0){
+      eventText = {
+        events_text: this.state.events
+      }
+    }
+    if (this.state.showBoneAge) {
+      if (!isNaN(parseFloat(this.state.boneAge))){
+        boneageData = {
+          bone_age: parseFloat(this.state.boneAge),
+          bone_age_type: this.state.boneAgeType,
+          bone_age_centile: isNaN(parseFloat(this.state.boneAgeCentile)) ? null : parseFloat(this.state.boneAgeCentile),
+          bone_age_sds: isNaN(parseFloat(this.state.boneAgeSDS)) ? null : parseFloat(this.state.boneAgeSDS),
+          bone_age_text: this.state.boneAgeText
+        }
+      }
+    }
+    const measurementFormData = {
       birth_date: this.state.birth_date,
       observation_date: this.state.observation_date,
       measurement_method: this.props.globalState.measurementMethod,
       observation_value: this.state.measurement.observation_value,
       gestation_weeks: this.state.gestation_weeks,
       gestation_days: this.state.gestation_days,
-      sex: this.props.globalState.sex,
+      sex: this.props.globalState.sex
     };
+
+    const formData = Object.assign(measurementFormData, boneageData, eventText);
     this.props.handleMeasurementResult(formData);
   }
 
@@ -215,6 +278,28 @@ class MeasurementForm extends React.Component {
     this.props.updateGlobalState('undoLast', true);
   }
 
+  handleShowEvents(e) {
+    e.preventDefault();
+    const isPressed = this.state.showEvents;
+    this.setState({
+      showEvents: !isPressed,
+      events: ['']
+    });
+  }
+  
+  handleShowBoneAge(e) {
+    e.preventDefault();
+    const isPressed = this.state.showBoneAge;
+    this.setState({
+      showBoneAge: !isPressed,
+      boneAge: '',
+      boneAgeCentile: '',
+      boneAgeSDS: '',
+      boneAgeType: 'greulich-pyle',
+      boneAgeText: ''
+    });
+  }
+
   componentDidUpdate() {
     if (this.state.form_valid !== this.formIsValid()) {
       this.setState({ form_valid: this.formIsValid() });
@@ -226,6 +311,14 @@ class MeasurementForm extends React.Component {
         measurement: newMeasurement,
         observation_value_error: 'empty',
         form_valid: false,
+        showBoneAge: false,
+        showEvents: false,
+        events: [''],
+        boneAge: '',
+        boneAgeCentile: '',
+        boneAgeSDS: '',
+        boneAgeType: 'greulich-pyle',
+        boneAgeText: ''
       });
       this.props.updateGlobalState('clearMeasurement', false);
     }
@@ -277,6 +370,31 @@ class MeasurementForm extends React.Component {
                 onChange={this.handleChangeDate}
               />
             </Form.Field>
+            <ErrorText errorText={this.state.observation_date_error} />
+            <ErrorText errorText={this.state.birth_date_error} />
+
+            <Form.Group style={{textAlign: 'left'}}>
+              <Form.Field required style={{marginRight: 20}}>
+                <label>Sex</label>
+                <SexSelect
+                  sex={this.props.globalState.sex}
+                  handleSexChange={this.handleChangeSex}
+                  sexOptions={dynamicSexOptions}
+                />
+              </Form.Field>
+              <Form.Group>
+                <Form.Field >
+                  <label>Gestation</label>
+                  <GestationSelect
+                    name="gestation_select"
+                    weeks={this.state.gestation_weeks}
+                    days={this.state.gestation_days}
+                    handleGestationChange={this.handleChangeGestation}
+                  />
+                </Form.Field>
+              </Form.Group>
+            </Form.Group>
+            
             <Header as="h5" textAlign="left">
               Measurements
             </Header>
@@ -311,31 +429,89 @@ class MeasurementForm extends React.Component {
               showError={this.state.observation_value_error !== 'empty'}
               errorText={this.state.observation_value_error}
             />
-            <ErrorText errorText={this.state.observation_date_error} />
-            <ErrorText errorText={this.state.birth_date_error} />
-            <Header as="h5" textAlign="left">
-              Sex
-            </Header>
-            <Form.Field required>
-              <SexSelect
-                sex={this.props.globalState.sex}
-                handleSexChange={this.handleChangeSex}
-                sexOptions={dynamicSexOptions}
-              />
-            </Form.Field>
             <Form.Group>
+              { this.props.globalState.measurementMethod === 'height' &&
+                <Form.Field>
+                  <Button icon labelPosition="left" onClick={this.handleShowBoneAge }>
+                    <Icon name="hand paper outline"/>
+                    Add Bone Age
+                  </Button>
+                </Form.Field>
+              }
               <Form.Field>
-                <Header as="h5" textAlign="left">
-                  Gestation
-                </Header>
-                <GestationSelect
-                  name="gestation_select"
-                  weeks={this.state.gestation_weeks}
-                  days={this.state.gestation_days}
-                  handleGestationChange={this.handleChangeGestation}
-                />
+                <Button icon labelPosition="left" onClick={this.handleShowEvents}>
+                  <Icon name="bookmark outline"/>
+                  Add Event
+                </Button>
               </Form.Field>
             </Form.Group>
+            
+            { this.state.showBoneAge &&
+              <Segment>
+                <BoneAgeTypeSelect 
+                  boneAge={this.state.boneAge}
+                  handleBoneAgeChange={this.handleBoneAgeChange}
+                  boneAgeType={this.state.boneAgeType}
+                  handleChangeBoneAgeType={this.handleBoneAgeTypeChange}
+                  boneAgeCentile={this.state.boneAgeCentile}
+                  handleBoneAgeCentileChange = {this.handleBoneAgeCentileChange}
+                  boneAgeSDS={this.state.boneAgeSDS}
+                  handleBoneAgeSDSChange={this.handleBoneAgeSDSChange}
+                  boneAgeText = {this.state.boneAgeText}
+                  handleBoneAgeTextChange = {this.handleBoneAgeTextChange}
+                />
+              </Segment>
+            }
+           
+            {this.state.showEvents && (
+              <Segment>
+                {this.state.events.map((anEvent, index) => {
+                  return (
+                    <Form.Group key={index}>
+                      <Form.Field style={{textAlign:'left'}} width="14">
+                          <Input
+                            name="event"
+                            placeholder="e.g. diagnosis"
+                            value={anEvent}
+                            onChange={(data)=> { 
+                              let thisEvent = this.state.events;
+                              thisEvent[index]=data.target.value;
+                              this.setState({events: thisEvent})
+                            }}
+                          />
+                      </Form.Field>
+                      <Button icon onClick={(e)=>{
+                        e.preventDefault();
+                        if (this.state.events[index]===''){
+                          return
+                        }
+                        let theEvents = this.state.events;
+                        theEvents.push('');
+                        this.setState({events: theEvents})
+                      }}>
+                            <Icon name="plus circle"/>
+                      </Button>
+                      {
+                        index === this.state.events.length-1 && 
+                          <Button icon onClick={(e) => {
+                            e.preventDefault();
+                            if(index===0){
+                              this.setState({events:['']});
+                              return
+                            }
+                            let setEvents = this.state.events;
+                            setEvents.splice(index, 1);
+                            this.setState({events: setEvents});
+                          }}>
+                          <Icon name="minus circle"/>
+                        </Button>
+                      }
+                    </Form.Group>
+                  )
+                })}
+              </Segment>
+            )}
+          
 
             <Form.Field>
               <Button
