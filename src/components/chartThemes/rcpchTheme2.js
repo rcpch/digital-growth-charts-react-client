@@ -41,6 +41,9 @@ const measurementsSize = 2;
 // const axisLabelSize = 10
 // const tickLabelSize = 8
 // const axisLabelFont = "Montserrat"
+const midparentalHeightStroke = "#ff9932"
+const midparentalHeightStrokeWidth = 1.5
+const midparentalHeightFill="#ffd8b2"
 
 const titleStyle = new TextStyleObject('Arial', '#000000', 14, 'bold');
 const subTitleStyle = new TextStyleObject('Arial', '#000000', 14, 'normal');
@@ -92,7 +95,10 @@ const RCPCHGridlines = new GridlineObject(
 const RCPCHCentiles = new CentilesObject(
   centileColour,
   centileWidth,
-  pubertyFill
+  pubertyFill,
+  midparentalHeightStroke,
+  midparentalHeightStrokeWidth,
+  midparentalHeightFill
 );
 
 const RCPCHAxes = new AxesObject(

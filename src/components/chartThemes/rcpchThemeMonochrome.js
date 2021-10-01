@@ -38,9 +38,11 @@ const axisstroke = '#000000';
 const measurementsFill = '#000000';
 const measurementsStroke = '#000000';
 const measurementsSize = 2;
-
 const titleStyle = new TextStyleObject('Arial', '#000000', 14, 'bold');
 const subTitleStyle = new TextStyleObject('Arial', '#000000', 14, 'normal');
+const midparentalHeightStroke="#d3d3d3";
+const midparentalHeightStrokeWidth=1.5;
+const midparentalHeightFill = "#f3f3f3";
 
 const tooltipTextStyle = new TextStyleObject(
   'Montserrat',
@@ -90,7 +92,10 @@ const RCPCHGridlines = new GridlineObject(
 const RCPCHCentiles = new CentilesObject(
   centileColour,
   centileWidth,
-  pubertyFill
+  pubertyFill,
+  midparentalHeightStroke,
+  midparentalHeightStrokeWidth,
+  midparentalHeightFill
 );
 
 const RCPCHAxes = new AxesObject(

@@ -288,10 +288,13 @@ export class AxesObject{
     }
 }
 export class CentilesObject{
-    constructor(centileStroke, centileStrokeWidth, delayedPubertyAreaFill){
+    constructor(centileStroke, centileStrokeWidth, delayedPubertyAreaFill, midParentalCentileStroke, midParentalCentileStrokeWidth, midParentalAreaFill){
         this.centileStroke=centileStroke
         this.centileStrokeWidth=centileStrokeWidth
         this.delayedPubertyAreaFill=delayedPubertyAreaFill
+        this.midParentalCentileStroke=midParentalCentileStroke
+        this.midParentalCentileStrokeWidth=midParentalCentileStrokeWidth
+        this.midParentalAreaFill=midParentalAreaFill
     }
     get centileStroke(){
         return this._centileStroke
@@ -302,6 +305,15 @@ export class CentilesObject{
     get delayedPubertyAreaFill(){
         return this._delayedPubertyAreaFill
     }
+    get midParentalAreaFill(){
+        return this._midParentalAreaFill
+    }
+    get midParentalCentileStroke(){
+        return this._midParentalStroke
+    }
+    get midParentalCentileStrokeWidth(){
+        return this._midParentalStrokeWidth
+    } 
     set centileStroke(val){
         this._centileStroke=val
     }
@@ -310,6 +322,15 @@ export class CentilesObject{
     }
     set delayedPubertyAreaFill(val){
         this._delayedPubertyAreaFill=val
+    }
+    set midParentalCentileStroke(val){
+        this._midParentalStroke=val
+    }
+    set midParentalCentileStrokeWidth(val){
+        this._midParentalCentileStrokeWidth=val
+    }
+    set midParentalAreaFill(val){
+        this._midParentalAreaFill=val
     }
 }
 
