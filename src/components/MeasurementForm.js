@@ -70,6 +70,9 @@ class MeasurementForm extends React.Component {
   }
 
   handleChangeReference = ({ value }) => { 
+    if (value !== "uk-who"){
+      this.props.updateGlobalState('mid-parental-height', 'reset');
+    }
     this.props.updateGlobalState('reference', value);
   };
 

@@ -131,6 +131,7 @@ function MeasurementSegment() {
       handleClose: () => {
         clearBothActiveArrays();
         setErrorModal(InitalErrorModalState());
+        updateGlobalState('mid-parental-height', 'empty');
       },
     });
     updateGlobalState('resetCurrent', false);
@@ -167,7 +168,7 @@ function MeasurementSegment() {
   const utilitiesFormDataSubmit = (formData) => {
     const result = returnMidParentalHeight(formData)
     result.then(final => {
-      updateGlobalState('midparentalHeightData', final);
+      updateGlobalState('mid-parental-height', final);
     }).catch(error => {
       console.log(error);
     })
@@ -338,7 +339,7 @@ function MeasurementSegment() {
     },
     {
       menuItem: 'Utilities',
-      render: () => (
+      render: () =>  globalState.reference==="uk-who" ? (
         <Tab.Pane>
           <UtilitiesForm
             utilitiesFormDataSubmit={utilitiesFormDataSubmit}
@@ -346,7 +347,11 @@ function MeasurementSegment() {
             updateGlobalState={updateGlobalState}
           />
         </Tab.Pane>
-      ),
+      ) : (
+        <Tab.Pane>
+          <h5>Mid-parental height only valid for UK-WHO reference.</h5>
+        </Tab.Pane>
+      )
     },
   ];
 

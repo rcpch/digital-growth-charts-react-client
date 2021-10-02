@@ -39,8 +39,23 @@ const makeInitialState = () => {
       weight: [],
       bmi: [],
       ofc: [],
-    },
+    }
   };
+  // const midParentalHeightRequest = {
+  //   height_paternal: null,
+  //   height_maternal: null,
+  //   sex: null
+  // }
+  // const midParentalHeightResponse = {
+  //   mid_parental_height: null,
+  //   mid_parental_height_sds: null,
+  //   mid_parental_height_centile: null,
+  //   mid_parental_height_centile_data: [],
+  //   mid_parental_height_upper_centile_data: [],
+  //   mid_parental_height_lower_centile_data: [],
+  //   mid_parental_height_lower_value: null,
+  //   mid_parental_height_upper_value: null
+  // }
   return {
     calculation: {
       input: measurements,

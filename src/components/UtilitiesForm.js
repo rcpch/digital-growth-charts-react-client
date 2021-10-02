@@ -21,6 +21,12 @@ const UtilitiesForm = (props) => {
         props.utilitiesFormDataSubmit(values)
     }
 
+    
+
+    const handleRemoveMPH = () => {
+        props.updateGlobalState('mid-parental-height', 'reset');
+    }
+
     const handleUpdateMaternalHeight = (e, { name, value }) => {
         setMaternalHeight(value);
     }
@@ -58,6 +64,15 @@ const UtilitiesForm = (props) => {
                     >Calculate Mid-parental Height
                     </Button>
                 </Form.Field>
+                { props.globalState.midparentalHeightData.mid_parental_height &&
+                    <Form.Field>
+                        <Button 
+                            type="submit"
+                            onClick={handleRemoveMPH}
+                        >Remove Mid-parental Height
+                        </Button>
+                    </Form.Field>
+                }
             </Form>
         </Container>
     )
