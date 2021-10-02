@@ -42,7 +42,7 @@ const titleStyle = new TextStyleObject('Arial', '#000000', 14, 'bold');
 const subTitleStyle = new TextStyleObject('Arial', '#000000', 14, 'normal');
 const midparentalHeightStroke="#d3d3d3";
 const midparentalHeightStrokeWidth=1.5;
-const midparentalHeightFill = "#f3f3f3";
+const midparentalHeightFill = "#b3b3b3";
 
 const tooltipTextStyle = new TextStyleObject(
   'Montserrat',

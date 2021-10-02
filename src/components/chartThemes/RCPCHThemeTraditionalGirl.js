@@ -43,9 +43,9 @@ const measurementsSize = 2;
 // const axisLabelSize = 10
 // const tickLabelSize = 8
 // const axisLabelFont = "Montserrat"
-const midparentalHeightStroke="#d376b0"
-const midparentalHeightStrokeWidth=1.5;
-const midparentalHeightFill="#eecce1";
+const midparentalHeightStroke='#df99c4'
+const midparentalHeightStrokeWidth=0.25;
+const midparentalHeightFill='#df99c4';
 
 const titleStyle = new TextStyleObject('Arial', '#000000', 14, 'bold');
 const subTitleStyle = new TextStyleObject('Arial', '#000000', 14, 'normal');
