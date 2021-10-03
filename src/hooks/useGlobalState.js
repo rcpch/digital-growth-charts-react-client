@@ -40,7 +40,7 @@ const makeGlobalState = () => {
   };
 };
 
-const measurementMethodActiveIndexLookup = ['height', 'weight', 'bmi', 'ofc'];
+const measurementMethodActiveIndexLookup = ['height', 'weight', 'bmi', 'ofc', 'sds'];
 
 const useGlobalState = () => {
   const [globalState, setGlobalState] = useState(makeGlobalState);

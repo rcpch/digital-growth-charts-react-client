@@ -26,6 +26,7 @@ function ChartData(props) {
         gridlineStyle={props.gridlineStyle}
         axisStyle={props.axisStyle}
         enableZoom
+        chartType={props.chartType}
       />
     </div>
   );
@@ -51,24 +52,27 @@ function setTitle(props) {
     sexText = 'Girls';
   }
 
-  switch (props.measurementMethod) {
-    case 'height':
-      measurementText = 'Height / Length';
-      break;
-    case 'weight':
-      measurementText = 'Weight';
-      break;
-    case 'bmi':
-      measurementText = 'Body Mass Index';
-      break;
-    case 'ofc':
-      measurementText = 'Head Circumference';
-      break;
-    default:
-      measurementText = '';
-      break;
-  }
-
+  if (props.chartType==="sds"){
+      measurementText="All Measurements"
+  } else {
+    switch (props.measurementMethod) {
+      case 'height':
+        measurementText = 'Height / Length';
+        break;
+      case 'weight':
+        measurementText = 'Weight';
+        break;
+      case 'bmi':
+        measurementText = 'Body Mass Index';
+        break;
+      case 'ofc':
+        measurementText = 'Head Circumference';
+        break;
+      default:
+        measurementText = '';
+        break;
+    }
+}
   subTitle = measurementText + ' - ' + sexText;
 
   return { subtitle: subTitle, title: title };

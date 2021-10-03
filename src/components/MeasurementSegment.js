@@ -115,10 +115,20 @@ function MeasurementSegment() {
   }, [sex, theme.value]);
 
   useEffect(() => {
-    if (results[reference][measurementMethod].length > 0) {
-      updateGlobalState('isDataPresent', true);
+    if (measurementMethod === 'sds'){
+      const dataPresent = (
+        results[reference]["height"].length > 0 ||
+        results[reference]["weight"].length > 0 ||
+        results[reference]["bmi"].length > 0 ||
+        results[reference]["ofc"].length > 0
+      );
+      updateGlobalState('isDataPresent', dataPresent);
     } else {
-      updateGlobalState('isDataPresent', false);
+      if (results[reference][measurementMethod].length > 0) {
+        updateGlobalState('isDataPresent', true);
+      } else {
+        updateGlobalState('isDataPresent', false);
+      }
     }
   }, [results, reference, measurementMethod, updateGlobalState]);
 
@@ -281,24 +291,62 @@ function MeasurementSegment() {
   const panes = panesBlueprint.map((details) => {
     return {
       menuItem: details.menuItem,
-      render: () => (
-        <Tab.Pane attached="top" disabled={disabled[details.measurementName]}>
-          <ChartData
-            key={details.measurementName}
-            reference={reference}
-            sex={sex}
-            measurementMethod={details.measurementName}
-            measurementsArray={results[reference][details.measurementName]}
-            midParentalHeightData={globalState.midparentalHeightData}
-            chartStyle={chartStyle}
-            axisStyle={axisStyle}
-            gridlineStyle={defaultTheme.gridlines}
-            centileStyle={centileStyle}
-            measurementStyle={measurementStyle}
-            isLoading={isLoading}
-          />
-        </Tab.Pane>
-      ),
+      render: () => {
+        return details.menuItem === "SDS" ? 
+        (
+          <Tab.Pane attached="top">
+            <ChartData
+              key={details.measurementName}
+              reference={reference}
+              sex={sex}
+              measurementMethod={'height'}
+              measurementsArray={results[reference]}
+              midParentalHeightData={globalState.midparentalHeightData}
+              chartStyle={chartStyle}
+              axisStyle={axisStyle}
+              gridlineStyle={defaultTheme.gridlines}
+              centileStyle={centileStyle}
+              measurementStyle={measurementStyle}
+              isLoading={isLoading}
+              chartType="sds"
+            />
+            {/* <SDSChartData 
+              key={"sdsChart"}
+              reference={reference}
+              sex={sex}
+              heightsArray={results[reference]}
+              weightsArray={results[reference]}
+              bmisArray={results[reference]}
+              ofcsArray={results[reference]}
+              midParentalHeightData={globalState.midparentalHeightData}
+              chartStyle={chartStyle}
+              axisStyle={axisStyle}
+              gridlineStyle={defaultTheme.gridlines}
+              measurementStyle={measurementStyle}
+              isLoading={isLoading}
+            /> */}
+          </Tab.Pane>
+        ) :
+        (
+          <Tab.Pane attached="top" disabled={disabled[details.measurementName]}>
+            <ChartData
+              key={details.measurementName}
+              reference={reference}
+              sex={sex}
+              measurementMethod={details.measurementName}
+              measurementsArray={results[reference][details.measurementName]}
+              midParentalHeightData={globalState.midparentalHeightData}
+              chartStyle={chartStyle}
+              axisStyle={axisStyle}
+              gridlineStyle={defaultTheme.gridlines}
+              centileStyle={centileStyle}
+              measurementStyle={measurementStyle}
+              isLoading={isLoading}
+              chartType="centile"
+            />
+          </Tab.Pane>
+        )
+      }
     };
   });
 
@@ -429,6 +477,10 @@ const panesBlueprint = [
     menuItem: 'Head Circumference',
     measurementName: 'ofc',
   },
+  {
+    menuItem: "SDS",
+    measurementName: 'sds'
+  }
 ];
 
 const themeOptions = [
