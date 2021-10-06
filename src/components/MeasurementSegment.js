@@ -30,6 +30,7 @@ function MeasurementSegment() {
   const [chartStyle, setChartSyle] = useState(defaultTheme.chart);
   const [axisStyle, setAxisStyle] = useState(defaultTheme.axes);
   const [centileStyle, setCentileStyle] = useState(defaultTheme.centiles);
+  const [Centile, setCentile] = useState(true);
   const [measurementStyle, setMeasurementStyle] = useState(
     defaultTheme.measurements
   );
@@ -115,20 +116,10 @@ function MeasurementSegment() {
   }, [sex, theme.value]);
 
   useEffect(() => {
-    if (measurementMethod === 'sds'){
-      const dataPresent = (
-        results[reference]["height"].length > 0 ||
-        results[reference]["weight"].length > 0 ||
-        results[reference]["bmi"].length > 0 ||
-        results[reference]["ofc"].length > 0
-      );
-      updateGlobalState('isDataPresent', dataPresent);
+    if (results[reference][measurementMethod].length > 0) {
+      updateGlobalState('isDataPresent', true);
     } else {
-      if (results[reference][measurementMethod].length > 0) {
-        updateGlobalState('isDataPresent', true);
-      } else {
-        updateGlobalState('isDataPresent', false);
-      }
+      updateGlobalState('isDataPresent', false);
     }
   }, [results, reference, measurementMethod, updateGlobalState]);
 
@@ -224,6 +215,10 @@ function MeasurementSegment() {
     setFlip(!flip);
   };
 
+  const handleCentileSDS = () => {
+    setCentile(!Centile)
+  }
+
   const handleResults = (latestResult) => {
     // delegate function from MeasurementForm
     // receives form data and stores in the correct measurement array
@@ -292,41 +287,7 @@ function MeasurementSegment() {
     return {
       menuItem: details.menuItem,
       render: () => {
-        return details.menuItem === "SDS" ? 
-        (
-          <Tab.Pane attached="top">
-            <ChartData
-              key={details.measurementName}
-              reference={reference}
-              sex={sex}
-              measurementMethod={'height'}
-              measurementsArray={results[reference]}
-              midParentalHeightData={globalState.midparentalHeightData}
-              chartStyle={chartStyle}
-              axisStyle={axisStyle}
-              gridlineStyle={defaultTheme.gridlines}
-              centileStyle={centileStyle}
-              measurementStyle={measurementStyle}
-              isLoading={isLoading}
-              chartType="sds"
-            />
-            {/* <SDSChartData 
-              key={"sdsChart"}
-              reference={reference}
-              sex={sex}
-              heightsArray={results[reference]}
-              weightsArray={results[reference]}
-              bmisArray={results[reference]}
-              ofcsArray={results[reference]}
-              midParentalHeightData={globalState.midparentalHeightData}
-              chartStyle={chartStyle}
-              axisStyle={axisStyle}
-              gridlineStyle={defaultTheme.gridlines}
-              measurementStyle={measurementStyle}
-              isLoading={isLoading}
-            /> */}
-          </Tab.Pane>
-        ) :
+        return Centile ? 
         (
           <Tab.Pane attached="top" disabled={disabled[details.measurementName]}>
             <ChartData
@@ -345,18 +306,37 @@ function MeasurementSegment() {
               chartType="centile"
             />
           </Tab.Pane>
+        ) :
+        (
+          <Tab.Pane attached="top">
+            <ChartData
+              key={details.measurementName}
+              reference={reference}
+              sex={sex}
+              measurementMethod={details.measurementName}
+              measurementsArray={results[reference]}
+              midParentalHeightData={globalState.midparentalHeightData}
+              chartStyle={chartStyle}
+              axisStyle={axisStyle}
+              gridlineStyle={defaultTheme.gridlines}
+              centileStyle={centileStyle}
+              measurementStyle={measurementStyle}
+              isLoading={isLoading}
+              chartType="sds"
+            />
+          </Tab.Pane>
         )
       }
     };
   });
 
   const TabPanes = () => (
-    <Tab
-      menu={{ attached: 'top' }}
-      panes={panes}
-      activeIndex={measurementMethodActiveIndex}
-      onTabChange={handleTabChange}
-    />
+      <Tab
+        menu={{ attached: 'top' }}
+        panes={panes}
+        activeIndex={measurementMethodActiveIndex}
+        onTabChange={handleTabChange}
+      />
   );
 
   const FormPanes = [
@@ -436,7 +416,9 @@ function MeasurementSegment() {
               {flip ? (
                 <ResultsSegment apiResult={results} reference={reference} />
               ) : (
+                <div>
                 <TabPanes />
+                </div>
               )}
               <Grid verticalAlign="middle">
                 <Grid.Row columns={2}>
@@ -444,6 +426,13 @@ function MeasurementSegment() {
                     <ThemeSelection />
                   </Grid.Column>
                   <Grid.Column textAlign="right">
+                    <Button 
+                      toggle
+                      onClick={handleCentileSDS}
+                      active={Centile}
+                    >
+                      {Centile ? "Show SDS Charts" : "Show Centile Charts"}
+                    </Button>
                     <Button
                       className="selectUpperMargin"
                       onClick={handleFlipResults}
@@ -476,10 +465,6 @@ const panesBlueprint = [
   {
     menuItem: 'Head Circumference',
     measurementName: 'ofc',
-  },
-  {
-    menuItem: "SDS",
-    measurementName: 'sds'
   }
 ];
 

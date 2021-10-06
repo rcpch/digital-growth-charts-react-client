@@ -113,7 +113,7 @@ const RCPCHAxes = new AxesObject(
 const RCPCHMeasurements = new MeasurementsObject(
   measurementsFill,
   measurementsStroke,
-  measurementsSize
+  measurementsSize,
 );
 
 const RCPCHThemeTraditionalBoy = new ChartTheme(

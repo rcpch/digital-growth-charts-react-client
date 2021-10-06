@@ -38,6 +38,7 @@ const axisstroke = '#000000';
 const measurementsFill = '#000000';
 const measurementsStroke = '#000000';
 const measurementsSize = 2;
+
 // const axisLabelSize = 10
 // const tickLabelSize = 8
 // const axisLabelFont = "Montserrat"
