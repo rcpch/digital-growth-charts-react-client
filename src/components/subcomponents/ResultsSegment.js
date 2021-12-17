@@ -46,7 +46,7 @@ export const ResultsSegment = ({ apiResult, reference }) => (
             </Table.Row>
           )}
           {apiResult[reference].bmi.length > 0 &&
-            apiResult.bmi.map((measurement, index) => {
+            apiResult[reference].bmi.map((measurement, index) => {
               return <TableBody key={index} measurement={measurement} />;
             })}
           {apiResult[reference].ofc.length > 0 && (
