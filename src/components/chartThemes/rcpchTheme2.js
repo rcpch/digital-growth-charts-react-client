@@ -36,11 +36,7 @@ const centileWidth = 1.5;
 // const axisLabelColour = "#000000"
 const axisstroke = '#000000';
 const measurementsFill = '#000000';
-const measurementsStroke = '#000000';
-const measurementsSize = 2;
-// const axisLabelSize = 10
-// const tickLabelSize = 8
-// const axisLabelFont = "Montserrat"
+const highlightedMeasurementFill = "#7159aa"; // purple
 const midparentalHeightStroke = '#ffc080'
 const midparentalHeightStrokeWidth = 0.25
 const midparentalHeightFill='#ffc080'
@@ -109,8 +105,7 @@ const RCPCHAxes = new AxesObject(
 
 const RCPCHMeasurements = new MeasurementsObject(
   measurementsFill,
-  measurementsStroke,
-  measurementsSize
+  highlightedMeasurementFill
 );
 
 const RCPCHTheme2 = new ChartTheme(

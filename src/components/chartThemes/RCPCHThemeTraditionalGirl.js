@@ -35,15 +35,9 @@ const gridlineColour = '#d9d9d9';
 const gridlineWidth = 0.25;
 const backgroundColour = '#FFFFFF';
 const centileWidth = 1.5;
-// const axisLabelColour = "#000000"
 const axisstroke = '#000000';
 const measurementsFill = '#000000';
-const measurementsStroke = '#000000';
-const measurementsSize = 2;
-
-// const axisLabelSize = 10
-// const tickLabelSize = 8
-// const axisLabelFont = "Montserrat"
+const highlightedMeasurementFill = "#000000"; // black
 const midparentalHeightStroke='#df99c4'
 const midparentalHeightStrokeWidth=0.25;
 const midparentalHeightFill='#df99c4';
@@ -113,8 +107,7 @@ const RCPCHAxes = new AxesObject(
 
 const RCPCHMeasurements = new MeasurementsObject(
   measurementsFill,
-  measurementsStroke,
-  measurementsSize
+  highlightedMeasurementFill
 );
 
 const RCPCHThemeTraditionalGirl = new ChartTheme(

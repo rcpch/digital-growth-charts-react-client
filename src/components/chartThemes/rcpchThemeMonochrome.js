@@ -36,8 +36,7 @@ const centileWidth = 1.5;
 
 const axisstroke = '#000000';
 const measurementsFill = '#000000';
-const measurementsStroke = '#000000';
-const measurementsSize = 2;
+const highlightedMeasurementFill = "#000000"; // black
 const titleStyle = new TextStyleObject('Arial', '#000000', 14, 'bold');
 const subTitleStyle = new TextStyleObject('Arial', '#000000', 14, 'normal');
 const midparentalHeightStroke="#d3d3d3";
@@ -106,8 +105,7 @@ const RCPCHAxes = new AxesObject(
 
 const RCPCHMeasurements = new MeasurementsObject(
   measurementsFill,
-  measurementsStroke,
-  measurementsSize
+  highlightedMeasurementFill
 );
 
 const RCPCHThemeMonochrome = new ChartTheme(

@@ -335,27 +335,21 @@ export class CentilesObject{
 }
 
 export class MeasurementsObject{
-    constructor(measurementFill, measurementStroke, measurementSize){
-        this.measurementFill=measurementFill        
-        this.measurementSize=measurementSize
+    constructor(measurementFill, highlightedMeasurementFill){
+        this.measurementFill=measurementFill;      
+        this.highlightedMeasurementFill=highlightedMeasurementFill;
            }
     get measurementFill(){
-        return this._measurementFill
+        return this._measurementFill;
     }
-    get measurementStroke(){
-        return this._measurementStroke
-    }
-    get measurementSize(){
-        return this._measurementSize
+    get highlightedMeasurementFill(){
+        return this._hightlightedMeasurementFill;
     }
     set measurementFill(val){
-        this._measurementFill=val
+        this._measurementFill=val;
     }
-    set measurementStroke(val){
-        this._measurementStroke=val
-    }
-    set measurementSize(val){
-        this._measurementSize=val
+    set highlightedMeasurementFill(val){
+        this._hightlightedMeasurementFill=val;
     }
 }
 

@@ -28,20 +28,14 @@ font: Montserrat normal
 const centileColour = '#7159aa';
 const pubertyFill = '#c6bddd';
 const tooltipBackGroundColour = '#fdc300';
-// const tooltipTextColour = "#FFFFFF"
 const gridlineColour = '#d9d9d9';
 const gridlineWidth = 0.25;
 const backgroundColour = '#FFFFFF';
 const centileWidth = 1.5;
-// const axisLabelColour = "#000000"
 const axisstroke = '#000000';
 const measurementsFill = '#000000';
-const measurementsStroke = '#000000';
-const measurementsSize = 2;
+const highlightedMeasurementFill = "#e60700"; //red
 
-// const axisLabelSize = 10
-// const tickLabelSize = 8
-// const axisLabelFont = "Montserrat"
 const midparentalHeightStroke = "#8d7abb";
 const midparentalHeightStrokeWidth = 0.25;
 const midparentalHeightFill="#e2ddee"
@@ -111,8 +105,7 @@ const RCPCHAxes = new AxesObject(
 
 const RCPCHMeasurements = new MeasurementsObject(
   measurementsFill,
-  measurementsStroke,
-  measurementsSize
+  highlightedMeasurementFill
 );
 
 const RCPCHTheme1 = new ChartTheme(
