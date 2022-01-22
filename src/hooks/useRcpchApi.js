@@ -4,6 +4,10 @@ import axios from 'axios';
 import deepCopy from '../functions/deepCopy';
 
 const fetchFromApi = async (inputParameters, reference, mode) => {
+  /*
+  This code snippet makes an API call direct to the digital growth charts server
+  It uses a development API key stored in .env which is unsafe
+
   let url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/${reference}/${mode}`;
   const headers = process.env.REACT_APP_API_KEY
     ? {
@@ -17,6 +21,26 @@ const fetchFromApi = async (inputParameters, reference, mode) => {
     method: 'POST',
     headers,
   });
+  
+  
+  This code snippet directs the form data to a node server which holds the API key and makes the 
+  call to the digital growth chart server.
+  Cors is used to constrain accepted domains to the react demo client
+  */
+  const nodeURL = 'http://localhost:8001/rcpchgrowth'
+  const options = {
+    reference: reference,
+    mode: mode,
+    formdata: inputParameters
+  }
+  const headers = { 'Content-Type': 'application/json' };
+  const response = await axios({
+    url: nodeURL,
+    data: options,
+    method: 'POST',
+    headers: headers
+  });
+
   return response.data;
 };
 
@@ -41,21 +65,7 @@ const makeInitialState = () => {
       ofc: [],
     }
   };
-  // const midParentalHeightRequest = {
-  //   height_paternal: null,
-  //   height_maternal: null,
-  //   sex: null
-  // }
-  // const midParentalHeightResponse = {
-  //   mid_parental_height: null,
-  //   mid_parental_height_sds: null,
-  //   mid_parental_height_centile: null,
-  //   mid_parental_height_centile_data: [],
-  //   mid_parental_height_upper_centile_data: [],
-  //   mid_parental_height_lower_centile_data: [],
-  //   mid_parental_height_lower_value: null,
-  //   mid_parental_height_upper_value: null
-  // }
+ 
   return {
     calculation: {
       input: measurements,
