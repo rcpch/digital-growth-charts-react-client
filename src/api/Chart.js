@@ -3,6 +3,9 @@ import { Dimmer, Loader } from 'semantic-ui-react';
 
 import { RCPCHChart } from '@rcpch/digital-growth-charts-react-component-library';
 
+import { addToClipboard } from '../functions/addToClipboard';
+import { canvasFromSVG } from '../functions/canvasFromSVG';
+
 function ChartData(props) {
   const isLoading = props.isLoading;
   const titles = setTitle(props);
@@ -27,9 +30,17 @@ function ChartData(props) {
         axisStyle={props.axisStyle}
         enableZoom
         chartType={props.chartType}
+        enableExport={true}
+        exportChartCallback={exportChartCallback}
       />
     </div>
   );
+}
+
+function exportChartCallback(svg){
+  canvasFromSVG(svg).then(result => {
+    addToClipboard(result);
+  })
 }
 
 function setTitle(props) {
