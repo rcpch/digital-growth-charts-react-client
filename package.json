@@ -8,6 +8,7 @@
     "url": "https://github.com/rcpch/digital-growth-charts-react-client"
   },
   "homepage": "http://rcpch.github.io/digital-growth-charts-react-client",
+  "files": ["*"],
   "dependencies": {
     "@rcpch/digital-growth-charts-react-component-library": "rcpch/digital-growth-charts-react-component-library#sds-chart",
     "@testing-library/react": "^12.1.2",
