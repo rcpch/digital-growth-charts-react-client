@@ -9,16 +9,15 @@
   },
   "homepage": "http://rcpch.github.io/digital-growth-charts-react-client",
   "dependencies": {
-    "@rcpch/digital-growth-charts-react-component-library": "github:rcpch/digital-growth-charts-react-component-library#sds-chart",
-    "@testing-library/react": "^9.5.0",
+    "@rcpch/digital-growth-charts-react-component-library": "rcpch/digital-growth-charts-react-component-library#sds-chart",
+    "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.21.1",
-    "craco-less": "^1.17.0",
     "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "^4.0.3",
-    "semantic-ui-react": "^0.88.2",
+    "semantic-ui-react": "^2.0.0",
     "styled-components": "^5.2.3"
   },
   "scripts": {
