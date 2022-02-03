@@ -27,8 +27,8 @@ const fetchFromApi = async (inputParameters, reference, mode) => {
   call to the digital growth chart server.
   Cors is used to constrain accepted domains to the react demo client
   */
-  // const nodeURL = 'https://rcpch-dgc-demoproxyserver.azurewebsites.net/rcpchgrowth'
-  const nodeURL = 'http://localhost:8001/rcpchgrowth'
+  const nodeURL = 'https://rcpch-dgc-demoproxyserver.azurewebsites.net/rcpchgrowth'
+  // const nodeURL = 'http://localhost:8001/rcpchgrowth'
   const options = {
     reference: reference,
     mode: mode,
