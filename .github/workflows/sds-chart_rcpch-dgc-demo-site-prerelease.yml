@@ -9,6 +9,9 @@ on:
       - sds-chart
   workflow_dispatch:
 
+env: 
+  AZURE_WEBAPP_PACKAGE_PATH: 'build'
+
 jobs:
   build:
     runs-on: ubuntu-latest
