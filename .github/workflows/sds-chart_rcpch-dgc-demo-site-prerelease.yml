@@ -9,8 +9,8 @@ on:
       - sds-chart
   workflow_dispatch:
 
-env: 
-  AZURE_WEBAPP_PACKAGE_PATH: '/'
+env:
+  AZURE_WEBAPP_PACKAGE_PATH: '.'
 
 jobs:
   build:
