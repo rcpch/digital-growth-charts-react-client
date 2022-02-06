@@ -24,6 +24,7 @@ jobs:
       - name: npm install, build, and test
         run: |
           npm install
+        working-directory: 
       
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
@@ -38,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: 'production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
@@ -55,7 +56,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'rcpch-dgc-demo-site-prerelease'
-          slot-name: 'Production'
+          slot-name: 'production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FD61308F54DD443EABADD57A04357B25 }}
           package: .
-          publish_dir: ./build
