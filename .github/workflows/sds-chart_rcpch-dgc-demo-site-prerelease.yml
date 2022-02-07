@@ -9,6 +9,9 @@ on:
       - sds-chart
   workflow_dispatch:
 
+env:
+  AZURE_WEBAPP_PACKAGE_PATH: 'build' 
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,7 +26,7 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          npm install --only=dev
+          npm install
           npm run build
       
       - name: Zip artifact for deployment
@@ -58,4 +61,4 @@ jobs:
           app-name: 'rcpch-dgc-demo-site-prerelease'
           slot-name: 'production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FD61308F54DD443EABADD57A04357B25 }}
-          package: .
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
