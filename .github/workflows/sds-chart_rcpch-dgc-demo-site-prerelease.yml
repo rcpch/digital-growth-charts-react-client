@@ -10,7 +10,9 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_PACKAGE_PATH: '.' 
+  AZURE_WEBAPP_NAME: rcpchgrowth-react
+  AZURE_WEBAPP_PACKAGE_PATH: '.'
+  NODE_VERSION: '17.x' 
 
 jobs:
   build:
@@ -22,7 +24,7 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v1
         with:
-          node-version: '16.x'
+          node-version: '17.x'
 
       - name: npm install, build, and test
         run: |
@@ -58,7 +60,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'rcpch-dgc-demo-site-prerelease'
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
           slot-name: 'production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FD61308F54DD443EABADD57A04357B25 }}
           package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
