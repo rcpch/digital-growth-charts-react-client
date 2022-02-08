@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: rcpchgrowth-react
+  AZURE_WEBAPP_NAME: rcpch-dgc-demo-site-prerelease
   AZURE_WEBAPP_PACKAGE_PATH: '.'
   NODE_VERSION: '16.x' 
 
