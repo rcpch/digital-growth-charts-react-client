@@ -76,8 +76,8 @@ const RCPCHChart = new ChartObject(
   '#CDCDCD',
   '#CDCDCD',
   infoBoxTextStyle,
-  '#E497C1',
-  '#cb3083',
+  '#c6bddd',
+  '#7159aa',
   '#FFFFFF'
 );
 

@@ -560,7 +560,7 @@ const MeasurementForm = (props) => {
                 type="submit"
                 fluid
                 disabled={!form_valid}
-                color="pink"
+                color="black"
                 icon="line graph"
                 labelPosition="right"
               />
@@ -580,8 +580,6 @@ const MeasurementForm = (props) => {
               />
             </Segment>
           )}
-        {/* </Segment> */}
-        {/* <Segment> */}
         
           <UtilitiesForm
             utilitiesFormDataSubmit={handleUtilitiesDataSubmit}

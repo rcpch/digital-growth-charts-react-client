@@ -348,6 +348,7 @@ function MeasurementSegment() {
             updateGlobalState={updateGlobalState}
             className="measurement-form"
             handleUtilitiesFormDataSubmit={utilitiesFormDataSubmit}
+            themeColour={centileStyle.centileStroke}
           />
         </Tab.Pane>
       ),
@@ -411,7 +412,7 @@ function MeasurementSegment() {
                     <Button
                       onClick={handleCentileSDS}
                       // active={Centile}
-                      color={'pink'}
+                      color="black"
                     >
                       {Centile ? "Show SDS Charts" : "Show Centile Charts"}
                     </Button>

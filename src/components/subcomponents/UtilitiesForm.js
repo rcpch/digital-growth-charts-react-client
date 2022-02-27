@@ -63,7 +63,7 @@ const UtilitiesForm = (props) => {
                 <Form.Field>
                     <Button 
                         disabled={props.maternalHeight && props.paternalHeight ? false : true}
-                        color={'pink'}
+                        color="black"
                         fluid={true}
                         type={"submit"}
                     >Calculate Mid-parental Height

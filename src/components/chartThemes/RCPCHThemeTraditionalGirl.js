@@ -78,8 +78,8 @@ const RCPCHChart = new ChartObject(
   tooltipBackgroundColour,
   tooltipBackgroundColour,
   infoBoxTextStyle,
-  '#E497C1',
-  '#cb3083',
+  '#df99c4',
+  '#c9559d',
   '#FFFFFF'
 );
 
