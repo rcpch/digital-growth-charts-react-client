@@ -39,7 +39,7 @@ const measurementsFill = '#000000';
 const highlightedMeasurementFill = "#000000"; // black
 const titleStyle = new TextStyleObject('Arial', '#000000', 14, 'bold');
 const subTitleStyle = new TextStyleObject('Arial', '#000000', 14, 'normal');
-const midparentalHeightStroke="#d3d3d3";
+const midparentalHeightStroke="#000000";
 const midparentalHeightStrokeWidth=1.5;
 const midparentalHeightFill = "#b3b3b3";
 

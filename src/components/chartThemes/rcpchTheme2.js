@@ -37,7 +37,7 @@ const centileWidth = 1.5;
 const axisstroke = '#000000';
 const measurementsFill = '#000000';
 const highlightedMeasurementFill = "#7159aa"; // purple
-const midparentalHeightStroke = '#ffc080'
+const midparentalHeightStroke = '#ff8000'
 const midparentalHeightStrokeWidth = 0.25
 const midparentalHeightFill='#ffc080'
 

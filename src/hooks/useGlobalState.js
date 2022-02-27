@@ -11,7 +11,11 @@ const makeGlobalState = () => {
     units: 'cm',
     measurementMethodActiveIndex: 0,
     sex: 'male',
-    midparentalHeightData: {
+    parentalHeights: {
+      height_maternal: null,
+      height_paternal: null,
+    },
+    'mid-parental-height': {
       mid_parental_height: null,
       mid_parental_height_sds: null,
       mid_parental_height_centile: null,
@@ -61,9 +65,6 @@ const useGlobalState = () => {
                 break;
               case 1: 
                 mutable.mode = 'fictional-child-data';
-                break;
-              case 2: 
-                mutable.mode = 'mid-parental-height';
                 break;
               default:
                 mutable.mode = 'calculation';
@@ -158,16 +159,10 @@ const useGlobalState = () => {
           case "mid-parental-height":
             if (newValue==="reset"){
               const empty = {
-                mid_parental_height: null,
-                mid_parental_height_sds: null,
-                mid_parental_height_centile: null,
-                mid_parental_height_centile_data: null,
-                mid_parental_height_lower_centile_data: null,
-                mid_parental_height_upper_centile_data: null,
-                mid_parental_height_lower_value: null,
-                mid_parental_height_upper_value: null
+                height_maternal: null,
+                height_paternal: null
               }
-              mutable.midparentalHeightData = empty;
+              mutable.parentalHeights = empty;
             } else {
               mutable.midparentalHeightData = newValue;
             }

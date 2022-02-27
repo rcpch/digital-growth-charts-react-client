@@ -22,18 +22,20 @@ const fetchFromApi = async (inputParameters, reference, mode) => {
     headers,
   });
   
-  
   This code snippet directs the form data to a node server which holds the API key and makes the 
   call to the digital growth chart server.
   Cors is used to constrain accepted domains to the react demo client
   */
-  const nodeURL = 'https://rcpch-dgc-demoproxyserver.azurewebsites.net/rcpchgrowth'
-  // const nodeURL = 'http://localhost:8001/rcpchgrowth'
+  // const nodeURL = 'https://rcpch-dgc-demoproxyserver.azurewebsites.net/rcpchgrowth'
+  const nodeURL = 'http://localhost:8001/rcpchgrowth'
+  // const nodeURL = `http://localhost:8000/${reference}/${mode}`
+
   const options = {
     reference: reference,
     mode: mode,
     formdata: inputParameters
   }
+
   const headers = { 'Content-Type': 'application/json' };
   const response = await axios({
     url: nodeURL,
@@ -46,6 +48,18 @@ const fetchFromApi = async (inputParameters, reference, mode) => {
 };
 
 const makeInitialState = () => {
+
+  const midParentalHeights = {
+    mid_parental_height: null,
+    mid_parental_height_sds: null,
+    mid_parental_height_centile: null,
+    mid_parental_height_centile_data: null,
+    mid_parental_height_lower_centile_data: null,
+    mid_parental_height_upper_centile_data: null,
+    mid_parental_height_lower_value: null,
+    mid_parental_height_upper_value: null
+  }
+
   const measurements = {
     turner: {
       height: [],
@@ -64,11 +78,19 @@ const makeInitialState = () => {
       weight: [],
       bmi: [],
       ofc: [],
+      parentalHeights:{
+        height_maternal: null,
+        height_paternal: null,
+        sex: null
+      },
+      midParentalHeights: midParentalHeights
     }
   };
+  
+  
  
   return {
-    calculation: {
+    'calculation': {
       input: measurements,
       output: measurements,
     },
@@ -87,12 +109,15 @@ const makeInitialState = () => {
 
 const useRcpchApi = (measurementMethod, reference, mode = 'calculation') => {
   const [apiState, setApiState] = useState(makeInitialState);
-
   const fetchResult = useCallback(
     (newInput) => {
       setApiState((old) => {
-        const mutable = deepCopy(old);
-        mutable[mode].input[reference][measurementMethod].push(newInput);
+        let mutable = deepCopy(old);
+        if (newInput.height_maternal && newInput.height_paternal){
+          mutable[mode].input[reference]['parentalHeights']=newInput;
+        } else {
+          mutable[mode].input[reference][measurementMethod].push(newInput);
+        }
         mutable.isLoading = true;
         return mutable;
       });
@@ -157,67 +182,81 @@ const useRcpchApi = (measurementMethod, reference, mode = 'calculation') => {
   useEffect(() => {
     let ignore = false;
     if (apiState.isLoading) {
-      const relevantArray = apiState[mode].input[reference][measurementMethod];
-      let latestInput = deepCopy(relevantArray[relevantArray.length - 1]);
-      fetchFromApi(latestInput, reference, mode)
-        .then((result) => {
-          if (!ignore) {
-            setApiState((old) => {
-              const mutable = deepCopy(old);
-              let measurementError = '';
-              let resultAsArray = null;
-              if (mode === 'fictional-child-data') {
-                resultAsArray = result;
-              } 
-              if (mode === 'calculation') {
-                resultAsArray = mutable[mode].output[reference][
-                  measurementMethod
-                ].concat([result]);
-              }
-              for (const singleResult of resultAsArray) {
-                if (resultAsArray.length < 2){
-                  // only register errors for individual measurements
-                  measurementError =
-                    singleResult.measurement_calculated_values
-                      .corrected_measurement_error ||
-                    singleResult.measurement_calculated_values
-                      .chronological_measurement_error;
-                }
-                if (measurementError) {
-                  if (mode === 'fictional-child-data') {
-                    mutable[mode].input[reference][measurementMethod] = [];
-                  } else {
-                    const { newInput } = removeLastFromArrays(old);
-                    mutable[mode].input[reference][measurementMethod] =
-                      newInput;
-                  }
-                  mutable.errors = {
-                    errors: true,
-                    message: `The server could not process the measurements. Details: ${measurementError}`,
-                  };
+      let relevantArray;
+      let latestInput;
+      if (mode==='mid-parental-height'){
+        latestInput = apiState['calculation'].input[reference]['parentalHeights'];
+      } else {
+        relevantArray = apiState[mode].input[reference][measurementMethod];
+        latestInput = deepCopy(relevantArray[relevantArray.length - 1]);
+      }
+
+        fetchFromApi(latestInput, reference, mode)
+          .then((result) => {
+            if (!ignore) {
+              setApiState((old) => {
+                const mutable = deepCopy(old);
+                let measurementError = '';
+                let resultAsArray = null;
+                if (mode === 'mid-parental-height') {
+                  mutable.errors = { errors: false, message: 'success' };
+                  mutable['calculation'].output[reference]['parentalheights']=latestInput;
+                  mutable['calculation'].output[reference]['midParentalHeights']=result;
                   mutable.isLoading = false;
                   return mutable;
                 }
-              }
-              mutable[mode].output[reference][measurementMethod] = resultAsArray;
-              
-              mutable.errors = { errors: false, message: 'success' };
+                if (mode === 'fictional-child-data') {
+                  resultAsArray = result;
+                } 
+                if (mode === 'calculation') {
+                  resultAsArray = mutable[mode].output[reference][
+                    measurementMethod
+                  ].concat([result]);
+                }
+                for (const singleResult of resultAsArray) {
+                  if (resultAsArray.length < 2){
+                    // only register errors for individual measurements
+                    measurementError =
+                      singleResult.measurement_calculated_values
+                        .corrected_measurement_error ||
+                      singleResult.measurement_calculated_values
+                        .chronological_measurement_error;
+                  }
+                  if (measurementError) {
+                    if (mode === 'fictional-child-data') {
+                      mutable[mode].input[reference][measurementMethod] = [];
+                    } else {
+                      const { newInput } = removeLastFromArrays(old);
+                      mutable[mode].input[reference][measurementMethod] =
+                        newInput;
+                    }
+                    mutable.errors = {
+                      errors: true,
+                      message: `The server could not process the measurements. Details: ${measurementError}`,
+                    };
+                    mutable.isLoading = false;
+                    return mutable;
+                  }
+                }
+                mutable[mode].output[reference][measurementMethod] = resultAsArray;
+                mutable.errors = { errors: false, message: 'success' };
+                mutable.isLoading = false;
+                return mutable;
+              });
+            }
+          })
+          .catch((error) => {
+            setApiState((old) => {
+              const mutable = deepCopy(old);
+              const { newInput } = removeLastFromArrays(old);
+              mutable[mode].input[reference][measurementMethod] = newInput;
+              const errorForUser = `There has been a problem fetching the result from the server. Error details: ${error.message}`;
+              mutable.errors = { errors: true, message: errorForUser };
               mutable.isLoading = false;
               return mutable;
             });
-          }
-        })
-        .catch((error) => {
-          setApiState((old) => {
-            const mutable = deepCopy(old);
-            const { newInput } = removeLastFromArrays(old);
-            mutable[mode].input[reference][measurementMethod] = newInput;
-            const errorForUser = `There has been a problem fetching the result from the server. Error details: ${error.message}`;
-            mutable.errors = { errors: true, message: errorForUser };
-            mutable.isLoading = false;
-            return mutable;
           });
-        });
+      
     }
     return () => {
       ignore = true;
@@ -230,7 +269,7 @@ const useRcpchApi = (measurementMethod, reference, mode = 'calculation') => {
     clearBothActiveArrays,
     clearApiErrors,
     measurements: apiState[mode].input,
-    results: apiState[mode].output,
+    results: mode==='mid-parental-height' ? apiState['calculation'].output : apiState[mode].output,
     apiErrors: apiState.errors,
     isLoading: apiState.isLoading,
   };

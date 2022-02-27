@@ -34,11 +34,11 @@ const backgroundColour = '#FFFFFF';
 const centileWidth = 1.5;
 const axisstroke = '#000000';
 const measurementsFill = '#000000';
-const highlightedMeasurementFill = "#e60700"; //red
+const highlightedMeasurementFill = "#e60700"; 
 
-const midparentalHeightStroke = "#8d7abb";
-const midparentalHeightStrokeWidth = 0.25;
-const midparentalHeightFill="#e2ddee"
+const midparentalHeightStroke =  "#7159aa";
+const midparentalHeightStrokeWidth = 3.0;
+const midparentalHeightFill="#c6bddd"
 
 const titleStyle = new TextStyleObject('Arial', '#000000', 14, 'bold');
 const subTitleStyle = new TextStyleObject('Arial', '#000000', 14, 'normal');

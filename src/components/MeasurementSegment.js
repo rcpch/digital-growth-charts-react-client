@@ -20,9 +20,7 @@ import { ErrorModal }   from '../components/subcomponents/ErrorModal';
 import '../index.css';
 import FictionalChildForm from './FictionalChildForm';
 import useRcpchApi from '../hooks/useRcpchApi';
-import returnMidParentalHeight from '../hooks/returnMidParentalHeight';
 import useGlobalState from '../hooks/useGlobalState';
-import UtilitiesForm from './UtilitiesForm';
 
 const defaultTheme = RCPCHThemeMonochrome;
 
@@ -41,7 +39,6 @@ function MeasurementSegment() {
 
   const [flip, setFlip] = useState(false); // flag to determine if results or chart showing
   const [errorModal, setErrorModal] = useState(InitalErrorModalState());
-
   const { globalState, makeGlobalStateUpdater } = useGlobalState();
 
   const {
@@ -167,12 +164,13 @@ function MeasurementSegment() {
   };
 
   const utilitiesFormDataSubmit = (formData) => {
-    const result = returnMidParentalHeight(formData)
-    result.then(final => {
-      updateGlobalState('mid-parental-height', final);
-    }).catch(error => {
-      console.log(error);
-    })
+    // delegate function from midparental height calculation
+    fetchResult(formData);
+    if (isLoading){
+      return true
+    } else {
+      return false
+    }
   }
 
   const handleChangeTheme = (event, { value }) => {
@@ -296,7 +294,7 @@ function MeasurementSegment() {
               sex={sex}
               measurementMethod={details.measurementName}
               measurementsArray={results[reference][details.measurementName]}
-              midParentalHeightData={globalState.midparentalHeightData}
+              midParentalHeightData={results[reference]['midParentalHeights']}
               chartStyle={chartStyle}
               axisStyle={axisStyle}
               gridlineStyle={defaultTheme.gridlines}
@@ -349,6 +347,7 @@ function MeasurementSegment() {
             globalState={globalState}
             updateGlobalState={updateGlobalState}
             className="measurement-form"
+            handleUtilitiesFormDataSubmit={utilitiesFormDataSubmit}
           />
         </Tab.Pane>
       ),
@@ -364,23 +363,7 @@ function MeasurementSegment() {
           />
         </Tab.Pane>
       ),
-    },
-    {
-      menuItem: 'Utilities',
-      render: () =>  globalState.reference==="uk-who" ? (
-        <Tab.Pane>
-          <UtilitiesForm
-            utilitiesFormDataSubmit={utilitiesFormDataSubmit}
-            globalState={globalState}
-            updateGlobalState={updateGlobalState}
-          />
-        </Tab.Pane>
-      ) : (
-        <Tab.Pane>
-          <h5>Mid-parental height only valid for UK-WHO reference.</h5>
-        </Tab.Pane>
-      )
-    },
+    }
   ];
 
   const ThemeSelection = () => (
@@ -398,7 +381,6 @@ function MeasurementSegment() {
 
   return (
     <React.Fragment>
-      {/* <Container> */}
       <Grid padded>
         <Grid.Row>
           <Grid.Column width={6}>
@@ -426,10 +408,10 @@ function MeasurementSegment() {
                     <ThemeSelection />
                   </Grid.Column>
                   <Grid.Column textAlign="right">
-                    <Button 
-                      toggle
+                    <Button
                       onClick={handleCentileSDS}
-                      active={Centile}
+                      // active={Centile}
+                      color={'pink'}
                     >
                       {Centile ? "Show SDS Charts" : "Show Centile Charts"}
                     </Button>
@@ -446,7 +428,7 @@ function MeasurementSegment() {
           </Grid.Column>
         </Grid.Row>
       </Grid>
-      {/* </Container> */}
+      
       <ErrorModal
         title={errorModal.title}
         body={errorModal.body}

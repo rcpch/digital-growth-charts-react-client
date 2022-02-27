@@ -9,7 +9,7 @@ import { canvasFromSVG } from '../functions/canvasFromSVG';
 function ChartData(props) {
   const isLoading = props.isLoading;
   const titles = setTitle(props);
-
+  
   return (
     <div>
       <Dimmer active={isLoading}>

@@ -42,7 +42,7 @@ const highlightedMeasurementFill = "#000000"; // black
 // const axisLabelSize = 10
 // const tickLabelSize = 8
 // const axisLabelFont = "Montserrat"
-const midparentalHeightStroke='#66c8eb';
+const midparentalHeightStroke='#00a3de';
 const midparentalHeightStrokeWidth=0.25;
 const midparentalHeightFill='#66c8eb';
 
