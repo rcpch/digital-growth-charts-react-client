@@ -14,7 +14,7 @@ export const TableBody = (props) => {
             {measurement.measurement_dates.chronological_calendar_age}
           </Table.Cell>
           <Table.Cell>
-            {measurement.measurement_dates.corrected_calendar_age}
+            { measurement.measurement_dates.corrected_calendar_age ?? measurement.plottable_data.centile_data.corrected_decimal_age_data.corrected_gestational_age }
           </Table.Cell>
         </Table.Row>
         <Table.Row>

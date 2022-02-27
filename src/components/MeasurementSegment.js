@@ -416,10 +416,11 @@ function MeasurementSegment() {
                       {Centile ? "Show SDS Charts" : "Show Centile Charts"}
                     </Button>
                     <Button
+                      disabled={!globalState.isDataPresent}
                       className="selectUpperMargin"
                       onClick={handleFlipResults}
-                    >
-                      Results
+                      >
+                      {flip ? 'Chart' : 'Results'}
                     </Button>
                   </Grid.Column>
                 </Grid.Row>

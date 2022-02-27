@@ -47,7 +47,6 @@ const MeasurementForm = (props) => {
     const [showBoneAge, setShowBoneAge] = useState(false);
     const [showEvents, setShowEvents] = useState(false);
 
-
   const handleChangeReference = ({ value }) => { 
     if (value !== "uk-who"){
       props.updateGlobalState('mid-parental-height', 'reset'); //midparental height on present on UK-WHO reference
