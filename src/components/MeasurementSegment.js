@@ -313,7 +313,7 @@ function MeasurementSegment() {
               sex={sex}
               measurementMethod={details.measurementName}
               measurementsArray={results[reference]}
-              midParentalHeightData={globalState.midparentalHeightData}
+              midParentalHeightData={results[reference]['midParentalHeights']}
               chartStyle={chartStyle}
               axisStyle={axisStyle}
               gridlineStyle={defaultTheme.gridlines}

@@ -34,7 +34,7 @@ const backgroundColour = '#FFFFFF';
 const centileWidth = 1.5;
 const axisstroke = '#000000';
 const measurementsFill = '#000000';
-const highlightedMeasurementFill = "#e60700"; 
+const highlightedMeasurementFill = '#7159aa';
 
 const midparentalHeightStroke =  "#7159aa";
 const midparentalHeightStrokeWidth = 3.0;

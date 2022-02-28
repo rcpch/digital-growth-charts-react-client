@@ -37,7 +37,11 @@ const UtilitiesForm = (props) => {
                             onChange={props.changeMaternalHeight}
                             placeholder="e.g. 167"
                             value={props.maternalHeight ? props.maternalHeight : ''}
-                            label={"cm"}
+                            label={{
+                                content: "cm",
+                                basic: true,
+                                color: 'black'
+                            }}
                             labelPosition="right"
                         />
                     </Form.Field>
@@ -55,8 +59,13 @@ const UtilitiesForm = (props) => {
                             placeholder="e.g. 179"
                             onChange={props.changePaternalHeight}
                             value={props.paternalHeight ? props.paternalHeight : ''}
-                            label={"cm"}
+                            label={{
+                                content: "cm",
+                                basic: true,
+                                color: 'black'
+                            }}
                             labelPosition="right"
+                            
                         />
                     </Form.Field>
                 </Form.Group>

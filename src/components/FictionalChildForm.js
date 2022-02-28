@@ -191,7 +191,7 @@ const FictionalChildForm = (props) => {
           label={{
             content: 'years',
             basic: true,
-            color: 'blue',
+            color: 'black',
           }}
           labelPosition="right"
           onChange={handleObservationChange}
@@ -206,7 +206,7 @@ const FictionalChildForm = (props) => {
           label={{
             content: 'years',
             basic: true,
-            color: 'blue',
+            color: "black",
           }}
           labelPosition="right"
           onChange={handleObservationChange}
@@ -293,7 +293,7 @@ const FictionalChildForm = (props) => {
           content="Generate Growth Data"
           type="submit"
           fluid
-          color="pink"
+          color="black"
           icon="line graph"
           labelPosition="right"
           disabled={errorMessage !== ''}
