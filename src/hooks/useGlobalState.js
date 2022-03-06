@@ -40,7 +40,7 @@ const makeGlobalState = () => {
     clearMeasurement: false,
     resetCurrent: false,
     undoLast: false,
-    isDataPresent: false,
+    isDataPresent: false
   };
 };
 
@@ -156,17 +156,17 @@ const useGlobalState = () => {
               mutable.sex = newValue;
             }
             break;
-          case "mid-parental-height":
-            if (newValue==="reset"){
-              const empty = {
-                height_maternal: null,
-                height_paternal: null
-              }
-              mutable.parentalHeights = empty;
-            } else {
-              mutable.midparentalHeightData = newValue;
-            }
-            break;
+          // case "mid-parental-height":
+          //   if (newValue==="reset"){
+          //     const empty = {
+          //       height_maternal: null,
+          //       height_paternal: null
+          //     }
+          //     mutable.parentalHeights = empty;
+          //   } else {
+          //     mutable.midparentalHeightData = newValue;
+          //   }
+          //   break;
           default:
             mutable[name] = newValue;
         }

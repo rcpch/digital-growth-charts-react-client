@@ -28,7 +28,8 @@ function MeasurementSegment() {
   const [chartStyle, setChartSyle] = useState(defaultTheme.chart);
   const [axisStyle, setAxisStyle] = useState(defaultTheme.axes);
   const [centileStyle, setCentileStyle] = useState(defaultTheme.centiles);
-  const [Centile, setCentile] = useState(true);
+  const [sdsStyle, setSDSStyle] = useState(defaultTheme.sds)
+  const [centile, setCentile] = useState(true);
   const [measurementStyle, setMeasurementStyle] = useState(
     defaultTheme.measurements
   );
@@ -203,6 +204,7 @@ function MeasurementSegment() {
     }
 
     setCentileStyle(selectedTheme.centiles);
+    setSDSStyle(selectedTheme?.sds);
     setChartSyle(selectedTheme.chart);
     setMeasurementStyle(selectedTheme.measurements);
     setAxisStyle(selectedTheme.axes);
@@ -214,7 +216,7 @@ function MeasurementSegment() {
   };
 
   const handleCentileSDS = () => {
-    setCentile(!Centile)
+    setCentile(!centile)
   }
 
   const handleResults = (latestResult) => {
@@ -281,15 +283,21 @@ function MeasurementSegment() {
     }
   };
 
-  const panes = panesBlueprint.map((details) => {
+
+  const panes = panesBlueprint.map((details, index) => {
+    
     return {
       menuItem: details.menuItem,
-      render: () => {
-        return Centile ? 
-        (
-          <Tab.Pane attached="top" disabled={disabled[details.measurementName]}>
+      render: () => 
+        {return centile ? 
+          
+        <Tab.Pane 
+          attached="top" 
+          disabled={disabled[details.measurementName]}
+        >
+          
             <ChartData
-              key={details.measurementName}
+              key={`${details.measurementName}-${index}-centile`}
               reference={reference}
               sex={sex}
               measurementMethod={details.measurementName}
@@ -303,34 +311,42 @@ function MeasurementSegment() {
               isLoading={isLoading}
               chartType="centile"
             />
-          </Tab.Pane>
-        ) :
-        (
-          <Tab.Pane attached="top">
-            <ChartData
-              key={details.measurementName}
-              reference={reference}
-              sex={sex}
-              measurementMethod={details.measurementName}
-              measurementsArray={results[reference]}
-              midParentalHeightData={results[reference]['midParentalHeights']}
-              chartStyle={chartStyle}
-              axisStyle={axisStyle}
-              gridlineStyle={defaultTheme.gridlines}
-              centileStyle={centileStyle}
-              measurementStyle={measurementStyle}
-              isLoading={isLoading}
-              chartType="sds"
-            />
-          </Tab.Pane>
-        )
+
+        </Tab.Pane>
+
+        :
+        
+        <Tab.Pane 
+          attached="top"
+        >
+          <ChartData
+            key={`${details.measurementName}-${index}-sds`}
+            reference={reference}
+            sex={sex}
+            measurementMethod={details.measurementName}
+            measurementsArray={results[reference]}
+            midParentalHeightData={results[reference]['midParentalHeights']}
+            chartStyle={chartStyle}
+            axisStyle={axisStyle}
+            gridlineStyle={defaultTheme.gridlines}
+            centileStyle={centileStyle}
+            sdsStyle={sdsStyle}
+            measurementStyle={measurementStyle}
+            isLoading={isLoading}
+            chartType="sds"
+          />
+        </Tab.Pane>}  
       }
-    };
   });
 
   const TabPanes = () => (
       <Tab
-        menu={{ attached: 'top' }}
+        key={"tabPanes"}
+        menu={{ 
+          attached: 'top',
+          secondary: true,
+          pointing: true
+        }}
         panes={panes}
         activeIndex={measurementMethodActiveIndex}
         onTabChange={handleTabChange}
@@ -339,9 +355,13 @@ function MeasurementSegment() {
 
   const FormPanes = [
     {
+      key:'measurements',
       menuItem: 'Measurements',
       render: () => (
-        <Tab.Pane attached={false}>
+        <Tab.Pane 
+          attached={false}
+          key={'measurements'}
+        >
           <MeasurementForm
             handleMeasurementResult={handleResults}
             globalState={globalState}
@@ -354,13 +374,20 @@ function MeasurementSegment() {
       ),
     },
     {
-      menuItem: 'Examples',
+      key:'examples',
+      menuItem: {
+        content: 'Examples',
+        color: 'black'
+      },
       render: () => (
-        <Tab.Pane>
+        <Tab.Pane
+          key={'examples'}
+        >
           <FictionalChildForm
             fictionalFormDataSubmit={fictionalFormDataSubmit}
             globalState={globalState}
             updateGlobalState={updateGlobalState}
+            handleUtilitiesFormDataSubmit={utilitiesFormDataSubmit}
           />
         </Tab.Pane>
       ),
@@ -385,10 +412,17 @@ function MeasurementSegment() {
       <Grid padded>
         <Grid.Row>
           <Grid.Column width={6}>
-            <Segment textAlign={'center'}>
+            <Segment 
+              textAlign={'center'}
+            >
               <Tab
+                key="measurementTabs"
                 panes={FormPanes}
-                menu={{ attached: false }}
+                menu={{ 
+                  attached: false,
+                  secondary: true,
+                  pointing: true
+                }}
                 onTabChange={handleModeChange}
                 activeIndex={modeActiveIndex}
               />
@@ -414,7 +448,7 @@ function MeasurementSegment() {
                       // active={Centile}
                       color="black"
                     >
-                      {Centile ? "Show SDS Charts" : "Show Centile Charts"}
+                      {centile ? "Show SDS Chart" : "Show Centile Charts"}
                     </Button>
                     <Button
                       disabled={!globalState.isDataPresent}
@@ -443,12 +477,25 @@ function MeasurementSegment() {
 }
 
 const panesBlueprint = [
-  { menuItem: 'Height', measurementName: 'height' },
-  { menuItem: 'Weight', measurementName: 'weight' },
-  { menuItem: 'BMI', measurementName: 'bmi' },
+  { 
+    menuItem: 'Height', 
+    measurementName: 'height', 
+    key: "Height" 
+  },
+  { 
+    menuItem: 'Weight', 
+    measurementName: 'weight', 
+    key: "Weight" 
+  },
+  { 
+    menuItem: 'BMI', 
+    measurementName: 'bmi', 
+    key: "BMI" 
+  },
   {
     menuItem: 'Head Circumference',
     measurementName: 'ofc',
+    key: "Head Circumference"
   }
 ];
 

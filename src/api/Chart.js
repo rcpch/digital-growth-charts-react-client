@@ -26,6 +26,7 @@ function ChartData(props) {
         chartStyle={props.chartStyle}
         measurementStyle={props.measurementStyle}
         centileStyle={props.centileStyle}
+        sdsStyle={props?.sdsStyle}
         gridlineStyle={props.gridlineStyle}
         axisStyle={props.axisStyle}
         enableZoom

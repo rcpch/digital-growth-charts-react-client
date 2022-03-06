@@ -3,6 +3,7 @@ import {
   ChartObject,
   GridlineObject,
   CentilesObject,
+  SDSObject,
   MeasurementsObject,
   AxesObject,
   TextStyleObject,
@@ -61,6 +62,12 @@ const axisLabelTextStyle = new TextStyleObject('Arial', '000000', 10, 'normal');
 const tickLabelTextStyle = new TextStyleObject('Arial', '000000', 8, 'normal');
 const chartPadding = new PaddingObject(50, 50, 25, 40);
 
+const lineStrokeWidth=1.5;
+const heightSDSStroke = "#7159aa";
+const weightSDSStroke = "#ff8000";
+const ofcSDSStroke = "#e60700";
+const bmiSDSStroke = "#c2a712";
+
 const RCPCHChart = new ChartObject(
   backgroundColour,
   700,
@@ -97,6 +104,14 @@ const RCPCHCentiles = new CentilesObject(
   midparentalHeightFill
 );
 
+const RCPCHSDS = new SDSObject(
+  lineStrokeWidth,
+  heightSDSStroke,
+  weightSDSStroke,
+  ofcSDSStroke,
+  bmiSDSStroke
+)
+
 const RCPCHAxes = new AxesObject(
   axisstroke,
   axisLabelTextStyle,
@@ -113,6 +128,7 @@ const RCPCHTheme2 = new ChartTheme(
   RCPCHGridlines,
   RCPCHAxes,
   RCPCHCentiles,
+  RCPCHSDS,
   RCPCHMeasurements
 );
 

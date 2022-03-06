@@ -270,8 +270,8 @@ const MeasurementForm = (props) => {
   const handlePaternalHeight=(event, data)=>{
     const maternalHeight = props.globalState['parentalHeights']['height_maternal'];
     const heights = {
-      'height_maternal': data.value,
-      'height_paternal': maternalHeight
+      'height_maternal': maternalHeight,
+      'height_paternal': data.value
     };
     props.updateGlobalState('parentalHeights', heights);
   }
@@ -299,7 +299,7 @@ const MeasurementForm = (props) => {
       height_paternal: event.target[1].value,
       sex: props.globalState['sex']
     }
-    props.updateGlobalState('mode', 'mid-parental-height');
+    props.updateGlobalState('isMidParentalHeightRequest', true);
     props.updateGlobalState(
       'parentalHeights', 
       {
@@ -413,10 +413,6 @@ const MeasurementForm = (props) => {
               </Form.Field>
             </Form.Group>
             
-            {/* <Header as="h5" textAlign="left">
-              Measurements
-            </Header> */}
-
             <Form.Group>
               <Form.Field required>
                 <label
@@ -466,7 +462,8 @@ const MeasurementForm = (props) => {
                     icon
                     fluid
                     labelPosition="left" 
-                    onClick={handleShowBoneAge }
+                    onClick={handleShowBoneAge}
+                    color='black'
                   >
                     <Icon name='hand paper outline'/>
                     Add Bone Age
@@ -481,6 +478,7 @@ const MeasurementForm = (props) => {
                   labelPosition="left" 
                   onClick={handleShowEvents}
                   fluid
+                  color='black'
                 >
                   <Icon name="bookmark outline"/>
                   Add Event
@@ -522,28 +520,38 @@ const MeasurementForm = (props) => {
                             }}
                           />
                       </Form.Field>
-                      <Button icon onClick={(e)=>{
-                        e.preventDefault();
-                        if (events[index]===''){
-                          return
-                        }
-                        let theEvents = events;
-                        theEvents.push('');
-                        setEvents(theEvents);
-                      }}>
-                            <Icon name="plus circle"/>
+                      <Button 
+                        icon
+                        circular
+                        onClick={(e)=>{
+                          e.preventDefault();
+                          if (events[index]===''){
+                            return
+                          }
+                          let theEvents = events;
+                          theEvents.push('');
+                          setEvents(theEvents);
+                        }}
+                      >
+                            <Icon 
+                              name="plus circle"
+                            />
                       </Button>
                       {
                         index === events.length-1 && 
-                          <Button icon onClick={(e) => {
-                            e.preventDefault();
-                            if(index===0){
-                              setEvents(['']);
-                              return
-                            }
-                            let newEvents = events.splice(index, 1);
-                            setEvents(newEvents);
-                          }}>
+                          <Button 
+                            icon
+                            circular 
+                            onClick={(e) => {
+                              e.preventDefault();
+                              if(index===0){
+                                setEvents(['']);
+                                return
+                              }
+                              let newEvents = events.splice(index, 1);
+                              setEvents(newEvents);
+                            }}
+                          >
                           <Icon name="minus circle"/>
                         </Button>
                       }
@@ -580,18 +588,19 @@ const MeasurementForm = (props) => {
               />
             </Segment>
           )}
-        
-          <UtilitiesForm
-            utilitiesFormDataSubmit={handleUtilitiesDataSubmit}
-            changeMaternalHeight={handleMaternalHeight}
-            changePaternalHeight={handlePaternalHeight}
-            maternalHeight={props.globalState.parentalHeights.height_maternal}
-            paternalHeight={props.globalState.parentalHeights.height_paternal}
-            removeMidParentalHeight={removeMidParentalHeight}
-            midParentalHeightDataPresent={midParentalHeightDataPresent()}
-          />
-          
-        {/* </Segment> */}
+
+          { props.globalState.reference === "uk-who" &&
+            <UtilitiesForm
+              utilitiesFormDataSubmit={handleUtilitiesDataSubmit}
+              changeMaternalHeight={handleMaternalHeight}
+              changePaternalHeight={handlePaternalHeight}
+              maternalHeight={props.globalState.parentalHeights.height_maternal}
+              paternalHeight={props.globalState.parentalHeights.height_paternal}
+              removeMidParentalHeight={removeMidParentalHeight}
+              midParentalHeightDataPresent={midParentalHeightDataPresent()}
+            />
+          }
+
       </Container>
     );
 }

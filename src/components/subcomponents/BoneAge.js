@@ -19,7 +19,11 @@ function BoneAgeTypeSelect(props) {
                     name="boneAge"
                     placeholder="e.g. 3.5"
                     labelPosition="right"
-                    label="years"
+                    label={{
+                        content: "years",
+                        basic: true,
+                        color: "black"
+                    }}
                     value={props.boneAge}
                     onChange={props.handleBoneAgeChange}
                 />
@@ -32,7 +36,11 @@ function BoneAgeTypeSelect(props) {
                     name="boneAgeSDS"
                     placeholder="e.g. -3.5"
                     labelPosition="right"
-                    label="SDS"
+                    label={{
+                        content: "SDS",
+                        basic: true,
+                        color: "black"
+                    }}
                     value={props.boneAgeSDS}
                     onChange={props.handleBoneAgeSDSChange}
                 />
@@ -43,7 +51,11 @@ function BoneAgeTypeSelect(props) {
                     name="boneAgeCentile"
                     placeholder="e.g. 50"
                     labelPosition="right"
-                    label="centile"
+                    label={{
+                        content: "centile",
+                        basic: true,
+                        color: "black"
+                    }}
                     value={props.boneAgeCentile}
                     onChange={props.handleBoneAgeCentileChange}
                 />

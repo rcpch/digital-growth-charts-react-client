@@ -1,41 +1,48 @@
 export class ChartTheme{
-    constructor(chart, gridlines, axes, centiles, measurements){
-        this.chart = chart
-        this.gridlines = gridlines
-        this.axes = axes
-        this.centiles = centiles
-        this.measurements = measurements
+    constructor(chart, gridlines, axes, centiles, sds, measurements){
+        this.chart = chart;
+        this.gridlines = gridlines;
+        this.axes = axes;
+        this.centiles = centiles;
+        this.sds = sds;
+        this.measurements = measurements;
     }
     get chart(){
-        return this._chart
+        return this._chart;
     }
     get gridlines(){
-        return this._gridlines
+        return this._gridlines;
     }
     get axes(){
-        return this._axes
+        return this._axes;
     }
     get centiles(){
-        return this._centiles
+        return this._centiles;
+    }
+    get sds(){
+        return this._sds;
     }
     get measurements(){
-        return this._measurements
+        return this._measurements;
     }
 
     set chart(val){
-        this._chart=val
+        this._chart=val;
     }
     set gridlines(val){
-        this._gridlines=val
+        this._gridlines=val;
     }
     set axes(val){
-        this._axes=val
+        this._axes=val;
     }
     set centiles(val){
-        this._centiles=val
+        this._centiles=val;
+    }
+    set sds(val){
+        this._sds=val;
     }
     set measurements(val){
-        this._measurements=val
+        this._measurements=val;
     }
 }
 
@@ -331,6 +338,47 @@ export class CentilesObject{
     }
     set midParentalAreaFill(val){
         this._midParentalAreaFill=val
+    }
+}
+
+export class SDSObject{
+    constructor(lineStrokeWidth, heightStroke, weightStroke, ofcStroke, bmiStroke){
+        this.lineStrokeWidth=lineStrokeWidth;
+        this.heightStroke=heightStroke;
+        this.weightStroke=weightStroke;
+        this.ofcStroke=ofcStroke;
+        this.bmiStroke=bmiStroke;
+    }
+    get lineStrokeWidth(){
+        return this._lineStrokeWidth;
+    }
+    get heightStroke(){
+        return this._heightStroke;
+    }
+    get weightStroke(){
+        return this._weightStroke;
+    }
+    get ofcStroke(){
+        return this._ofcStroke;
+    }
+    get bmiStroke(){
+        return this._bmiStroke;
+    }
+
+    set lineStrokeWidth(val){
+        this._lineStrokeWidth=val;
+    }
+    set heightStroke(val){
+        this._heightStroke=val;
+    }
+    set weightStroke(val){
+        this._weightStroke=val;
+    }
+    set bmiStroke(val){
+        this._bmiStroke=val;
+    }
+    set ofcStroke(val){
+        this._ofcStroke=val;
     }
 }
 

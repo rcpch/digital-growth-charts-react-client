@@ -8,6 +8,7 @@ import MeasurementMethodSelect from './subcomponents/MeasurementMethodSelect';
 import ReferenceSelect from './subcomponents/ReferenceSelect';
 import SexSelect from './subcomponents/SexChoice';
 import Slider from './subcomponents/Slider';
+import UtilitiesForm from './subcomponents/UtilitiesForm';
 
 import referenceOptions from '../selectData/referenceOptions';
 import sexOptions from '../selectData/sexOptions';
@@ -124,6 +125,58 @@ const FictionalChildForm = (props) => {
 
   const dynamicSexOptions = sexOptions.map(makeDynamic);
 
+  const handleMaternalHeight=(event, data)=>{
+    const paternalHeight = props.globalState['parentalHeights']['height_paternal'];
+    const heights = {
+      'height_maternal': data.value,
+      'height_paternal': paternalHeight
+    };
+    props.updateGlobalState('parentalHeights', heights);
+  }
+
+  const handlePaternalHeight=(event, data)=>{
+    const maternalHeight = props.globalState['parentalHeights']['height_maternal'];
+    const heights = {
+      'height_maternal': maternalHeight,
+      'height_paternal': data.value
+    };
+    props.updateGlobalState('parentalHeights', heights);
+  }
+
+  const removeMidParentalHeight=()=>{
+    props.updateGlobalState('mid-parental-height', 'reset');
+  }
+
+  const midParentalHeightDataPresent=()=>{
+    if (props.globalState['mid-parental-height'].mid_parental_height){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const handleUtilitiesDataSubmit=(event)=>{
+
+    if (event.target[0].value < 100 && event.target[1].value < 100){
+      return;
+    }
+    const formData = {
+      height_maternal: event.target[0].value,
+      height_paternal: event.target[1].value,
+      sex: props.globalState['sex']
+    }
+    props.updateGlobalState('isMidParentalHeightRequest', true);
+    props.updateGlobalState(
+      'parentalHeights', 
+      {
+        maternalHeight: event.target[0].value,
+        paternalHeight: event.target[1].value,
+      }
+    );
+    console.log(props);
+    props.handleUtilitiesFormDataSubmit(formData);
+  }
+
   useEffect(() => {
     switch (true) {
       case Number(startingAge) < 0:
@@ -150,7 +203,10 @@ const FictionalChildForm = (props) => {
   }, [startingAge, endingAge, interval, startSDS]);
 
   return (
-    <Form onSubmit={handleBigButtonPress}>
+    <div>
+    <Form 
+      onSubmit={handleBigButtonPress}
+    >
       <Form.Field>
         <ReferenceSelect
           handleChangeReference={handleChangeReference}
@@ -311,6 +367,19 @@ const FictionalChildForm = (props) => {
         </Form.Field>
       )}
     </Form>
+    
+    { props.globalState.reference === "uk-who" &&
+      <UtilitiesForm
+        utilitiesFormDataSubmit={handleUtilitiesDataSubmit}
+        changeMaternalHeight={handleMaternalHeight}
+        changePaternalHeight={handlePaternalHeight}
+        maternalHeight={props.globalState.parentalHeights.height_maternal}
+        paternalHeight={props.globalState.parentalHeights.height_paternal}
+        removeMidParentalHeight={removeMidParentalHeight}
+        midParentalHeightDataPresent={midParentalHeightDataPresent()}
+      />
+    }
+   </div>
   );
 };
 

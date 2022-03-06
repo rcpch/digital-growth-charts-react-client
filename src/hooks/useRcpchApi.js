@@ -94,16 +94,13 @@ const makeInitialState = () => {
       input: measurements,
       output: measurements,
     },
-    'mid-parental-height': {
-      input: measurements,
-      output: measurements
-    },
     'fictional-child-data': {
       input: measurements,
       output: measurements,
     },
     errors: { errors: false, message: '' },
     isLoading: false,
+    isMidparentalCalculation: false
   };
 };
 
@@ -115,6 +112,7 @@ const useRcpchApi = (measurementMethod, reference, mode = 'calculation') => {
         let mutable = deepCopy(old);
         if (newInput.height_maternal && newInput.height_paternal){
           mutable[mode].input[reference]['parentalHeights']=newInput;
+          mutable.isMidparentalCalculation = true;
         } else {
           mutable[mode].input[reference][measurementMethod].push(newInput);
         }
@@ -184,25 +182,28 @@ const useRcpchApi = (measurementMethod, reference, mode = 'calculation') => {
     if (apiState.isLoading) {
       let relevantArray;
       let latestInput;
-      if (mode==='mid-parental-height'){
-        latestInput = apiState['calculation'].input[reference]['parentalHeights'];
+      
+      if (apiState['isMidparentalCalculation']){
+        latestInput = apiState[mode].input[reference]['parentalHeights'];
       } else {
         relevantArray = apiState[mode].input[reference][measurementMethod];
         latestInput = deepCopy(relevantArray[relevantArray.length - 1]);
       }
+      
 
-        fetchFromApi(latestInput, reference, mode)
+        fetchFromApi(latestInput, reference, apiState['isMidparentalCalculation'] ? 'mid-parental-height' : mode)
           .then((result) => {
             if (!ignore) {
               setApiState((old) => {
                 const mutable = deepCopy(old);
                 let measurementError = '';
                 let resultAsArray = null;
-                if (mode === 'mid-parental-height') {
+                if (mutable.isMidparentalCalculation) {
                   mutable.errors = { errors: false, message: 'success' };
-                  mutable['calculation'].output[reference]['parentalheights']=latestInput;
-                  mutable['calculation'].output[reference]['midParentalHeights']=result;
+                  mutable[mode].input[reference]['parentalheights']=latestInput;
+                  mutable[mode].output[reference]['midParentalHeights']=result;
                   mutable.isLoading = false;
+                  mutable.isMidparentalCalculation=false;
                   return mutable;
                 }
                 if (mode === 'fictional-child-data') {
@@ -269,7 +270,7 @@ const useRcpchApi = (measurementMethod, reference, mode = 'calculation') => {
     clearBothActiveArrays,
     clearApiErrors,
     measurements: apiState[mode].input,
-    results: mode==='mid-parental-height' ? apiState['calculation'].output : apiState[mode].output,
+    results: apiState[mode].output,
     apiErrors: apiState.errors,
     isLoading: apiState.isLoading,
   };

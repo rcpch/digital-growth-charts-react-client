@@ -61,6 +61,12 @@ const tickLabelTextStyle = new TextStyleObject('Arial', '000000', 8, 'normal');
 
 const chartPadding = new PaddingObject(50, 50, 25, 40);
 
+// const lineStrokeWidth=1.5;
+// const heightSDSStroke = "#000000";
+// const weightSDSStroke = "#000000";
+// const ofcSDSStroke = "#000000";
+// const bmiSDSStroke = "#000000";
+
 const RCPCHChart = new ChartObject(
   backgroundColour,
   700,
@@ -96,6 +102,14 @@ const RCPCHCentiles = new CentilesObject(
   midparentalHeightStrokeWidth,
   midparentalHeightFill
 );
+
+// const RCPCHSDS = new SDSObject(
+//   lineStrokeWidth,
+//   heightSDSStroke,
+//   weightSDSStroke,
+//   ofcSDSStroke,
+//   bmiSDSStroke
+// )
 
 const RCPCHAxes = new AxesObject(
   axisstroke,
