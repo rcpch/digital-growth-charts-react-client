@@ -1,95 +1,87 @@
 import React from 'react';
 
-import {
-  Form,
-  Input,
-  Header,
-  Button,
-  Container
-} from 'semantic-ui-react';
+import { Form, Input, Header, Button, Container } from 'semantic-ui-react';
 
 const UtilitiesForm = (props) => {
-
     return (
         <Container>
-            <Header 
-                as="h5" 
+            <Header
+                as="h5"
                 textAlign="left"
                 style={{
-                    paddingTop: 20
+                    paddingTop: 20,
                 }}
             >
                 Midparental Height
             </Header>
             <Form onSubmit={props.utilitiesFormDataSubmit}>
                 <Form.Group>
-                    <Form.Field
-                        width={8}
-                        required
-                    >
-                        <label
-                            style={{textAlign: 'left'}}
-                        >
+                    <Form.Field width={8} required>
+                        <label style={{ textAlign: 'left' }}>
                             Maternal height
                         </label>
                         <Input
                             name="height_maternal"
                             onChange={props.changeMaternalHeight}
                             placeholder="e.g. 167"
-                            value={props.maternalHeight ? props.maternalHeight : ''}
+                            value={
+                                props.maternalHeight ? props.maternalHeight : ''
+                            }
                             label={{
-                                content: "cm",
+                                content: 'cm',
                                 basic: true,
-                                color: 'black'
+                                color: 'black',
                             }}
                             labelPosition="right"
                         />
                     </Form.Field>
-                    <Form.Field
-                        width={8}
-                        required
-                    >
-                        <label
-                            style={{textAlign: 'left'}}
-                        >
-                        Paternal height
+                    <Form.Field width={8} required>
+                        <label style={{ textAlign: 'left' }}>
+                            Paternal height
                         </label>
                         <Input
                             name="height_maternal"
                             placeholder="e.g. 179"
                             onChange={props.changePaternalHeight}
-                            value={props.paternalHeight ? props.paternalHeight : ''}
+                            value={
+                                props.paternalHeight ? props.paternalHeight : ''
+                            }
                             label={{
-                                content: "cm",
+                                content: 'cm',
                                 basic: true,
-                                color: 'black'
+                                color: 'black',
                             }}
                             labelPosition="right"
-                            
                         />
                     </Form.Field>
                 </Form.Group>
                 <Form.Field>
-                    <Button 
-                        disabled={props.maternalHeight && props.paternalHeight ? false : true}
+                    <Button
+                        disabled={
+                            props.maternalHeight && props.paternalHeight
+                                ? false
+                                : true
+                        }
                         color="black"
                         fluid={true}
-                        type={"submit"}
-                    >Calculate Mid-parental Height
+                        type={'submit'}
+                    >
+                        Calculate Mid-parental Height
                     </Button>
                 </Form.Field>
-                { props.midParentalHeightDataPresent &&
+                {props.midParentalHeightDataPresent && (
                     <Form.Field>
-                        <Button 
+                        <Button
                             type="submit"
                             onClick={props.removeMidParentalHeight}
-                        >Remove Mid-parental Height
+                        >
+                            Remove Mid-parental Height
                         </Button>
                     </Form.Field>
-                }
+                )}
             </Form>
         </Container>
-    )
-}
+    );
+};
 
 export default UtilitiesForm;

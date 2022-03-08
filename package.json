@@ -1,6 +1,6 @@
 {
   "name": "rcpchgrowth-react",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "private": false,
   "license": "MIT",
   "repository": {
@@ -9,7 +9,7 @@
   },
   "homepage": "http://rcpch.github.io/digital-growth-charts-react-client",
   "dependencies": {
-    "@rcpch/digital-growth-charts-react-component-library": "file:../digital-growth-charts-react-component-library",
+    "@rcpch/digital-growth-charts-react-component-library": "6.0.4-rc1",
     "axios": "^0.21.1",
     "moment": "^2.29.1",
     "react": "^17.0.2",

@@ -1,12 +1,12 @@
 import {
-  ChartTheme,
-  ChartObject,
-  GridlineObject,
-  CentilesObject,
-  MeasurementsObject,
-  AxesObject,
-  TextStyleObject,
-  PaddingObject,
+    ChartTheme,
+    ChartObject,
+    GridlineObject,
+    CentilesObject,
+    MeasurementsObject,
+    AxesObject,
+    TextStyleObject,
+    PaddingObject,
 } from './themes';
 
 /* 
@@ -36,24 +36,24 @@ const centileWidth = 1.5;
 
 const axisstroke = '#000000';
 const measurementsFill = '#000000';
-const highlightedMeasurementFill = "#000000"; // black
+const highlightedMeasurementFill = '#000000'; // black
 const titleStyle = new TextStyleObject('Arial', '#000000', 14, 'bold');
 const subTitleStyle = new TextStyleObject('Arial', '#000000', 14, 'normal');
-const midparentalHeightStroke="#000000";
-const midparentalHeightStrokeWidth=1.5;
-const midparentalHeightFill = "#b3b3b3";
+const midparentalHeightStroke = '#000000';
+const midparentalHeightStrokeWidth = 1.5;
+const midparentalHeightFill = '#b3b3b3';
 
 const tooltipTextStyle = new TextStyleObject(
-  'Montserrat',
-  tooltipTextColour,
-  0.25,
-  'normal'
+    'Montserrat',
+    tooltipTextColour,
+    0.25,
+    'normal'
 );
 const infoBoxTextStyle = new TextStyleObject(
-  'Montserrat',
-  '#000000',
-  6,
-  'normal'
+    'Montserrat',
+    '#000000',
+    6,
+    'normal'
 );
 
 const axisLabelTextStyle = new TextStyleObject('Arial', '000000', 10, 'normal');
@@ -68,39 +68,39 @@ const chartPadding = new PaddingObject(50, 50, 25, 40);
 // const bmiSDSStroke = "#000000";
 
 const RCPCHChart = new ChartObject(
-  backgroundColour,
-  700,
-  475,
-  chartPadding,
-  titleStyle,
-  subTitleStyle,
-  tooltipBackgroundColour,
-  tooltipBackgroundColour,
-  tooltipTextStyle,
-  '#CDCDCD',
-  '#CDCDCD',
-  '#CDCDCD',
-  '#CDCDCD',
-  infoBoxTextStyle,
-  '#b3b3b3',
-  '#000000',
-  '#FFFFFF'
+    backgroundColour,
+    700,
+    475,
+    chartPadding,
+    titleStyle,
+    subTitleStyle,
+    tooltipBackgroundColour,
+    tooltipBackgroundColour,
+    tooltipTextStyle,
+    '#CDCDCD',
+    '#CDCDCD',
+    '#CDCDCD',
+    '#CDCDCD',
+    infoBoxTextStyle,
+    '#b3b3b3',
+    '#000000',
+    '#FFFFFF'
 );
 
 const RCPCHGridlines = new GridlineObject(
-  true,
-  gridlineColour,
-  gridlineWidth,
-  false
+    true,
+    gridlineColour,
+    gridlineWidth,
+    false
 );
 
 const RCPCHCentiles = new CentilesObject(
-  centileColour,
-  centileWidth,
-  pubertyFill,
-  midparentalHeightStroke,
-  midparentalHeightStrokeWidth,
-  midparentalHeightFill
+    centileColour,
+    centileWidth,
+    pubertyFill,
+    midparentalHeightStroke,
+    midparentalHeightStrokeWidth,
+    midparentalHeightFill
 );
 
 // const RCPCHSDS = new SDSObject(
@@ -112,21 +112,21 @@ const RCPCHCentiles = new CentilesObject(
 // )
 
 const RCPCHAxes = new AxesObject(
-  axisstroke,
-  axisLabelTextStyle,
-  tickLabelTextStyle
+    axisstroke,
+    axisLabelTextStyle,
+    tickLabelTextStyle
 );
 
 const RCPCHMeasurements = new MeasurementsObject(
-  measurementsFill,
-  highlightedMeasurementFill
+    measurementsFill,
+    highlightedMeasurementFill
 );
 
 const RCPCHThemeMonochrome = new ChartTheme(
-  RCPCHChart,
-  RCPCHGridlines,
-  RCPCHAxes,
-  RCPCHCentiles,
-  RCPCHMeasurements
+    RCPCHChart,
+    RCPCHGridlines,
+    RCPCHAxes,
+    RCPCHCentiles,
+    RCPCHMeasurements
 );
 export default RCPCHThemeMonochrome;

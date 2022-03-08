@@ -1,14 +1,14 @@
 export const units = (measurementMethod) => {
     if (measurementMethod === 'height') {
-      return 'cm';
+        return 'cm';
     }
     if (measurementMethod === 'weight') {
-      return 'kg';
+        return 'kg';
     }
     if (measurementMethod === 'bmi') {
-      return 'kg/m²';
+        return 'kg/m²';
     }
     if (measurementMethod === 'ofc') {
-      return 'cm';
+        return 'cm';
     }
-  };
+};

@@ -3,4 +3,4 @@ const sexOptions = [
     { key: 'female', value: 'female', text: 'Girl', disabled: false },
 ];
 
-export default sexOptions
+export default sexOptions;
