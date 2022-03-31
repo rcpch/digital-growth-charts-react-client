@@ -520,7 +520,7 @@ const MeasurementForm = (props) => {
                     <Input
                       name="event"
                       placeholder="e.g. diagnosis"
-                      value={anEvent}
+                      // value={anEvent}
                       onChange={(data) => {
                         let thisEvent = events;
                         thisEvent[index] = data.target.value;
