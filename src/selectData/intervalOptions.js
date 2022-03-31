@@ -4,4 +4,4 @@ const intervalTypeOptions = [
     { key: 'm', value: 'months', text: 'Months', disabled: false },
     { key: 'y', value: 'years', text: 'Years', disabled: false },
 ];
-export default intervalTypeOptions
+export default intervalTypeOptions;
