@@ -10,7 +10,15 @@ import RCPCHThemeTraditionalBoy from "../components/chartThemes/RCPCHThemeTradit
 import RCPCHThemeTraditionalGirl from "../components/chartThemes/RCPCHThemeTraditionalGirl";
 
 // Semantic UI React
-import { Grid, Segment, Tab, Dropdown, Button } from "semantic-ui-react";
+import {
+  Grid,
+  Segment,
+  Tab,
+  Dropdown,
+  Button,
+  Message,
+  Container,
+} from "semantic-ui-react";
 
 import ChartData from "../api/Chart";
 import MeasurementForm from "../components/MeasurementForm";
@@ -445,6 +453,16 @@ function MeasurementSegment() {
               </Grid>
             </Segment>
           </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Container>
+            <Message
+              icon={"warning sign"}
+              header={"DISCLAIMER"}
+              content="This is for demonstration purposes only and is not for clinical use."
+              color="red"
+            />
+          </Container>
         </Grid.Row>
       </Grid>
 
