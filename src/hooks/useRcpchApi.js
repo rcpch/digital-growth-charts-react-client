@@ -11,6 +11,10 @@ const fetchFromApi = async (inputParameters, reference, mode) => {
   */
 
   let url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/${reference}/${mode}`;
+  if (mode === "mid-parental-height") {
+    url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/utilities/${mode}`;
+  }
+
   const headers = process.env.REACT_APP_API_KEY
     ? {
         "Content-Type": "application/json",
