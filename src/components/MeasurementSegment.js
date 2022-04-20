@@ -18,6 +18,8 @@ import {
   Button,
   Message,
   Container,
+  Checkbox,
+  Form,
 } from "semantic-ui-react";
 
 import ChartData from "../api/Chart";
@@ -49,6 +51,7 @@ function MeasurementSegment() {
   const [flip, setFlip] = useState(false); // flag to determine if results or chart showing
   const [errorModal, setErrorModal] = useState(InitalErrorModalState());
   const { globalState, makeGlobalStateUpdater } = useGlobalState();
+  const [clinician, setClinician] = useState(true);
 
   const {
     mode,
@@ -315,6 +318,7 @@ function MeasurementSegment() {
               measurementStyle={measurementStyle}
               isLoading={isLoading}
               chartType="centile"
+              clinicianFocus={clinician}
             />
           </Tab.Pane>
         ) : (
@@ -433,11 +437,29 @@ function MeasurementSegment() {
                 </div>
               )}
               <Grid verticalAlign="middle">
-                <Grid.Row columns={2}>
-                  <Grid.Column textAlign="left">
+                <Grid.Row columns={3}>
+                  <Grid.Column textAlign="left" width={4}>
+                    <Checkbox
+                      radio
+                      label="Clinician Tooltips"
+                      name="checkboxRadioGroup"
+                      value={true}
+                      checked={clinician === true}
+                      onChange={(e, data) => setClinician(data.value)}
+                    />
+                    <Checkbox
+                      radio
+                      label="Child/Family Tooltips"
+                      name="checkboxRadioGroup"
+                      value={false}
+                      checked={clinician === false}
+                      onChange={(e, data) => setClinician(data.value)}
+                    />
+                  </Grid.Column>
+                  <Grid.Column textAlign="center" width={4}>
                     <ThemeSelection />
                   </Grid.Column>
-                  <Grid.Column textAlign="right">
+                  <Grid.Column textAlign="right" width={8}>
                     <Button onClick={handleCentileSDS} color="black">
                       {centile ? "Show SDS Chart" : "Show Centile Charts"}
                     </Button>

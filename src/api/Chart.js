@@ -33,6 +33,7 @@ function ChartData(props) {
         chartType={props.chartType}
         enableExport={true}
         exportChartCallback={exportChartCallback}
+        clinicianFocus={props.clinicianFocus}
       />
     </div>
   );
