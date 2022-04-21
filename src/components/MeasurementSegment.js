@@ -19,7 +19,6 @@ import {
   Message,
   Container,
   Checkbox,
-  Form,
 } from "semantic-ui-react";
 
 import ChartData from "../api/Chart";
@@ -441,19 +440,19 @@ function MeasurementSegment() {
                   <Grid.Column textAlign="left" width={4}>
                     <Checkbox
                       radio
-                      label="Clinician Tooltips"
+                      label="Clinician Advice"
                       name="checkboxRadioGroup"
-                      value={true}
-                      checked={clinician === true}
-                      onChange={(e, data) => setClinician(data.value)}
+                      value={0}
+                      checked={clinician}
+                      onChange={(e, data) => setClinician(!clinician)}
                     />
                     <Checkbox
                       radio
-                      label="Child/Family Tooltips"
+                      label="Child/Family Advice"
                       name="checkboxRadioGroup"
-                      value={false}
-                      checked={clinician === false}
-                      onChange={(e, data) => setClinician(data.value)}
+                      value={1}
+                      checked={!clinician}
+                      onChange={(e, data) => setClinician(!clinician)}
                     />
                   </Grid.Column>
                   <Grid.Column textAlign="center" width={4}>
