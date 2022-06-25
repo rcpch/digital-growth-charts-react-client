@@ -6,18 +6,18 @@
     "runtime-main.js": "/digital-growth-charts-react-client/static/js/runtime-main.86eec8ca.js",
     "runtime-main.js.map": "/digital-growth-charts-react-client/static/js/runtime-main.86eec8ca.js.map",
     "static/css/2.e493f8dd.chunk.css": "/digital-growth-charts-react-client/static/css/2.e493f8dd.chunk.css",
-    "static/js/2.bae44925.chunk.js": "/digital-growth-charts-react-client/static/js/2.bae44925.chunk.js",
-    "static/js/2.bae44925.chunk.js.map": "/digital-growth-charts-react-client/static/js/2.bae44925.chunk.js.map",
+    "static/js/2.fdaa7dd6.chunk.js": "/digital-growth-charts-react-client/static/js/2.fdaa7dd6.chunk.js",
+    "static/js/2.fdaa7dd6.chunk.js.map": "/digital-growth-charts-react-client/static/js/2.fdaa7dd6.chunk.js.map",
     "index.html": "/digital-growth-charts-react-client/index.html",
     "static/css/2.e493f8dd.chunk.css.map": "/digital-growth-charts-react-client/static/css/2.e493f8dd.chunk.css.map",
     "static/css/main.c856c4ca.chunk.css.map": "/digital-growth-charts-react-client/static/css/main.c856c4ca.chunk.css.map",
-    "static/js/2.bae44925.chunk.js.LICENSE.txt": "/digital-growth-charts-react-client/static/js/2.bae44925.chunk.js.LICENSE.txt",
+    "static/js/2.fdaa7dd6.chunk.js.LICENSE.txt": "/digital-growth-charts-react-client/static/js/2.fdaa7dd6.chunk.js.LICENSE.txt",
     "static/media/semantic.less": "/digital-growth-charts-react-client/static/media/outline-icons.ddae9b1b.woff"
   },
   "entrypoints": [
     "static/js/runtime-main.86eec8ca.js",
     "static/css/2.e493f8dd.chunk.css",
-    "static/js/2.bae44925.chunk.js",
+    "static/js/2.fdaa7dd6.chunk.js",
     "static/css/main.c856c4ca.chunk.css",
     "static/js/main.0971b715.chunk.js"
   ]
