@@ -1,5 +1,5 @@
 // React
-import React, { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, Fragment } from "react";
 
 //themes
 import RCPCHTheme1 from "../components/chartThemes/rcpchTheme1";
@@ -405,7 +405,7 @@ function MeasurementSegment() {
   );
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Grid padded>
         <Grid.Row>
           <Grid.Column width={6}>
@@ -494,7 +494,7 @@ function MeasurementSegment() {
         handleClose={errorModal.handleClose}
         handleCancel={errorModal.handleCancel}
       />
-    </React.Fragment>
+    </Fragment>
   );
 }
 

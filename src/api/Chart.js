@@ -1,4 +1,3 @@
-import React from "react";
 import { Dimmer, Loader } from "semantic-ui-react";
 
 import { RCPCHChart } from "@rcpch/digital-growth-charts-react-component-library";

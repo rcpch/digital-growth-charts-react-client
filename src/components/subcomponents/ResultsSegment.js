@@ -1,4 +1,3 @@
-import React from "react";
 import { Segment, Table } from "semantic-ui-react";
 import { TableBody } from "../subcomponents/TableBody";
 
