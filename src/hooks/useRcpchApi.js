@@ -9,7 +9,8 @@ const fetchFromApi = async (inputParameters, reference, mode) => {
   It uses a development API key stored in .env which is unsafe
   In due course this endpoint will be deprecated.
   */
-
+  //  For this to work in development use http://127.0.0.1:8000 rather than localhost
+  //
   let url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/${reference}/${mode}`;
   if (mode === "mid-parental-height") {
     url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/utilities/${mode}`;
