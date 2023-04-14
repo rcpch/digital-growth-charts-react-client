@@ -21,7 +21,7 @@ function ChartData(props) {
         title={titles.title}
         subtitle={titles.subtitle}
         measurementsArray={props.measurementsArray} // this is the plottable child data
-        midParentalHeightData={props?.midParentalHeightData}
+        midParentalHeightData={props.midParentalHeightData}
         chartStyle={props.chartStyle}
         measurementStyle={props.measurementStyle}
         centileStyle={props.centileStyle}

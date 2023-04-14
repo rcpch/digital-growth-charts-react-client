@@ -113,14 +113,24 @@ function MeasurementSegment() {
   }, [errors, apiErrors, clearApiErrors, updateGlobalState]);
 
   useEffect(() => {
+    let selectedTheme = RCPCHThemeMonochrome;
     if (theme.value === "trad") {
-      const selectedTheme =
+      selectedTheme =
         sex === "male" ? RCPCHThemeTraditionalBoy : RCPCHThemeTraditionalGirl;
-      setCentileStyle(selectedTheme.centiles);
-      setChartSyle(selectedTheme.chart);
-      setMeasurementStyle(selectedTheme.measurements);
-      setAxisStyle(selectedTheme.axes);
     }
+    if (theme.value === "tanner1") {
+      selectedTheme = RCPCHTheme1;
+    }
+    if (theme.value === "tanner2") {
+      selectedTheme = RCPCHTheme2;
+    }
+    if (theme.value === "tanner3") {
+      selectedTheme = RCPCHTheme3;
+    }
+    setCentileStyle(selectedTheme.centiles);
+    setChartSyle(selectedTheme.chart);
+    setMeasurementStyle(selectedTheme.measurements);
+    setAxisStyle(selectedTheme.axes);
   }, [sex, theme.value]);
 
   useEffect(() => {

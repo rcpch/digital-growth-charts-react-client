@@ -11,9 +11,12 @@ const fetchFromApi = async (inputParameters, reference, mode) => {
   */
   //  For this to work in development use http://127.0.0.1:8000 rather than localhost
   //
-  let url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/${reference}/${mode}`;
+  const prod_url = process.env.REACT_APP_GROWTH_API_BASEURL;
+  const dev_url = "http://127.0.0.1:8000";
+
+  let url = `${dev_url}/${reference}/${mode}`;
   if (mode === "mid-parental-height") {
-    url = `${process.env.REACT_APP_GROWTH_API_BASEURL}/utilities/${mode}`;
+    url = `${dev_url}/utilities/${mode}`;
   }
 
   const headers = process.env.REACT_APP_API_KEY
