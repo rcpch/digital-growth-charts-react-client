@@ -469,7 +469,11 @@ function MeasurementSegment() {
                     <ThemeSelection />
                   </Grid.Column>
                   <Grid.Column textAlign="right" width={8}>
-                    <Button onClick={handleCentileSDS} color="black">
+                    <Button
+                      onClick={handleCentileSDS}
+                      color="black"
+                      disabled={flip}
+                    >
                       {centile ? "Show SDS Chart" : "Show Centile Charts"}
                     </Button>
                     <Button
