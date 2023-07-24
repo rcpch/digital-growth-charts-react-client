@@ -33,7 +33,7 @@ export const ResultsSegment = ({ apiResult, reference }) => {
 
   const [choice, setChoice] = useState("");
 
-  function handleSelectChoice({value}) {
+  function handleSelectChoice({ value }) {
     setChoice(value);
   }
 
@@ -57,16 +57,10 @@ export const ResultsSegment = ({ apiResult, reference }) => {
         ></ResultsDataTable>
       )}
       {choice === "bmis" && (
-        <ResultsDataTable
-          dataTitle={"BMIs"}
-          data={bmis}
-        ></ResultsDataTable>
+        <ResultsDataTable dataTitle={"BMIs"} data={bmis}></ResultsDataTable>
       )}
       {choice === "ofcs" && (
-        <ResultsDataTable
-          dataTitle={"OFCs"}
-          data={ofcs}
-        ></ResultsDataTable>
+        <ResultsDataTable dataTitle={"OFCs"} data={ofcs}></ResultsDataTable>
       )}
     </Segment>
   );
