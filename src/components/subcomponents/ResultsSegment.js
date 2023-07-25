@@ -3,65 +3,62 @@ import { ResultsDataTable } from "./ResultsDataTable";
 import { useState } from "react";
 
 export const ResultsSegment = ({ apiResult, reference }) => {
-  const heights = apiResult[reference].height;
-  const weights = apiResult[reference].weight;
-  const bmis = apiResult[reference].bmi;
-  const ofcs = apiResult[reference].ofc;
+  const data = {
+    heights: apiResult[reference].height,
+    weights: apiResult[reference].weight,
+    bmis: apiResult[reference].bmi,
+    ofcs: apiResult[reference].ofc,
+  };
+  const textMapper = {
+    'heights' : 'Heights',
+    'weights': 'Weights',
+    'bmis' : 'BMIs',
+    'ofcs' : 'OFCs',
+  }
 
-  const resultDataOptions = [
-    {
-      key: "heights",
-      text: "Heights",
-      value: "heights",
-    },
-    {
-      key: "weights",
-      text: "Weights",
-      value: "weights",
-    },
-    {
-      key: "bmis",
-      text: "BMIs",
-      value: "bmis",
-    },
-    {
-      key: "ofcs",
-      text: "OFCs",
-      value: "ofcs",
-    },
-  ];
+  const resultDataOptions = Object.entries(data)
+    .filter((items) => items[1].length > 0)
+    .map((items) => {
 
-  const [choice, setChoice] = useState("");
+      return {
+        key: `${items[0]}`,
+        value: `${items[0]}`,
+        text: `${textMapper[items[0]]}`,
+      };
+    });
+
+  const defaultValues = resultDataOptions.map((item) => item["key"]);
+  
+  const initialChoices = []
+  resultDataOptions.forEach(item=>{
+    initialChoices.push({dataTitle: textMapper[item['key']], data: data[item['key']]})
+  })
+  const [choices, setChoices] = useState(initialChoices);
 
   function handleSelectChoice({ value }) {
-    setChoice(value);
+    let newChoices = [];
+    value.forEach((item) => {
+      newChoices.push({ dataTitle: textMapper[item], data: data[item] });
+    });
+    setChoices(newChoices);
   }
 
   return (
     <Segment>
       <Select
-        placeholder="Select data to show"
+        multiple
+        selection
         options={resultDataOptions}
+        defaultValue={defaultValues}
         onChange={(e, choice) => handleSelectChoice(choice)}
       ></Select>
-      {choice === "heights" && (
-        <ResultsDataTable
-          dataTitle={"Heights"}
-          data={heights}
-        ></ResultsDataTable>
-      )}
-      {choice === "weights" && (
-        <ResultsDataTable
-          dataTitle={"Weights"}
-          data={weights}
-        ></ResultsDataTable>
-      )}
-      {choice === "bmis" && (
-        <ResultsDataTable dataTitle={"BMIs"} data={bmis}></ResultsDataTable>
-      )}
-      {choice === "ofcs" && (
-        <ResultsDataTable dataTitle={"OFCs"} data={ofcs}></ResultsDataTable>
-      )}
+
+  {
+    choices.map(item => {
+      return <ResultsDataTable dataTitle={item['dataTitle']} data={item['data']} key={item['dataTitle']}/>
+    })
+  }
+
     </Segment>
   );
 };

@@ -3,15 +3,15 @@ import { Table, Icon, Header } from "semantic-ui-react";
 import { ResultsDataTableRow } from "./ResultsDataTableRow";
 
 export const ResultsDataTable = ({ dataTitle, data }) => {
+
   return (
     <React.Fragment>
       <Header>
-        {dataTitle} (Corrected age results
-        <Icon name="add circle" />)
+        {dataTitle} (Corrected age results <Icon name="add circle" />)
       </Header>
 
-      {data.length > 0 ? (
-        <Table basic="very" celled collapsing compact>
+      
+        <Table basic="very" celled collapsing>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>Date of Measurement</Table.HeaderCell>
@@ -29,9 +29,6 @@ export const ResultsDataTable = ({ dataTitle, data }) => {
             })}
           </Table.Body>
         </Table>
-      ) : (
-        <h1>No data!</h1>
-      )}
     </React.Fragment>
   );
 };
