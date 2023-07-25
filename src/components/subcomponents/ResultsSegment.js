@@ -45,13 +45,14 @@ export const ResultsSegment = ({ apiResult, reference }) => {
 
   return (
     <Segment>
-      <Select
-        multiple
-        selection
-        options={resultDataOptions}
-        defaultValue={defaultValues}
-        onChange={(e, choice) => handleSelectChoice(choice)}
-      ></Select>
+
+        <Select
+          multiple
+          selection
+          options={resultDataOptions}
+          defaultValue={defaultValues}
+          onChange={(e, choice) => handleSelectChoice(choice)}
+        ></Select>
 
   {
     choices.map(item => {

@@ -11,7 +11,7 @@ export const ResultsDataTable = ({ dataTitle, data }) => {
       </Header>
 
       
-        <Table basic="very" celled collapsing>
+        <Table basic="very" celled >
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>Date of Measurement</Table.HeaderCell>
