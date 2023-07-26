@@ -2,7 +2,7 @@ import * as React from "react";
 import { Table } from "semantic-ui-react";
 import { units } from "../../functions/units";
 
-export const ResultsDataTableRow = ({ measurement, ageChoice }) => {
+export const ResultsDataTableRow = ({ measurement, ageChoice, decimalAge }) => {
   const roundedCorrectedSDS =
     Math.round(measurement.measurement_calculated_values.corrected_sds * 1000) /
     1000;
@@ -15,10 +15,16 @@ export const ResultsDataTableRow = ({ measurement, ageChoice }) => {
   let measurementCentiles = [];
   let measurementSDS = [];
 
-  const corrAgeAsP = (
+  const corrAgeAsP = decimalAge ? (
+    <p>{measurement.measurement_dates.corrected_decimal_age.toFixed(3)}</p>
+  ) : (
     <p>{measurement.measurement_dates.corrected_calendar_age}</p>
   );
-  const chronAgeAsP = (
+  const chronAgeAsP = decimalAge ? (
+    <p style={{ fontStyle: "italic" }}>
+      {measurement.measurement_dates.chronological_decimal_age.toFixed(3)}
+    </p>
+  ) : (
     <p style={{ fontStyle: "italic" }}>
       {measurement.measurement_dates.chronological_calendar_age}
     </p>

@@ -1,4 +1,4 @@
-import { Form, Segment, Radio } from "semantic-ui-react";
+import { Form, Segment } from "semantic-ui-react";
 import { ResultsDataTable } from "./ResultsDataTable";
 import { useState } from "react";
 
@@ -46,6 +46,7 @@ export const ResultsSegment = ({ apiResult, reference }) => {
   }
 
   const [ageChoice, setAgeChoice] = useState("corrected");
+  const [decimalAge, setDecimalAge] = useState(false);
 
   return (
     <Segment>
@@ -82,6 +83,16 @@ export const ResultsSegment = ({ apiResult, reference }) => {
             onChange={(e, { value }) => setAgeChoice(value)}
           />
         </Form.Group>
+        <Form.Group inline>
+          <label>Decimal Age</label>
+          <Form.Checkbox
+            toggle
+            onChange={() => setDecimalAge(!decimalAge)}
+            // style={{ paddingLeft: "1em" }}
+            fitted={false}
+            label={''}
+          />
+        </Form.Group>
       </Form>
 
       {choices.map((item) => {
@@ -90,7 +101,9 @@ export const ResultsSegment = ({ apiResult, reference }) => {
             dataTitle={item["dataTitle"]}
             data={item["data"]}
             ageChoice={ageChoice}
+            decimalAge={decimalAge}
             key={item["dataTitle"]}
+
           />
         );
       })}
