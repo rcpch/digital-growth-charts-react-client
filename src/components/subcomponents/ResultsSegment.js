@@ -1,4 +1,4 @@
-import { Form, Segment } from "semantic-ui-react";
+import { Form, Segment, Radio } from "semantic-ui-react";
 import { ResultsDataTable } from "./ResultsDataTable";
 import { useState } from "react";
 
@@ -45,10 +45,11 @@ export const ResultsSegment = ({ apiResult, reference }) => {
     setChoices(newChoices);
   }
 
+  const [ageChoice, setAgeChoice] = useState("corrected");
+
   return (
     <Segment>
       <Form>
-        
         <Form.Group inline>
           <label>Measurement</label>
           <Form.Select
@@ -59,6 +60,28 @@ export const ResultsSegment = ({ apiResult, reference }) => {
             onChange={(e, choice) => handleSelectChoice(choice)}
           ></Form.Select>
         </Form.Group>
+        <Form.Group inline>
+          <label>Age Result Type</label>
+          <Form.Radio
+            label="Corrected"
+            value="corrected"
+            checked={ageChoice === "corrected"}
+            onChange={(e, { value }) => setAgeChoice(value)}
+          />
+          <Form.Radio
+            label="Chronological"
+            value="chronological"
+            checked={ageChoice === "chronological"}
+            onChange={(e, { value }) => setAgeChoice(value)}
+            style={{ fontStyle: "italic" }}
+          />
+          <Form.Radio
+            label="Both"
+            value="both"
+            checked={ageChoice === "both"}
+            onChange={(e, { value }) => setAgeChoice(value)}
+          />
+        </Form.Group>
       </Form>
 
       {choices.map((item) => {
@@ -66,6 +89,7 @@ export const ResultsSegment = ({ apiResult, reference }) => {
           <ResultsDataTable
             dataTitle={item["dataTitle"]}
             data={item["data"]}
+            ageChoice={ageChoice}
             key={item["dataTitle"]}
           />
         );
