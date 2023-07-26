@@ -2,7 +2,12 @@ import * as React from "react";
 import { Table } from "semantic-ui-react";
 import { units } from "../../functions/units";
 
-export const ResultsDataTableRow = ({ measurement, ageChoice, decimalAge }) => {
+export const ResultsDataTableRow = ({
+  measurement,
+  ageChoice,
+  decimalAge,
+  chronologicalStyles,
+}) => {
   const roundedCorrectedSDS =
     Math.round(measurement.measurement_calculated_values.corrected_sds * 1000) /
     1000;
@@ -21,11 +26,11 @@ export const ResultsDataTableRow = ({ measurement, ageChoice, decimalAge }) => {
     <p>{measurement.measurement_dates.corrected_calendar_age}</p>
   );
   const chronAgeAsP = decimalAge ? (
-    <p style={{ fontStyle: "italic" }}>
+    <p style={chronologicalStyles}>
       {measurement.measurement_dates.chronological_decimal_age.toFixed(3)}
     </p>
   ) : (
-    <p style={{ fontStyle: "italic" }}>
+    <p style={chronologicalStyles}>
       {measurement.measurement_dates.chronological_calendar_age}
     </p>
   );
@@ -33,13 +38,13 @@ export const ResultsDataTableRow = ({ measurement, ageChoice, decimalAge }) => {
     <p>{measurement.measurement_calculated_values.corrected_centile}</p>
   );
   const chronCentileAsP = (
-    <p style={{ fontStyle: "italic" }}>
+    <p style={chronologicalStyles}>
       {measurement.measurement_calculated_values.chronological_centile}
     </p>
   );
   const corrSDSAsP = <p>{roundedCorrectedSDS}</p>;
   const chronSDSAsP = (
-    <p style={{ fontStyle: "italic" }}>{roundedChronologicalSDS}</p>
+    <p style={chronologicalStyles}>{roundedChronologicalSDS}</p>
   );
 
   switch (ageChoice) {

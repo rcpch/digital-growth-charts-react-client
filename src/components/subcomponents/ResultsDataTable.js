@@ -2,7 +2,9 @@ import * as React from "react";
 import { Table, Header } from "semantic-ui-react";
 import { ResultsDataTableRow } from "./ResultsDataTableRow";
 
-export const ResultsDataTable = ({ dataTitle, data, ageChoice, decimalAge }) => {
+export const ResultsDataTable = ({ dataTitle, data, ageChoice, decimalAge, chronologicalStyles }) => {
+
+  
   
   return (
     <React.Fragment>
@@ -26,6 +28,7 @@ export const ResultsDataTable = ({ dataTitle, data, ageChoice, decimalAge }) => 
                 key={index}
                 ageChoice={ageChoice}
                 decimalAge={decimalAge}
+                chronologicalStyles={chronologicalStyles}
               />
             );
           })}

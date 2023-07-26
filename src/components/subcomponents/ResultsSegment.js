@@ -48,6 +48,11 @@ export const ResultsSegment = ({ apiResult, reference }) => {
   const [ageChoice, setAgeChoice] = useState("corrected");
   const [decimalAge, setDecimalAge] = useState(false);
 
+  const chronologicalStyles = {
+    fontStyle: 'italic',
+    color: '#6c757d',
+  }
+
   return (
     <Segment>
       <Form>
@@ -68,19 +73,28 @@ export const ResultsSegment = ({ apiResult, reference }) => {
             value="corrected"
             checked={ageChoice === "corrected"}
             onChange={(e, { value }) => setAgeChoice(value)}
+            style={{
+              fontWeight: ageChoice === "corrected" ? "bold" : "normal",
+            }}
           />
           <Form.Radio
             label="Chronological"
             value="chronological"
             checked={ageChoice === "chronological"}
             onChange={(e, { value }) => setAgeChoice(value)}
-            style={{ fontStyle: "italic" }}
+            style={{
+              fontWeight: ageChoice === "chronological" ? "bold" : "normal",
+              ...chronologicalStyles
+            }}
           />
           <Form.Radio
             label="Both"
             value="both"
             checked={ageChoice === "both"}
             onChange={(e, { value }) => setAgeChoice(value)}
+            style={{
+              fontWeight: ageChoice === "both" ? "bold" : "normal",
+            }}
           />
         </Form.Group>
         <Form.Group inline>
@@ -88,9 +102,8 @@ export const ResultsSegment = ({ apiResult, reference }) => {
           <Form.Checkbox
             toggle
             onChange={() => setDecimalAge(!decimalAge)}
-            // style={{ paddingLeft: "1em" }}
             fitted={false}
-            label={''}
+            // label={''}
           />
         </Form.Group>
       </Form>
@@ -103,7 +116,7 @@ export const ResultsSegment = ({ apiResult, reference }) => {
             ageChoice={ageChoice}
             decimalAge={decimalAge}
             key={item["dataTitle"]}
-
+            chronologicalStyles={chronologicalStyles}
           />
         );
       })}
