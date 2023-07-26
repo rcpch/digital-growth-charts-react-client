@@ -11,13 +11,11 @@ export const ResultsDataTable = ({
   fontChoice,
 }) => {
 
-  console.log('using style: ', fontChoice)
-
   return (
-    <React.Fragment>
-      <Header>{dataTitle}</Header>
+    <div style={{ fontFamily: fontChoice}}>
 
-      <Table basic="very" celled style={{ fontFamily: fontChoice}}>
+      <Header>{dataTitle}</Header>
+      <Table basic="very" celled >
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Date of Measurement</Table.HeaderCell>
@@ -41,6 +39,6 @@ export const ResultsDataTable = ({
           })}
         </Table.Body>
       </Table>
-    </React.Fragment>
+    </div>
   );
 };
