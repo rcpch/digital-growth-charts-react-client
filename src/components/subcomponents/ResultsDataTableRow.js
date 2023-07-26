@@ -1,9 +1,11 @@
-import * as React from "react";
-import { Table } from "semantic-ui-react";
+import { Icon, Table } from "semantic-ui-react";
 import { units } from "../../functions/units";
 
-export const ResultsDataTableRow = (props) => {
-  const measurement = props.measurement;
+export const ResultsDataTableRow = ({
+  measurement,
+  isCorrected,
+  correctedChronological,
+}) => {
   return (
     <Table.Row>
       <Table.Cell>{measurement.measurement_dates.observation_date}</Table.Cell>
@@ -12,18 +14,35 @@ export const ResultsDataTableRow = (props) => {
         {units(measurement.child_observation_value.measurement_method)}
       </Table.Cell>
       <Table.Cell>
-        {measurement.measurement_dates.corrected_calendar_age ??
-          measurement.plottable_data.centile_data.corrected_decimal_age_data
-            .corrected_gestational_age}
+        {correctedChronological === "corrected" &&
+        measurement.measurement_dates.corrected_calendar_age
+          ? measurement.plottable_data.centile_data.corrected_decimal_age_data
+              .corrected_gestational_age
+          : measurement.plottable_data.centile_data.corrected_decimal_age_data
+              .chronological_gestational_age}
       </Table.Cell>
       <Table.Cell>
-        {measurement.measurement_calculated_values.corrected_centile}
+        {correctedChronological === "corrected"
+          ? measurement.measurement_calculated_values.corrected_centile
+          : measurement.measurement_calculated_values.chronological_centile}
       </Table.Cell>
       <Table.Cell>
-        {Math.round(
-          measurement.measurement_calculated_values.corrected_sds * 1000
-        ) / 1000}
+        {correctedChronological === "corrected"
+          ? Math.round(
+              measurement.measurement_calculated_values.corrected_sds * 1000
+            ) / 1000
+          : Math.round(
+              measurement.measurement_calculated_values.chronological_sds * 1000
+            ) / 1000}
       </Table.Cell>
+      {/* <Table.Cell>
+        <Icon
+          style={{ transform: rotate, transition: "all 0.2s linear" }}
+          name="refresh"
+          circular
+          // onClick={() => setIsCorrected(!isCorrected)}
+        ></Icon>
+      </Table.Cell> */}
     </Table.Row>
   );
 };
