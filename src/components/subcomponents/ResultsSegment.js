@@ -1,4 +1,4 @@
-import { Form, Segment, Select, Header, Radio } from "semantic-ui-react";
+import { Form, Segment } from "semantic-ui-react";
 import { ResultsDataTable } from "./ResultsDataTable";
 import { useState } from "react";
 
@@ -45,38 +45,10 @@ export const ResultsSegment = ({ apiResult, reference }) => {
     setChoices(newChoices);
   }
 
-  const [ageChoice, setAgeChoice] = useState("corrected");
-
   return (
     <Segment>
       <Form>
-        <Form.Group inline>
-          <label>Age Results</label>
-          <Form.Field>
-            <Radio
-              label="Corrected"
-              value="corrected"
-              checked={ageChoice === "corrected"}
-              onChange={(e, { value }) => setAgeChoice(value)}
-            />
-          </Form.Field>
-          <Form.Field>
-            <Radio
-              label="Chronological"
-              value="chronological"
-              checked={ageChoice === "chronological"}
-              onChange={(e, { value }) => setAgeChoice(value)}
-            />
-          </Form.Field>
-          <Form.Field>
-            <Radio
-              label="Both"
-              value="both"
-              checked={ageChoice === "both"}
-              onChange={(e, { value }) => setAgeChoice(value)}
-            />
-          </Form.Field>
-        </Form.Group>
+        
         <Form.Group inline>
           <label>Measurement</label>
           <Form.Select
