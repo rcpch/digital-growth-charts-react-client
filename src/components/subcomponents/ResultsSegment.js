@@ -1,4 +1,4 @@
-import { Segment, Select } from "semantic-ui-react";
+import { Form, Segment, Select, Header, Radio } from "semantic-ui-react";
 import { ResultsDataTable } from "./ResultsDataTable";
 import { useState } from "react";
 
@@ -10,16 +10,15 @@ export const ResultsSegment = ({ apiResult, reference }) => {
     ofcs: apiResult[reference].ofc,
   };
   const textMapper = {
-    'heights' : 'Heights',
-    'weights': 'Weights',
-    'bmis' : 'BMIs',
-    'ofcs' : 'OFCs',
-  }
+    heights: "Heights",
+    weights: "Weights",
+    bmis: "BMIs",
+    ofcs: "OFCs",
+  };
 
   const resultDataOptions = Object.entries(data)
     .filter((items) => items[1].length > 0)
     .map((items) => {
-
       return {
         key: `${items[0]}`,
         value: `${items[0]}`,
@@ -28,11 +27,14 @@ export const ResultsSegment = ({ apiResult, reference }) => {
     });
 
   const defaultValues = resultDataOptions.map((item) => item["key"]);
-  
-  const initialChoices = []
-  resultDataOptions.forEach(item=>{
-    initialChoices.push({dataTitle: textMapper[item['key']], data: data[item['key']]})
-  })
+
+  const initialChoices = [];
+  resultDataOptions.forEach((item) => {
+    initialChoices.push({
+      dataTitle: textMapper[item["key"]],
+      data: data[item["key"]],
+    });
+  });
   const [choices, setChoices] = useState(initialChoices);
 
   function handleSelectChoice({ value }) {
@@ -43,23 +45,59 @@ export const ResultsSegment = ({ apiResult, reference }) => {
     setChoices(newChoices);
   }
 
+  const [ageChoice, setAgeChoice] = useState("corrected");
+
   return (
     <Segment>
+      <Form>
+        <Form.Group inline>
+          <label>Age Results</label>
+          <Form.Field>
+            <Radio
+              label="Corrected"
+              value="corrected"
+              checked={ageChoice === "corrected"}
+              onChange={(e, { value }) => setAgeChoice(value)}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Radio
+              label="Chronological"
+              value="chronological"
+              checked={ageChoice === "chronological"}
+              onChange={(e, { value }) => setAgeChoice(value)}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Radio
+              label="Both"
+              value="both"
+              checked={ageChoice === "both"}
+              onChange={(e, { value }) => setAgeChoice(value)}
+            />
+          </Form.Field>
+        </Form.Group>
+        <Form.Group inline>
+          <label>Measurement</label>
+          <Form.Select
+            multiple
+            selection
+            options={resultDataOptions}
+            defaultValue={defaultValues}
+            onChange={(e, choice) => handleSelectChoice(choice)}
+          ></Form.Select>
+        </Form.Group>
+      </Form>
 
-        <Select
-          multiple
-          selection
-          options={resultDataOptions}
-          defaultValue={defaultValues}
-          onChange={(e, choice) => handleSelectChoice(choice)}
-        ></Select>
-
-  {
-    choices.map(item => {
-      return <ResultsDataTable dataTitle={item['dataTitle']} data={item['data']} key={item['dataTitle']}/>
-    })
-  }
-
+      {choices.map((item) => {
+        return (
+          <ResultsDataTable
+            dataTitle={item["dataTitle"]}
+            data={item["data"]}
+            key={item["dataTitle"]}
+          />
+        );
+      })}
     </Segment>
   );
 };
