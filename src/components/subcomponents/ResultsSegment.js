@@ -133,7 +133,6 @@ export const ResultsSegment = ({ apiResult, reference }) => {
             toggle
             onChange={() => setDecimalAge(!decimalAge)}
             fitted={false}
-            // label={''}
           />
         </Form.Group>
       </Form>
