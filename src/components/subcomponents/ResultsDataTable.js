@@ -7,7 +7,7 @@ export const ResultsDataTable = ({ dataTitle, data }) => {
   return (
     <React.Fragment>
       <Header>
-        {dataTitle} (Corrected age results <Icon name="add circle" />)
+        {dataTitle}
       </Header>
 
       
