@@ -3,23 +3,54 @@ import { Table } from "semantic-ui-react";
 import { units } from "../../functions/units";
 
 export const ResultsDataTableRow = ({ measurement, ageChoice }) => {
-  let measurementCorrectedAge = null;
-  let measurementChronologicalAge = null;
+  const roundedCorrectedSDS =
+    Math.round(measurement.measurement_calculated_values.corrected_sds * 1000) /
+    1000;
+  const roundedChronologicalSDS =
+    Math.round(
+      measurement.measurement_calculated_values.chronological_sds * 1000
+    ) / 1000;
+
+  let measurementAges = [];
+  let measurementCentiles = [];
+  let measurementSDS = [];
+
+  const corrAgeAsP = (
+    <p>{measurement.measurement_dates.corrected_calendar_age}</p>
+  );
+  const chronAgeAsP = (
+    <p style={{ fontStyle: "italic" }}>
+      {measurement.measurement_dates.chronological_calendar_age}
+    </p>
+  );
+  const corrCentileAsP = (
+    <p>{measurement.measurement_calculated_values.corrected_centile}</p>
+  );
+  const chronCentileAsP = (
+    <p style={{ fontStyle: "italic" }}>
+      {measurement.measurement_calculated_values.chronological_centile}
+    </p>
+  );
+  const corrSDSAsP = <p>{roundedCorrectedSDS}</p>;
+  const chronSDSAsP = (
+    <p style={{ fontStyle: "italic" }}>{roundedChronologicalSDS}</p>
+  );
 
   switch (ageChoice) {
     case "corrected":
-      measurementCorrectedAge =
-        measurement.measurement_dates.corrected_calendar_age;
+      measurementAges.push(corrAgeAsP);
+      measurementCentiles.push(corrCentileAsP);
+      measurementSDS.push(corrSDSAsP);
       break;
     case "chronological":
-      measurementChronologicalAge =
-        measurement.measurement_dates.chronological_calendar_age;
+      measurementAges.push(chronAgeAsP);
+      measurementCentiles.push(chronCentileAsP);
+      measurementSDS.push(chronSDSAsP);
       break;
     default:
-      measurementCorrectedAge =
-        measurement.measurement_dates.corrected_calendar_age;
-      measurementChronologicalAge =
-        measurement.measurement_dates.chronological_calendar_age;
+      measurementAges.push(corrAgeAsP, chronAgeAsP);
+      measurementCentiles.push(corrCentileAsP, chronCentileAsP);
+      measurementSDS.push(corrSDSAsP, chronSDSAsP);
       break;
   }
 
@@ -30,19 +61,9 @@ export const ResultsDataTableRow = ({ measurement, ageChoice }) => {
         {measurement.child_observation_value.observation_value}{" "}
         {units(measurement.child_observation_value.measurement_method)}
       </Table.Cell>
-      <Table.Cell>
-       {measurementCorrectedAge ? (<p>{measurementCorrectedAge}</p>) : (null) }
-       {measurementChronologicalAge ? (<p style={{fontStyle:'italic'}}>{measurementChronologicalAge}</p>) : (null) }
-
-      </Table.Cell>
-      <Table.Cell>
-        {measurement.measurement_calculated_values.corrected_centile}
-      </Table.Cell>
-      <Table.Cell>
-        {Math.round(
-          measurement.measurement_calculated_values.corrected_sds * 1000
-        ) / 1000}
-      </Table.Cell>
+      <Table.Cell>{measurementAges.map((item) => item)}</Table.Cell>
+      <Table.Cell>{measurementCentiles.map((item) => item)}</Table.Cell>
+      <Table.Cell>{measurementSDS.map((item) => item)}</Table.Cell>
     </Table.Row>
   );
 };
