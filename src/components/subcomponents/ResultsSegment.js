@@ -3,6 +3,27 @@ import { ResultsDataTable } from "./ResultsDataTable";
 import { useState } from "react";
 
 export const ResultsSegment = ({ apiResult, reference }) => {
+  const fonts = [
+    "Montserrat",
+    "Roboto",
+    "Lato",
+    "Open Sans",
+    "Source Sans Pro",
+    "Noto Sans",
+  ];
+  const fontOptions = fonts.map((font) => {
+    return {
+      key: font,
+      value: font,
+      text: font,
+      style: { fontFamily: font },
+    };
+  });
+  const [fontChoice, setFontChoice] = useState(fonts[0]);
+  function handleSelectFontChoice({ value }) {
+    setFontChoice(value);
+  }
+
   const data = {
     heights: apiResult[reference].height,
     weights: apiResult[reference].weight,
@@ -37,7 +58,7 @@ export const ResultsSegment = ({ apiResult, reference }) => {
   });
   const [choices, setChoices] = useState(initialChoices);
 
-  function handleSelectChoice({ value }) {
+  function handleSelectMeasurementChoice({ value }) {
     let newChoices = [];
     value.forEach((item) => {
       newChoices.push({ dataTitle: textMapper[item], data: data[item] });
@@ -49,13 +70,22 @@ export const ResultsSegment = ({ apiResult, reference }) => {
   const [decimalAge, setDecimalAge] = useState(false);
 
   const chronologicalStyles = {
-    fontStyle: 'italic',
-    color: '#6c757d',
-  }
+    fontStyle: "italic",
+    color: "#6c757d",
+  };
 
   return (
     <Segment>
       <Form>
+        <Form.Group inline>
+          <label>Data Table Font</label>
+          <Form.Select
+            selection
+            options={fontOptions}
+            defaultValue={"Montserrat"}
+            onChange={(e, choice) => handleSelectFontChoice(choice)}
+          ></Form.Select>
+        </Form.Group>
         <Form.Group inline>
           <label>Measurement</label>
           <Form.Select
@@ -63,7 +93,7 @@ export const ResultsSegment = ({ apiResult, reference }) => {
             selection
             options={resultDataOptions}
             defaultValue={defaultValues}
-            onChange={(e, choice) => handleSelectChoice(choice)}
+            onChange={(e, choice) => handleSelectMeasurementChoice(choice)}
           ></Form.Select>
         </Form.Group>
         <Form.Group inline>
@@ -84,7 +114,7 @@ export const ResultsSegment = ({ apiResult, reference }) => {
             onChange={(e, { value }) => setAgeChoice(value)}
             style={{
               fontWeight: ageChoice === "chronological" ? "bold" : "normal",
-              ...chronologicalStyles
+              ...chronologicalStyles,
             }}
           />
           <Form.Radio
@@ -117,6 +147,7 @@ export const ResultsSegment = ({ apiResult, reference }) => {
             decimalAge={decimalAge}
             key={item["dataTitle"]}
             chronologicalStyles={chronologicalStyles}
+            fontChoice={fontChoice}
           />
         );
       })}

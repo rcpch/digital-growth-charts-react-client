@@ -26,11 +26,11 @@ export const ResultsDataTableRow = ({
     <p>{measurement.measurement_dates.corrected_calendar_age}</p>
   );
   const chronAgeAsP = decimalAge ? (
-    <p style={chronologicalStyles}>
+    <p  style={chronologicalStyles}>
       {measurement.measurement_dates.chronological_decimal_age.toFixed(3)}
     </p>
   ) : (
-    <p style={chronologicalStyles}>
+    <p  style={chronologicalStyles}>
       {measurement.measurement_dates.chronological_calendar_age}
     </p>
   );

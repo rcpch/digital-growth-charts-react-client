@@ -2,15 +2,22 @@ import * as React from "react";
 import { Table, Header } from "semantic-ui-react";
 import { ResultsDataTableRow } from "./ResultsDataTableRow";
 
-export const ResultsDataTable = ({ dataTitle, data, ageChoice, decimalAge, chronologicalStyles }) => {
+export const ResultsDataTable = ({
+  dataTitle,
+  data,
+  ageChoice,
+  decimalAge,
+  chronologicalStyles,
+  fontChoice,
+}) => {
 
-  
-  
+  console.log('using style: ', fontChoice)
+
   return (
     <React.Fragment>
       <Header>{dataTitle}</Header>
 
-      <Table basic="very" celled>
+      <Table basic="very" celled style={{ fontFamily: fontChoice}}>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Date of Measurement</Table.HeaderCell>
