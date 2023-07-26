@@ -1,11 +1,20 @@
+import { useState } from "react";
 import { Table, Icon, Header } from "semantic-ui-react";
 import { ResultsDataTableRow } from "./ResultsDataTableRow";
 
 export const ResultsDataTable = ({ dataTitle, data }) => {
+  const [isCorrected, setIsCorrected] = useState(true);
+  const rotate = isCorrected ? "rotate(180deg)" : "rotate(0)";
   return (
     <>
       <Header>
-        {dataTitle} (Corrected age results <Icon name="add circle" />)
+        {dataTitle} ({isCorrected ? "Corrected" : "Chronological"}
+        <Icon
+          name="add circle"
+          onClick={() => setIsCorrected(!isCorrected)}
+          style={{ transform: rotate, transition: "all 0.2s linear" }}
+        />
+        )
       </Header>
 
       <Table basic="very" celled>
@@ -21,7 +30,20 @@ export const ResultsDataTable = ({ dataTitle, data }) => {
         <Table.Body>
           {data.map((measurement, index) => {
             return (
-              <ResultsDataTableRow measurement={measurement} key={index} />
+              <>
+                <ResultsDataTableRow
+                  measurement={measurement}
+                  key={index}
+                  // isCorrected={isCorrected}
+                  correctedChronological={"corrected"}
+                />
+                <ResultsDataTableRow
+                  measurement={measurement}
+                  key={index}
+                  // isCorrected={isCorrected}
+                  correctedChronological={"chronological"}
+                />
+              </>
             );
           })}
         </Table.Body>
