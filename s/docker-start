@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# names the container as below
+app="rcpch-dgc-demo-client"
+
+# usage: `s/docker-start` runs the container
+# It assumes the Docker image has already been built using the `s/docker-rebuild` script
+# It will error if a Docker container already exists
+# To remove the existing container use `docker container rm rcpch-dgc-demo-client`
+# or use the `s/docker-rebuild` script
+
+docker run -it -p 3000:3000 \
+  --name=${app} \
+  --volume $PWD:/app \
+  ${app}
