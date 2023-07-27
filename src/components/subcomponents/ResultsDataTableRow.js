@@ -1,8 +1,9 @@
 import * as React from "react";
 import { Table } from "semantic-ui-react";
 
-import ObservationValueCellContents from "./ObservationValueCellContents";
-import TableCellMeasurementAges from './TableCellMeasurementAges'
+import TableCellObservationValue from "./TableCellObservationValue";
+import TableCellMeasurementAges from "./TableCellMeasurementAges";
+import TableCellObservationDate from "./TableCellObservationDate";
 
 export const ResultsDataTableRow = ({
   measurement,
@@ -69,15 +70,9 @@ export const ResultsDataTableRow = ({
 
   return (
     <Table.Row>
-      <Table.Cell>{measurement.measurement_dates.observation_date}</Table.Cell>
-      <Table.Cell>
-        <ObservationValueCellContents
-          measurement={measurement}
-        ></ObservationValueCellContents>
-      </Table.Cell>
-      <TableCellMeasurementAges
-        measurementAges={measurementAges}
-      ></TableCellMeasurementAges>
+      <TableCellObservationDate measurement={measurement} />
+      <TableCellObservationValue measurement={measurement} />
+      <TableCellMeasurementAges measurementAges={measurementAges} />
 
       <Table.Cell>{measurementCentiles.map((item) => item)}</Table.Cell>
       <Table.Cell>{measurementSDS.map((item) => item)}</Table.Cell>
