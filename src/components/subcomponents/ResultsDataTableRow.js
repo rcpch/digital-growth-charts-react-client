@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Table } from "semantic-ui-react";
-import { units } from "../../functions/units";
+
+import ObservationValueCellContents from "./ObservationValueCellContents";
+
 
 export const ResultsDataTableRow = ({
   measurement,
@@ -26,11 +28,11 @@ export const ResultsDataTableRow = ({
     <p>{measurement.measurement_dates.corrected_calendar_age}</p>
   );
   const chronAgeAsP = decimalAge ? (
-    <p  style={chronologicalStyles}>
+    <p style={chronologicalStyles}>
       {measurement.measurement_dates.chronological_decimal_age.toFixed(3)}
     </p>
   ) : (
-    <p  style={chronologicalStyles}>
+    <p style={chronologicalStyles}>
       {measurement.measurement_dates.chronological_calendar_age}
     </p>
   );
@@ -69,8 +71,7 @@ export const ResultsDataTableRow = ({
     <Table.Row>
       <Table.Cell>{measurement.measurement_dates.observation_date}</Table.Cell>
       <Table.Cell>
-        {measurement.child_observation_value.observation_value}{" "}
-        {units(measurement.child_observation_value.measurement_method)}
+        <ObservationValueCellContents measurement={measurement}></ObservationValueCellContents>
       </Table.Cell>
       <Table.Cell>{measurementAges.map((item) => item)}</Table.Cell>
       <Table.Cell>{measurementCentiles.map((item) => item)}</Table.Cell>
