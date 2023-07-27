@@ -4,6 +4,8 @@ import { Table } from "semantic-ui-react";
 import TableCellObservationValue from "./TableCellObservationValue";
 import TableCellMeasurementAges from "./TableCellMeasurementAges";
 import TableCellObservationDate from "./TableCellObservationDate";
+import TableCellCentiles from "./TableCellCentiles";
+import TableCellSDS from "./TableCellSDS";
 
 export const ResultsDataTableRow = ({
   measurement,
@@ -73,9 +75,8 @@ export const ResultsDataTableRow = ({
       <TableCellObservationDate measurement={measurement} />
       <TableCellObservationValue measurement={measurement} />
       <TableCellMeasurementAges measurementAges={measurementAges} />
-
-      <Table.Cell>{measurementCentiles.map((item) => item)}</Table.Cell>
-      <Table.Cell>{measurementSDS.map((item) => item)}</Table.Cell>
+      <TableCellCentiles measurementCentiles={measurementCentiles} />
+      <TableCellSDS measurementSDS={measurementSDS} />
     </Table.Row>
   );
 };
