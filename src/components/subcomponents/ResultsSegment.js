@@ -75,81 +75,84 @@ export const ResultsSegment = ({ apiResult, reference }) => {
   };
 
   return (
-    <Segment>
-      <Form>
-        <Form.Group inline>
-          <label>Data Table Font</label>
-          <Form.Select
-            selection
-            options={fontOptions}
-            defaultValue={"Montserrat"}
-            onChange={(e, choice) => handleSelectFontChoice(choice)}
-          ></Form.Select>
-        </Form.Group>
-        <Form.Group inline>
-          <label>Measurement</label>
-          <Form.Select
-            multiple
-            selection
-            options={resultDataOptions}
-            defaultValue={defaultValues}
-            onChange={(e, choice) => handleSelectMeasurementChoice(choice)}
-          ></Form.Select>
-        </Form.Group>
-        <Form.Group inline>
-          <label>Age Result Type</label>
-          <Form.Radio
-            label="Corrected"
-            value="corrected"
-            checked={ageChoice === "corrected"}
-            onChange={(e, { value }) => setAgeChoice(value)}
-            style={{
-              fontWeight: ageChoice === "corrected" ? "bold" : "normal",
-            }}
-          />
-          <Form.Radio
-            label="Chronological"
-            value="chronological"
-            checked={ageChoice === "chronological"}
-            onChange={(e, { value }) => setAgeChoice(value)}
-            style={{
-              fontWeight: ageChoice === "chronological" ? "bold" : "normal",
-              ...chronologicalStyles,
-            }}
-          />
-          <Form.Radio
-            label="Both"
-            value="both"
-            checked={ageChoice === "both"}
-            onChange={(e, { value }) => setAgeChoice(value)}
-            style={{
-              fontWeight: ageChoice === "both" ? "bold" : "normal",
-            }}
-          />
-        </Form.Group>
-        <Form.Group inline>
-          <label>Decimal Age</label>
-          <Form.Checkbox
-            toggle
-            onChange={() => setDecimalAge(!decimalAge)}
-            fitted={false}
-          />
-        </Form.Group>
-      </Form>
+    <>
+      <Segment>
+        <Form>
+          <Form.Group inline>
+            <label>Data Table Font</label>
+            <Form.Select
+              selection
+              options={fontOptions}
+              defaultValue={"Montserrat"}
+              onChange={(e, choice) => handleSelectFontChoice(choice)}
+            ></Form.Select>
+          </Form.Group>
+          <Form.Group inline>
+            <label>Measurement</label>
+            <Form.Select
+              multiple
+              selection
+              options={resultDataOptions}
+              defaultValue={defaultValues}
+              onChange={(e, choice) => handleSelectMeasurementChoice(choice)}
+            ></Form.Select>
+          </Form.Group>
+          <Form.Group inline>
+            <label>Age Result Type</label>
+            <Form.Radio
+              label="Corrected"
+              value="corrected"
+              checked={ageChoice === "corrected"}
+              onChange={(e, { value }) => setAgeChoice(value)}
+              style={{
+                fontWeight: ageChoice === "corrected" ? "bold" : "normal",
+              }}
+            />
+            <Form.Radio
+              label="Chronological"
+              value="chronological"
+              checked={ageChoice === "chronological"}
+              onChange={(e, { value }) => setAgeChoice(value)}
+              style={{
+                fontWeight: ageChoice === "chronological" ? "bold" : "normal",
+                ...chronologicalStyles,
+              }}
+            />
+            <Form.Radio
+              label="Both"
+              value="both"
+              checked={ageChoice === "both"}
+              onChange={(e, { value }) => setAgeChoice(value)}
+              style={{
+                fontWeight: ageChoice === "both" ? "bold" : "normal",
+              }}
+            />
+          </Form.Group>
+          <Form.Group inline>
+            <label>Decimal Age</label>
+            <Form.Checkbox
+              toggle
+              onChange={() => setDecimalAge(!decimalAge)}
+              fitted={false}
+            />
+          </Form.Group>
+        </Form>
+      </Segment>
 
       {choices.map((item) => {
         return (
-          <ResultsDataTable
-            dataTitle={item["dataTitle"]}
-            data={item["data"]}
-            ageChoice={ageChoice}
-            decimalAge={decimalAge}
-            key={item["dataTitle"]}
-            chronologicalStyles={chronologicalStyles}
-            fontChoice={fontChoice}
-          />
+          <Segment key={item["dataTitle"]}>
+            <ResultsDataTable
+              dataTitle={item["dataTitle"]}
+              data={item["data"]}
+              ageChoice={ageChoice}
+              decimalAge={decimalAge}
+              chronologicalStyles={chronologicalStyles}
+              fontChoice={fontChoice}
+            />
+          </Segment>
         );
       })}
-    </Segment>
+    </>
   );
 };

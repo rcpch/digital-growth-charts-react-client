@@ -14,7 +14,7 @@ export const ResultsDataTable = ({
   return (
     <div style={{ fontFamily: fontChoice}}>
 
-      <Header>{dataTitle}</Header>
+      <Header textAlign='left'>{dataTitle}</Header>
       <Table basic="very" celled >
         <Table.Header>
           <Table.Row>
