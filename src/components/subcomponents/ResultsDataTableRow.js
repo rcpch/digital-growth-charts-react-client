@@ -21,37 +21,21 @@ export const ResultsDataTableRow = ({
       measurement.measurement_calculated_values.chronological_sds * 1000
     ) / 1000;
 
-  let measurementCentiles = [];
-  let measurementSDS = [];
-
-  
-  const corrCentileAsP = (
-    <p>{measurement.measurement_calculated_values.corrected_centile}</p>
-  );
-  const chronCentileAsP = (
-    <p style={chronologicalStyles}>
-      {measurement.measurement_calculated_values.chronological_centile}
-    </p>
-  );
   const corrSDSAsP = <p>{roundedCorrectedSDS}</p>;
   const chronSDSAsP = (
     <p style={chronologicalStyles}>{roundedChronologicalSDS}</p>
   );
 
+  const measurementSDS = [];
+
   switch (ageChoice) {
     case "corrected":
-
-      measurementCentiles.push(corrCentileAsP);
       measurementSDS.push(corrSDSAsP);
       break;
     case "chronological":
-
-      measurementCentiles.push(chronCentileAsP);
       measurementSDS.push(chronSDSAsP);
       break;
     default:
-
-      measurementCentiles.push(corrCentileAsP, chronCentileAsP);
       measurementSDS.push(corrSDSAsP, chronSDSAsP);
       break;
   }
@@ -66,7 +50,11 @@ export const ResultsDataTableRow = ({
         ageChoice={ageChoice}
         chronologicalStyles={chronologicalStyles}
       />
-      <TableCellCentiles measurementCentiles={measurementCentiles} />
+      <TableCellCentiles
+        measurementCentiles={measurement.measurement_calculated_values}
+        ageChoice={ageChoice}
+        chronologicalStyles={chronologicalStyles}
+      />
       <TableCellSDS measurementSDS={measurementSDS} />
     </Table.Row>
   );
