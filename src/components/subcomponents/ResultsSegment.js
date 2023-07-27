@@ -1,5 +1,6 @@
-import { Form, Segment } from "semantic-ui-react";
+import { Form, Header, Segment, Select } from "semantic-ui-react";
 import { ResultsDataTable } from "./ResultsDataTable";
+import {ResultsDataOptionsHeader} from './ResultsDataOptionsHeader';
 import { useState } from "react";
 
 export const ResultsSegment = ({ apiResult, reference }) => {
@@ -66,9 +67,6 @@ export const ResultsSegment = ({ apiResult, reference }) => {
     setChoices(newChoices);
   }
 
-  const [ageChoice, setAgeChoice] = useState("corrected");
-  const [decimalAge, setDecimalAge] = useState(false);
-
   const chronologicalStyles = {
     fontStyle: "italic",
     color: "#6c757d",
@@ -78,17 +76,11 @@ export const ResultsSegment = ({ apiResult, reference }) => {
     <>
       <Segment>
         <Form>
-          <Form.Group inline>
-            <label>Data Table Font</label>
-            <Form.Select
-              selection
-              options={fontOptions}
-              defaultValue={"Montserrat"}
-              onChange={(e, choice) => handleSelectFontChoice(choice)}
-            ></Form.Select>
-          </Form.Group>
-          <Form.Group inline>
-            <label>Measurement</label>
+          <Form.Field>
+            <ResultsDataOptionsHeader
+              choicesLength={choices.length}
+              optionsLength={resultDataOptions.length}
+            />
             <Form.Select
               multiple
               selection
@@ -96,46 +88,18 @@ export const ResultsSegment = ({ apiResult, reference }) => {
               defaultValue={defaultValues}
               onChange={(e, choice) => handleSelectMeasurementChoice(choice)}
             ></Form.Select>
-          </Form.Group>
-          <Form.Group inline>
-            <label>Age Result Type</label>
-            <Form.Radio
-              label="Corrected"
-              value="corrected"
-              checked={ageChoice === "corrected"}
-              onChange={(e, { value }) => setAgeChoice(value)}
-              style={{
-                fontWeight: ageChoice === "corrected" ? "bold" : "normal",
-              }}
-            />
-            <Form.Radio
-              label="Chronological"
-              value="chronological"
-              checked={ageChoice === "chronological"}
-              onChange={(e, { value }) => setAgeChoice(value)}
-              style={{
-                fontWeight: ageChoice === "chronological" ? "bold" : "normal",
-                ...chronologicalStyles,
-              }}
-            />
-            <Form.Radio
-              label="Both"
-              value="both"
-              checked={ageChoice === "both"}
-              onChange={(e, { value }) => setAgeChoice(value)}
-              style={{
-                fontWeight: ageChoice === "both" ? "bold" : "normal",
-              }}
-            />
-          </Form.Group>
-          <Form.Group inline>
-            <label>Decimal Age</label>
-            <Form.Checkbox
-              toggle
-              onChange={() => setDecimalAge(!decimalAge)}
-              fitted={false}
-            />
-          </Form.Group>
+          </Form.Field>
+          <Form.Field>
+            <Header as="h5" textAlign="left">
+              Data Table Font
+            </Header>
+            <Select
+              selection
+              options={fontOptions}
+              defaultValue={"Montserrat"}
+              onChange={(e, choice) => handleSelectFontChoice(choice)}
+            ></Select>
+          </Form.Field>
         </Form>
       </Segment>
 
@@ -145,8 +109,6 @@ export const ResultsSegment = ({ apiResult, reference }) => {
             <ResultsDataTable
               dataTitle={item["dataTitle"]}
               data={item["data"]}
-              ageChoice={ageChoice}
-              decimalAge={decimalAge}
               chronologicalStyles={chronologicalStyles}
               fontChoice={fontChoice}
             />
