@@ -21,24 +21,10 @@ export const ResultsDataTableRow = ({
       measurement.measurement_calculated_values.chronological_sds * 1000
     ) / 1000;
 
-  let measurementAges = [];
   let measurementCentiles = [];
   let measurementSDS = [];
 
-  const corrAgeAsP = decimalAge ? (
-    <p>{measurement.measurement_dates.corrected_decimal_age.toFixed(3)}</p>
-  ) : (
-    <p>{measurement.measurement_dates.corrected_calendar_age}</p>
-  );
-  const chronAgeAsP = decimalAge ? (
-    <p style={chronologicalStyles}>
-      {measurement.measurement_dates.chronological_decimal_age.toFixed(3)}
-    </p>
-  ) : (
-    <p style={chronologicalStyles}>
-      {measurement.measurement_dates.chronological_calendar_age}
-    </p>
-  );
+  
   const corrCentileAsP = (
     <p>{measurement.measurement_calculated_values.corrected_centile}</p>
   );
@@ -54,17 +40,17 @@ export const ResultsDataTableRow = ({
 
   switch (ageChoice) {
     case "corrected":
-      measurementAges.push(corrAgeAsP);
+
       measurementCentiles.push(corrCentileAsP);
       measurementSDS.push(corrSDSAsP);
       break;
     case "chronological":
-      measurementAges.push(chronAgeAsP);
+
       measurementCentiles.push(chronCentileAsP);
       measurementSDS.push(chronSDSAsP);
       break;
     default:
-      measurementAges.push(corrAgeAsP, chronAgeAsP);
+
       measurementCentiles.push(corrCentileAsP, chronCentileAsP);
       measurementSDS.push(corrSDSAsP, chronSDSAsP);
       break;
@@ -74,7 +60,12 @@ export const ResultsDataTableRow = ({
     <Table.Row>
       <TableCellObservationDate measurement={measurement} />
       <TableCellObservationValue measurement={measurement} />
-      <TableCellMeasurementAges measurementAges={measurementAges} />
+      <TableCellMeasurementAges
+        measurementDates={measurement.measurement_dates}
+        decimalAge={decimalAge}
+        ageChoice={ageChoice}
+        chronologicalStyles={chronologicalStyles}
+      />
       <TableCellCentiles measurementCentiles={measurementCentiles} />
       <TableCellSDS measurementSDS={measurementSDS} />
     </Table.Row>
