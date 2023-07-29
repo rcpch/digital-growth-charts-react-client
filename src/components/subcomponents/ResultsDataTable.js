@@ -1,59 +1,65 @@
 import * as React from "react";
 import { useState } from "react";
-import { Table, Header, Checkbox, Form } from "semantic-ui-react";
+import { Table, Checkbox, Form, Button } from "semantic-ui-react";
 import { ResultsDataTableRow } from "./ResultsDataTableRow";
 
 export const ResultsDataTable = ({
-  dataTitle,
+  // dataTitle,
   data,
   chronologicalStyles,
-  fontChoice,
+  // fontChoice,
 }) => {
-
   const [ageChoice, setAgeChoice] = useState("corrected");
   const [decimalAge, setDecimalAge] = useState(false);
 
   return (
-    <div style={{ fontFamily: fontChoice }}>
+    <div>
       <Form>
         <Form.Group>
-          <Header textAlign="left">{dataTitle}</Header>
-          <Form.Group inline style={{marginLeft:"1em"}}>
-            <Form.Radio
-              label="Corrected"
-              value="corrected"
-              checked={ageChoice === "corrected"}
-              onChange={(e, { value }) => setAgeChoice(value)}
-              style={{
-                fontWeight: ageChoice === "corrected" ? "bold" : "normal",
-              }}
-            />
-            <Form.Radio
-              label="Chronological"
-              value="chronological"
-              checked={ageChoice === "chronological"}
-              onChange={(e, { value }) => setAgeChoice(value)}
-              style={{
-                fontWeight: ageChoice === "chronological" ? "bold" : "normal",
-                ...chronologicalStyles,
-              }}
-            />
-            <Form.Radio
-              label="Both"
-              value="both"
-              checked={ageChoice === "both"}
-              onChange={(e, { value }) => setAgeChoice(value)}
-              style={{
-                fontWeight: ageChoice === "both" ? "bold" : "normal",
-              }}
-            />
-          </Form.Group>
+          {data.length > 0 &&
+            data[0].measurement_dates.corrected_decimal_age !==
+              data[0].measurement_dates.chronological_decimal_age && (
+              <Button.Group>
+                <Button
+                  value="corrected"
+                  active={ageChoice === "corrected"}
+                  onClick={(e, { value }) => setAgeChoice(value)}
+                  style={{
+                    fontWeight: ageChoice === "corrected" ? "bold" : "normal",
+                  }}
+                >
+                  Corrected
+                </Button>
+                <Button
+                  value="chronological"
+                  active={ageChoice === "chronological"}
+                  onClick={(e, { value }) => setAgeChoice(value)}
+                  style={{
+                    fontWeight:
+                      ageChoice === "chronological" ? "bold" : "normal",
+                    ...chronologicalStyles,
+                  }}
+                >
+                  Chronological
+                </Button>
+                <Button
+                  value="both"
+                  active={ageChoice === "both"}
+                  onClick={(e, { value }) => setAgeChoice(value)}
+                  style={{
+                    fontWeight: ageChoice === "both" ? "bold" : "normal",
+                  }}
+                >
+                  Both
+                </Button>
+              </Button.Group>
+            )}
           <Checkbox
             toggle
             onChange={() => setDecimalAge(!decimalAge)}
             fitted={false}
             label="Decimal age?"
-            style={{marginLeft: "1em"}}
+            style={{ marginLeft: "1em" }}
           />
         </Form.Group>
       </Form>

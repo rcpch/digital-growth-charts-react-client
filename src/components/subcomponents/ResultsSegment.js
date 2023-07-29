@@ -1,70 +1,64 @@
-import { Form, Header, Segment, Select } from "semantic-ui-react";
+import { Segment, Tab, Menu } from "semantic-ui-react";
 import { ResultsDataTable } from "./ResultsDataTable";
-import {ResultsDataOptionsHeader} from './ResultsDataOptionsHeader';
 import { useState } from "react";
 
 export const ResultsSegment = ({ apiResult, reference }) => {
-  const fonts = [
-    "Montserrat",
-    "Roboto",
-    "Lato",
-    "Open Sans",
-    "Source Sans Pro",
-    "Noto Sans",
+  // const fonts = [
+  //   "Montserrat",
+  //   "Roboto",
+  //   "Lato",
+  //   "Open Sans",
+  //   "Source Sans Pro",
+  //   "Noto Sans",
+  // ];
+  // const fontOptions = fonts.map((font) => {
+  //   return {
+  //     key: font,
+  //     value: font,
+  //     text: font,
+  //     style: { fontFamily: font },
+  //   };
+  // });
+  // const [fontChoice, setFontChoice] = useState(fonts[0]);
+  // function handleSelectFontChoice({ value }) {
+  //   setFontChoice(value);
+  // }
+
+  const panesBlueprint = [
+    {
+      menuItem: "Heights",
+      measurementName: "height",
+      key: "Heights",
+      data: apiResult[reference].height,
+      disabled: apiResult[reference].height.length === 0,
+    },
+    {
+      menuItem: "Weights",
+      measurementName: "weight",
+      key: "Weights",
+      data: apiResult[reference].weight,
+      disabled: apiResult[reference].weight.length === 0,
+    },
+    {
+      menuItem: "BMIs",
+      measurementName: "bmi",
+      key: "BMIs",
+      data: apiResult[reference].bmi,
+      disabled: apiResult[reference].bmi.length === 0,
+    },
+    {
+      menuItem: "Head Circumferences",
+      measurementName: "ofc",
+      key: "Head Circumferences",
+      data: apiResult[reference].ofc,
+      disabled: apiResult[reference].ofc.length === 0,
+    },
   ];
-  const fontOptions = fonts.map((font) => {
-    return {
-      key: font,
-      value: font,
-      text: font,
-      style: { fontFamily: font },
-    };
-  });
-  const [fontChoice, setFontChoice] = useState(fonts[0]);
-  function handleSelectFontChoice({ value }) {
-    setFontChoice(value);
-  }
 
-  const data = {
-    heights: apiResult[reference].height,
-    weights: apiResult[reference].weight,
-    bmis: apiResult[reference].bmi,
-    ofcs: apiResult[reference].ofc,
-  };
-  const textMapper = {
-    heights: "Heights",
-    weights: "Weights",
-    bmis: "BMIs",
-    ofcs: "OFCs",
-  };
+  const [choice, setChoice] = useState(0);
 
-  const resultDataOptions = Object.entries(data)
-    .filter((items) => items[1].length > 0)
-    .map((items) => {
-      return {
-        key: `${items[0]}`,
-        value: `${items[0]}`,
-        text: `${textMapper[items[0]]}`,
-      };
-    });
-
-  const defaultValues = resultDataOptions.map((item) => item["key"]);
-
-  const initialChoices = [];
-  resultDataOptions.forEach((item) => {
-    initialChoices.push({
-      dataTitle: textMapper[item["key"]],
-      data: data[item["key"]],
-    });
-  });
-  const [choices, setChoices] = useState(initialChoices);
-
-  function handleSelectMeasurementChoice({ value }) {
-    let newChoices = [];
-    value.forEach((item) => {
-      newChoices.push({ dataTitle: textMapper[item], data: data[item] });
-    });
-    setChoices(newChoices);
+  function handleSelectMeasurementChoice(selection) {
+    setChoice(selection.activeIndex);
   }
 
   const chronologicalStyles = {
@@ -72,24 +66,44 @@ export const ResultsSegment = ({ apiResult, reference }) => {
     color: "#6c757d",
   };
 
+  const panes = panesBlueprint.map((details, index) => {
+    return {
+      menuItem: (
+        <Menu.Item disabled={details.disabled} key={details.measurementName}>
+          {details.menuItem}
+        </Menu.Item>
+      ),
+      render: () => {
+        return (
+          <Tab.Pane key={details.measurementName} attached="top">
+            <ResultsDataTable
+              dataTitle={details.measurementName}
+              data={details.data}
+              chronologicalStyles={chronologicalStyles}
+              // fontChoice={fontChoice}
+            />
+          </Tab.Pane>
+        );
+      },
+    };
+  });
+
   return (
     <>
       <Segment>
-        <Form>
-          <Form.Field>
-            <ResultsDataOptionsHeader
-              choicesLength={choices.length}
-              optionsLength={resultDataOptions.length}
-            />
-            <Form.Select
-              multiple
-              selection
-              options={resultDataOptions}
-              defaultValue={defaultValues}
-              onChange={(e, choice) => handleSelectMeasurementChoice(choice)}
-            ></Form.Select>
-          </Form.Field>
-          <Form.Field>
+        <Tab
+          key="tabPanes"
+          menu={{
+            attached: "top",
+            secondary: true,
+            pointing: true,
+          }}
+          panes={panes}
+          activeIndex={choice}
+          onTabChange={(e, choice) => handleSelectMeasurementChoice(choice)}
+        />
+        {/* </Form.Field> */}
+        {/* <Form.Field>
             <Header as="h5" textAlign="left">
               Data Table Font
             </Header>
@@ -100,21 +114,8 @@ export const ResultsSegment = ({ apiResult, reference }) => {
               onChange={(e, choice) => handleSelectFontChoice(choice)}
             ></Select>
           </Form.Field>
-        </Form>
+        </Form> */}
       </Segment>
-
-      {choices.map((item) => {
-        return (
-          <Segment key={item["dataTitle"]}>
-            <ResultsDataTable
-              dataTitle={item["dataTitle"]}
-              data={item["data"]}
-              chronologicalStyles={chronologicalStyles}
-              fontChoice={fontChoice}
-            />
-          </Segment>
-        );
-      })}
     </>
   );
 };
