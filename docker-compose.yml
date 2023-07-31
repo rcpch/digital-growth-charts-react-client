@@ -1,0 +1,12 @@
+version: '1'
+
+services:
+  client:
+    build: .
+    ports:
+      - 3000:3000
+    env_file:
+      # Add .env rcpch api key
+      - .env 
+    command: >
+      sh -c "npm start"

@@ -28,7 +28,6 @@
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^7.2.1",
-    "babel-jest": "^29.6.2",
     "jest": "^26.6.0",
     "semantic-ui-less": "^2.4.1"
   },
