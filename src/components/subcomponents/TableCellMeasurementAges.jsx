@@ -7,6 +7,10 @@ export default function TableCellMeasurementAges({
   ageChoice,
   chronologicalStyles,
 }) {
+  console.log(measurementDates,
+    decimalAge,
+    ageChoice,
+    chronologicalStyles,)
   const correctedAge = decimalAge
     ? measurementDates.corrected_decimal_age.toFixed(3)
     : measurementDates.corrected_calendar_age;
