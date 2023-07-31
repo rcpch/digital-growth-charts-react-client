@@ -5,6 +5,8 @@ services:
     build: .
     ports:
       - 3000:3000
+    environment:
+      - WATCHPACK_POLLING=true
     env_file:
       # Add .env rcpch api key
       - .env 
