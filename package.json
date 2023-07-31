@@ -36,7 +36,8 @@
     "build": "craco build",
     "eject": "craco eject",
     "predeploy": "craco build",
-    "test": "jest"
+    "test": "jest",
+    "test-watch": "jest --watch"
   },
   "eslintConfig": {
     "extends": "react-app"
