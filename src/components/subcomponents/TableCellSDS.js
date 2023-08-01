@@ -11,7 +11,7 @@ export default function TableCellSDS({
   const chronologicalSDS =
     Math.round(measurementSDS.chronological_sds * 1000) / 1000;
   return (
-    <Table.Cell>
+    <Table.Cell data-testid="sds_td_test">
       {(ageChoice === "corrected" || ageChoice === "both") && (
         <p>{correctedSDS}</p>
       )}

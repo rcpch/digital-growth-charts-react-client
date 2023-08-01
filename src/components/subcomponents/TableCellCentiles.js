@@ -10,7 +10,7 @@ export default function TableCellCentiles({
   const correctedCentile = measurementCentiles.corrected_centile;
   const chronologicalCentile = measurementCentiles.chronological_centile;
   return (
-    <Table.Cell>
+    <Table.Cell data-testid="centile_td_test">
       {(ageChoice === "corrected" || ageChoice === "both") && (
         <p>{correctedCentile}</p>
       )}

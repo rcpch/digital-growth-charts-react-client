@@ -9,7 +9,7 @@ export default function TableCellObservationValue({ measurement }) {
   const measurementMethod =
     measurement.child_observation_value.measurement_method;
   return (
-    <Table.Cell>
+    <Table.Cell data-testid="value_td_test">
       {value} {units(measurementMethod)}
     </Table.Cell>
   );

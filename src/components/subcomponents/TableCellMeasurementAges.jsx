@@ -15,7 +15,7 @@ export default function TableCellMeasurementAges({
     ? measurementDates.chronological_decimal_age.toFixed(3)
     : measurementDates.chronological_calendar_age;
   return (
-    <Table.Cell>
+    <Table.Cell data-testid="age_td_test">
       {(ageChoice === "corrected" || ageChoice === "both") && (
         <p>{correctedAge}</p>
       )}
