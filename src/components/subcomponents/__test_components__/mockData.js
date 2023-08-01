@@ -11116,5 +11116,3 @@ export const mockDataAllMeasurements23Weeks = {
         }
     }
 }
-
-
