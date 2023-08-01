@@ -69,7 +69,7 @@ export const ResultsSegment = ({ apiResult, reference }) => {
   const panes = panesBlueprint.map((details, index) => {
     return {
       menuItem: (
-        <Menu.Item disabled={details.disabled} key={details.measurementName}>
+        <Menu.Item data-testid={`${details.measurementName}_menu_button_test`} disabled={details.disabled} key={details.measurementName}>
           {details.menuItem}
         </Menu.Item>
       ),

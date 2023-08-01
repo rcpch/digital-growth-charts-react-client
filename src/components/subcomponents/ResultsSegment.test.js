@@ -2,9 +2,9 @@ import React from 'react';
 import "@testing-library/jest-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { ResultsSegment } from "./ResultsSegment";
-import { mockDataAllMeasurements23Weeks } from './__test_components__/mockData';
+import { mockDataAllMeasurements23Weeks, getMockDataMeasurement } from './__test_components__/mockData';
 
-describe('results table measurement menu panes render correct data', () => {
+describe('results segment measurement menu panes render correct data', () => {
     describe('when all 4 measurement data provided', () => {
         // 75.7 cm
         // 9.6 kg
@@ -23,7 +23,7 @@ describe('results table measurement menu panes render correct data', () => {
             fireEvent.click(screen.getByText("Weights"))
 
             const valueText = screen.queryAllByTestId('value_td_test')[0].textContent
-            
+
             expect(valueText).toBe('9.6 kg');
         });
         test('when BMIs clicked', () => {
@@ -32,7 +32,7 @@ describe('results table measurement menu panes render correct data', () => {
             fireEvent.click(screen.getByText("BMIs"))
 
             const valueText = screen.queryAllByTestId('value_td_test')[0].textContent
-            
+
             expect(valueText).toBe('16.8 kg/m²');
         });
         test('when Head Circumferences clicked', () => {
@@ -41,8 +41,28 @@ describe('results table measurement menu panes render correct data', () => {
             fireEvent.click(screen.getByText("Head Circumferences"))
 
             const valueText = screen.queryAllByTestId('value_td_test')[0].textContent
-            
+
             expect(valueText).toBe('46.1 cm');
         });
+    });
+})
+
+describe('results segment measurement menu panes render correctly depending on data', () => {
+    test('only height given, other toggles should be disabled', () => {
+
+        render(<ResultsSegment apiResult={getMockDataMeasurement(['height'])} reference={'uk-who'} />)
+
+        const baseMenuItemTestId = '_menu_button_test';
+
+        const heightButton = screen.getByTestId('height' + baseMenuItemTestId);
+        expect(heightButton.className).not.toContain("disabled_item");
+        
+        const buttonsShouldBeDisabled = ['weight','bmi','ofc'];
+        buttonsShouldBeDisabled.forEach(name=>{
+
+            const toggle = screen.getByTestId(name + baseMenuItemTestId);
+            expect(toggle.className).toContain("disabled item");
+        })
+
     })
 })

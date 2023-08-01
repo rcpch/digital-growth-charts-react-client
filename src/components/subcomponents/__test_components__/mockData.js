@@ -10827,3 +10827,21 @@ export const mockDataAllMeasurements23Weeks = {
 }
 
 export const mockDataHeights23Weeks = mockDataAllMeasurements23Weeks['uk-who']['height'];
+
+export function getMockDataMeasurement(measurements) {
+
+    let mockData = {
+        'height': [],
+        'weight': [],
+        'bmi': [],
+        'ofc': []
+    }
+
+    measurements.forEach(measurement => {
+        mockData[measurement] = mockDataAllMeasurements23Weeks['uk-who'][measurement]
+    });
+
+    return {
+        'uk-who': mockData
+    }
+}
