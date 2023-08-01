@@ -9,14 +9,14 @@ describe("assert display option buttons interactions for datatable render correc
         render(<ResultsDataTable data={mockDataHeights23Weeks} chronologicalStyles={{}} />)
 
         // first check stringified age shown by default
-        expect(screen.getByText('8 months and 2 days')).toBeVisible()
+        expect(screen.getByText('10 months, 1 week and 4 days')).toBeVisible()
 
         // toggle decimal age
         const decimalAgeCheckbox = screen.getByRole('checkbox');
         fireEvent.click(decimalAgeCheckbox)
 
         // check age is decimal
-        expect(screen.getByText('0.674')).toBeVisible()
+        expect(screen.getByText('0.865')).toBeVisible()
     });
 
     test('for age toggle as Corrected (default), Chronological, and Both', () => {

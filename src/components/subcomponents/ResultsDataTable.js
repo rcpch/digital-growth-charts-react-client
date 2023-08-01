@@ -11,7 +11,7 @@ export const ResultsDataTable = ({
 }) => {
   const [ageChoice, setAgeChoice] = useState("corrected");
   const [decimalAge, setDecimalAge] = useState(false);
-
+  console.log(data)
   return (
     <div>
       <Form>
