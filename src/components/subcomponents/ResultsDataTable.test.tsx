@@ -2,7 +2,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from 'react';
 import { ResultsDataTable } from "./ResultsDataTable";
-import mockDataHeights23Weeks from './__test_components__/mockData'
+import {mockDataHeights23Weeks} from './__test_components__/mockData'
 
 describe("assert display option buttons interactions for datatable render correct data", () => {
     test('for decimal age checkbox', () => {
