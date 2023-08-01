@@ -24,9 +24,6 @@ export const ResultsSegment = ({ apiResult, reference }) => {
   //   setFontChoice(value);
   // }
 
-  console.log(apiResult)
-  console.log(reference)
-
   const panesBlueprint = [
     {
       menuItem: "Heights",
