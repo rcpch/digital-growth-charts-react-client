@@ -10826,9 +10826,11 @@ export const mockDataAllMeasurements23Weeks = {
     }
 }
 
-export const mockDataHeights23Weeks = mockDataAllMeasurements23Weeks['uk-who']['height'];
-
 export function getMockDataMeasurement(measurements) {
+
+    if (measurements.constructor != Array) {
+        throw new Error('Must insert an array')
+    }
 
     let mockData = {
         'height': [],
@@ -10845,3 +10847,4 @@ export function getMockDataMeasurement(measurements) {
         'uk-who': mockData
     }
 }
+export const mockDataHeights23Weeks = mockDataAllMeasurements23Weeks['uk-who']['height'];

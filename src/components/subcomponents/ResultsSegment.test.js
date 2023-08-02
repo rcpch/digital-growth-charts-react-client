@@ -56,13 +56,29 @@ describe('results segment measurement menu panes render correctly depending on d
 
         const heightButton = screen.getByTestId('height' + baseMenuItemTestId);
         expect(heightButton.className).not.toContain("disabled_item");
-        
-        const buttonsShouldBeDisabled = ['weight','bmi','ofc'];
-        buttonsShouldBeDisabled.forEach(name=>{
+
+        const buttonsShouldBeDisabled = ['weight', 'bmi', 'ofc'];
+        buttonsShouldBeDisabled.forEach(name => {
 
             const toggle = screen.getByTestId(name + baseMenuItemTestId);
             expect(toggle.className).toContain("disabled item");
         })
 
-    })
+    });
+    test('only weight given, other toggles should be disabled', () => {
+
+        render(<ResultsSegment apiResult={getMockDataMeasurement(['weight'])} reference={'uk-who'} />)
+
+        const baseMenuItemTestId = '_menu_button_test';
+
+        const weightButton = screen.getByTestId('weight' + baseMenuItemTestId);
+        expect(weightButton.className).not.toContain("disabled_item");
+
+        const buttonsShouldBeDisabled = ['height', 'bmi', 'ofc'];
+        buttonsShouldBeDisabled.forEach(name => {
+
+            const toggle = screen.getByTestId(name + baseMenuItemTestId);
+            expect(toggle.className).toContain("disabled item");
+        })
+    });
 })
