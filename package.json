@@ -9,7 +9,7 @@
   },
   "homepage": "http://rcpch.github.io/digital-growth-charts-react-client",
   "dependencies": {
-    "@rcpch/digital-growth-charts-react-component-library": "6.1.12",
+    "@rcpch/digital-growth-charts-react-component-library": "6.1.13",
     "axios": "^0.21.1",
     "moment": "^2.29.1",
     "react": "^17.0.2",
@@ -27,7 +27,7 @@
     "semantic-ui-less": "^2.4.1"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider craco start",
     "build": "craco build",
     "eject": "craco eject",
     "predeploy": "craco build"
