@@ -9,7 +9,9 @@ app="rcpch-dgc-demo-client"
 # To remove the existing container use `docker container rm rcpch-dgc-demo-client`
 # or use the `s/docker-rebuild` script
 
-docker run -it -p 3000:3000 \
+docker run -it --rm -p 3000:3000 \
   --name=${app} \
   --volume $PWD:/app \
+  --volume /app/node_modules \
+  --env-file ./.env \
   ${app}

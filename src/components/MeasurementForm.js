@@ -261,6 +261,23 @@ const MeasurementForm = (props) => {
     setEvents([""]);
   };
 
+  const handleAddEvent = (e) => {
+    e.preventDefault();
+    let allEvents = [...events];
+    if (allEvents[allEvents.length - 1] === "") {
+      // cannot add a new event on top of empty one
+      return;
+    }
+    allEvents.push("");
+    setEvents(allEvents);
+  };
+
+  const handleRemoveEvent = (e, event) => {
+    e.preventDefault();
+    const newEvents = events.filter((ev) => ev !== event);
+    setEvents(newEvents);
+  };
+
   const handleShowBoneAge = (e) => {
     e.preventDefault();
     const isPressed = showBoneAge;
@@ -520,42 +537,24 @@ const MeasurementForm = (props) => {
                     <Input
                       name="event"
                       placeholder="e.g. diagnosis"
-                      // value={anEvent}
                       onChange={(data) => {
-                        let thisEvent = events;
+                        let thisEvent = [...events];
                         thisEvent[index] = data.target.value;
                         setEvents(thisEvent);
                       }}
+                      value={anEvent}
                     />
                   </Form.Field>
-                  <Button
-                    icon
-                    circular
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (events[index] === "") {
-                        return;
-                      }
-                      let theEvents = events;
-                      theEvents.push("");
-                      setEvents(theEvents);
-                    }}
-                  >
-                    <Icon name="plus circle" />
-                  </Button>
-                  {index === events.length - 1 && (
+
+                  {index === events.length - 1 ? (
+                    <Button icon circular onClick={(e) => handleAddEvent(e)}>
+                      <Icon name="plus circle" />
+                    </Button>
+                  ) : (
                     <Button
                       icon
                       circular
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (index === 0) {
-                          setEvents([""]);
-                          return;
-                        }
-                        let newEvents = events.splice(index, 1);
-                        setEvents(newEvents);
-                      }}
+                      onClick={(e) => handleRemoveEvent(e, anEvent)}
                     >
                       <Icon name="minus circle" />
                     </Button>

@@ -27,7 +27,7 @@
     "semantic-ui-less": "^2.4.1"
   },
   "scripts": {
-    "start": "NODE_OPTIONS=--openssl-legacy-provider craco start",
+    "start": "craco start",
     "build": "craco build",
     "eject": "craco eject",
     "predeploy": "craco build"
