@@ -28,6 +28,7 @@
   },
   "scripts": {
     "start": "craco start",
+    "debug": "craco start --verbose",
     "build": "craco build",
     "eject": "craco eject",
     "predeploy": "craco build"
