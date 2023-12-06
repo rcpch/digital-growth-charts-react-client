@@ -1,7 +1,7 @@
 // React
 import { useState, useEffect, useMemo, Fragment } from "react";
 
-//themes
+// Themes
 import RCPCHTheme1 from "../components/chartThemes/rcpchTheme1";
 import RCPCHTheme2 from "../components/chartThemes/rcpchTheme2";
 import RCPCHTheme3 from "../components/chartThemes/rcpchTheme3";
@@ -21,7 +21,10 @@ import {
   Checkbox,
 } from "semantic-ui-react";
 
+// API calls
 import ChartData from "../api/Chart";
+
+// Functions
 import MeasurementForm from "../components/MeasurementForm";
 import deepCopy from "../functions/deepCopy";
 import { ResultsSegment } from "../components/subcomponents/ResultsSegment";
@@ -34,6 +37,8 @@ import useGlobalState from "../hooks/useGlobalState";
 const defaultTheme = RCPCHThemeMonochrome;
 
 function MeasurementSegment() {
+
+  // State functions 
   const [chartStyle, setChartSyle] = useState(defaultTheme.chart);
   const [axisStyle, setAxisStyle] = useState(defaultTheme.axes);
   const [centileStyle, setCentileStyle] = useState(defaultTheme.centiles);
@@ -46,12 +51,12 @@ function MeasurementSegment() {
     value: "tanner4",
     text: "Monochrome",
   });
-
   const [flip, setFlip] = useState(false); // flag to determine if results or chart showing
   const [errorModal, setErrorModal] = useState(InitalErrorModalState());
   const { globalState, makeGlobalStateUpdater } = useGlobalState();
   const [clinician, setClinician] = useState(true);
 
+  // Other constants
   const {
     mode,
     modeActiveIndex,
@@ -81,6 +86,7 @@ function MeasurementSegment() {
     [results, makeGlobalStateUpdater]
   );
 
+  // useEffects
   useEffect(() => {
     if (apiErrors.errors) {
       setErrorModal({
@@ -141,6 +147,8 @@ function MeasurementSegment() {
     }
   }, [results, reference, measurementMethod, updateGlobalState]);
 
+
+  // Logic 
   if (resetCurrent) {
     setErrorModal({
       visible: true,
@@ -170,6 +178,7 @@ function MeasurementSegment() {
     updateGlobalState("undoLast", false);
   }
 
+  // React state functions
   const handleTabChange = (e, { activeIndex }) => {
     updateGlobalState("measurementMethodActiveIndex", activeIndex);
   };
@@ -303,6 +312,7 @@ function MeasurementSegment() {
     }
   };
 
+  // Other stuff?
   const panes = panesBlueprint.map((details, index) => {
     return {
       menuItem: details.menuItem,
@@ -414,6 +424,7 @@ function MeasurementSegment() {
     </span>
   );
 
+  // Core return
   return (
     <Fragment>
       <Grid padded>
