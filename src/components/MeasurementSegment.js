@@ -25,6 +25,8 @@ import {
 import ChartData from "../api/Chart";
 
 // Functions
+import ChangeTheme from "../functions/MeasurementSegment/handleChangeTheme";
+
 import MeasurementForm from "../components/MeasurementForm";
 import deepCopy from "../functions/deepCopy";
 import { ResultsSegment } from "../components/subcomponents/ResultsSegment";
@@ -37,8 +39,7 @@ import useGlobalState from "../hooks/useGlobalState";
 const defaultTheme = RCPCHThemeMonochrome;
 
 function MeasurementSegment() {
-
-  // State functions 
+  // State functions
   const [chartStyle, setChartSyle] = useState(defaultTheme.chart);
   const [axisStyle, setAxisStyle] = useState(defaultTheme.axes);
   const [centileStyle, setCentileStyle] = useState(defaultTheme.centiles);
@@ -87,6 +88,8 @@ function MeasurementSegment() {
   );
 
   // useEffects
+
+  // Error message useEffect
   useEffect(() => {
     if (apiErrors.errors) {
       setErrorModal({
@@ -118,6 +121,7 @@ function MeasurementSegment() {
     }
   }, [errors, apiErrors, clearApiErrors, updateGlobalState]);
 
+  // Theme select useEffect
   useEffect(() => {
     let selectedTheme = RCPCHThemeMonochrome;
     if (theme.value === "trad") {
@@ -139,6 +143,7 @@ function MeasurementSegment() {
     setAxisStyle(selectedTheme.axes);
   }, [sex, theme.value]);
 
+  // ??
   useEffect(() => {
     if (results[reference][measurementMethod].length > 0) {
       updateGlobalState("isDataPresent", true);
@@ -147,8 +152,7 @@ function MeasurementSegment() {
     }
   }, [results, reference, measurementMethod, updateGlobalState]);
 
-
-  // Logic 
+  // Logic
   if (resetCurrent) {
     setErrorModal({
       visible: true,
@@ -203,41 +207,23 @@ function MeasurementSegment() {
     }
   };
 
-  const handleChangeTheme = (event, { value }) => {
-    let selectedTheme;
-    let text;
-
-    if (value === "trad") {
-      if (sex === "male") {
-        selectedTheme = RCPCHThemeTraditionalBoy;
-      } else {
-        selectedTheme = RCPCHThemeTraditionalGirl;
-      }
-      text = "Traditional";
-    }
-    if (value === "tanner1") {
-      selectedTheme = RCPCHTheme1;
-      text = "Tanner 1";
-    }
-    if (value === "tanner2") {
-      selectedTheme = RCPCHTheme2;
-      text = "Tanner 2";
-    }
-    if (value === "tanner3") {
-      selectedTheme = RCPCHTheme3;
-      text = "Tanner 3";
-    }
-    if (value === "monochrome") {
-      selectedTheme = RCPCHThemeMonochrome;
-      text = "Monochrome";
-    }
-
-    setCentileStyle(selectedTheme.centiles);
-    setSDSStyle(selectedTheme?.sds);
-    setChartSyle(selectedTheme.chart);
-    setMeasurementStyle(selectedTheme.measurements);
-    setAxisStyle(selectedTheme.axes);
-    setTheme({ value: value, text: text });
+  const handleChangeTheme = (e, { value }) => {
+    ChangeTheme(
+      value,
+      sex,
+      RCPCHTheme1,
+      RCPCHTheme2,
+      RCPCHTheme3,
+      RCPCHThemeMonochrome,
+      RCPCHThemeTraditionalBoy,
+      RCPCHThemeTraditionalGirl,
+      setChartSyle,
+      setCentileStyle,
+      setSDSStyle,
+      setMeasurementStyle,
+      setAxisStyle,
+      setTheme
+    );
   };
 
   const handleFlipResults = () => {
@@ -312,7 +298,7 @@ function MeasurementSegment() {
     }
   };
 
-  // Other stuff?
+  // Other stuff (Semantic UI gubbins?)
   const panes = panesBlueprint.map((details, index) => {
     return {
       menuItem: details.menuItem,
@@ -523,6 +509,7 @@ function MeasurementSegment() {
   );
 }
 
+// Other constants
 const panesBlueprint = [
   {
     menuItem: "Height",
