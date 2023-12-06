@@ -1,13 +1,12 @@
 import "./App.css";
 
 // RCPCH Components
-import "./components/MeasurementForm";
-import Home from "./pages/Home";
+import MeasurementSegment from "./components/MeasurementSegment";
 
 function App() {
   return (
     <div className="App">
-      <Home />
+      <MeasurementSegment />
     </div>
   );
 }
