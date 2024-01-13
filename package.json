@@ -20,7 +20,7 @@
     "styled-components": "^5.2.3"
   },
   "devDependencies": {
-    "@craco/craco": "^6.4.3",
+    "@craco/craco": "^7.1.0",
     "@semantic-ui-react/craco-less": "^3.0.0",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
