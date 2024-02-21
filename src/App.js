@@ -1,14 +1,13 @@
 // React
 import { useState, useEffect, useMemo, Fragment } from "react";
 
-
 // Themes
-import RCPCHTheme1 from "./functions/chartThemes/rcpchTheme1";
-import RCPCHTheme2 from "./functions/chartThemes/rcpchTheme2";
-import RCPCHTheme3 from "./functions/chartThemes/rcpchTheme3";
-import RCPCHThemeMonochrome from "./functions/chartThemes/rcpchThemeMonochrome";
-import RCPCHThemeTraditionalBoy from "./functions/chartThemes/RCPCHThemeTraditionalBoy";
-import RCPCHThemeTraditionalGirl from "./functions/chartThemes/RCPCHThemeTraditionalGirl";
+import RCPCHTheme1 from "./components/chartThemes/rcpchTheme1";
+import RCPCHTheme2 from "./components/chartThemes/rcpchTheme2";
+import RCPCHTheme3 from "./components/chartThemes/rcpchTheme3";
+import RCPCHThemeMonochrome from "./components/chartThemes/rcpchThemeMonochrome";
+import RCPCHThemeTraditionalBoy from "./components/chartThemes/RCPCHThemeTraditionalBoy";
+import RCPCHThemeTraditionalGirl from "./components/chartThemes/RCPCHThemeTraditionalGirl";
 
 // Semantic UI React
 import {
@@ -25,6 +24,9 @@ import {
 // API calls
 import ChartData from "./api/Chart";
 
+// Custom hooks
+import useErrorHandling from "./hooks/useErrorHandling.jsx";
+
 // Functions
 import ChangeTheme from "./functions/MeasurementSegment/handleChangeTheme";
 import MeasurementForm from "./components/MeasurementForm";
@@ -40,7 +42,6 @@ import useGlobalState from "./hooks/useGlobalState";
 const defaultTheme = RCPCHThemeMonochrome;
 
 function App() {
-
   // State functions
   const [chartStyle, setChartSyle] = useState(defaultTheme.chart);
   const [axisStyle, setAxisStyle] = useState(defaultTheme.axes);
@@ -92,43 +93,15 @@ function App() {
   // useEffects
 
   // Error message useEffect
-  useEffect(() => {
-    if (apiErrors.errors) {
-      setErrorModal({
-        visible: true,
-        title: "Unable to plot",
-        body: apiErrors.message,
-        handleClose: () => {
-          clearApiErrors();
-          setErrorModal(InitalErrorModalState());
-        },
-      });
-    } else if (apiErrors.message === "success") {
-      updateGlobalState("clearMeasurement", true);
-      clearApiErrors();
-    }
-    if (errors.errors) {
-      let body = "Only height data is available for Turner Syndrome.";
-      if (errors.message === "Unable to change sex") {
-        body =
-          "Each chart can only display measurements from one patient at a time. Please reset the chart before entering measurements from a new patient.";
-      }
-      setErrorModal({
-        visible: true,
-        title: errors.message,
-        body: body,
-        handleClose: () => setErrorModal(InitalErrorModalState()),
-      });
-      updateGlobalState("errors", { errors: false, message: "" });
-    }
-  }, [errors, apiErrors, clearApiErrors, updateGlobalState]);
+  useErrorHandling(apiErrors, errors, setErrorModal, clearApiErrors, updateGlobalState, InitalErrorModalState);
 
   // Theme select useEffect
   useEffect(() => {
     let selectedTheme;
     switch (theme.value) {
       case "trad":
-        selectedTheme = sex === "male" ? RCPCHThemeTraditionalBoy : RCPCHThemeTraditionalGirl;
+        selectedTheme =
+          sex === "male" ? RCPCHThemeTraditionalBoy : RCPCHThemeTraditionalGirl;
         break;
       case "tanner1":
         selectedTheme = RCPCHTheme1;
