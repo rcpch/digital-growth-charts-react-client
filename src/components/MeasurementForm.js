@@ -20,6 +20,7 @@ import ErrorText from "./subcomponents/ErrorText";
 import BoneAgeTypeSelect from "./subcomponents/BoneAge";
 import { formatDate, parseDate } from "../functions/dateHelpers";
 import UtilitiesForm from "./subcomponents/UtilitiesForm";
+import handleResults from "../functions/handleResults";
 
 const ROBERT_WADLOW = 272; // interesting fact - Robert Wadlow (22/2/1918 – 15/7/1940) was the world's tallest man
 const JON_BROWER_MINNOCH = 635; // interesting fact -  Jon Brower Minnoch (Born USA) was the world's heaviest man
@@ -219,7 +220,7 @@ const MeasurementForm = (props) => {
     };
 
     const formData = Object.assign(measurementFormData, boneageData, eventText);
-    props.handleMeasurementResult(formData);
+    handleResults(formData);
   };
 
   const handleChangeMeasurementMethod = (newMeasurementMethod) => {

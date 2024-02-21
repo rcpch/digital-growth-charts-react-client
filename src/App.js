@@ -1,5 +1,5 @@
 // React
-import { useState, useEffect, useMemo, Fragment } from "react";
+import { useState, useMemo, Fragment } from "react";
 
 // Themes
 import RCPCHTheme1 from "./components/chartThemes/rcpchTheme1";
@@ -27,6 +27,9 @@ import ChartData from "./api/Chart";
 // Custom hooks
 import useErrorHandling from "./hooks/useErrorHandling.jsx";
 import useSelectedTheme from "./hooks/useSelectedTheme.jsx";
+import useCheckForData from "./hooks/useCheckForData.jsx";
+import useGlobalState from "./hooks/useGlobalState";
+import useRcpchApi from "./hooks/useRcpchApi";
 
 // Functions
 import ChangeTheme from "./functions/MeasurementSegment/handleChangeTheme";
@@ -37,8 +40,8 @@ import ErrorModal from "./components/subcomponents/ErrorModal";
 import "./index.css";
 import "./App.css";
 import FictionalChildForm from "./components/FictionalChildForm";
-import useRcpchApi from "./hooks/useRcpchApi";
-import useGlobalState from "./hooks/useGlobalState";
+import handleResetCurrent from "./functions/handleResetCurrent.js";
+import handleUndoLast from "./functions/handleUndoLast.js";
 
 const defaultTheme = RCPCHThemeMonochrome;
 
@@ -91,8 +94,7 @@ function App() {
     [results, makeGlobalStateUpdater]
   );
 
-  // useEffects
-
+  // Hooks
   // Error handling Custom Hook
   useErrorHandling(
     apiErrors,
@@ -113,44 +115,26 @@ function App() {
     setAxisStyle
   );
 
-  // ??
-  useEffect(() => {
-    if (results[reference][measurementMethod].length > 0) {
-      updateGlobalState("isDataPresent", true);
-    } else {
-      updateGlobalState("isDataPresent", false);
-    }
-  }, [results, reference, measurementMethod, updateGlobalState]);
+  // Check for input data Custom Hook
+  useCheckForData(results, reference, measurementMethod, updateGlobalState);
 
   // Logic
-  if (resetCurrent) {
-    setErrorModal({
-      visible: true,
-      title: "Are you sure you want to reset?",
-      body: "This will remove all measurements from the current chart.",
-      handleCancel: () => setErrorModal(InitalErrorModalState()),
-      handleClose: () => {
-        clearBothActiveArrays();
-        setErrorModal(InitalErrorModalState());
-        updateGlobalState("mid-parental-height", "empty");
-      },
-    });
-    updateGlobalState("resetCurrent", false);
-  }
-
-  if (undoLast) {
-    setErrorModal({
-      visible: true,
-      title: "Are you sure you want to remove the last measurement?",
-      body: "This will remove the last measurement entered on the chart.",
-      handleCancel: () => setErrorModal(InitalErrorModalState()),
-      handleClose: () => {
-        removeLastActiveItem(true);
-        setErrorModal(InitalErrorModalState());
-      },
-    });
-    updateGlobalState("undoLast", false);
-  }
+  // If resetCurrent is flagged to true, then this function fires
+  handleResetCurrent(
+    resetCurrent,
+    setErrorModal,
+    clearBothActiveArrays,
+    updateGlobalState,
+    InitalErrorModalState
+  );
+  // If undoLast is flagged to true, then this function fires
+  handleUndoLast(
+    undoLast,
+    setErrorModal,
+    removeLastActiveItem,
+    updateGlobalState,
+    InitalErrorModalState
+  );
 
   // React state functions
   const handleTabChange = (e, { activeIndex }) => {
