@@ -1,6 +1,6 @@
 import { Button, Modal } from "semantic-ui-react";
 
-export const ErrorModal = ({
+const ErrorModal = ({
   title,
   body,
   handleClose,
@@ -21,3 +21,5 @@ export const ErrorModal = ({
     </Modal>
   );
 };
+
+export default ErrorModal

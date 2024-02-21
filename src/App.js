@@ -26,13 +26,14 @@ import ChartData from "./api/Chart";
 
 // Custom hooks
 import useErrorHandling from "./hooks/useErrorHandling.jsx";
+import useSelectedTheme from "./hooks/useSelectedTheme.jsx";
 
 // Functions
 import ChangeTheme from "./functions/MeasurementSegment/handleChangeTheme";
 import MeasurementForm from "./components/MeasurementForm";
 import deepCopy from "./functions/deepCopy";
 import { ResultsSegment } from "./components/subcomponents/ResultsSegment";
-import { ErrorModal } from "./components/subcomponents/ErrorModal";
+import ErrorModal from "./components/subcomponents/ErrorModal";
 import "./index.css";
 import "./App.css";
 import FictionalChildForm from "./components/FictionalChildForm";
@@ -92,35 +93,25 @@ function App() {
 
   // useEffects
 
-  // Error message useEffect
-  useErrorHandling(apiErrors, errors, setErrorModal, clearApiErrors, updateGlobalState, InitalErrorModalState);
+  // Error handling Custom Hook
+  useErrorHandling(
+    apiErrors,
+    errors,
+    setErrorModal,
+    clearApiErrors,
+    updateGlobalState,
+    InitalErrorModalState
+  );
 
-  // Theme select useEffect
-  useEffect(() => {
-    let selectedTheme;
-    switch (theme.value) {
-      case "trad":
-        selectedTheme =
-          sex === "male" ? RCPCHThemeTraditionalBoy : RCPCHThemeTraditionalGirl;
-        break;
-      case "tanner1":
-        selectedTheme = RCPCHTheme1;
-        break;
-      case "tanner2":
-        selectedTheme = RCPCHTheme2;
-        break;
-      case "tanner3":
-        selectedTheme = RCPCHTheme3;
-        break;
-      default:
-        selectedTheme = RCPCHThemeMonochrome;
-    }
-    const { centiles, chart, measurements, axes } = selectedTheme;
-    setCentileStyle(centiles);
-    setChartSyle(chart);
-    setMeasurementStyle(measurements);
-    setAxisStyle(axes);
-  }, [sex, theme.value]);
+  // Theme select Custom Hook
+  useSelectedTheme(
+    theme,
+    sex,
+    setCentileStyle,
+    setChartSyle,
+    setMeasurementStyle,
+    setAxisStyle
+  );
 
   // ??
   useEffect(() => {
