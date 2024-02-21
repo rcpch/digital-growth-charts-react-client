@@ -1,14 +1,14 @@
 // React
 import { useState, useEffect, useMemo, Fragment } from "react";
-import "./App.css";
+
 
 // Themes
-import RCPCHTheme1 from "./components/chartThemes/rcpchTheme1";
-import RCPCHTheme2 from "./components/chartThemes/rcpchTheme2";
-import RCPCHTheme3 from "./components/chartThemes/rcpchTheme3";
-import RCPCHThemeMonochrome from "./components/chartThemes/rcpchThemeMonochrome";
-import RCPCHThemeTraditionalBoy from "./components/chartThemes/RCPCHThemeTraditionalBoy";
-import RCPCHThemeTraditionalGirl from "./components/chartThemes/RCPCHThemeTraditionalGirl";
+import RCPCHTheme1 from "./functions/chartThemes/rcpchTheme1";
+import RCPCHTheme2 from "./functions/chartThemes/rcpchTheme2";
+import RCPCHTheme3 from "./functions/chartThemes/rcpchTheme3";
+import RCPCHThemeMonochrome from "./functions/chartThemes/rcpchThemeMonochrome";
+import RCPCHThemeTraditionalBoy from "./functions/chartThemes/RCPCHThemeTraditionalBoy";
+import RCPCHThemeTraditionalGirl from "./functions/chartThemes/RCPCHThemeTraditionalGirl";
 
 // Semantic UI React
 import {
@@ -27,12 +27,12 @@ import ChartData from "./api/Chart";
 
 // Functions
 import ChangeTheme from "./functions/MeasurementSegment/handleChangeTheme";
-
 import MeasurementForm from "./components/MeasurementForm";
 import deepCopy from "./functions/deepCopy";
 import { ResultsSegment } from "./components/subcomponents/ResultsSegment";
 import { ErrorModal } from "./components/subcomponents/ErrorModal";
 import "./index.css";
+import "./App.css";
 import FictionalChildForm from "./components/FictionalChildForm";
 import useRcpchApi from "./hooks/useRcpchApi";
 import useGlobalState from "./hooks/useGlobalState";
@@ -40,6 +40,7 @@ import useGlobalState from "./hooks/useGlobalState";
 const defaultTheme = RCPCHThemeMonochrome;
 
 function App() {
+
   // State functions
   const [chartStyle, setChartSyle] = useState(defaultTheme.chart);
   const [axisStyle, setAxisStyle] = useState(defaultTheme.axes);
@@ -124,24 +125,28 @@ function App() {
 
   // Theme select useEffect
   useEffect(() => {
-    let selectedTheme = RCPCHThemeMonochrome;
-    if (theme.value === "trad") {
-      selectedTheme =
-        sex === "male" ? RCPCHThemeTraditionalBoy : RCPCHThemeTraditionalGirl;
+    let selectedTheme;
+    switch (theme.value) {
+      case "trad":
+        selectedTheme = sex === "male" ? RCPCHThemeTraditionalBoy : RCPCHThemeTraditionalGirl;
+        break;
+      case "tanner1":
+        selectedTheme = RCPCHTheme1;
+        break;
+      case "tanner2":
+        selectedTheme = RCPCHTheme2;
+        break;
+      case "tanner3":
+        selectedTheme = RCPCHTheme3;
+        break;
+      default:
+        selectedTheme = RCPCHThemeMonochrome;
     }
-    if (theme.value === "tanner1") {
-      selectedTheme = RCPCHTheme1;
-    }
-    if (theme.value === "tanner2") {
-      selectedTheme = RCPCHTheme2;
-    }
-    if (theme.value === "tanner3") {
-      selectedTheme = RCPCHTheme3;
-    }
-    setCentileStyle(selectedTheme.centiles);
-    setChartSyle(selectedTheme.chart);
-    setMeasurementStyle(selectedTheme.measurements);
-    setAxisStyle(selectedTheme.axes);
+    const { centiles, chart, measurements, axes } = selectedTheme;
+    setCentileStyle(centiles);
+    setChartSyle(chart);
+    setMeasurementStyle(measurements);
+    setAxisStyle(axes);
   }, [sex, theme.value]);
 
   // ??
