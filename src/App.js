@@ -41,6 +41,7 @@ import "./App.css";
 import FictionalChildForm from "./components/FictionalChildForm";
 import handleResetCurrent from "./functions/handleResetCurrent.js";
 import handleUndoLast from "./functions/handleUndoLast.js";
+import InitalErrorModalState from "./functions/InitialErrorModalState.js";
 
 const defaultTheme = RCPCHThemeMonochrome;
 
@@ -75,17 +76,6 @@ const themeOptions = [
   { key: "tanner2", value: "tanner2", text: "Tanner 2" },
   { key: "tanner3", value: "tanner3", text: "Tanner 3" },
 ];
-
-function InitalErrorModalState() {
-  return {
-    visible: false,
-    title: "",
-    body: "",
-    handleClose: null,
-    handleCancel: null,
-  };
-}
-
 
 function App() {
   // State functions
@@ -169,7 +159,7 @@ function App() {
     updateGlobalState,
     InitalErrorModalState
   );
-  
+
   // If undoLast is flagged to true, then this function fires
   handleUndoLast(
     undoLast,
