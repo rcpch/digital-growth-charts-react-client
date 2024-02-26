@@ -34,8 +34,7 @@ import useRcpchApi from "./hooks/useRcpchApi";
 // Functions
 import ChangeTheme from "./functions/MeasurementSegment/handleChangeTheme";
 import MeasurementForm from "./components/MeasurementForm";
-import deepCopy from "./functions/deepCopy";
-import { ResultsSegment } from "./components/subcomponents/ResultsSegment";
+import ResultsSegment from "./components/ResultsSegment.jsx";
 import ErrorModal from "./components/subcomponents/ErrorModal";
 import "./index.css";
 import "./App.css";
@@ -44,6 +43,49 @@ import handleResetCurrent from "./functions/handleResetCurrent.js";
 import handleUndoLast from "./functions/handleUndoLast.js";
 
 const defaultTheme = RCPCHThemeMonochrome;
+
+// Other constants
+const panesBlueprint = [
+  {
+    menuItem: "Height",
+    measurementName: "height",
+    key: "Height",
+  },
+  {
+    menuItem: "Weight",
+    measurementName: "weight",
+    key: "Weight",
+  },
+  {
+    menuItem: "BMI",
+    measurementName: "bmi",
+    key: "BMI",
+  },
+  {
+    menuItem: "Head Circumference",
+    measurementName: "ofc",
+    key: "Head Circumference",
+  },
+];
+
+const themeOptions = [
+  { key: "monochrome", value: "monochrome", text: "Monochrome" },
+  { key: "trad", value: "trad", text: "Traditional" },
+  { key: "tanner1", value: "tanner1", text: "Tanner 1" },
+  { key: "tanner2", value: "tanner2", text: "Tanner 2" },
+  { key: "tanner3", value: "tanner3", text: "Tanner 3" },
+];
+
+function InitalErrorModalState() {
+  return {
+    visible: false,
+    title: "",
+    body: "",
+    handleClose: null,
+    handleCancel: null,
+  };
+}
+
 
 function App() {
   // State functions
@@ -127,6 +169,7 @@ function App() {
     updateGlobalState,
     InitalErrorModalState
   );
+  
   // If undoLast is flagged to true, then this function fires
   handleUndoLast(
     undoLast,
@@ -186,70 +229,6 @@ function App() {
 
   const handleCentileSDS = () => {
     setCentile(!centile);
-  };
-
-  const handleResults = (latestResult) => {
-    // delegate function from MeasurementForm
-    // receives form data and stores in the correct measurement array
-    // checks for duplicates, mismatching dobs, sexes and gestations
-    if (!isLoading) {
-      const existingResults = deepCopy(
-        measurements[reference][measurementMethod]
-      );
-      let errorString = "";
-      if (existingResults.length > 0) {
-        const newGestation =
-          latestResult.gestation_weeks * 7 + latestResult.gestation_days;
-        const newErrors = [];
-        for (const oldResult of existingResults) {
-          if (JSON.stringify(oldResult) === JSON.stringify(latestResult)) {
-            errorString = "duplicate";
-            break;
-          }
-          const oldGestation =
-            oldResult.gestation_weeks * 7 + oldResult.gestation_days;
-          if (oldResult.sex !== latestResult.sex) {
-            newErrors.push("differing sexes");
-          }
-          if (oldResult.birth_date !== latestResult.birth_date) {
-            newErrors.push("differing date of births");
-          }
-          if (oldGestation !== newGestation) {
-            newErrors.push("differing gestations");
-          }
-          if (newErrors.length > 0) {
-            errorString = newErrors[0];
-            if (newErrors.length === 2) {
-              errorString = newErrors.join(" and ");
-            } else if (newErrors.length === 3) {
-              errorString = `${newErrors[0]}, ${newErrors[1]} and ${newErrors[2]}`;
-            }
-            break;
-          }
-        }
-      }
-      if (errorString) {
-        if (errorString === "duplicate") {
-          setErrorModal({
-            visible: true,
-            title: "Duplicate entries",
-            body: `Please check the last measurement entry as it appears to be identical to a measurement already entered.`,
-            handleClose: () => setErrorModal(InitalErrorModalState()),
-          });
-        } else {
-          setErrorModal({
-            visible: true,
-            title: "Please check entries",
-            body: `Each chart can only display measurements from one patient at a time: ${errorString} were detected.`,
-            handleClose: () => setErrorModal(InitalErrorModalState()),
-          });
-        }
-        return false;
-      } else {
-        fetchResult(latestResult);
-        return true;
-      }
-    }
   };
 
   // Other stuff (Semantic UI gubbins?)
@@ -325,7 +304,13 @@ function App() {
       render: () => (
         <Tab.Pane attached={false} key="measurements">
           <MeasurementForm
-            handleMeasurementResult={handleResults}
+            isLoading={isLoading}
+            measurements={measurements}
+            reference={reference}
+            measurementMethod={measurementMethod}
+            setErrorModal={setErrorModal}
+            InitalErrorModalState={InitalErrorModalState}
+            fetchResult={fetchResult}
             globalState={globalState}
             updateGlobalState={updateGlobalState}
             className="measurement-form"
@@ -461,48 +446,6 @@ function App() {
       />
     </Fragment>
   );
-}
-
-// Other constants
-const panesBlueprint = [
-  {
-    menuItem: "Height",
-    measurementName: "height",
-    key: "Height",
-  },
-  {
-    menuItem: "Weight",
-    measurementName: "weight",
-    key: "Weight",
-  },
-  {
-    menuItem: "BMI",
-    measurementName: "bmi",
-    key: "BMI",
-  },
-  {
-    menuItem: "Head Circumference",
-    measurementName: "ofc",
-    key: "Head Circumference",
-  },
-];
-
-const themeOptions = [
-  { key: "monochrome", value: "monochrome", text: "Monochrome" },
-  { key: "trad", value: "trad", text: "Traditional" },
-  { key: "tanner1", value: "tanner1", text: "Tanner 1" },
-  { key: "tanner2", value: "tanner2", text: "Tanner 2" },
-  { key: "tanner3", value: "tanner3", text: "Tanner 3" },
-];
-
-function InitalErrorModalState() {
-  return {
-    visible: false,
-    title: "",
-    body: "",
-    handleClose: null,
-    handleCancel: null,
-  };
 }
 
 export default App;

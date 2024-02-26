@@ -22,11 +22,14 @@ import { formatDate, parseDate } from "../functions/dateHelpers";
 import UtilitiesForm from "./subcomponents/UtilitiesForm";
 import handleResults from "../functions/handleResults";
 
+
 const ROBERT_WADLOW = 272; // interesting fact - Robert Wadlow (22/2/1918 – 15/7/1940) was the world's tallest man
 const JON_BROWER_MINNOCH = 635; // interesting fact -  Jon Brower Minnoch (Born USA) was the world's heaviest man
 const KHALID_BIN_MOHSEN_SHAARI = 204; // Khalid bin Mohsen Shaari (2/8/1991) from Saudi Arabia had the highest recorded BMI
 
 const MeasurementForm = (props) => {
+  console.log(props)
+
   const [birth_date, setBirth_date] = useState(formatDate(new Date()));
   const [observation_date, setObservation_date] = useState(
     formatDate(new Date())
@@ -220,7 +223,7 @@ const MeasurementForm = (props) => {
     };
 
     const formData = Object.assign(measurementFormData, boneageData, eventText);
-    handleResults(formData);
+    handleResults(formData, props.isLoading, props.measurements, props.reference, props.measurementMethod, props.setErrorModal, props.InitalErrorModalState, props.fetchResult);
   };
 
   const handleChangeMeasurementMethod = (newMeasurementMethod) => {
