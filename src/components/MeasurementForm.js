@@ -28,7 +28,6 @@ const JON_BROWER_MINNOCH = 635; // interesting fact -  Jon Brower Minnoch (Born 
 const KHALID_BIN_MOHSEN_SHAARI = 204; // Khalid bin Mohsen Shaari (2/8/1991) from Saudi Arabia had the highest recorded BMI
 
 const MeasurementForm = (props) => {
-  console.log(props)
 
   const [birth_date, setBirth_date] = useState(formatDate(new Date()));
   const [observation_date, setObservation_date] = useState(
