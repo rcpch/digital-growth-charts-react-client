@@ -14,12 +14,14 @@ import {
   Grid,
   Segment,
   Tab,
-  Dropdown,
   Button,
   Message,
   Container,
   Checkbox,
 } from "semantic-ui-react";
+
+// Components
+import ThemeSelection from "./components/subcomponents/ThemeSelection.jsx";
 
 // API calls
 import ChartData from "./api/Chart";
@@ -35,7 +37,7 @@ import useRcpchApi from "./hooks/useRcpchApi";
 import ChangeTheme from "./functions/MeasurementSegment/handleChangeTheme";
 import MeasurementForm from "./components/MeasurementForm";
 import ResultsSegment from "./components/ResultsSegment.jsx";
-import ErrorModal from "./components/subcomponents/ErrorModal";
+import ErrorModal from "./components/ErrorModal.jsx";
 import "./index.css";
 import "./App.css";
 import FictionalChildForm from "./components/FictionalChildForm";
@@ -150,7 +152,6 @@ function App() {
   // Check for input data Custom Hook
   useCheckForData(results, reference, measurementMethod, updateGlobalState);
 
-  // Logic
   // If resetCurrent is flagged to true, then this function fires
   handleResetCurrent(
     resetCurrent,
@@ -221,6 +222,7 @@ function App() {
     setCentile(!centile);
   };
 
+  
   // Other stuff (Semantic UI gubbins?)
   const panes = panesBlueprint.map((details, index) => {
     return {
@@ -326,22 +328,9 @@ function App() {
     },
   ];
 
-  const ThemeSelection = () => (
-    <span>
-      Theme{" "}
-      <Dropdown
-        options={themeOptions}
-        floating
-        inline
-        onChange={handleChangeTheme}
-        text={theme.text}
-      />
-    </span>
-  );
-
   // Core return
   return (
-    <Fragment>
+    <>
       <Grid padded>
         <Grid.Row>
           <Grid.Column width={6}>
@@ -392,7 +381,11 @@ function App() {
                     />
                   </Grid.Column>
                   <Grid.Column textAlign="center" width={4}>
-                    <ThemeSelection />
+                    <ThemeSelection
+                      options={themeOptions}
+                      onChange={handleChangeTheme}
+                      text={theme.text}
+                    />
                   </Grid.Column>
                   <Grid.Column textAlign="right" width={8}>
                     <Button
@@ -426,7 +419,6 @@ function App() {
           </Container>
         </Grid.Row>
       </Grid>
-
       <ErrorModal
         title={errorModal.title}
         body={errorModal.body}
@@ -434,7 +426,7 @@ function App() {
         handleClose={errorModal.handleClose}
         handleCancel={errorModal.handleCancel}
       />
-    </Fragment>
+    </>
   );
 }
 
