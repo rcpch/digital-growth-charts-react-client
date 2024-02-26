@@ -1,5 +1,5 @@
 // React
-import { useState, useMemo, Fragment } from "react";
+import { useState, useMemo } from "react";
 
 // Themes
 import RCPCHTheme1 from "./components/chartThemes/rcpchTheme1";
@@ -8,6 +8,9 @@ import RCPCHTheme3 from "./components/chartThemes/rcpchTheme3";
 import RCPCHThemeMonochrome from "./components/chartThemes/rcpchThemeMonochrome";
 import RCPCHThemeTraditionalBoy from "./components/chartThemes/RCPCHThemeTraditionalBoy";
 import RCPCHThemeTraditionalGirl from "./components/chartThemes/RCPCHThemeTraditionalGirl";
+
+// Config
+import { themeOptions, panesBlueprint } from "./assets/config.js";
 
 // Semantic UI React
 import {
@@ -19,12 +22,11 @@ import {
   Container,
   Checkbox,
 } from "semantic-ui-react";
+import createSemanticPanes from "./functions/semantic-ui-functions/createSemanticPanes.js";
 
 // Components
 import ThemeSelection from "./components/subcomponents/ThemeSelection.jsx";
-
-// API calls
-import ChartData from "./api/Chart";
+import ErrorModal from "./components/ErrorModal.jsx";
 
 // Custom hooks
 import useErrorHandling from "./hooks/useErrorHandling.jsx";
@@ -37,7 +39,6 @@ import useRcpchApi from "./hooks/useRcpchApi";
 import ChangeTheme from "./functions/MeasurementSegment/handleChangeTheme";
 import MeasurementForm from "./components/MeasurementForm";
 import ResultsSegment from "./components/ResultsSegment.jsx";
-import ErrorModal from "./components/ErrorModal.jsx";
 import "./index.css";
 import "./App.css";
 import FictionalChildForm from "./components/FictionalChildForm";
@@ -46,38 +47,6 @@ import handleUndoLast from "./functions/handleUndoLast.js";
 import InitalErrorModalState from "./functions/InitialErrorModalState.js";
 
 const defaultTheme = RCPCHThemeMonochrome;
-
-// Other constants
-const panesBlueprint = [
-  {
-    menuItem: "Height",
-    measurementName: "height",
-    key: "Height",
-  },
-  {
-    menuItem: "Weight",
-    measurementName: "weight",
-    key: "Weight",
-  },
-  {
-    menuItem: "BMI",
-    measurementName: "bmi",
-    key: "BMI",
-  },
-  {
-    menuItem: "Head Circumference",
-    measurementName: "ofc",
-    key: "Head Circumference",
-  },
-];
-
-const themeOptions = [
-  { key: "monochrome", value: "monochrome", text: "Monochrome" },
-  { key: "trad", value: "trad", text: "Traditional" },
-  { key: "tanner1", value: "tanner1", text: "Tanner 1" },
-  { key: "tanner2", value: "tanner2", text: "Tanner 2" },
-  { key: "tanner3", value: "tanner3", text: "Tanner 3" },
-];
 
 function App() {
   // State functions
@@ -222,58 +191,23 @@ function App() {
     setCentile(!centile);
   };
 
-  
   // Other stuff (Semantic UI gubbins?)
-  const panes = panesBlueprint.map((details, index) => {
-    return {
-      menuItem: details.menuItem,
-      render: () => {
-        return centile ? (
-          <Tab.Pane
-            key="charts"
-            attached="top"
-            disabled={disabled[details.measurementName]}
-          >
-            <ChartData
-              key={`centile-${index}`}
-              reference={reference}
-              sex={sex}
-              measurementMethod={details.measurementName}
-              measurementsArray={results[reference][details.measurementName]}
-              midParentalHeightData={results[reference]["midParentalHeights"]}
-              chartStyle={chartStyle}
-              axisStyle={axisStyle}
-              gridlineStyle={defaultTheme.gridlines}
-              centileStyle={centileStyle}
-              measurementStyle={measurementStyle}
-              isLoading={isLoading}
-              chartType="centile"
-              clinicianFocus={clinician}
-            />
-          </Tab.Pane>
-        ) : (
-          <Tab.Pane attached="top" key="sds">
-            <ChartData
-              key={`sds-${index}`}
-              reference={reference}
-              sex={sex}
-              measurementMethod={details.measurementName}
-              measurementsArray={results[reference]}
-              midParentalHeightData={results[reference]["midParentalHeights"]}
-              chartStyle={chartStyle}
-              axisStyle={axisStyle}
-              gridlineStyle={defaultTheme.gridlines}
-              centileStyle={centileStyle}
-              sdsStyle={sdsStyle}
-              measurementStyle={measurementStyle}
-              isLoading={isLoading}
-              chartType="sds"
-            />
-          </Tab.Pane>
-        );
-      },
-    };
-  });
+  const panes = createSemanticPanes(
+    panesBlueprint,
+    centile,
+    disabled,
+    results,
+    reference,
+    sex,
+    isLoading,
+    chartStyle,
+    axisStyle,
+    defaultTheme,
+    centileStyle,
+    sdsStyle,
+    measurementStyle,
+    clinician
+  );
 
   const TabPanes = () => (
     <Tab
@@ -328,6 +262,7 @@ function App() {
     },
   ];
 
+  console.log(themeOptions, handleChangeTheme, theme.text)
   // Core return
   return (
     <>
