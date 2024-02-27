@@ -1,7 +1,8 @@
 import React from 'react';
 import { Grid, Segment, Tab, Checkbox, Button, Container, Message } from 'semantic-ui-react';
-import ThemeSelection from "./components/subcomponents/ThemeSelection.jsx";
 
+import ThemeSelection from "../subcomponents/ThemeSelection.jsx";
+import ResultsSegment from "../ResultsSegment.jsx";
 
 const SemanticGrid = ({
   mode,
@@ -12,6 +13,7 @@ const SemanticGrid = ({
   results,
   reference,
   clinician,
+  setClinician,
   TabPanes,
   themeOptions,
   handleChangeTheme,
