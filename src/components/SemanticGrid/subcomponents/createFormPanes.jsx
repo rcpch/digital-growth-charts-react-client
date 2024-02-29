@@ -17,7 +17,6 @@ const createFormPanes = (
   centileStyle,
   fictionalFormDataSubmit,
 ) => {
-  console.log(measurements)
 
   const FormPanes = [
     {
