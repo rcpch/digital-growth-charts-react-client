@@ -13,10 +13,9 @@ import RCPCHThemeTraditionalGirl from "./components/chartThemes/RCPCHThemeTradit
 import { themeOptions, panesBlueprint } from "./assets/config.js";
 
 // Semantic UI React
-import {
-  Tab,
-} from "semantic-ui-react";
+import { Tab } from "semantic-ui-react";
 import createSemanticPanes from "./functions/semantic-ui-functions/createSemanticPanes.js";
+import createFormPanes from "./components/SemanticGrid/subcomponents/createFormPanes.jsx";
 
 // Components
 import ErrorModal from "./components/ErrorModal.jsx";
@@ -31,10 +30,8 @@ import useRcpchApi from "./hooks/useRcpchApi";
 
 // Functions
 import ChangeTheme from "./functions/MeasurementSegment/handleChangeTheme";
-import MeasurementForm from "./components/MeasurementForm";
 import "./index.css";
 import "./App.css";
-import FictionalChildForm from "./components/FictionalChildForm";
 import handleResetCurrent from "./functions/handleResetCurrent.js";
 import handleUndoLast from "./functions/handleUndoLast.js";
 import InitalErrorModalState from "./functions/InitialErrorModalState.js";
@@ -216,46 +213,21 @@ function App() {
     />
   );
 
-  const FormPanes = [
-    {
-      key: "measurements",
-      menuItem: "Measurements",
-      render: () => (
-        <Tab.Pane attached={false} key="measurements">
-          <MeasurementForm
-            isLoading={isLoading}
-            measurements={measurements}
-            reference={reference}
-            measurementMethod={measurementMethod}
-            setErrorModal={setErrorModal}
-            InitalErrorModalState={InitalErrorModalState}
-            fetchResult={fetchResult}
-            globalState={globalState}
-            updateGlobalState={updateGlobalState}
-            className="measurement-form"
-            handleUtilitiesFormDataSubmit={utilitiesFormDataSubmit}
-            themeColour={centileStyle.centileStroke}
-          />
-        </Tab.Pane>
-      ),
-    },
-    {
-      key: "examples",
-      menuItem: "Examples",
-      render: () => (
-        <Tab.Pane key="examples">
-          <FictionalChildForm
-            fictionalFormDataSubmit={fictionalFormDataSubmit}
-            globalState={globalState}
-            updateGlobalState={updateGlobalState}
-            handleUtilitiesFormDataSubmit={utilitiesFormDataSubmit}
-          />
-        </Tab.Pane>
-      ),
-    },
-  ];
+  const FormPanes = createFormPanes(
+    isLoading,
+    measurements,
+    reference,
+    measurementMethod,
+    setErrorModal,
+    InitalErrorModalState,
+    fetchResult,
+    globalState,
+    updateGlobalState,
+    utilitiesFormDataSubmit,
+    centileStyle,
+    fictionalFormDataSubmit,
+  );
 
-  console.log(themeOptions, handleChangeTheme, theme.text);
   // Core return
   return (
     <>
