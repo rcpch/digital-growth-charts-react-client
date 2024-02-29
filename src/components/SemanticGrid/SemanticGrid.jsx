@@ -3,6 +3,7 @@ import { Grid, Segment, Tab, Checkbox, Button, Container, Message } from 'semant
 
 import ThemeSelection from "../subcomponents/ThemeSelection.jsx";
 import ResultsSegment from "../ResultsSegment.jsx";
+import TabPanes from "../SemanticGrid/subcomponents/TabPanes.jsx"
 
 const SemanticGrid = ({
   mode,
@@ -14,7 +15,6 @@ const SemanticGrid = ({
   reference,
   clinician,
   setClinician,
-  TabPanes,
   themeOptions,
   handleChangeTheme,
   theme,
@@ -22,6 +22,9 @@ const SemanticGrid = ({
   centile,
   globalState,
   handleFlipResults,
+  panes,
+  measurementMethodActiveIndex,
+  handleTabChange
 }) => {
   return (
     <Grid padded>
@@ -47,7 +50,10 @@ const SemanticGrid = ({
               <ResultsSegment apiResult={results} reference={reference} />
             ) : (
               <div>
-                <TabPanes />
+                <TabPanes 
+                      panes={panes}
+                      activeIndex={measurementMethodActiveIndex}
+                      onTabChange={handleTabChange}/>
               </div>
             )}
             <Grid verticalAlign="middle">

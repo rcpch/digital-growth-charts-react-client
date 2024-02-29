@@ -13,7 +13,6 @@ import RCPCHThemeTraditionalGirl from "./components/chartThemes/RCPCHThemeTradit
 import { themeOptions, panesBlueprint } from "./assets/config.js";
 
 // Semantic UI React
-import { Tab } from "semantic-ui-react";
 import createSemanticPanes from "./functions/semantic-ui-functions/createSemanticPanes.js";
 import createFormPanes from "./components/SemanticGrid/subcomponents/createFormPanes.jsx";
 
@@ -199,20 +198,6 @@ function App() {
     clinician
   );
 
-  const TabPanes = () => (
-    <Tab
-      key="tabPanes"
-      menu={{
-        attached: "top",
-        secondary: true,
-        pointing: true,
-      }}
-      panes={panes}
-      activeIndex={measurementMethodActiveIndex}
-      onTabChange={handleTabChange}
-    />
-  );
-
   const FormPanes = createFormPanes(
     isLoading,
     measurements,
@@ -241,7 +226,6 @@ function App() {
         reference={reference}
         clinician={clinician}
         setClinician={setClinician}
-        TabPanes={TabPanes}
         themeOptions={themeOptions}
         handleChangeTheme={handleChangeTheme}
         theme={theme}
@@ -249,6 +233,9 @@ function App() {
         centile={centile}
         globalState={globalState}
         handleFlipResults={handleFlipResults}
+        panes={panes}
+        measurementMethodActiveIndex={measurementMethodActiveIndex}
+        handleTabChange={handleTabChange}
       />
       <ErrorModal
         title={errorModal.title}
