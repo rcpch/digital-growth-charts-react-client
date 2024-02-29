@@ -43,7 +43,7 @@ const defaultTheme = RCPCHThemeMonochrome;
 
 function App() {
   // State functions
-  const [chartStyle, setChartSyle] = useState(defaultTheme.chart);
+  const [chartStyle, setChartStyle] = useState(defaultTheme.chart);
   const [axisStyle, setAxisStyle] = useState(defaultTheme.axes);
   const [centileStyle, setCentileStyle] = useState(defaultTheme.centiles);
   const [sdsStyle, setSDSStyle] = useState(defaultTheme.sds);
@@ -106,7 +106,7 @@ function App() {
     theme,
     sex,
     setCentileStyle,
-    setChartSyle,
+    setChartStyle,
     setMeasurementStyle,
     setAxisStyle
   );
@@ -167,7 +167,7 @@ function App() {
       RCPCHThemeMonochrome,
       RCPCHThemeTraditionalBoy,
       RCPCHThemeTraditionalGirl,
-      setChartSyle,
+      setChartStyle,
       setCentileStyle,
       setSDSStyle,
       setMeasurementStyle,
