@@ -180,7 +180,7 @@ function App() {
     setCentile(!centile);
   };
 
-  // Other stuff (Semantic UI gubbins?)
+  // Other stuff (Semantic UI gubbins)
   const panes = createSemanticPanes(
     panesBlueprint,
     centile,
