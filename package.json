@@ -12,14 +12,15 @@
     "@rcpch/digital-growth-charts-react-component-library": "6.1.15",
     "axios": "^0.21.1",
     "moment": "^2.29.1",
+    "nvm": "^0.0.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "^4.0.3",
-    "semantic-ui-react": "^2.0.0",
+    "semantic-ui-react": "^2.1.4",
     "styled-components": "^5.2.3"
   },
   "devDependencies": {
-    "@craco/craco": "^6.4.3",
+    "@craco/craco": "^6.4.5",
     "@semantic-ui-react/craco-less": "^1.2.1",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",

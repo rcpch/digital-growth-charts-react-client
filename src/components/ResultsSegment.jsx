@@ -1,8 +1,8 @@
 import { Segment, Tab, Menu } from "semantic-ui-react";
-import { ResultsDataTable } from "./ResultsDataTable";
+import { ResultsDataTable } from "./subcomponents/ResultsDataTable";
 import { useState } from "react";
 
-export const ResultsSegment = ({ apiResult, reference }) => {
+const ResultsSegment = ({ apiResult, reference }) => {
   // const fonts = [
   //   "Montserrat",
   //   "Roboto",
@@ -119,3 +119,5 @@ export const ResultsSegment = ({ apiResult, reference }) => {
     </>
   );
 };
+
+export default ResultsSegment
