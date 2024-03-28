@@ -58,8 +58,8 @@ const infoBoxTextStyle = new TextStyleObject(
     'normal'
 );
 
-const axisLabelTextStyle = new TextStyleObject('Arial', '000000', 10, 'normal');
-const tickLabelTextStyle = new TextStyleObject('Arial', '000000', 8, 'normal');
+const axisLabelTextStyle = new TextStyleObject('Arial', '#000000', 10, 'normal');
+const tickLabelTextStyle = new TextStyleObject('Arial', '#000000', 8, 'normal');
 const chartPadding = new PaddingObject(50, 50, 25, 40);
 
 const lineStrokeWidth = 1.5;
