@@ -33,7 +33,6 @@ function ChartData(props) {
         enableExport={true}
         exportChartCallback={exportChartCallback}
         clinicianFocus={props.clinicianFocus}
-        showCentileLabels={true}
       />
     </div>
   );
