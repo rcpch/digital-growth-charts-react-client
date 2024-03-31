@@ -199,11 +199,11 @@ export class PaddingObject {
 }
 
 export class TextStyleObject {
-  constructor(name, colour, size, weight) {
+  constructor(name, colour, size, style) {
     this.name = name;
     this.colour = colour;
     this.size = size;
-    this.weight = weight;
+    this.weight = style;
   }
   get name() {
     return this._name;
@@ -226,8 +226,8 @@ export class TextStyleObject {
   set size(val) {
     this._size = val;
   }
-  set weight(val) {
-    this._weight = val;
+  set style(val) {
+    this._style = val;
   }
 }
 
