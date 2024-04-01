@@ -8,6 +8,12 @@ import { canvasFromSVG } from "../functions/canvasFromSVG";
 function ChartData(props) {
   const isLoading = props.isLoading;
 
+  let measurements = props.measurementsArray; // if SDS charts, the array already is in the structure { measurementMethod: [measurementsArray]}
+  if (props.chartType === "centile") {
+    // as of 7.0.0 the results now need to be presented as an object where the key is the measurement method
+    measurements = { [props.measurementMethod]: props.measurementsArray };
+  }
+
   return (
     <div>
       <Dimmer active={isLoading}>
@@ -18,7 +24,7 @@ function ChartData(props) {
         measurementMethod={props.measurementMethod}
         sex={props.sex}
         title={"Name - Hospital Number"}
-        measurementsArray={props.measurementsArray} // this is the plottable child data
+        measurements={measurements} // this is the plottable child data: NOTE IN Charts 7.0.0 this has changed
         midParentalHeightData={props.midParentalHeightData}
         theme={props.theme}
         enableZoom
