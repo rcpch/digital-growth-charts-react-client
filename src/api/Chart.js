@@ -20,12 +20,7 @@ function ChartData(props) {
         title={"Name - Hospital Number"}
         measurementsArray={props.measurementsArray} // this is the plottable child data
         midParentalHeightData={props.midParentalHeightData}
-        chartStyle={props.chartStyle}
-        measurementStyle={props.measurementStyle}
-        centileStyle={props.centileStyle}
-        sdsStyle={props?.sdsStyle}
-        gridlineStyle={props.gridlineStyle}
-        axisStyle={props.axisStyle}
+        theme={props.theme}
         enableZoom
         chartType={props.chartType}
         enableExport={true}
