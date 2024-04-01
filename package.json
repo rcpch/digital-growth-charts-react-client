@@ -29,9 +29,9 @@
   "scripts": {
     "start": "export NODE_OPTIONS=--openssl-legacy-provider && craco start",
     "debug": "craco start --verbose",
-    "build": "craco build",
+    "build": "export NODE_OPTIONS=--openssl-legacy-provider && craco build",
     "eject": "craco eject",
-    "predeploy": "craco build"
+    "predeploy": " export NODE_OPTIONS=--openssl-legacy-provider && craco build"
   },
   "eslintConfig": {
     "extends": "react-app"
