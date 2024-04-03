@@ -7,7 +7,6 @@ import {
   AxesObject,
   TextStyleObject,
   SDSObject,
-  PaddingObject,
 } from "./themes";
 
 /* 
@@ -49,7 +48,7 @@ const subTitleStyle = new TextStyleObject("Arial", "#000000", 14, "normal");
 const tooltipTextStyle = new TextStyleObject(
   "Montserrat",
   tooltipTextColour,
-  0.25,
+  18,
   "normal"
 );
 const infoBoxTextStyle = new TextStyleObject(
@@ -62,8 +61,6 @@ const infoBoxTextStyle = new TextStyleObject(
 const axisLabelTextStyle = new TextStyleObject("Arial", "000000", 10, "normal");
 const tickLabelTextStyle = new TextStyleObject("Arial", "000000", 8, "normal");
 
-const chartPadding = new PaddingObject(50, 50, 25, 40);
-
 const lineStrokeWidth = 1.5;
 const heightSDSStroke = "#c9559d";
 const weightSDSStroke = "#d376b0";
@@ -72,9 +69,6 @@ const bmiSDSStroke = "#eecce1";
 
 const RCPCHChart = new ChartObject(
   backgroundColour,
-  700,
-  475,
-  chartPadding,
   titleStyle,
   subTitleStyle,
   tooltipBackgroundColour,

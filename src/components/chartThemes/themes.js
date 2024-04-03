@@ -49,9 +49,6 @@ export class ChartTheme {
 export class ChartObject {
   constructor(
     backgroundColour,
-    width,
-    height,
-    padding,
     titleStyle,
     subTitleStyle,
     tooltipBackgroundColour,
@@ -67,9 +64,6 @@ export class ChartObject {
     toggleButtonTextColour
   ) {
     this.backgroundColour = backgroundColour;
-    this.width = width;
-    this.height = height;
-    this.padding = padding;
     this.titleStyle = titleStyle;
     this.subTitleStyle = subTitleStyle;
     this.tooltipBackgroundColour = tooltipBackgroundColour;
@@ -86,15 +80,6 @@ export class ChartObject {
   }
   get backgroundColour() {
     return this._backgroundColour;
-  }
-  get width() {
-    return this._width;
-  }
-  get height() {
-    return this._height;
-  }
-  get padding() {
-    return this._padding;
   }
   get titleStyle() {
     return this._titleStyle;
@@ -152,15 +137,6 @@ export class ChartObject {
   }
   set backgroundColour(val) {
     this._backgroundColour = val;
-  }
-  set width(val) {
-    this._width = val;
-  }
-  set height(val) {
-    this._height = val;
-  }
-  set padding(val) {
-    this._padding = val;
   }
   set tooltipBackgroundColour(val) {
     this._tooltipBackgroundColour = val;
@@ -223,11 +199,11 @@ export class PaddingObject {
 }
 
 export class TextStyleObject {
-  constructor(name, colour, size, weight) {
+  constructor(name, colour, size, style) {
     this.name = name;
     this.colour = colour;
     this.size = size;
-    this.weight = weight;
+    this.weight = style;
   }
   get name() {
     return this._name;
@@ -250,8 +226,8 @@ export class TextStyleObject {
   set size(val) {
     this._size = val;
   }
-  set weight(val) {
-    this._weight = val;
+  set style(val) {
+    this._style = val;
   }
 }
 

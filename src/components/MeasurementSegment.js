@@ -2,12 +2,12 @@
 import { useState, useEffect, useMemo, Fragment } from "react";
 
 //themes
-import RCPCHTheme1 from "../components/chartThemes/rcpchTheme1";
-import RCPCHTheme2 from "../components/chartThemes/rcpchTheme2";
-import RCPCHTheme3 from "../components/chartThemes/rcpchTheme3";
-import RCPCHThemeMonochrome from "../components/chartThemes/rcpchThemeMonochrome";
-import RCPCHThemeTraditionalBoy from "../components/chartThemes/RCPCHThemeTraditionalBoy";
-import RCPCHThemeTraditionalGirl from "../components/chartThemes/RCPCHThemeTraditionalGirl";
+// import RCPCHTheme1 from "../components/chartThemes/rcpchTheme1";
+// import RCPCHTheme2 from "../components/chartThemes/rcpchTheme2";
+// import RCPCHTheme3 from "../components/chartThemes/rcpchTheme3";
+// import RCPCHThemeMonochrome from "../components/chartThemes/rcpchThemeMonochrome";
+// import RCPCHThemeTraditionalBoy from "../components/chartThemes/RCPCHThemeTraditionalBoy";
+// import RCPCHThemeTraditionalGirl from "../components/chartThemes/RCPCHThemeTraditionalGirl";
 
 // Semantic UI React
 import {
@@ -31,19 +31,19 @@ import FictionalChildForm from "./FictionalChildForm";
 import useRcpchApi from "../hooks/useRcpchApi";
 import useGlobalState from "../hooks/useGlobalState";
 
-const defaultTheme = RCPCHThemeMonochrome;
+// const defaultTheme = RCPCHThemeMonochrome;
 
 function MeasurementSegment() {
-  const [chartStyle, setChartSyle] = useState(defaultTheme.chart);
-  const [axisStyle, setAxisStyle] = useState(defaultTheme.axes);
-  const [centileStyle, setCentileStyle] = useState(defaultTheme.centiles);
-  const [sdsStyle, setSDSStyle] = useState(defaultTheme.sds);
+  // const [chartStyle, setChartSyle] = useState(defaultTheme.chart);
+  // const [axisStyle, setAxisStyle] = useState(defaultTheme.axes);
+  // const [centileStyle, setCentileStyle] = useState(defaultTheme.centiles);
+  // const [sdsStyle, setSDSStyle] = useState(defaultTheme.sds);
   const [centile, setCentile] = useState(true);
-  const [measurementStyle, setMeasurementStyle] = useState(
-    defaultTheme.measurements
-  );
+  // const [measurementStyle, setMeasurementStyle] = useState(
+  //   defaultTheme.measurements
+  // );
   const [theme, setTheme] = useState({
-    value: "tanner4",
+    value: "monochrome",
     text: "Monochrome",
   });
 
@@ -112,26 +112,26 @@ function MeasurementSegment() {
     }
   }, [errors, apiErrors, clearApiErrors, updateGlobalState]);
 
-  useEffect(() => {
-    let selectedTheme = RCPCHThemeMonochrome;
-    if (theme.value === "trad") {
-      selectedTheme =
-        sex === "male" ? RCPCHThemeTraditionalBoy : RCPCHThemeTraditionalGirl;
-    }
-    if (theme.value === "tanner1") {
-      selectedTheme = RCPCHTheme1;
-    }
-    if (theme.value === "tanner2") {
-      selectedTheme = RCPCHTheme2;
-    }
-    if (theme.value === "tanner3") {
-      selectedTheme = RCPCHTheme3;
-    }
-    setCentileStyle(selectedTheme.centiles);
-    setChartSyle(selectedTheme.chart);
-    setMeasurementStyle(selectedTheme.measurements);
-    setAxisStyle(selectedTheme.axes);
-  }, [sex, theme.value]);
+  // useEffect(() => {
+  //   let selectedTheme = RCPCHThemeMonochrome;
+  //   if (theme.value === "trad") {
+  //     selectedTheme =
+  //       sex === "male" ? RCPCHThemeTraditionalBoy : RCPCHThemeTraditionalGirl;
+  //   }
+  //   if (theme.value === "tanner1") {
+  //     selectedTheme = RCPCHTheme1;
+  //   }
+  //   if (theme.value === "tanner2") {
+  //     selectedTheme = RCPCHTheme2;
+  //   }
+  //   if (theme.value === "tanner3") {
+  //     selectedTheme = RCPCHTheme3;
+  //   }
+  //   setCentileStyle(selectedTheme.centiles);
+  //   setChartSyle(selectedTheme.chart);
+  //   setMeasurementStyle(selectedTheme.measurements);
+  //   setAxisStyle(selectedTheme.axes);
+  // }, [sex, theme.value]);
 
   useEffect(() => {
     if (results[reference][measurementMethod].length > 0) {
@@ -195,39 +195,11 @@ function MeasurementSegment() {
   };
 
   const handleChangeTheme = (event, { value }) => {
-    let selectedTheme;
-    let text;
+    // callback from select theme
+    // matches themeOptions by key and returns text to dropdown and value to chart for rerender in new theme
+    const selectedOption = themeOptions.find((o) => o.key === value);
+    const text = selectedOption["text"];
 
-    if (value === "trad") {
-      if (sex === "male") {
-        selectedTheme = RCPCHThemeTraditionalBoy;
-      } else {
-        selectedTheme = RCPCHThemeTraditionalGirl;
-      }
-      text = "Traditional";
-    }
-    if (value === "tanner1") {
-      selectedTheme = RCPCHTheme1;
-      text = "Tanner 1";
-    }
-    if (value === "tanner2") {
-      selectedTheme = RCPCHTheme2;
-      text = "Tanner 2";
-    }
-    if (value === "tanner3") {
-      selectedTheme = RCPCHTheme3;
-      text = "Tanner 3";
-    }
-    if (value === "monochrome") {
-      selectedTheme = RCPCHThemeMonochrome;
-      text = "Monochrome";
-    }
-
-    setCentileStyle(selectedTheme.centiles);
-    setSDSStyle(selectedTheme?.sds);
-    setChartSyle(selectedTheme.chart);
-    setMeasurementStyle(selectedTheme.measurements);
-    setAxisStyle(selectedTheme.axes);
     setTheme({ value: value, text: text });
   };
 
@@ -320,11 +292,7 @@ function MeasurementSegment() {
               measurementMethod={details.measurementName}
               measurementsArray={results[reference][details.measurementName]}
               midParentalHeightData={results[reference]["midParentalHeights"]}
-              chartStyle={chartStyle}
-              axisStyle={axisStyle}
-              gridlineStyle={defaultTheme.gridlines}
-              centileStyle={centileStyle}
-              measurementStyle={measurementStyle}
+              theme={theme.value}
               isLoading={isLoading}
               chartType="centile"
               clinicianFocus={clinician}
@@ -339,12 +307,7 @@ function MeasurementSegment() {
               measurementMethod={details.measurementName}
               measurementsArray={results[reference]}
               midParentalHeightData={results[reference]["midParentalHeights"]}
-              chartStyle={chartStyle}
-              axisStyle={axisStyle}
-              gridlineStyle={defaultTheme.gridlines}
-              centileStyle={centileStyle}
-              sdsStyle={sdsStyle}
-              measurementStyle={measurementStyle}
+              theme={theme.value}
               isLoading={isLoading}
               chartType="sds"
             />
@@ -380,7 +343,7 @@ function MeasurementSegment() {
             updateGlobalState={updateGlobalState}
             className="measurement-form"
             handleUtilitiesFormDataSubmit={utilitiesFormDataSubmit}
-            themeColour={centileStyle.centileStroke}
+            // themeColour={centileStyle.centileStroke}
           />
         </Tab.Pane>
       ),
@@ -537,7 +500,7 @@ const panesBlueprint = [
 
 const themeOptions = [
   { key: "monochrome", value: "monochrome", text: "Monochrome" },
-  { key: "trad", value: "trad", text: "Traditional" },
+  { key: "traditional", value: "traditional", text: "Traditional" },
   { key: "tanner1", value: "tanner1", text: "Tanner 1" },
   { key: "tanner2", value: "tanner2", text: "Tanner 2" },
   { key: "tanner3", value: "tanner3", text: "Tanner 3" },
