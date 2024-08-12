@@ -1,12 +1,13 @@
 {
   "name": "rcpchgrowth-react",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "private": false,
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/rcpch/digital-growth-charts-react-client"
   },
+  "homepage": "http://rcpch.github.io/digital-growth-charts-react-client",
   "type": "module",
   "scripts": {
     "dev": "vite --port 3000",
