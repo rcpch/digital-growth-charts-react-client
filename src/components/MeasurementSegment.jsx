@@ -26,14 +26,8 @@ import useGlobalState from "../hooks/useGlobalState";
 // const defaultTheme = RCPCHThemeMonochrome;
 
 const MeasurementSegment=({})=> {
-  // const [chartStyle, setChartSyle] = useState(defaultTheme.chart);
-  // const [axisStyle, setAxisStyle] = useState(defaultTheme.axes);
-  // const [centileStyle, setCentileStyle] = useState(defaultTheme.centiles);
-  // const [sdsStyle, setSDSStyle] = useState(defaultTheme.sds);
+  
   const [centile, setCentile] = useState(true);
-  // const [measurementStyle, setMeasurementStyle] = useState(
-  //   defaultTheme.measurements
-  // );
   const [theme, setTheme] = useState({
     value: "monochrome",
     text: "Monochrome",
