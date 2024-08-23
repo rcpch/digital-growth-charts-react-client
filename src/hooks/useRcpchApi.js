@@ -11,7 +11,7 @@ const fetchFromApi = async (inputParameters, reference, mode) => {
   */
   //  For this to work in development use http://127.0.0.1:8000 rather than localhost
   //
-  const prod_url = process.env.REACT_APP_GROWTH_API_BASEURL;
+  const prod_url = import.meta.env.VITE_APP_GROWTH_API_BASEURL;
   // const prod_url = "http://127.0.0.1:8000";
 
   let url = `${prod_url}/${reference}/${mode}`;
@@ -19,10 +19,10 @@ const fetchFromApi = async (inputParameters, reference, mode) => {
     url = `${prod_url}/utilities/${mode}`;
   }
 
-  const headers = process.env.REACT_APP_API_KEY
+  const headers = import.meta.env.VITE_APP_API_KEY
     ? {
         "Content-Type": "application/json",
-        "Subscription-Key": process.env.REACT_APP_API_KEY,
+        "Subscription-Key": import.meta.env.VITE_APP_API_KEY,
       }
     : { "Content-Type": "application/json" };
 
