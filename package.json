@@ -16,8 +16,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@rcpch/digital-growth-charts-react-component-library": "7.0.7",
-    "axios": "1.7.3",
+    "@rcpch/digital-growth-charts-react-component-library": "7.0.9",
+    "axios": "1.7.5",
     "semantic-ui-css": "2.5.0",
     "semantic-ui-react": "3.0.0-beta.2",
     "moment": "2.30.1",
