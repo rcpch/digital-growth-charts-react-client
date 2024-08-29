@@ -11,7 +11,7 @@ const fetchFromApi = async (inputParameters, reference, mode) => {
   */
   //  For this to work in development use http://127.0.0.1:8000 rather than localhost
   //
-  const prod_url = import.meta.env.VITE_APP_GROWTH_API_BASEURL;
+  const prod_url = process.env.REACT_APP_GROWTH_API_BASEURL;
   // const prod_url = "http://127.0.0.1:8000";
 
   let url = `${prod_url}/${reference}/${mode}`;
@@ -19,19 +19,40 @@ const fetchFromApi = async (inputParameters, reference, mode) => {
     url = `${prod_url}/utilities/${mode}`;
   }
 
-  const headers = import.meta.env.VITE_APP_API_KEY
+  const headers = process.env.REACT_APP_API_KEY
     ? {
         "Content-Type": "application/json",
-        "Subscription-Key": import.meta.env.VITE_APP_API_KEY,
+        "Subscription-Key": process.env.REACT_APP_API_KEY,
       }
     : { "Content-Type": "application/json" };
-
   const response = await axios({
     url: url,
     data: inputParameters,
     method: "POST",
     headers,
   });
+
+  /*
+  This code snippet directs the form data to a node server which holds the API key and makes the 
+  call to the digital growth chart server.
+  Cors is used to constrain accepted domains to the react demo client
+  */
+  // const nodeURL = 'http://localhost:8001/rcpchgrowth';
+  // const nodeURL = `http://localhost:8000/${reference}/${mode}`
+
+  // const options = {
+  //     // reference: reference,
+  //     // mode: mode,
+  //     formdata: inputParameters,
+  // };
+
+  // const headers = { 'Content-Type': 'application/json' };
+  // const response = await axios({
+  //     url: nodeURL,
+  //     data: options,
+  //     method: 'POST',
+  //     headers: headers,
+  // });
 
   return response.data;
 };
