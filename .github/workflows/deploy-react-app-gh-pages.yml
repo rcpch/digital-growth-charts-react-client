@@ -27,14 +27,14 @@ jobs:
       - name: Build project
         run: npm run build
         env:
-          REACT_APP_GROWTH_API_BASEURL: ${{ secrets.REACT_APP_LIVE_GROWTH_API_BASEURL }}
-          REACT_APP_API_KEY: ${{secrets.REACT_APP_API_KEY }}
+          VITE_APP_GROWTH_API_BASEURL: ${{ secrets.VITE_APP_GROWTH_API_BASEURL }}
+          VITE_APP_API_KEY: ${{secrets.VITE_APP_API_KEY }}
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v4
         with:
           name: production-files
-          path: ./build
+          path: ./dist
 
   deploy:
     name: Deploy
@@ -47,10 +47,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: production-files
-          path: ./build
+          path: ./dist
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+          publish_dir: ./dist
