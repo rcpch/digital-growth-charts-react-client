@@ -1,21 +1,23 @@
-FROM node:16.20.1-alpine3.17
+# Use the latest Node.js LTS version as the base image
+FROM node:18-alpine3.18 AS base
 
-# set working directory
+# Set working directory
 WORKDIR /app
 
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
+# Add `/app/node_modules/.bin` to $PATH
+ENV PATH=/app/node_modules/.bin:$PATH
 
-# set ownership of .cache to node user
-RUN mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
+# Copy package.json and package-lock.json
+COPY package.json package-lock.json ./
 
-# install app dependencies
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm install
+# Install app dependencies
+RUN npm install --development
 
-# add app
+# Copy the rest of the application files
 COPY . ./
 
-# start app
-CMD ["npm", "start"]
+# Expose the port the app runs on
+EXPOSE 3000
+
+# Start the application
+CMD ["npm", "run", "dev"]

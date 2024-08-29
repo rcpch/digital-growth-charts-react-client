@@ -1,3 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
 .App {
   text-align: center;
 }
@@ -5,3 +14,29 @@
 .royalcolleges {
   color: #000;
 }
+
+
+body {
+  margin: 0;
+  font-family: "Montserrat", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.selectUpperMargin {
+  margin-top: 10px !important;
+}
+
+/* RCPCH Colours 
+
+Heading text #0d0d58;
+Nav Blue #1B469C;
+Nav Blue #3366cc;
+
+
+*/

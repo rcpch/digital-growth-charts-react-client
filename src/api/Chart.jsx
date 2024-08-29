@@ -5,7 +5,7 @@ import { RCPCHChart } from "@rcpch/digital-growth-charts-react-component-library
 import { addToClipboard } from "../functions/addToClipboard";
 import { canvasFromSVG } from "../functions/canvasFromSVG";
 
-function ChartData(props) {
+const ChartData=(props)=> {
   const isLoading = props.isLoading;
 
   let measurements = props.measurementsArray; // if SDS charts, the array already is in the structure { measurementMethod: [measurementsArray]}
