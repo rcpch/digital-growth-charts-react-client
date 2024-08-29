@@ -1,10 +1,20 @@
 #!/bin/bash
 
-# names the image as below
-image="rcpch-dgc-demo-client"
-container_name="rcpch-dgc-demo-client"
-# Build the Docker image
-docker build -t ${image} .
+# usage: `s/docker-rebuild`
+# For use when rapidly changing the Dockerfile in development
+# Stops and removes the container
+# Removes the built image
+# then use s/docker-start script
 
-# Run the Docker container with port mapping and container name
-docker run -p 3000:3000 --name ${container_name} ${image}
+# names the built image as below
+app="rcpch-dgc-demo-client"
+
+# if the image exists then remove it before rebuild
+if [ "$(docker images -q ${app} 2>/dev/null)" != "" ]; then
+    docker container stop ${app} &&
+        docker container rm ${app} &&
+        docker image rm ${app}
+fi
+
+# build the image
+docker build -t ${app} .

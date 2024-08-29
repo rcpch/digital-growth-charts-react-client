@@ -1,5 +1,13 @@
 // React
-import React, { useState, useEffect, useMemo, Fragment } from "react";
+import { useState, useEffect, useMemo, Fragment } from "react";
+
+//themes
+// import RCPCHTheme1 from "../components/chartThemes/rcpchTheme1";
+// import RCPCHTheme2 from "../components/chartThemes/rcpchTheme2";
+// import RCPCHTheme3 from "../components/chartThemes/rcpchTheme3";
+// import RCPCHThemeMonochrome from "../components/chartThemes/rcpchThemeMonochrome";
+// import RCPCHThemeTraditionalBoy from "../components/chartThemes/RCPCHThemeTraditionalBoy";
+// import RCPCHThemeTraditionalGirl from "../components/chartThemes/RCPCHThemeTraditionalGirl";
 
 // Semantic UI React
 import {
@@ -14,20 +22,26 @@ import {
 } from "semantic-ui-react";
 
 import ChartData from "../api/Chart";
-import MeasurementForm from "./MeasurementForm";
+import MeasurementForm from "../components/MeasurementForm";
 import deepCopy from "../functions/deepCopy";
-import { ResultsSegment } from "./subcomponents/ResultsSegment";
-import { ErrorModal } from "./subcomponents/ErrorModal";
-// import "../app.css";
+import { ResultsSegment } from "../components/subcomponents/ResultsSegment";
+import { ErrorModal } from "../components/subcomponents/ErrorModal";
+import "../index.css";
 import FictionalChildForm from "./FictionalChildForm";
 import useRcpchApi from "../hooks/useRcpchApi";
 import useGlobalState from "../hooks/useGlobalState";
 
 // const defaultTheme = RCPCHThemeMonochrome;
 
-const MeasurementSegment=({})=> {
-  
+function MeasurementSegment() {
+  // const [chartStyle, setChartSyle] = useState(defaultTheme.chart);
+  // const [axisStyle, setAxisStyle] = useState(defaultTheme.axes);
+  // const [centileStyle, setCentileStyle] = useState(defaultTheme.centiles);
+  // const [sdsStyle, setSDSStyle] = useState(defaultTheme.sds);
   const [centile, setCentile] = useState(true);
+  // const [measurementStyle, setMeasurementStyle] = useState(
+  //   defaultTheme.measurements
+  // );
   const [theme, setTheme] = useState({
     value: "monochrome",
     text: "Monochrome",
@@ -97,6 +111,27 @@ const MeasurementSegment=({})=> {
       updateGlobalState("errors", { errors: false, message: "" });
     }
   }, [errors, apiErrors, clearApiErrors, updateGlobalState]);
+
+  // useEffect(() => {
+  //   let selectedTheme = RCPCHThemeMonochrome;
+  //   if (theme.value === "trad") {
+  //     selectedTheme =
+  //       sex === "male" ? RCPCHThemeTraditionalBoy : RCPCHThemeTraditionalGirl;
+  //   }
+  //   if (theme.value === "tanner1") {
+  //     selectedTheme = RCPCHTheme1;
+  //   }
+  //   if (theme.value === "tanner2") {
+  //     selectedTheme = RCPCHTheme2;
+  //   }
+  //   if (theme.value === "tanner3") {
+  //     selectedTheme = RCPCHTheme3;
+  //   }
+  //   setCentileStyle(selectedTheme.centiles);
+  //   setChartSyle(selectedTheme.chart);
+  //   setMeasurementStyle(selectedTheme.measurements);
+  //   setAxisStyle(selectedTheme.axes);
+  // }, [sex, theme.value]);
 
   useEffect(() => {
     if (results[reference][measurementMethod].length > 0) {
@@ -341,7 +376,7 @@ const MeasurementSegment=({})=> {
       />
     </span>
   );
-  
+
   return (
     <Fragment>
       <Grid padded>
