@@ -1,6 +1,6 @@
 {
   "name": "rcpchgrowth-react",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "private": false,
   "license": "MIT",
   "repository": {
@@ -8,44 +8,33 @@
     "url": "https://github.com/rcpch/digital-growth-charts-react-client"
   },
   "homepage": "http://rcpch.github.io/digital-growth-charts-react-client",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 3000",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
   "dependencies": {
-    "@rcpch/digital-growth-charts-react-component-library": "7.0.7",
-    "axios": "^0.21.1",
-    "moment": "^2.29.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "^4.0.3",
-    "semantic-ui-react": "^2.0.0",
-    "styled-components": "^5.2.3"
+    "@rcpch/digital-growth-charts-react-component-library": "7.0.9",
+    "axios": "1.7.5",
+    "semantic-ui-css": "2.5.0",
+    "semantic-ui-react": "3.0.0-beta.2",
+    "moment": "2.30.1",
+    "react": "18.2..0",
+    "react-dom": "18.2..0",
+    "styled-components": "6.1.12"
   },
   "devDependencies": {
-    "@craco/craco": "^6.4.3",
-    "@semantic-ui-react/craco-less": "^1.2.1",
-    "@testing-library/jest-dom": "^5.16.2",
-    "@testing-library/react": "^12.1.2",
-    "@testing-library/user-event": "^7.2.1",
-    "semantic-ui-less": "^2.4.1"
-  },
-  "scripts": {
-    "start": "export NODE_OPTIONS=--openssl-legacy-provider && craco start",
-    "debug": "craco start --verbose",
-    "build": "export NODE_OPTIONS=--openssl-legacy-provider && craco build",
-    "eject": "craco eject",
-    "predeploy": " export NODE_OPTIONS=--openssl-legacy-provider && craco build"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "@eslint/js": "^9.8.0",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^4.3.1",
+    "eslint": "^9.8.0",
+    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.9",
+    "globals": "^15.9.0",
+    "vite": "^5.4.0"
   }
 }
