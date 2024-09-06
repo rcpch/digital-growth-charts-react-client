@@ -16,14 +16,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@rcpch/digital-growth-charts-react-component-library": "7.0.9",
     "axios": "1.7.5",
-    "semantic-ui-css": "2.5.0",
-    "semantic-ui-react": "3.0.0-beta.2",
     "moment": "2.30.1",
     "react": "18.2..0",
     "react-dom": "18.2..0",
-    "styled-components": "6.1.12"
+    "semantic-ui-css": "2.5.0",
+    "semantic-ui-react": "3.0.0-beta.2",
+    "styled-components": "6.1.12",
+    "@rcpch/digital-growth-charts-react-component-library": "7.0.10"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",

@@ -7,21 +7,23 @@ function getBasePath() {
   //
   // GITHUB_REPOSITORY is the full name: rcpch/digital-growth-charts-react-client
 
-  if(process.env["GITHUB_REPOSITORY"]) {
-    const [, repoName] = process.env['GITHUB_REPOSITORY'].split("/");
+  if (process.env["GITHUB_REPOSITORY"]) {
+    const [, repoName] = process.env["GITHUB_REPOSITORY"].split("/");
 
-    if(repoName) {
+    if (repoName) {
       return `/${repoName}/`;
     }
   }
 
-  return '/';
-} 
+  return "/";
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  server: "0.0.0.0",
-  port: 3000,
-  base: getBasePath()
+  server: {
+    host: "0.0.0.0",
+    port: 3000,
+  },
+  base: getBasePath(),
 });

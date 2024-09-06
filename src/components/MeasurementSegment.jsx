@@ -23,8 +23,6 @@ import FictionalChildForm from "./FictionalChildForm";
 import useRcpchApi from "../hooks/useRcpchApi";
 import useGlobalState from "../hooks/useGlobalState";
 
-// const defaultTheme = RCPCHThemeMonochrome;
-
 const MeasurementSegment=({})=> {
   
   const [centile, setCentile] = useState(true);
