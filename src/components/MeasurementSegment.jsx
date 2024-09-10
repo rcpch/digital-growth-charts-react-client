@@ -18,7 +18,6 @@ import MeasurementForm from "./MeasurementForm";
 import deepCopy from "../functions/deepCopy";
 import { ResultsSegment } from "./subcomponents/ResultsSegment";
 import { ErrorModal } from "./subcomponents/ErrorModal";
-// import "../app.css";
 import FictionalChildForm from "./FictionalChildForm";
 import useRcpchApi from "../hooks/useRcpchApi";
 import useGlobalState from "../hooks/useGlobalState";
