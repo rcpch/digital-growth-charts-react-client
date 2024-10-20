@@ -50,8 +50,8 @@ const MeasurementForm = (props) => {
   const [showEvents, setShowEvents] = useState(false);
 
   const handleChangeReference = ({ value }) => {
-    if (value !== "uk-who") {
-      props.updateGlobalState("mid-parental-height", "reset"); //midparental height on present on UK-WHO reference
+    if (value !== "uk-who" && value !== "cdc") {
+      props.updateGlobalState("mid-parental-height", "reset"); //midparental height only present on UK-WHO and CDC reference
     }
     props.updateGlobalState("reference", value);
   };
@@ -329,6 +329,7 @@ const MeasurementForm = (props) => {
       height_maternal: event.target[0].value,
       height_paternal: event.target[1].value,
       sex: props.globalState["sex"],
+      reference: props.globalState["reference"],
     };
     props.updateGlobalState("isMidParentalHeightRequest", true);
     props.updateGlobalState("parentalHeights", {
@@ -588,7 +589,7 @@ const MeasurementForm = (props) => {
         </Segment>
       )}
 
-      {props.globalState.reference === "uk-who" && (
+      {(props.globalState.reference === "uk-who" || props.globalState.reference === "cdc") && (
         <UtilitiesForm
           utilitiesFormDataSubmit={handleUtilitiesDataSubmit}
           changeMaternalHeight={handleMaternalHeight}
