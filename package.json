@@ -1,6 +1,6 @@
 {
   "name": "rcpchgrowth-react",
-  "version": "6.0.0",
+  "version": "6.1.0",
   "private": false,
   "license": "MIT",
   "repository": {
@@ -23,7 +23,7 @@
     "semantic-ui-css": "2.5.0",
     "semantic-ui-react": "3.0.0-beta.2",
     "styled-components": "6.1.12",
-    "@rcpch/digital-growth-charts-react-component-library": "7.0.11"
+    "@rcpch/digital-growth-charts": "6.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",

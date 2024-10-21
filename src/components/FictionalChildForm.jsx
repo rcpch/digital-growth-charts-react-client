@@ -171,7 +171,6 @@ const FictionalChildForm = (props) => {
       maternalHeight: event.target[0].value,
       paternalHeight: event.target[1].value,
     });
-    console.log(props);
     props.handleUtilitiesFormDataSubmit(formData);
   };
 
@@ -364,7 +363,7 @@ const FictionalChildForm = (props) => {
         )}
       </Form>
 
-      {props.globalState.reference === "uk-who" && (
+      {(props.globalState.reference === "uk-who" || props.globalState.reference === "cdc") && (
         <UtilitiesForm
           utilitiesFormDataSubmit={handleUtilitiesDataSubmit}
           changeMaternalHeight={handleMaternalHeight}
