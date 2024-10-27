@@ -61,6 +61,12 @@ const makeInitialState = () => {
       bmi: [],
       ofc: [],
     },
+    "trisomy-21-aap": {
+      height: [],
+      weight: [],
+      bmi: [],
+      ofc: [],
+    },
     "uk-who": {
       height: [],
       weight: [],
