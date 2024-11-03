@@ -54,13 +54,13 @@ const UtilitiesForm = (props) => {
             fluid={true}
             type={"submit"}
           >
-            Calculate Mid-parental Height
+            Calculate Mid-Parental Height
           </Button>
         </Form.Field>
         {props.midParentalHeightDataPresent && (
           <Form.Field>
             <Button type="submit" onClick={props.removeMidParentalHeight}>
-              Remove Mid-parental Height
+              Remove Mid-Parental Height
             </Button>
           </Form.Field>
         )}
