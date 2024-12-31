@@ -80,6 +80,19 @@ const makeInitialState = () => {
       },
       midParentalHeights: midParentalHeights,
     },
+    who: {
+      height: [],
+      weight: [],
+      bmi: [],
+      ofc: [],
+      parentalHeights: {
+        height_maternal: null,
+        height_paternal: null,
+        sex: null,
+        reference: "who",
+      },
+      midParentalHeights: midParentalHeights,
+    },
     cdc: {
       height: [],
       weight: [],

@@ -363,7 +363,7 @@ const FictionalChildForm = (props) => {
         )}
       </Form>
 
-      {(props.globalState.reference === "uk-who" || props.globalState.reference === "cdc") && (
+      {(props.globalState.reference === "uk-who" || props.globalState.reference === "cdc"  || props.globalState.reference === "who") && (
         <UtilitiesForm
           utilitiesFormDataSubmit={handleUtilitiesDataSubmit}
           changeMaternalHeight={handleMaternalHeight}
