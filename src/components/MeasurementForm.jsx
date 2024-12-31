@@ -50,7 +50,7 @@ const MeasurementForm = (props) => {
   const [showEvents, setShowEvents] = useState(false);
 
   const handleChangeReference = ({ value }) => {
-    if (value !== "uk-who" && value !== "cdc") {
+    if (value !== "uk-who" && value !== "cdc" && value !== "who") {
       props.updateGlobalState("mid-parental-height", "reset"); //midparental height only present on UK-WHO and CDC reference
     }
     props.updateGlobalState("reference", value);
@@ -589,7 +589,7 @@ const MeasurementForm = (props) => {
         </Segment>
       )}
 
-      {(props.globalState.reference === "uk-who" || props.globalState.reference === "cdc") && (
+      {(props.globalState.reference === "uk-who" || props.globalState.reference === "cdc" || props.globalState.reference === "who") && (
         <UtilitiesForm
           utilitiesFormDataSubmit={handleUtilitiesDataSubmit}
           changeMaternalHeight={handleMaternalHeight}
