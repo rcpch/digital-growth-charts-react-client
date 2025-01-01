@@ -11,7 +11,6 @@ const fetchFromApi = async (inputParameters, reference, mode) => {
   */
   //  For this to work in development use http://127.0.0.1:8000 rather than localhost
   //
-  const prod_url = import.meta.env.VITE_APP_GROWTH_API_BASEURL;
   // const prod_url = "http://127.0.0.1:8000";
 
   let url = `${prod_url}/${reference}/${mode}`;
@@ -279,7 +278,13 @@ const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
             const mutable = deepCopy(old);
             const { newInput } = removeLastFromArrays(old);
             mutable[mode].input[reference][measurementMethod] = newInput;
-            const errorForUser = `There has been a problem fetching the result from the server. Error details: ${error.message}`;
+            const errorDetails = error.response.data.detail;
+            let errorsForResponse = "";
+            errorDetails.forEach((errorDetail) => {
+              return (errorsForResponse += `${errorDetail.msg}\n`);
+            });
+
+            const errorForUser = `There has been a problem fetching the result from the server.\nError details: ${error.message}\n${errorsForResponse}`;
             mutable.errors = {
               errors: true,
               message: errorForUser,
