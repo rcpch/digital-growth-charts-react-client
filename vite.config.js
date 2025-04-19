@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import fs from "fs";
 
 function getBasePath() {
   // When deploying to GitHub pages it's served under a subdomain
@@ -19,19 +20,32 @@ function getBasePath() {
   return "/";
 }
 
+// Check if we're in a local development environment with the library available
+const isLocalDev =
+  process.env.NODE_ENV === "development" &&
+  fs.existsSync(
+    path.resolve(
+      __dirname,
+      "..",
+      "digital-growth-charts-react-component-library"
+    )
+  );
+
 export default defineConfig(({ command }) => ({
   plugins: [react()],
   resolve: {
     preserveSymlinks: command === "serve",
-    alias: {
-      // force this import to resolve to your local workspace copy
-      "@rcpch/digital-growth-charts-react-component-library": path.resolve(
-        __dirname,
-        "..",
-        "digital-growth-charts-react-component-library",
-        "src"
-      ),
-    },
+    alias: isLocalDev
+      ? {
+          // Only use the local path alias in development when the folder exists
+          "@rcpch/digital-growth-charts-react-component-library": path.resolve(
+            __dirname,
+            "..",
+            "digital-growth-charts-react-component-library",
+            "src"
+          ),
+        }
+      : {},
   },
   optimizeDeps: {
     exclude: ["@rcpch/digital-growth-charts-react-component-library"],
