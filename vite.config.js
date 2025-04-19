@@ -31,7 +31,8 @@ const isLocalDev =
     )
   );
 
-export default defineConfig(({ command }) => ({
+export default defineConfig(({ command, mode }) => ({
+  base: getBasePath(),
   plugins: [react()],
   resolve: {
     preserveSymlinks: command === "serve",
@@ -48,20 +49,28 @@ export default defineConfig(({ command }) => ({
       : {},
   },
   optimizeDeps: {
-    exclude: ["@rcpch/digital-growth-charts-react-component-library"],
+    exclude: isLocalDev
+      ? ["@rcpch/digital-growth-charts-react-component-library"]
+      : [],
   },
   server: {
     fs: {
       allow: [
-        // your client root
         path.resolve(__dirname),
-        // the linked library
-        path.resolve(
-          __dirname,
-          "..",
-          "digital-growth-charts-react-component-library"
-        ),
+        ...(isLocalDev
+          ? [
+              path.resolve(
+                __dirname,
+                "..",
+                "digital-growth-charts-react-component-library"
+              ),
+            ]
+          : []),
       ],
     },
+  },
+  build: {
+    chunkSizeWarningLimit: 1000,
+    outDir: "dist",
   },
 }));
