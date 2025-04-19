@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import path from "path";
 
 function getBasePath() {
   // When deploying to GitHub pages it's served under a subdomain
@@ -18,12 +19,35 @@ function getBasePath() {
   return "/";
 }
 
-// https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [react()],
-  server: {
-    host: "0.0.0.0",
-    port: 3000,
+  resolve: {
+    preserveSymlinks: command === "serve",
+    alias: {
+      // force this import to resolve to your local workspace copy
+      "@rcpch/digital-growth-charts-react-component-library": path.resolve(
+        __dirname,
+        "..",
+        "digital-growth-charts-react-component-library",
+        "src"
+      ),
+    },
   },
-  base: getBasePath(),
-});
+  optimizeDeps: {
+    exclude: ["@rcpch/digital-growth-charts-react-component-library"],
+  },
+  server: {
+    fs: {
+      allow: [
+        // your client root
+        path.resolve(__dirname),
+        // the linked library
+        path.resolve(
+          __dirname,
+          "..",
+          "digital-growth-charts-react-component-library"
+        ),
+      ],
+    },
+  },
+}));
