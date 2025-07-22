@@ -1,5 +1,4 @@
 import { useEffect, useState, useCallback } from "react";
-import axios from "axios";
 
 import deepCopy from "../functions/deepCopy";
 
@@ -25,14 +24,15 @@ const fetchFromApi = async (inputParameters, reference, mode) => {
       }
     : { "Content-Type": "application/json" };
 
-  const response = await axios({
-    url: url,
-    data: inputParameters,
+  const response = await fetch(url, {
+    body: JSON.stringify(inputParameters),
     method: "POST",
     headers,
   });
 
-  return response.data;
+  const data = await response.json();
+
+  return data;
 };
 
 const makeInitialState = () => {
