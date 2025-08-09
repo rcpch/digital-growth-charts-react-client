@@ -198,7 +198,7 @@ const FictionalChildForm = (props) => {
         setErrorMessage("");
     }
   }, [startingAge, endingAge, interval, startSDS]);
-
+  
   return (
     <div>
       <Form onSubmit={handleBigButtonPress}>

@@ -3,9 +3,7 @@ import { Select } from "semantic-ui-react";
 function SexSelect(props) {
   return (
     <>
-    <label style={{ textAlign: "left" }}>
-      Sex:
-    </label>
+    
     <Select
       fluid
       name="sex"

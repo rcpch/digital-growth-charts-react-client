@@ -60,6 +60,7 @@ const MeasurementSegment=({})=> {
     isLoading,
   } = useRcpchApi(measurementMethod, reference, mode);
 
+
   const updateGlobalState = useMemo(
     () => makeGlobalStateUpdater(results),
     [results, makeGlobalStateUpdater]
@@ -157,6 +158,20 @@ const MeasurementSegment=({})=> {
     }
   };
 
+  const presetsDataSubmit = (formData) => {
+    // delegate function from Presets
+    // receives form data and stores in the correct measurement array
+    // passes to the chart (no API call needed)
+    console.log("Presets data submit called with formData:", formData, results);
+    // formData contains age and condition
+    fetchResult({
+      ...formData,
+      source: 'local'
+    });
+
+  };
+    
+  
   const handleChangeTheme = (event, { value }) => {
     // callback from select theme
     // matches themeOptions by key and returns text to dropdown and value to chart for rerender in new theme
@@ -330,7 +345,11 @@ const MeasurementSegment=({})=> {
       menuItem: "Preset Examples",
       render: () => (
         <Tab.Pane key="presets">
-          <Presets />
+          <Presets 
+            globalState={globalState}
+            updateGlobalState={updateGlobalState}
+            handlePresetsSubmit={presetsDataSubmit}
+          />
         </Tab.Pane>
       ),
     },

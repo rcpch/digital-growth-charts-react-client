@@ -447,6 +447,9 @@ const MeasurementForm = (props) => {
               <Grid.Row>
                 <Grid.Column>
                   <Form.Field required>
+                    <label style={{ textAlign: "left" }}>
+                      Sex:
+                    </label>
                     <SexSelect
                       sex={props.globalState.sex}
                       handleSexChange={handleChangeSex}
