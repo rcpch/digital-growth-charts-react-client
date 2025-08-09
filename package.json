@@ -1,6 +1,6 @@
 {
   "name": "rcpchgrowth-react",
-  "version": "7.0.3",
+  "version": "7.0.2",
   "private": false,
   "license": "MIT",
   "repository": {
@@ -14,7 +14,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "postinstall": "cp -f \"./src/semantic-ui/theme.config\" \"./node_modules/semantic-ui-less/theme.config\" && mkdir -p ./public/themes/default/assets/fonts && cp -f ./node_modules/semantic-ui-less/themes/default/assets/fonts/* ./public/themes/default/assets/fonts"
+    "postinstall": "cp -f \"./src/semantic-ui/theme.config\" \"./node_modules/semantic-ui-less/theme.config\" && mkdir -p ./public/themes/default/assets/fonts && cp -f ./node_modules/semantic-ui-less/themes/default/assets/fonts/* ./public/themes/default/assets/fonts && mkdir -p ./public/themes/default/assets/images && cp -f ./node_modules/semantic-ui-less/themes/default/assets/images/flags.png ./public/themes/default/assets/images/flags.png"
   },
   "dependencies": {
     "@rcpch/digital-growth-charts-react-component-library": "7.3.9",
