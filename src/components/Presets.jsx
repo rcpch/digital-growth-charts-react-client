@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Message, ButtonGroup, Button, Form } from "semantic-ui-react";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { Message, Button, Form } from "semantic-ui-react";
 import MeasurementMethodSelect from "./subcomponents/MeasurementMethodSelect";
 import ReferenceSelect from "./subcomponents/ReferenceSelect";
 import SexSelect from "./subcomponents/SexChoice";
 import { measurementMethodLabelForKey } from "../functions/measurementMethod";
 
-const ageOptions = [{ label: "Preterm Baby", value: "preterm" }, { label: "Infant", value: "infant" }, { label: "Child", value: "child" }, { label: "Teenager", value: "teenager" }];
 import measurementOptions from "../selectData/measurementOptions";
 import sexOptions from "../selectData/sexOptions";
 import referenceOptions from "../selectData/referenceOptions";
@@ -13,12 +13,9 @@ import RCPCHRadioButtonGroup from "./subcomponents/RadioButtonGroup";
 
 const Presets = (props) => {
 
-  const ageOptions = [{ label: "Preterm Baby", value: "preterm" }, { label: "Infant", value: "infant" }, { label: "Child", value: "child" }, { label: "Teenager", value: "teenager" }];
-  const [selectedAge, setSelectedAge] = useState(ageOptions[2].value);
-
   const conditionOptionList = [
     { label: "Normal", value: "normal", measurementMethod: "height" },
-    { label: "Faltering Growth", value: "faltering", measurementMethod: "weight" },
+    { label: "Faltering Growth", value: "faltering-growth", measurementMethod: "weight" },
     { label: "Prematurity", value: "prematurity", measurementMethod: "weight" },
     { label: "Malnutrition", value: "malnutrition", measurementMethod: "bmi" },
     { label: "Obesity", value: "obesity", measurementMethod: "bmi" },
@@ -37,7 +34,8 @@ const Presets = (props) => {
   };
   // Initialize condition options based on the default measurement method
   const [conditionOptions, setConditionOptions] = useState(filterConditionOptionsToMeasurementMethod("height"));
-  const [conditionOption, setConditionOption] = useState(filterConditionOptionsToMeasurementMethod("height")[0].value);
+  // Start with no condition selected so the user must choose one
+  const [conditionOption, setConditionOption] = useState(null);
 
 
   const handleChangeMeasurementMethod = (newMeasurementMethod) => {
@@ -46,12 +44,11 @@ const Presets = (props) => {
     // filter the condition options based on the selected measurement method
     const filteredConditions = filterConditionOptionsToMeasurementMethod(newMeasurementMethod);
     setConditionOptions(filteredConditions);
+    // Reset selection until the user explicitly chooses a condition
+    setConditionOption(null);
   };
   
   const handleChangeReference = ({ value }) => {
-    if (value !== "uk-who" && value !== "cdc" && value !== "who") {
-      props.updateGlobalState("mid-parental-height", "reset"); //midparental height only present on UK-WHO and CDC reference
-    }
     props.updateGlobalState("reference", value);
   };
 
@@ -66,13 +63,12 @@ const Presets = (props) => {
   };
   const dynamicMeasurementOptions = measurementOptions.map(makeDynamic);
 
-  const handlePresetsSubmit = (formData) => {
-    // handle the form submission for presets
-    const { age, condition } = formData;
-    props.handlePresetsSubmit({
-      age,
-      condition
-    });
+  // A condition is considered selected only if it matches one of the current options
+  const isConditionSelected = conditionOptions.some(o => o.value === conditionOption);
+
+  const handlePresetsSubmit = ({ age, condition }) => {
+    // Forward to parent handler
+    props.handlePresetsSubmit({ age, condition });
   };
 
   return (
@@ -81,9 +77,9 @@ const Presets = (props) => {
         <p>The following examples are Presets to demonstrate the functionality of the charts.</p>
         <p>
           Please note that these examples are fictional and do not represent real patients. You can
-          create fictional patients also by using the "Generator" tab.
+          create fictional patients also by using the &quot;Generator&quot; tab.
         </p>
-        <p>To use the charts, please enter your own measurements in the "Measurements" tab.</p>
+        <p>To use the charts, please enter your own measurements in the &quot;Measurements&quot; tab.</p>
       </Message>
       <Form className="preset-form" key="preset-form">
         <Form.Field>
@@ -125,10 +121,12 @@ const Presets = (props) => {
         <Form.Field>
           <Button
            type="submit"
-           onClick={() => handlePresetsSubmit({
-             age: selectedAge,
-             condition: conditionOption,
-           })}
+           disabled={!isConditionSelected}
+           onClick={() => {
+             if (isConditionSelected) {
+               handlePresetsSubmit({ age: null, condition: conditionOption });
+             }
+           }}
           >
             Generate {
               measurementMethodLabelForKey(props.globalState.measurementMethod)
@@ -138,6 +136,17 @@ const Presets = (props) => {
       </Form>
     </>
   );
+};
+
+Presets.propTypes = {
+  updateGlobalState: PropTypes.func.isRequired,
+  handlePresetsSubmit: PropTypes.func.isRequired,
+  globalState: PropTypes.shape({
+    disabled: PropTypes.object,
+    reference: PropTypes.string,
+    sex: PropTypes.string,
+    measurementMethod: PropTypes.string,
+  }).isRequired,
 };
 
 export default Presets;
