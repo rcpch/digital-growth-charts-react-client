@@ -24,9 +24,17 @@ export const ErrorModal = ({
 };
 
 ErrorModal.propTypes = {
-  title: PropTypes.string.isRequired,
-  body: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
-  handleClose: PropTypes.func.isRequired,
-  visible: PropTypes.bool.isRequired,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  body: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  handleClose: PropTypes.func,
   handleCancel: PropTypes.func,
+  visible: PropTypes.bool,
+};
+
+ErrorModal.defaultProps = {
+  title: "",
+  body: null,
+  handleClose: () => {},
+  handleCancel: null,
+  visible: false,
 };

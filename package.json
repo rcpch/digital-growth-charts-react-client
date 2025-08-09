@@ -14,7 +14,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "postinstall": "cp -f \"./src/semantic-ui/theme.config\" \"./node_modules/semantic-ui-less/theme.config\""
+    "postinstall": "cp -f \"./src/semantic-ui/theme.config\" \"./node_modules/semantic-ui-less/theme.config\" && mkdir -p ./public/themes/default/assets/fonts && cp -f ./node_modules/semantic-ui-less/themes/default/assets/fonts/* ./public/themes/default/assets/fonts"
   },
   "dependencies": {
     "@rcpch/digital-growth-charts-react-component-library": "7.3.9",
