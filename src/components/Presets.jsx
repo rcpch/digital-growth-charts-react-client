@@ -14,19 +14,19 @@ import RCPCHRadioButtonGroup from "./subcomponents/RadioButtonGroup";
 const Presets = (props) => {
 
   const conditionOptionList = [
-    { label: "Normal", value: "normal", measurementMethod: "height" },
-    { label: "Faltering Growth", value: "faltering-growth", measurementMethod: "weight" },
-    { label: "Prematurity", value: "prematurity", measurementMethod: "weight" },
-    { label: "Malnutrition", value: "malnutrition", measurementMethod: "bmi" },
-    { label: "Obesity", value: "obesity", measurementMethod: "bmi" },
-    { label: "Pubertal Delay", value: "pubertal-delay", measurementMethod: "height" },
-    { label: "Short Stature", value: "short-stature", measurementMethod: "height" },
-    { label: "Tall Stature", value: "tall-stature", measurementMethod: "height" },
-    { label: "Microcephaly", value: "microcephaly", measurementMethod: "ofc" },
-    { label: "Macrocephaly", value: "macrocephaly", measurementMethod: "ofc" },
-    { label: "Coeliac Disease", value: "coeliac-disease", measurementMethod: "height" },
-    { label: "Cystic Fibrosis", value: "cystic-fibrosis", measurementMethod: "weight" },
-    { label: "Growth Hormone Deficiency", value: "growth-hormone-deficiency", measurementMethod: "height" },
+    { label: "Normal", value: "normal", measurementMethod: "height", disabled: false },
+    { label: "Faltering Growth", value: "faltering-growth", measurementMethod: "weight", disabled: false },
+    { label: "Prematurity", value: "prematurity", measurementMethod: "weight", disabled: false },
+    { label: "Malnutrition", value: "malnutrition", measurementMethod: "bmi", disabled: false },
+    { label: "Obesity", value: "obesity", measurementMethod: "bmi", disabled: false },
+    { label: "Pubertal Delay", value: "pubertal-delay", measurementMethod: "height", disabled: false },
+    { label: "Short Stature", value: "short-stature", measurementMethod: "height", disabled: false },
+    { label: "Tall Stature", value: "tall-stature", measurementMethod: "height", disabled: false },
+    { label: "Microcephaly", value: "microcephaly", measurementMethod: "ofc", disabled: false },
+    { label: "Macrocephaly", value: "macrocephaly", measurementMethod: "ofc", disabled: false },
+    { label: "Coeliac Disease", value: "coeliac-disease", measurementMethod: "height", disabled: false },
+    { label: "Cystic Fibrosis", value: "cystic-fibrosis", measurementMethod: "weight", disabled: false },
+    { label: "Growth Hormone Deficiency", value: "growth-hormone-deficiency", measurementMethod: "height", disabled: false },
   ]
   
   const filterConditionOptionsToMeasurementMethod = (measurementMethod) => {
@@ -58,10 +58,13 @@ const Presets = (props) => {
 
 
   const makeDynamic = (option) => {
-    const newDisabled = props.globalState.disabled[option.key];
-    return { ...option, disabled: newDisabled };
+    if (option.key !== "uk-who" && option.key!== "height" && option.key !== "weight" && option.key !== "bmi" && option.key !== "ofc") {
+      return { ...option, disabled: true, text: `${option.text} (coming soon...)` }; // Indicate disabled options in the UI
+    }
+    return { ...option, disabled: false };
   };
   const dynamicMeasurementOptions = measurementOptions.map(makeDynamic);
+  const dynamicReferenceOptions = referenceOptions.map(makeDynamic);
 
   // A condition is considered selected only if it matches one of the current options
   const isConditionSelected = conditionOptions.some(o => o.value === conditionOption);
@@ -87,7 +90,7 @@ const Presets = (props) => {
             handleChangeReference={handleChangeReference}
             value={props.globalState.reference}
             reference={props.globalState.reference}
-            referenceOptions={referenceOptions}
+            referenceOptions={dynamicReferenceOptions}
             aria-label="Select Reference"
           />
         </Form.Field>
