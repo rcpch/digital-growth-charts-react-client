@@ -208,16 +208,16 @@ const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
     eager: true,
   });
 
-  const fetchFromLocal = async (input, reference, measurementMethod) => {
+  const fetchFromLocal = async (input, reference, measurementMethod, sex) => {
     const { condition } = input || {};
-    if (!condition || !reference || !measurementMethod) {
+    if (!condition || !reference || !measurementMethod || !sex) {
       throw new Error(
-        `Missing required keys for local dataset. Got condition=${condition}, reference=${reference}, measurementMethod=${measurementMethod}`
+        `Missing required keys for local dataset. Got condition=${condition}, reference=${reference}, measurementMethod=${measurementMethod}, sex=${sex}`
       );
     }
 
     // Expected path: /src/fictional-children/{condition}/{reference}/{measurementMethod}/data.json
-    const expectedPath = `/src/fictional-children/${condition}/${reference}/${measurementMethod}/data.json`;
+    const expectedPath = `/src/fictional-children/${condition}/${reference}/${measurementMethod}/${sex}/data.json`;
     const mod = fictionalIndex[expectedPath];
 
     if (!mod) {
@@ -232,12 +232,14 @@ const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
     if (apiState.isLoading) {
       let relevantArray;
       let latestInput;
+      let sex;
 
       if (apiState["isMidparentalCalculation"]) {
         latestInput = apiState[mode].input[reference]["parentalHeights"];
       } else {
         relevantArray = apiState[mode].input[reference][measurementMethod];
         latestInput = deepCopy(relevantArray[relevantArray.length - 1]);
+        sex = latestInput?.sex;
       }
 
       // Decide API vs Local:
@@ -252,7 +254,7 @@ const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
       const fetcher = apiState["isMidparentalCalculation"]
         ? (li) => fetchFromApi(li, reference, "mid-parental-height")
         : useLocal
-        ? (li) => fetchFromLocal(li, reference, measurementMethod)
+        ? (li) => fetchFromLocal(li, reference, measurementMethod, sex)
         : (li) => fetchFromApi(li, reference, mode);
 
       fetcher(latestInput)

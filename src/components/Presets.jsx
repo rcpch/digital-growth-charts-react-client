@@ -98,17 +98,6 @@ const Presets = (props) => {
         </Form.Field>
         <hr></hr>
         <Form.Field>
-          <label style={{ textAlign: "left" }}>Age Group</label>
-          <RCPCHRadioButtonGroup
-            vertical={false}
-            options={ageOptions}
-            selectedValue={selectedAge}
-            onChange={(value) => {
-              setSelectedAge(value);
-            }}
-          />
-        </Form.Field>
-        <Form.Field>
           <label style={{ textAlign: "left" }}>Condition</label>
           <RCPCHRadioButtonGroup
             vertical={true}

@@ -166,7 +166,8 @@ const MeasurementSegment=({})=> {
     // formData contains age and condition
     fetchResult({
       ...formData,
-      source: 'local'
+      source: 'local',
+      sex: sex
     });
 
   };
