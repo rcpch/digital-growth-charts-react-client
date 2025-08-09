@@ -22,13 +22,16 @@ jobs:
           node-version: 22.x
 
       - name: Install NPM packages
-        run: npm install
+        run: npm ci
 
       - name: Build project
         run: npm run build
         env:
           VITE_APP_GROWTH_API_BASEURL: ${{ secrets.VITE_APP_GROWTH_API_BASEURL }}
           VITE_APP_API_KEY: ${{secrets.VITE_APP_API_KEY }}
+      
+      - name: Add SPA fallback
+        run: cp dist/index.html dist/404.html
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v4

@@ -30,6 +30,26 @@ code {
   margin-top: 10px !important;
 }
 
+measurement-form .field > label,
+.measurement-form .fields > .field > label {
+  text-align: left !important;
+}
+
+@media (max-width: 1150px) {
+  .preset-buttons.ui.buttons {
+    display: block; /* break out of inline-flex row */
+  }
+  .preset-buttons.ui.buttons > .button {
+    display: block;
+    width: 100%;
+    margin-left: 0 !important;   /* undo group’s negative margin */
+    margin-top: 0.5rem;          /* spacing between rows */
+    border-radius: 0.28571429rem !important; /* normal button radius */
+  }
+  .preset-buttons.ui.buttons > .button:first-child {
+    margin-top: 0;
+  }
+}
 /* RCPCH Colours 
 
 Heading text #0d0d58;

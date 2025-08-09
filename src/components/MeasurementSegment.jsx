@@ -21,6 +21,7 @@ import { ErrorModal } from "./subcomponents/ErrorModal";
 import FictionalChildForm from "./FictionalChildForm";
 import useRcpchApi from "../hooks/useRcpchApi";
 import useGlobalState from "../hooks/useGlobalState";
+import Presets from "./Presets";
 
 const MeasurementSegment=({})=> {
   
@@ -58,6 +59,7 @@ const MeasurementSegment=({})=> {
     apiErrors,
     isLoading,
   } = useRcpchApi(measurementMethod, reference, mode);
+
 
   const updateGlobalState = useMemo(
     () => makeGlobalStateUpdater(results),
@@ -156,6 +158,21 @@ const MeasurementSegment=({})=> {
     }
   };
 
+  const presetsDataSubmit = (formData) => {
+    // delegate function from Presets
+    // receives form data and stores in the correct measurement array
+    // passes to the chart (no API call needed)
+    console.log("Presets data submit called with formData:", formData, results);
+    // formData contains age and condition
+    fetchResult({
+      ...formData,
+      source: 'local',
+      sex: sex
+    });
+
+  };
+    
+  
   const handleChangeTheme = (event, { value }) => {
     // callback from select theme
     // matches themeOptions by key and returns text to dropdown and value to chart for rerender in new theme
@@ -312,7 +329,7 @@ const MeasurementSegment=({})=> {
     },
     {
       key: "examples",
-      menuItem: "Examples",
+      menuItem: "Generator",
       render: () => (
         <Tab.Pane key="examples">
           <FictionalChildForm
@@ -320,6 +337,19 @@ const MeasurementSegment=({})=> {
             globalState={globalState}
             updateGlobalState={updateGlobalState}
             handleUtilitiesFormDataSubmit={utilitiesFormDataSubmit}
+          />
+        </Tab.Pane>
+      ),
+    },
+    {
+      key: "presets",
+      menuItem: "Preset Examples",
+      render: () => (
+        <Tab.Pane key="presets">
+          <Presets 
+            globalState={globalState}
+            updateGlobalState={updateGlobalState}
+            handlePresetsSubmit={presetsDataSubmit}
           />
         </Tab.Pane>
       ),
@@ -379,7 +409,7 @@ const MeasurementSegment=({})=> {
                       name="checkboxRadioGroup"
                       value={0}
                       checked={clinician}
-                      onChange={(e, data) => setClinician(!clinician)}
+                      onChange={() => setClinician(!clinician)}
                     />
                     <Checkbox
                       radio
@@ -387,7 +417,7 @@ const MeasurementSegment=({})=> {
                       name="checkboxRadioGroup"
                       value={1}
                       checked={!clinician}
-                      onChange={(e, data) => setClinician(!clinician)}
+                      onChange={() => setClinician(!clinician)}
                     />
                   </Grid.Column>
                   <Grid.Column textAlign="center" width={4}>

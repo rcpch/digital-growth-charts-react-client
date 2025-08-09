@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
 import { Form, Input, Header, Checkbox, Button } from "semantic-ui-react";
 
@@ -198,7 +199,7 @@ const FictionalChildForm = (props) => {
         setErrorMessage("");
     }
   }, [startingAge, endingAge, interval, startSDS]);
-
+  
   return (
     <div>
       <Form onSubmit={handleBigButtonPress}>
@@ -376,6 +377,35 @@ const FictionalChildForm = (props) => {
       )}
     </div>
   );
+};
+
+FictionalChildForm.propTypes = {
+  updateGlobalState: PropTypes.func.isRequired,
+  fictionalFormDataSubmit: PropTypes.func.isRequired,
+  handleUtilitiesFormDataSubmit: PropTypes.func.isRequired,
+  globalState: PropTypes.shape({
+    measurementMethod: PropTypes.string.isRequired,
+    sex: PropTypes.string.isRequired,
+    reference: PropTypes.string.isRequired,
+    disabled: PropTypes.object, // keys map to option.key -> boolean
+    parentalHeights: PropTypes.shape({
+      height_maternal: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ]),
+      height_paternal: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ]),
+    }).isRequired,
+    isDataPresent: PropTypes.bool,
+    "mid-parental-height": PropTypes.shape({
+      mid_parental_height: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+      ]),
+    }),
+  }).isRequired,
 };
 
 export default FictionalChildForm;

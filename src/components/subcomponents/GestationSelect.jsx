@@ -1,5 +1,6 @@
 // Semantic UI React
 import { Select } from "semantic-ui-react";
+import PropTypes from "prop-types";
 
 function GestationSelect(props) {
   let gestationWeeksOptions = [];
@@ -24,9 +25,19 @@ function GestationSelect(props) {
   ];
 
   return (
-    <span>
+    <>
+    <label style={{ display: "inline-block", marginRight: "1rem", textAlign: "left" }}>
+      Gestation:
+    </label>
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "0.5rem",
+        whiteSpace: "nowrap", // keep the inner controls on one line
+      }}>
       <Select
-        compact
+        fluid
         name="gestation_weeks"
         value={props.weeks}
         options={gestationWeeksOptions}
@@ -34,15 +45,21 @@ function GestationSelect(props) {
       />
       &nbsp;+
       <Select
-        compact
+        fluid
         name="gestation_days"
         value={props.days}
         options={gestationDaysOptions}
         onChange={(e, val) => props.handleGestationChange(val)}
       />
-      &nbsp; weeks
     </span>
+  </>
   );
 }
+
+GestationSelect.propTypes = {
+  weeks: PropTypes.number.isRequired,
+  days: PropTypes.number.isRequired,
+  handleGestationChange: PropTypes.func.isRequired,
+};
 
 export default GestationSelect;

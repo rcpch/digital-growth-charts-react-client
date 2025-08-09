@@ -1,3 +1,21 @@
 /*******************************
     User Variable Overrides
 *******************************/
+
+/* Global colors */
+@primaryColor: #000;
+@positiveColor: #000;
+
+/* Reduce/neutralize focus effects globally */
+@focusBoxShadow: none;
+@invertedFocusBoxShadow: none;
+
+/* Toggle (radio-like) buttons: active state is black/white */
+@toggleOnBackgroundColor: #000;
+@toggleOnTextColor: #fff;
+@toggleOnBorderColor: #000;
+
+/* Pressed/clicked (:active) state for non-active buttons */
+@downBackgroundColor: #e6e6e6;
+@downTextColor: #000;
+@downBorderColor: #d4d4d5;

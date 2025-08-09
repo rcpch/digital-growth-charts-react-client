@@ -1,6 +1,7 @@
 import { Segment, Tab, Menu } from "semantic-ui-react";
 import { ResultsDataTable } from "./ResultsDataTable";
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 export const ResultsSegment = ({ apiResult, reference }) => {
   // const fonts = [
@@ -66,7 +67,7 @@ export const ResultsSegment = ({ apiResult, reference }) => {
     color: "#6c757d",
   };
 
-  const panes = panesBlueprint.map((details, index) => {
+  const panes = panesBlueprint.map((details) => {
     return {
       menuItem: (
         <Menu.Item disabled={details.disabled} key={details.measurementName}>
@@ -118,4 +119,9 @@ export const ResultsSegment = ({ apiResult, reference }) => {
       </Segment>
     </>
   );
+};
+
+ResultsSegment.propTypes = {
+  apiResult: PropTypes.object.isRequired,
+  reference: PropTypes.string.isRequired,
 };

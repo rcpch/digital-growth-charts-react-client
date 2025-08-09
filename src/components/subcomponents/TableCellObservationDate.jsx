@@ -1,6 +1,5 @@
-import React from "react";
-
 import { Table } from "semantic-ui-react";
+import PropTypes from "prop-types";
 
 export default function TableCellObservationDate({ measurement }) {
   const observationDate = new Date(
@@ -13,3 +12,11 @@ export default function TableCellObservationDate({ measurement }) {
 
   return <Table.Cell>{observationDate}</Table.Cell>;
 }
+
+TableCellObservationDate.propTypes = {
+  measurement: PropTypes.shape({
+    measurement_dates: PropTypes.shape({
+      observation_date: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+};

@@ -1,4 +1,5 @@
 import { Button, Modal } from "semantic-ui-react";
+import PropTypes from "prop-types";
 
 export const ErrorModal = ({
   title,
@@ -20,4 +21,20 @@ export const ErrorModal = ({
       </Modal.Actions>
     </Modal>
   );
+};
+
+ErrorModal.propTypes = {
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  body: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  handleClose: PropTypes.func,
+  handleCancel: PropTypes.func,
+  visible: PropTypes.bool,
+};
+
+ErrorModal.defaultProps = {
+  title: "",
+  body: null,
+  handleClose: () => {},
+  handleCancel: null,
+  visible: false,
 };

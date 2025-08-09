@@ -1,6 +1,5 @@
-import React from "react";
-
 import { Table } from "semantic-ui-react";
+import PropTypes from "prop-types";
 
 export default function TableCellCentiles({
   measurementCentiles,
@@ -20,3 +19,14 @@ export default function TableCellCentiles({
     </Table.Cell>
   );
 }
+
+TableCellCentiles.propTypes = {
+  measurementCentiles: PropTypes.shape({
+    corrected_centile: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+      .isRequired,
+    chronological_centile: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+      .isRequired,
+  }).isRequired,
+  ageChoice: PropTypes.oneOf(["corrected", "chronological", "both"]).isRequired,
+  chronologicalStyles: PropTypes.object,
+};

@@ -1,5 +1,5 @@
-import * as React from "react";
 import { Table } from "semantic-ui-react";
+import PropTypes from "prop-types";
 
 import TableCellObservationValue from "./TableCellObservationValue";
 import TableCellMeasurementAges from "./TableCellMeasurementAges";
@@ -35,4 +35,11 @@ export const ResultsDataTableRow = ({
       />
     </Table.Row>
   );
+};
+
+ResultsDataTableRow.propTypes = {
+  measurement: PropTypes.object.isRequired,
+  ageChoice: PropTypes.oneOf(["corrected", "chronological", "both"]).isRequired,
+  decimalAge: PropTypes.bool.isRequired,
+  chronologicalStyles: PropTypes.object,
 };

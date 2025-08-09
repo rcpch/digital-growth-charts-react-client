@@ -194,84 +194,126 @@ const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
     });
   }, []);
 
+  // This is a special case for fictional child data, which is not fetched from the API
+  // but from local JSON files.
+  // It is used to simulate an API call for fictional data.
+  // The files are stored in src/fictional-children/{reference}/{measurementMethod}/data.json
+  // or in src/fictional-children/{key}.json if the first path is not found.
+  // The JSON files are imported using import.meta.glob to allow for dynamic imports.
+  // This allows for easy addition of new fictional datasets without changing the code.
+  // The files contain lists of measurement objects that match the expected structure
+  // of the API response, so they can be used directly in the application.
+  // Preload all local fictional datasets (Vite bundles JSON)
+  const fictionalIndex = import.meta.glob("/src/fictional-children/**/*.json", {
+    eager: true,
+  });
+
+  const fetchFromLocal = async (input, reference, measurementMethod, sex) => {
+    const { condition } = input || {};
+    if (!condition || !reference || !measurementMethod || !sex) {
+      throw new Error(
+        `Missing required keys for local dataset. Got condition=${condition}, reference=${reference}, measurementMethod=${measurementMethod}, sex=${sex}`
+      );
+    }
+
+    // Expected path: /src/fictional-children/{condition}/{reference}/{measurementMethod}/data.json
+    const expectedPath = `/src/fictional-children/${condition}/${reference}/${measurementMethod}/${sex}/data.json`;
+    const mod = fictionalIndex[expectedPath];
+
+    if (!mod) {
+      throw new Error(`Fictional dataset not found at ${expectedPath}`);
+    }
+
+    return mod.default ?? mod;
+  };
+
   useEffect(() => {
     let ignore = false;
     if (apiState.isLoading) {
       let relevantArray;
       let latestInput;
+      let sex;
 
       if (apiState["isMidparentalCalculation"]) {
         latestInput = apiState[mode].input[reference]["parentalHeights"];
       } else {
         relevantArray = apiState[mode].input[reference][measurementMethod];
         latestInput = deepCopy(relevantArray[relevantArray.length - 1]);
+        sex = latestInput?.sex;
       }
 
-      fetchFromApi(
-        latestInput,
-        reference,
-        apiState["isMidparentalCalculation"] ? "mid-parental-height" : mode
-      )
+      // Decide API vs Local:
+      // - mid-parental-height always API
+      // - calculation and fictional-child-data default to API
+      // - any other mode OR explicit latestInput.source === 'local' => local JSON
+      const explicitLocal = latestInput?.source === "local";
+      const isStandardEndpoint =
+        mode === "calculation" || mode === "fictional-child-data";
+      const useLocal = !isStandardEndpoint || explicitLocal;
+
+      const fetcher = apiState["isMidparentalCalculation"]
+        ? (li) => fetchFromApi(li, reference, "mid-parental-height")
+        : useLocal
+        ? (li) => fetchFromLocal(li, reference, measurementMethod, sex)
+        : (li) => fetchFromApi(li, reference, mode);
+
+      fetcher(latestInput)
         .then((result) => {
-          if (!ignore) {
-            setApiState((old) => {
-              const mutable = deepCopy(old);
-              let measurementError = "";
-              let resultAsArray = null;
-              if (mutable.isMidparentalCalculation) {
+          if (ignore) return;
+          setApiState((old) => {
+            const mutable = deepCopy(old);
+            let measurementError = "";
+            let resultAsArray = null;
+
+            if (mutable.isMidparentalCalculation) {
+              mutable.errors = { errors: false, message: "success" };
+              mutable[mode].input[reference]["parentalHeights"] = latestInput; // fix casing
+              mutable[mode].output[reference]["midParentalHeights"] = result;
+              mutable.isLoading = false;
+              mutable.isMidparentalCalculation = false;
+              return mutable;
+            }
+
+            // For fictional-child-data (API or local), result is an array; for calculation, append single item
+            if (mode === "fictional-child-data" || useLocal) {
+              resultAsArray = result;
+            } else if (mode === "calculation") {
+              resultAsArray = mutable[mode].output[reference][
+                measurementMethod
+              ].concat([result]);
+            }
+
+            for (const singleResult of resultAsArray) {
+              if (resultAsArray.length < 2) {
+                measurementError =
+                  singleResult?.measurement_calculated_values
+                    ?.corrected_measurement_error ||
+                  singleResult?.measurement_calculated_values
+                    ?.chronological_measurement_error;
+              }
+              if (measurementError) {
+                if (useLocal) {
+                  mutable[mode].input[reference][measurementMethod] = [];
+                } else {
+                  const { newInput } = removeLastFromArrays(old);
+                  mutable[mode].input[reference][measurementMethod] = newInput;
+                }
                 mutable.errors = {
-                  errors: false,
-                  message: "success",
+                  errors: true,
+                  message: useLocal
+                    ? `Problem loading the local fictional dataset. Details: ${measurementError}`
+                    : `The server could not process the measurements. Details: ${measurementError}`,
                 };
-                mutable[mode].input[reference]["parentalheights"] = latestInput;
-                mutable[mode].output[reference]["midParentalHeights"] = result;
                 mutable.isLoading = false;
-                mutable.isMidparentalCalculation = false;
                 return mutable;
               }
-              if (mode === "fictional-child-data") {
-                resultAsArray = result;
-              }
-              if (mode === "calculation") {
-                resultAsArray = mutable[mode].output[reference][
-                  measurementMethod
-                ].concat([result]);
-              }
-              for (const singleResult of resultAsArray) {
-                if (resultAsArray.length < 2) {
-                  // only register errors for individual measurements
-                  measurementError =
-                    singleResult.measurement_calculated_values
-                      .corrected_measurement_error ||
-                    singleResult.measurement_calculated_values
-                      .chronological_measurement_error;
-                }
-                if (measurementError) {
-                  if (mode === "fictional-child-data") {
-                    mutable[mode].input[reference][measurementMethod] = [];
-                  } else {
-                    const { newInput } = removeLastFromArrays(old);
-                    mutable[mode].input[reference][measurementMethod] =
-                      newInput;
-                  }
-                  mutable.errors = {
-                    errors: true,
-                    message: `The server could not process the measurements. Details: ${measurementError}`,
-                  };
-                  mutable.isLoading = false;
-                  return mutable;
-                }
-              }
-              mutable[mode].output[reference][measurementMethod] =
-                resultAsArray;
-              mutable.errors = {
-                errors: false,
-                message: "success",
-              };
-              mutable.isLoading = false;
-              return mutable;
-            });
-          }
+            }
+
+            mutable[mode].output[reference][measurementMethod] = resultAsArray;
+            mutable.errors = { errors: false, message: "success" };
+            mutable.isLoading = false;
+            return mutable;
+          });
         })
         .catch((error) => {
           setApiState((old) => {
@@ -279,23 +321,10 @@ const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
             const { newInput } = removeLastFromArrays(old);
             mutable[mode].input[reference][measurementMethod] = newInput;
 
-            let errorsForResponse = "";
-            if (
-              error.response &&
-              error.response.data &&
-              error.response.data.detail !== null
-            ) {
-              const errorDetails = error.response.data.detail;
-              errorDetails.forEach((errorDetail) => {
-                return (errorsForResponse += `${errorDetail.msg}\n`);
-              });
-            }
-
-            const errorForUser = `There has been a problem fetching the result from the server.\nError details: ${error.message}\n${errorsForResponse}`;
-            mutable.errors = {
-              errors: true,
-              message: errorForUser,
-            };
+            const errorForUser = useLocal
+              ? `There has been a problem loading the local fictional dataset.\nError: ${error.message}`
+              : `There has been a problem fetching the result from the server.\nError details: ${error.message}`;
+            mutable.errors = { errors: true, message: errorForUser };
             mutable.isLoading = false;
             return mutable;
           });

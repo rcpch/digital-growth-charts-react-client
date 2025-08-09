@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
 import {
-  Container,
-  Segment,
-  Form,
-  Input,
   Button,
+  Container,
+  Form,
+  Grid,
   Header,
+  Input,
   Icon,
+  Segment,
 } from "semantic-ui-react";
 import GestationSelect from "./subcomponents/GestationSelect";
 import MeasurementMethodSelect from "./subcomponents/MeasurementMethodSelect";
@@ -396,198 +398,227 @@ const MeasurementForm = (props) => {
 
   return (
     <Container>
-      <Form onSubmit={handleSubmit}>
-        <Form.Field required>
-          <Header as="h5" textAlign="left">
-            Reference
-          </Header>
-          <ReferenceSelect
-            reference={props.globalState.reference}
-            handleChangeReference={handleChangeReference}
-            referenceOptions={referenceOptions}
-          />
-        </Form.Field>
-        <Form.Field required>
-          <Header as="h5" textAlign="left">
-            Dates
-          </Header>
-          <Input
-            label="Birth Date"
-            type="date"
-            name="birth_date"
-            value={birth_date}
-            placeholder="Date of Birth"
-            onChange={handleChangeDate}
-          />
-        </Form.Field>
-        <Form.Field required>
-          <Input
-            label="Measurement Date"
-            type="date"
-            name="observation_date"
-            value={observation_date}
-            placeholder="Date of Measurement"
-            onChange={handleChangeDate}
-          />
-        </Form.Field>
-        <ErrorText errorText={observation_date_error} />
-        <ErrorText errorText={birth_date_error} />
-
-        <Form.Group style={{ textAlign: "left" }}>
-          <Form.Field style={{ marginRight: 20 }} required>
-            <label>Sex</label>
-            <SexSelect
-              sex={props.globalState.sex}
-              handleSexChange={handleChangeSex}
-              sexOptions={dynamicSexOptions}
-            />
-          </Form.Field>
-          <Form.Field>
-            <label>Gestation</label>
-            <GestationSelect
-              name="gestation_select"
-              weeks={gestation_weeks}
-              days={gestation_days}
-              handleGestationChange={handleChangeGestation}
-            />
-          </Form.Field>
-        </Form.Group>
-
-        <Form.Group>
+      <Form onSubmit={handleSubmit} className="ui form measurement-form left aligned">
+        
           <Form.Field required>
-            <label style={{ textAlign: "left" }}>Measurements</label>
-            <MeasurementMethodSelect
-              measurementMethod={props.globalState.measurementMethod}
-              handleChangeMeasurementMethod={handleChangeMeasurementMethod}
-              measurementOptions={dynamicMeasurementOptions}
+            <Header as="h5" textAlign="left">
+              Reference
+            </Header>
+            <ReferenceSelect
+              reference={props.globalState.reference}
+              handleChangeReference={handleChangeReference}
+              referenceOptions={referenceOptions}
             />
           </Form.Field>
-          <Form.Field width={8} required>
-            <label style={{ textAlign: "left" }}>Value</label>
-            <Input
-              type="decimal"
-              name="observation_value"
-              placeholder="Measurement"
-              value={measurement.observation_value}
-              label={{
-                content: props.globalState.units.toString(),
-                basic: true,
-                color: "black",
-              }}
-              labelPosition="right"
-              onChange={handleObservationChange}
-            />
-          </Form.Field>
-        </Form.Group>
-        <ErrorText
-          showError={observation_value_error !== "empty"}
-          errorText={observation_value_error}
-        />
-        <Form.Group>
-          {props.globalState.measurementMethod === "height" && (
-            <Form.Field width={10}>
-              <Button
-                icon
+          
+            <Header as="h5" textAlign="left">
+              Dates
+            </Header>
+            <Form.Group widths="equal">
+              <Form.Field
+                control={Input}
+                required
+                label="Birth Date"
+                type="date"
+                name="birth_date"
+                value={birth_date}
+                placeholder="Date of Birth"
+                onChange={handleChangeDate}
+              />
+            
+              <Form.Field
                 fluid
-                labelPosition="left"
-                onClick={handleShowBoneAge}
-                color="black"
-              >
-                <Icon name="hand paper outline" />
-                Add Bone Age
-              </Button>
-            </Form.Field>
-          )}
-          <Form.Field width={10}>
-            <Button
-              icon
-              labelPosition="left"
-              onClick={handleShowEvents}
-              fluid
-              color="black"
-            >
-              <Icon name="bookmark outline" />
-              Add Event
-            </Button>
-          </Form.Field>
-        </Form.Group>
+                required
+                control={Input}
+                label="Measurement Date"
+                type="date"
+                name="observation_date"
+                value={observation_date}
+                placeholder="Date of Measurement"
+                onChange={handleChangeDate}
+              />
+          </Form.Group>
+          
+          
+          <ErrorText errorText={observation_date_error} />
+          <ErrorText errorText={birth_date_error} />
 
-        {showBoneAge && (
-          <Segment>
-            <BoneAgeTypeSelect
-              boneAge={boneAge}
-              handleBoneAgeChange={handleBoneAgeChange}
-              boneAgeType={boneAgeType}
-              handleChangeBoneAgeType={handleBoneAgeTypeChange}
-              boneAgeCentile={boneAgeCentile}
-              handleBoneAgeCentileChange={handleBoneAgeCentileChange}
-              boneAgeSDS={boneAgeSDS}
-              handleBoneAgeSDSChange={handleBoneAgeSDSChange}
-              boneAgeText={boneAgeText}
-              handleBoneAgeTextChange={handleBoneAgeTextChange}
-            />
-          </Segment>
-        )}
-
-        {showEvents && (
-          <Segment>
-            {events.map((anEvent, index) => {
-              return (
-                <Form.Group key={index}>
-                  <Form.Field style={{ textAlign: "left" }} width="14">
-                    <Input
-                      name="event"
-                      placeholder="e.g. diagnosis"
-                      onChange={(data) => {
-                        let thisEvent = [...events];
-                        thisEvent[index] = data.target.value;
-                        setEvents(thisEvent);
-                      }}
-                      value={anEvent}
+          <Form.Field>
+            <Grid stackable columns={2}>
+              <Grid.Row>
+                <Grid.Column>
+                  <Form.Field required>
+                    <label style={{ textAlign: "left" }}>
+                      Sex:
+                    </label>
+                    <SexSelect
+                      sex={props.globalState.sex}
+                      handleSexChange={handleChangeSex}
+                      sexOptions={dynamicSexOptions}
                     />
                   </Form.Field>
+                </Grid.Column>
 
-                  {index === events.length - 1 ? (
-                    <Button icon circular onClick={(e) => handleAddEvent(e)}>
-                      <Icon name="plus circle" />
-                    </Button>
-                  ) : (
-                    <Button
-                      icon
-                      circular
-                      onClick={(e) => handleRemoveEvent(e, anEvent)}
-                    >
-                      <Icon name="minus circle" />
-                    </Button>
-                  )}
-                </Form.Group>
-              );
-            })}
+                <Grid.Column>
+                  <Form.Field>
+                    <GestationSelect
+                      name="gestation_select"
+                      weeks={gestation_weeks}
+                      days={gestation_days}
+                      handleGestationChange={handleChangeGestation}
+                    />
+                  </Form.Field>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          </Form.Field>
+
+          <Form.Field className="measurement-field">
+            <Grid stackable columns={2} className="measurement-row">
+              <Grid.Row>
+                <Grid.Column style={{ minWidth: 0 }}>
+                  <Form.Field required style={{ minWidth: 0 }}>
+                    <label style={{ textAlign: "left" }}>Measurement</label>
+                    <MeasurementMethodSelect
+                      measurementMethod={props.globalState.measurementMethod}
+                      handleChangeMeasurementMethod={handleChangeMeasurementMethod}
+                      measurementOptions={dynamicMeasurementOptions}
+                      fluid
+                    />
+                  </Form.Field>
+                </Grid.Column>
+
+                <Grid.Column style={{ minWidth: 0 }}>
+                  <Form.Field required style={{ minWidth: 0 }}>
+                    <label style={{ textAlign: "left" }}>Value</label>
+                    <Input
+                      fluid
+                      type="decimal"
+                      name="observation_value"
+                      placeholder="Measurement"
+                      value={measurement.observation_value}
+                      label={{
+                        content: props.globalState.units.toString(),
+                        basic: true,
+                        color: "black",
+                      }}
+                      labelPosition="right"
+                      onChange={handleObservationChange}
+                    />
+                  </Form.Field>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          </Form.Field>
+          <ErrorText
+            showError={observation_value_error !== "empty"}
+            errorText={observation_value_error}
+          />
+        
+          <Form.Group widths={"equal"}>
+            {props.globalState.measurementMethod === "height" && (
+              <Form.Field>
+                <Button
+                  icon
+                  fluid
+                  labelPosition="left"
+                  onClick={handleShowBoneAge}
+                  color="black"
+                >
+                  <Icon name="hand paper outline" />
+                  Add Bone Age
+                </Button>
+              </Form.Field>
+            )}
+            <Form.Field>
+              <Button
+                icon
+                labelPosition="left"
+                onClick={handleShowEvents}
+                fluid
+                color="black"
+              >
+                <Icon name="bookmark outline" />
+                Add Event
+              </Button>
+            </Form.Field>
+          </Form.Group>
+
+          {showBoneAge && (
+            <Segment>
+              <BoneAgeTypeSelect
+                boneAge={boneAge}
+                handleBoneAgeChange={handleBoneAgeChange}
+                boneAgeType={boneAgeType}
+                handleChangeBoneAgeType={handleBoneAgeTypeChange}
+                boneAgeCentile={boneAgeCentile}
+                handleBoneAgeCentileChange={handleBoneAgeCentileChange}
+                boneAgeSDS={boneAgeSDS}
+                handleBoneAgeSDSChange={handleBoneAgeSDSChange}
+                boneAgeText={boneAgeText}
+                handleBoneAgeTextChange={handleBoneAgeTextChange}
+              />
+            </Segment>
+          )}
+
+          {showEvents && (
+            <Segment>
+              {events.map((anEvent, index) => {
+                return (
+                  <Form.Group key={index} className="event-row">
+                    <Form.Field className="input-field" style={{ textAlign: 'left', flex: '1 1 auto', minWidth: 0 }}>
+                      <Input
+                        fluid
+                        name="event"
+                        placeholder="e.g. diagnosis"
+                        onChange={(data) => {
+                          let thisEvent = [...events];
+                          thisEvent[index] = data.target.value;
+                          setEvents(thisEvent);
+                        }}
+                        value={anEvent}
+                      />
+                    </Form.Field>
+
+                    <Form.Field className="event-actions" style={{ flex: '0 0 auto' }}>
+                      {index === events.length - 1 ? (
+                        <Button icon circular onClick={(e) => handleAddEvent(e)}>
+                          <Icon name="plus circle" />
+                        </Button>
+                      ) : (
+                        <Button icon circular onClick={(e) => handleRemoveEvent(e, anEvent)}>
+                          <Icon name="minus circle" />
+                        </Button>
+                      )}
+                    </Form.Field>
+                  </Form.Group>
+                );
+              })}
+            </Segment>
+          )}
+
+          <Form.Field>
+            <Button
+              content="Calculate Centiles and Add To Chart"
+              type="submit"
+              fluid
+              disabled={!form_valid}
+              color="black"
+              icon="line graph"
+              labelPosition="right"
+            />
+          </Form.Field>
+        </Form>
+        {props.globalState.isDataPresent && (
+          <Segment>
+            <Button
+              content="Reset Chart"
+              icon="power off"
+              onClick={handleResetCurrentGraph}
+            />
+            <Button content="Remove Last" icon="undo" onClick={handleUndoLast} />
           </Segment>
         )}
-
-        <Form.Field>
-          <Button
-            content="Calculate Centiles and Add To Chart"
-            type="submit"
-            fluid
-            disabled={!form_valid}
-            color="black"
-            icon="line graph"
-            labelPosition="right"
-          />
-        </Form.Field>
-      </Form>
-      {props.globalState.isDataPresent && (
-        <Segment>
-          <Button
-            content="Reset Chart"
-            icon="power off"
-            onClick={handleResetCurrentGraph}
-          />
-          <Button content="Remove Last" icon="undo" onClick={handleUndoLast} />
-        </Segment>
-      )}
 
       {(props.globalState.reference === "uk-who" || props.globalState.reference === "cdc" || props.globalState.reference === "who") && (
         <UtilitiesForm
@@ -602,6 +633,37 @@ const MeasurementForm = (props) => {
       )}
     </Container>
   );
+};
+
+MeasurementForm.propTypes = {
+  updateGlobalState: PropTypes.func.isRequired,
+  handleMeasurementResult: PropTypes.func.isRequired,
+  handleUtilitiesFormDataSubmit: PropTypes.func.isRequired,
+  globalState: PropTypes.shape({
+    measurementMethod: PropTypes.string.isRequired,
+    units: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    sex: PropTypes.string.isRequired,
+    reference: PropTypes.string.isRequired,
+    disabled: PropTypes.objectOf(PropTypes.bool).isRequired,
+    parentalHeights: PropTypes.shape({
+      height_maternal: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ]),
+      height_paternal: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ]),
+    }).isRequired,
+    clearMeasurement: PropTypes.bool,
+    isDataPresent: PropTypes.bool,
+    "mid-parental-height": PropTypes.shape({
+      mid_parental_height: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+      ]),
+    }),
+  }).isRequired,
 };
 
 export default MeasurementForm;
