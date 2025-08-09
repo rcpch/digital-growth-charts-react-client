@@ -312,9 +312,23 @@ const MeasurementSegment=({})=> {
     },
     {
       key: "examples",
-      menuItem: "Examples",
+      menuItem: "Generator",
       render: () => (
         <Tab.Pane key="examples">
+          <FictionalChildForm
+            fictionalFormDataSubmit={fictionalFormDataSubmit}
+            globalState={globalState}
+            updateGlobalState={updateGlobalState}
+            handleUtilitiesFormDataSubmit={utilitiesFormDataSubmit}
+          />
+        </Tab.Pane>
+      ),
+    },
+    {
+      key: "presets",
+      menuItem: "Preset Examples",
+      render: () => (
+        <Tab.Pane key="presets">
           <FictionalChildForm
             fictionalFormDataSubmit={fictionalFormDataSubmit}
             globalState={globalState}

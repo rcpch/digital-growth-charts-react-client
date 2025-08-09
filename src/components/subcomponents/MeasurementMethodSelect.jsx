@@ -3,6 +3,7 @@ import { Select } from "semantic-ui-react";
 function MeasurementMethodSelect(props) {
   return (
     <Select
+      fluid
       name="measurement_method"
       placeholder="Measurement"
       value={props.measurementMethod}

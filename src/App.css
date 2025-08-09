@@ -30,6 +30,11 @@ code {
   margin-top: 10px !important;
 }
 
+measurement-form .field > label,
+.measurement-form .fields > .field > label {
+  text-align: left !important;
+}
+
 /* RCPCH Colours 
 
 Heading text #0d0d58;
