@@ -409,7 +409,7 @@ const MeasurementSegment=({})=> {
                       name="checkboxRadioGroup"
                       value={0}
                       checked={clinician}
-                      onChange={(e, data) => setClinician(!clinician)}
+                      onChange={() => setClinician(!clinician)}
                     />
                     <Checkbox
                       radio
@@ -417,7 +417,7 @@ const MeasurementSegment=({})=> {
                       name="checkboxRadioGroup"
                       value={1}
                       checked={!clinician}
-                      onChange={(e, data) => setClinician(!clinician)}
+                      onChange={() => setClinician(!clinician)}
                     />
                   </Grid.Column>
                   <Grid.Column textAlign="center" width={4}>
