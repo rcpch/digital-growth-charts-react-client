@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { ButtonGroup, Button } from "semantic-ui-react";
 
 const RCPCHRadioButtonGroup = (props) => {
@@ -27,6 +27,32 @@ const RCPCHRadioButtonGroup = (props) => {
             ))}
         </ButtonGroup>
     );
+};
+
+RCPCHRadioButtonGroup.propTypes = {
+    options: PropTypes.arrayOf(
+        PropTypes.shape({
+            label: PropTypes.string.isRequired,
+            value: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.number,
+                PropTypes.bool,
+            ]).isRequired,
+        })
+    ).isRequired,
+    selectedValue: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+        PropTypes.bool,
+        PropTypes.oneOf([null]),
+    ]),
+    onChange: PropTypes.func.isRequired,
+    vertical: PropTypes.bool,
+};
+
+RCPCHRadioButtonGroup.defaultProps = {
+    vertical: false,
+    selectedValue: null,
 };
 
 export default RCPCHRadioButtonGroup;

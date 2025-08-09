@@ -19,3 +19,14 @@
   border-color: #d4d4d5 !important;
   box-shadow: none !important;
 }
+
+/* Hover styling for preset radio button group - increase specificity for basic buttons */
+.ui.basic.buttons.preset-buttons .button:hover,
+.ui.buttons.preset-buttons .button:hover,
+.ui.basic.button.preset-buttons:hover,
+.preset-buttons .button:hover {
+  background: #000 !important;
+  color: #fff !important;
+  border-color: #000 !important;
+  box-shadow: none !important;
+}
