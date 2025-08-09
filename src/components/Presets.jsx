@@ -3,6 +3,7 @@ import { Message, ButtonGroup, Button, Form } from "semantic-ui-react";
 import MeasurementMethodSelect from "./subcomponents/MeasurementMethodSelect";
 import ReferenceSelect from "./subcomponents/ReferenceSelect";
 import SexSelect from "./subcomponents/SexChoice";
+import { measurementMethodLabelForKey } from "../functions/measurementMethod";
 
 const ageOptions = [{ label: "Preterm Baby", value: "preterm" }, { label: "Infant", value: "infant" }, { label: "Child", value: "child" }, { label: "Teenager", value: "teenager" }];
 import measurementOptions from "../selectData/measurementOptions";
@@ -15,23 +16,36 @@ const Presets = (props) => {
   const ageOptions = [{ label: "Preterm Baby", value: "preterm" }, { label: "Infant", value: "infant" }, { label: "Child", value: "child" }, { label: "Teenager", value: "teenager" }];
   const [selectedAge, setSelectedAge] = useState(ageOptions[2].value);
 
-  const conditionOptions = [
-    { label: "Normal", value: "normal" },
-    { label: "Faltering Growth", value: "faltering" },
-    { label: "Obesity", value: "obesity" },
-    { label: "Pubertal Delay", value: "pubertal-delay" },
-    { label: "Short Stature", value: "short-stature" },
-    { label: "Tall Stature", value: "tall-stature" },
-    { label: "Microcephaly", value: "microcephaly" },
-    { label: "Macrocephaly", value: "macrocephaly" },
-    { label: "Coeliac Disease", value: "coeliac-disease" },
-    { label: "Cystic Fibrosis", value: "cystic-fibrosis" },
-    { label: "Growth Hormone Deficiency", value: "growth-hormone-deficiency" },
+  const conditionOptionList = [
+    { label: "Normal", value: "normal", measurementMethod: "height" },
+    { label: "Faltering Growth", value: "faltering", measurementMethod: "weight" },
+    { label: "Prematurity", value: "prematurity", measurementMethod: "weight" },
+    { label: "Malnutrition", value: "malnutrition", measurementMethod: "bmi" },
+    { label: "Obesity", value: "obesity", measurementMethod: "bmi" },
+    { label: "Pubertal Delay", value: "pubertal-delay", measurementMethod: "height" },
+    { label: "Short Stature", value: "short-stature", measurementMethod: "height" },
+    { label: "Tall Stature", value: "tall-stature", measurementMethod: "height" },
+    { label: "Microcephaly", value: "microcephaly", measurementMethod: "ofc" },
+    { label: "Macrocephaly", value: "macrocephaly", measurementMethod: "ofc" },
+    { label: "Coeliac Disease", value: "coeliac-disease", measurementMethod: "height" },
+    { label: "Cystic Fibrosis", value: "cystic-fibrosis", measurementMethod: "weight" },
+    { label: "Growth Hormone Deficiency", value: "growth-hormone-deficiency", measurementMethod: "height" },
   ]
-  const [conditionOption, setConditionOption] = useState(conditionOptions[0].value);
+  
+  const filterConditionOptionsToMeasurementMethod = (measurementMethod) => {
+    return conditionOptionList.filter(option => option.measurementMethod === measurementMethod).sort((a, b) => a.label.localeCompare(b.label));
+  };
+  // Initialize condition options based on the default measurement method
+  const [conditionOptions, setConditionOptions] = useState(filterConditionOptionsToMeasurementMethod("height"));
+  const [conditionOption, setConditionOption] = useState(filterConditionOptionsToMeasurementMethod("height")[0].value);
+
 
   const handleChangeMeasurementMethod = (newMeasurementMethod) => {
+    // Update the global state with the new measurement method
     props.updateGlobalState("measurementMethod", newMeasurementMethod);
+    // filter the condition options based on the selected measurement method
+    const filteredConditions = filterConditionOptionsToMeasurementMethod(newMeasurementMethod);
+    setConditionOptions(filteredConditions);
   };
   
   const handleChangeReference = ({ value }) => {
@@ -116,7 +130,9 @@ const Presets = (props) => {
              condition: conditionOption,
            })}
           >
-            Submit Preset
+            Generate {
+              measurementMethodLabelForKey(props.globalState.measurementMethod)
+            } Chart
           </Button>
         </Form.Field>
       </Form>
