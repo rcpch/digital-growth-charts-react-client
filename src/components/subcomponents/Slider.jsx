@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 const Slider = (props) => {
   return (
     <div style={{ textAlign: "left" }}>
@@ -20,6 +22,20 @@ const Slider = (props) => {
       </h5>
     </div>
   );
+};
+
+Slider.propTypes = {
+  min: PropTypes.number.isRequired,
+  max: PropTypes.number.isRequired,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  step: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
+  isPercentage: PropTypes.bool,
+};
+
+Slider.defaultProps = {
+  isPercentage: false,
 };
 
 export default Slider;

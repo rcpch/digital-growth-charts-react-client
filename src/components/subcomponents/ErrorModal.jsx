@@ -1,4 +1,5 @@
 import { Button, Modal } from "semantic-ui-react";
+import PropTypes from "prop-types";
 
 export const ErrorModal = ({
   title,
@@ -20,4 +21,12 @@ export const ErrorModal = ({
       </Modal.Actions>
     </Modal>
   );
+};
+
+ErrorModal.propTypes = {
+  title: PropTypes.string.isRequired,
+  body: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
+  handleClose: PropTypes.func.isRequired,
+  visible: PropTypes.bool.isRequired,
+  handleCancel: PropTypes.func,
 };

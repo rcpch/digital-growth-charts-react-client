@@ -1,4 +1,5 @@
 import { Form, Input, Header, Button, Container } from "semantic-ui-react";
+import PropTypes from "prop-types";
 
 const UtilitiesForm = (props) => {
   return (
@@ -67,6 +68,16 @@ const UtilitiesForm = (props) => {
       </Form>
     </Container>
   );
+};
+
+UtilitiesForm.propTypes = {
+  utilitiesFormDataSubmit: PropTypes.func.isRequired,
+  changeMaternalHeight: PropTypes.func.isRequired,
+  changePaternalHeight: PropTypes.func.isRequired,
+  maternalHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  paternalHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  removeMidParentalHeight: PropTypes.func.isRequired,
+  midParentalHeightDataPresent: PropTypes.bool.isRequired,
 };
 
 export default UtilitiesForm;

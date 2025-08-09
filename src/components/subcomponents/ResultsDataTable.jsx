@@ -1,7 +1,7 @@
-import * as React from "react";
 import { useState } from "react";
 import { Table, Checkbox, Form, Button } from "semantic-ui-react";
 import { ResultsDataTableRow } from "./ResultsDataTableRow";
+import PropTypes from "prop-types";
 
 export const ResultsDataTable = ({
   // dataTitle,
@@ -90,4 +90,9 @@ export const ResultsDataTable = ({
       </Table>
     </div>
   );
+};
+
+ResultsDataTable.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  chronologicalStyles: PropTypes.object,
 };

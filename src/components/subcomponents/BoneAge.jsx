@@ -1,4 +1,5 @@
 import { Form, Select, Input } from "semantic-ui-react";
+import PropTypes from "prop-types";
 
 const boneAgeOptions = [
   { key: "gp", value: "greulich-pyle", text: "Greulich & Pyle" },
@@ -95,5 +96,18 @@ function BoneAgeTypeSelect(props) {
     </>
   );
 }
+
+BoneAgeTypeSelect.propTypes = {
+  boneAge: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  handleBoneAgeChange: PropTypes.func.isRequired,
+  boneAgeSDS: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  handleBoneAgeSDSChange: PropTypes.func.isRequired,
+  boneAgeCentile: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  handleBoneAgeCentileChange: PropTypes.func.isRequired,
+  boneAgeText: PropTypes.string,
+  handleBoneAgeTextChange: PropTypes.func.isRequired,
+  boneAgeType: PropTypes.string.isRequired,
+  handleChangeBoneAgeType: PropTypes.func.isRequired,
+};
 
 export default BoneAgeTypeSelect;

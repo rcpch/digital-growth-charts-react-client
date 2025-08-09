@@ -1,4 +1,5 @@
 import { Select } from "semantic-ui-react";
+import PropTypes from "prop-types";
 
 function ReferenceSelect(props) {
   
@@ -12,5 +13,13 @@ function ReferenceSelect(props) {
     />
   );
 }
+
+ReferenceSelect.propTypes = {
+  reference: PropTypes.string.isRequired,
+  handleChangeReference: PropTypes.func.isRequired,
+  referenceOptions: PropTypes.arrayOf(
+    PropTypes.shape({ key: PropTypes.any, value: PropTypes.any, text: PropTypes.string })
+  ).isRequired,
+};
 
 export default ReferenceSelect;

@@ -1,5 +1,6 @@
 // Semantic UI React
 import { Select } from "semantic-ui-react";
+import PropTypes from "prop-types";
 
 function GestationSelect(props) {
   let gestationWeeksOptions = [];
@@ -54,5 +55,11 @@ function GestationSelect(props) {
   </>
   );
 }
+
+GestationSelect.propTypes = {
+  weeks: PropTypes.number.isRequired,
+  days: PropTypes.number.isRequired,
+  handleGestationChange: PropTypes.func.isRequired,
+};
 
 export default GestationSelect;

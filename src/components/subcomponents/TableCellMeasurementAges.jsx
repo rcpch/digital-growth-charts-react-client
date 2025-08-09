@@ -1,5 +1,5 @@
-import React from "react";
 import { Table } from "semantic-ui-react";
+import PropTypes from "prop-types";
 
 export default function TableCellMeasurementAges({
   measurementDates,
@@ -25,3 +25,15 @@ export default function TableCellMeasurementAges({
     </Table.Cell>
   );
 }
+
+TableCellMeasurementAges.propTypes = {
+  measurementDates: PropTypes.shape({
+    corrected_decimal_age: PropTypes.number.isRequired,
+    chronological_decimal_age: PropTypes.number.isRequired,
+    corrected_calendar_age: PropTypes.string.isRequired,
+    chronological_calendar_age: PropTypes.string.isRequired,
+  }).isRequired,
+  decimalAge: PropTypes.bool.isRequired,
+  ageChoice: PropTypes.oneOf(["corrected", "chronological", "both"]).isRequired,
+  chronologicalStyles: PropTypes.object,
+};

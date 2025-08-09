@@ -1,6 +1,5 @@
-import React from "react";
-
 import { Table } from "semantic-ui-react";
+import PropTypes from "prop-types";
 
 export default function TableCellSDS({
   measurementSDS,
@@ -21,3 +20,12 @@ export default function TableCellSDS({
     </Table.Cell>
   );
 }
+
+TableCellSDS.propTypes = {
+  measurementSDS: PropTypes.shape({
+    corrected_sds: PropTypes.number.isRequired,
+    chronological_sds: PropTypes.number.isRequired,
+  }).isRequired,
+  ageChoice: PropTypes.oneOf(["corrected", "chronological", "both"]).isRequired,
+  chronologicalStyles: PropTypes.object,
+};
