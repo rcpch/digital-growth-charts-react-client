@@ -1,3 +1,21 @@
 /*******************************
          Site Overrides
 *******************************/
+
+/* Ensure no green flash and consistent pressed/focus styles app-wide */
+.ui.toggle.buttons .button.active,
+.ui.toggle.button.active {
+  background: #000 !important;
+  color: #fff !important;
+  border-color: #000 !important;
+}
+
+.ui.buttons .button:active,
+.ui.button:active,
+.ui.buttons .button:focus,
+.ui.button:focus {
+  background: #e6e6e6 !important;
+  color: #000 !important;
+  border-color: #d4d4d5 !important;
+  box-shadow: none !important;
+}

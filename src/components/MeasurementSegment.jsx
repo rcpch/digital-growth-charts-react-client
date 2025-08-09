@@ -21,6 +21,7 @@ import { ErrorModal } from "./subcomponents/ErrorModal";
 import FictionalChildForm from "./FictionalChildForm";
 import useRcpchApi from "../hooks/useRcpchApi";
 import useGlobalState from "../hooks/useGlobalState";
+import Presets from "./Presets";
 
 const MeasurementSegment=({})=> {
   
@@ -329,12 +330,7 @@ const MeasurementSegment=({})=> {
       menuItem: "Preset Examples",
       render: () => (
         <Tab.Pane key="presets">
-          <FictionalChildForm
-            fictionalFormDataSubmit={fictionalFormDataSubmit}
-            globalState={globalState}
-            updateGlobalState={updateGlobalState}
-            handleUtilitiesFormDataSubmit={utilitiesFormDataSubmit}
-          />
+          <Presets />
         </Tab.Pane>
       ),
     },

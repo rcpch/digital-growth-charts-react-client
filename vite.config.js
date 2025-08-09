@@ -34,6 +34,13 @@ const isLocalDev =
 export default defineConfig(({ command, mode }) => ({
   base: getBasePath(),
   plugins: [react()],
+  css: {
+    preprocessorOptions: {
+      less: {
+        math: "always", // allow A/B math used by semantic-ui-less
+      },
+    },
+  },
   resolve: {
     preserveSymlinks: command === "serve",
     alias: isLocalDev
