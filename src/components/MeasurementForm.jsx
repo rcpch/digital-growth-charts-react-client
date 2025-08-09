@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
 import {
   Button,
@@ -632,6 +633,37 @@ const MeasurementForm = (props) => {
       )}
     </Container>
   );
+};
+
+MeasurementForm.propTypes = {
+  updateGlobalState: PropTypes.func.isRequired,
+  handleMeasurementResult: PropTypes.func.isRequired,
+  handleUtilitiesFormDataSubmit: PropTypes.func.isRequired,
+  globalState: PropTypes.shape({
+    measurementMethod: PropTypes.string.isRequired,
+    units: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    sex: PropTypes.string.isRequired,
+    reference: PropTypes.string.isRequired,
+    disabled: PropTypes.objectOf(PropTypes.bool).isRequired,
+    parentalHeights: PropTypes.shape({
+      height_maternal: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ]),
+      height_paternal: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ]),
+    }).isRequired,
+    clearMeasurement: PropTypes.bool,
+    isDataPresent: PropTypes.bool,
+    "mid-parental-height": PropTypes.shape({
+      mid_parental_height: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+      ]),
+    }),
+  }).isRequired,
 };
 
 export default MeasurementForm;
