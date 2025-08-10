@@ -8,9 +8,21 @@ import process from "node:process";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-function getBasePath(command) {
-  // Absolute base in dev, relative base for all builds (works for GitHub Pages and custom domains)
-  return command === "serve" ? "/" : "./";
+function getBasePath() {
+  // When deploying to GitHub pages it's served under a subdomain
+  // https://rcpch.github.io/digital-growth-charts-react-client/
+  //
+  // GITHUB_REPOSITORY is the full name: rcpch/digital-growth-charts-react-client
+
+  if (process.env["GITHUB_REPOSITORY"]) {
+    const [, repoName] = process.env["GITHUB_REPOSITORY"].split("/");
+
+    if (repoName) {
+      return `/${repoName}/`;
+    }
+  }
+
+  return "/";
 }
 
 // Check if we're in a local development environment with the library available
