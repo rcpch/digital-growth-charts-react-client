@@ -343,7 +343,7 @@ const MeasurementSegment=({})=> {
     },
     {
       key: "presets",
-      menuItem: "Preset Examples",
+      menuItem: "Example Charts",
       render: () => (
         <Tab.Pane key="presets">
           <Presets 
