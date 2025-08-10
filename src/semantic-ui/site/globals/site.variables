@@ -4,7 +4,7 @@
 
 /* Fonts */
 @fontName: 'Montserrat';
-@importGoogleFonts: true;
+@importGoogleFonts: false;
 
 @defaultBorderRadius: 0em;
 

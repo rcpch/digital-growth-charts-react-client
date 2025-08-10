@@ -1,3 +1,43 @@
 /*******************************
          Site Overrides
 *******************************/
+
+/*
+ * Ensure Semantic UI icon fonts are registered and load from @fontPath
+ */
+
+@font-face {
+  font-family: 'Icons';
+  src: url('@{fontPath}/icons.eot?#iefix') format('embedded-opentype'),
+       url('@{fontPath}/icons.woff2') format('woff2'),
+       url('@{fontPath}/icons.woff') format('woff'),
+       url('@{fontPath}/icons.ttf') format('truetype'),
+       url('@{fontPath}/icons.svg#icons') format('svg');
+  font-style: normal;
+  font-weight: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'Outline Icons';
+  src: url('@{fontPath}/outline-icons.eot?#iefix') format('embedded-opentype'),
+       url('@{fontPath}/outline-icons.woff2') format('woff2'),
+       url('@{fontPath}/outline-icons.woff') format('woff'),
+       url('@{fontPath}/outline-icons.ttf') format('truetype'),
+       url('@{fontPath}/outline-icons.svg#icons') format('svg');
+  font-style: normal;
+  font-weight: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'Brand Icons';
+  src: url('@{fontPath}/brand-icons.eot?#iefix') format('embedded-opentype'),
+       url('@{fontPath}/brand-icons.woff2') format('woff2'),
+       url('@{fontPath}/brand-icons.woff') format('woff'),
+       url('@{fontPath}/brand-icons.ttf') format('truetype'),
+       url('@{fontPath}/brand-icons.svg#icons') format('svg');
+  font-style: normal;
+  font-weight: normal;
+  font-display: block;
+}
