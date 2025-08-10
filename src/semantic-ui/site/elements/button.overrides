@@ -21,12 +21,43 @@
 }
 
 /* Hover styling for preset radio button group - increase specificity for basic buttons */
-.ui.basic.buttons.preset-buttons .button:hover,
-.ui.buttons.preset-buttons .button:hover,
-.ui.basic.button.preset-buttons:hover,
-.preset-buttons .button:hover {
+.ui.basic.buttons.preset-buttons .button:not(.disabled):not([disabled]):hover,
+.ui.buttons.preset-buttons .button:not(.disabled):not([disabled]):hover,
+.ui.basic.button.preset-buttons:not(.disabled):not([disabled]):hover,
+.preset-buttons .button:not(.disabled):not([disabled]):hover {
   background: #000 !important;
   color: #fff !important;
   border-color: #000 !important;
+  box-shadow: none !important;
+}
+
+/* Disabled state: grey out and remove interactions/hover for preset buttons */
+.preset-buttons .button.disabled,
+.preset-buttons .button:disabled,
+.ui.buttons.preset-buttons .button.disabled,
+.ui.buttons.preset-buttons .button:disabled,
+.ui.basic.buttons.preset-buttons .button.disabled,
+.ui.basic.buttons.preset-buttons .button:disabled,
+.ui.basic.button.preset-buttons.disabled,
+.ui.basic.button.preset-buttons:disabled {
+  background: #f2f2f2 !important;
+  color: #aaa !important;
+  border-color: #d4d4d5 !important;
+  box-shadow: none !important;
+  cursor: not-allowed !important;
+  opacity: 0.45 !important;
+  pointer-events: none !important; /* ensure no hover */
+}
+
+/* Defensive: ensure no hover styles apply when disabled */
+.preset-buttons .button.disabled:hover,
+.preset-buttons .button:disabled:hover,
+.ui.basic.buttons.preset-buttons .button.disabled:hover,
+.ui.basic.buttons.preset-buttons .button:disabled:hover,
+.ui.basic.button.preset-buttons.disabled:hover,
+.ui.basic.button.preset-buttons:disabled:hover {
+  background: #f2f2f2 !important;
+  color: #aaa !important;
+  border-color: #d4d4d5 !important;
   box-shadow: none !important;
 }
