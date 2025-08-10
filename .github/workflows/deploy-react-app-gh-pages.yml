@@ -25,11 +25,12 @@ jobs:
         run: npm ci
 
       - name: Build project
-        run: npm run build
         env:
+          BASE_PATH: /${{ github.event.repository.name }}/
           VITE_APP_GROWTH_API_BASEURL: ${{ secrets.VITE_APP_GROWTH_API_BASEURL }}
           VITE_APP_API_KEY: ${{secrets.VITE_APP_API_KEY }}
-      
+        run: npm run build
+
       - name: Add SPA fallback
         run: cp dist/index.html dist/404.html
 

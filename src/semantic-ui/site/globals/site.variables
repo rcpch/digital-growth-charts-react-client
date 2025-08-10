@@ -1,10 +1,17 @@
 /*******************************
      User Global Variables
 *******************************/
+/* Use Vite base for all fonts served from public/fonts */
+@fontPath   : '@{basePath}fonts';
+
+/* Ensure icon CSS emits <base>/fonts/... URLs */
+@iconFontPath        : '@{basePath}fonts';
+@outlineIconFontPath : '@{basePath}fonts';
+@brandFontPath       : '@{basePath}fonts';
 
 /* Fonts */
 @fontName: 'Montserrat';
-@importGoogleFonts: true;
+@importGoogleFonts: false;
 
 @defaultBorderRadius: 0em;
 
