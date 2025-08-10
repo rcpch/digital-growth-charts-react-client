@@ -13,18 +13,25 @@ const RCPCHRadioButtonGroup = (props) => {
             aria-label="Presets"
             size="tiny"
         >
-            {options.map((option) => (
-                <Button
-                    key={option.value}
-                    toggle
-                    active={selectedValue === option.value}
-                    role="radio"
-                    aria-checked={selectedValue === option.value}
-                    onClick={() => onChange(option.value)} // radio-like (no unselect)
-                >
-                    {option.label}
-                </Button>
-            ))}
+            {options.map((option) => {
+                const isActive = selectedValue === option.value;
+                const isDisabled = !!option.disabled;
+                return (
+                    <Button
+                        key={option.value}
+                        toggle
+                        active={isActive}
+                        disabled={isDisabled}
+                        role="radio"
+                        aria-checked={isActive}
+                        aria-disabled={isDisabled}
+                        tabIndex={isDisabled ? -1 : 0}
+                        onClick={isDisabled ? undefined : () => onChange(option.value)}
+                    >
+                        {option.label}
+                    </Button>
+                );
+            })}
         </ButtonGroup>
     );
 };
@@ -38,6 +45,7 @@ RCPCHRadioButtonGroup.propTypes = {
                 PropTypes.number,
                 PropTypes.bool,
             ]).isRequired,
+            disabled: PropTypes.bool,
         })
     ).isRequired,
     selectedValue: PropTypes.oneOfType([
