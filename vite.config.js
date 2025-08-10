@@ -1,23 +1,16 @@
+/* eslint-env node */
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import fs from "fs";
+import { fileURLToPath } from "url";
+import process from "node:process";
 
-function getBasePath() {
-  // When deploying to GitHub pages it's served under a subdomain
-  // https://rcpch.github.io/digital-growth-charts-react-client/
-  //
-  // GITHUB_REPOSITORY is the full name: rcpch/digital-growth-charts-react-client
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-  if (process.env["GITHUB_REPOSITORY"]) {
-    const [, repoName] = process.env["GITHUB_REPOSITORY"].split("/");
-
-    if (repoName) {
-      return `/${repoName}/`;
-    }
-  }
-
-  return "/";
+function getBasePath(command) {
+  // Absolute base in dev, relative base for all builds (works for GitHub Pages and custom domains)
+  return command === "serve" ? "/" : "./";
 }
 
 // Check if we're in a local development environment with the library available
@@ -31,8 +24,8 @@ const isLocalDev =
     )
   );
 
-export default defineConfig(({ command, mode }) => ({
-  base: getBasePath(),
+export default defineConfig(({ command }) => ({
+  base: getBasePath(command),
   plugins: [react()],
   css: {
     preprocessorOptions: {
