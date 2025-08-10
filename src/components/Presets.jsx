@@ -29,6 +29,12 @@ const Presets = (props) => {
   ]
   
   const filterConditionOptionsToMeasurementMethod = (measurementMethod) => {
+    if (props.globalState.reference !== "uk-who") {
+      return conditionOptionList.filter(option => option.measurementMethod === measurementMethod && !option.disabled).sort((a, b) => a.label.localeCompare(b.label)).map(option => ({
+        ...option,
+        disabled: true
+      }));
+    }
     return conditionOptionList.filter(option => option.measurementMethod === measurementMethod).sort((a, b) => a.label.localeCompare(b.label));
   };
   // Initialize condition options based on the default measurement method
