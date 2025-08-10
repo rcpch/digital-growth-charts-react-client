@@ -216,15 +216,38 @@ const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
       );
     }
 
-    // Expected path: /src/fictional-children/{condition}/{reference}/{measurementMethod}/data.json
-    const expectedPath = `/src/fictional-children/${condition}/${reference}/${measurementMethod}/${sex}/data.json`;
-    const mod = fictionalIndex[expectedPath];
+    // Required: measurements
+    // Expected path: /src/fictional-children/{condition}/{reference}/{measurementMethod}/{sex}/data.json
+    const baseDir = `/src/fictional-children/${condition}/${reference}/${measurementMethod}/${sex}`;
+    const dataPath = `${baseDir}/data.json`;
+    const dataMod = fictionalIndex[dataPath];
+    if (!dataMod) {
+      throw new Error(`Fictional dataset not found at ${dataPath}`);
+    }
+    const measurements = dataMod.default ?? dataMod;
 
-    if (!mod) {
-      throw new Error(`Fictional dataset not found at ${expectedPath}`);
+    // Optional: mid-parental height (only for certain conditions and height method)
+    const needsMph =
+      measurementMethod === "height" &&
+      [
+        "growth-hormone-deficiency",
+        "short-stature",
+        "tall-stature",
+        "normal",
+      ].includes(condition);
+
+    let midParentalHeights = null;
+    if (needsMph) {
+      const mphPath = `${baseDir}/mid-parental-height.json`; // same folder as data.json
+      const mphMod = fictionalIndex[mphPath];
+      if (mphMod) {
+        midParentalHeights = mphMod.default ?? mphMod;
+      }
+      // If missing, treat as optional and continue without throwing
     }
 
-    return mod.default ?? mod;
+    // Return a composite result so the caller can set both outputs
+    return { measurements, midParentalHeights };
   };
 
   useEffect(() => {
@@ -274,8 +297,23 @@ const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
               return mutable;
             }
 
-            // For fictional-child-data (API or local), result is an array; for calculation, append single item
-            if (mode === "fictional-child-data" || useLocal) {
+            // Local calls may return { measurements, midParentalHeights }
+            if (useLocal) {
+              if (Array.isArray(result)) {
+                resultAsArray = result;
+              } else {
+                resultAsArray = result?.measurements ?? [];
+                if (result?.midParentalHeights) {
+                  // Create container if missing (e.g., for references without default MPH)
+                  if (!mutable[mode].output[reference].midParentalHeights) {
+                    mutable[mode].output[reference].midParentalHeights = {};
+                  }
+                  mutable[mode].output[reference].midParentalHeights =
+                    result.midParentalHeights;
+                }
+              }
+            } else if (mode === "fictional-child-data") {
+              // API returns an array for fictional-child-data
               resultAsArray = result;
             } else if (mode === "calculation") {
               resultAsArray = mutable[mode].output[reference][

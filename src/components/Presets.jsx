@@ -24,8 +24,7 @@ const Presets = (props) => {
     { label: "Tall Stature", value: "tall-stature", measurementMethod: "height", disabled: false },
     { label: "Microcephaly", value: "microcephaly", measurementMethod: "ofc", disabled: false },
     { label: "Macrocephaly", value: "macrocephaly", measurementMethod: "ofc", disabled: false },
-    { label: "Coeliac Disease", value: "coeliac-disease", measurementMethod: "height", disabled: false },
-    { label: "Cystic Fibrosis", value: "cystic-fibrosis", measurementMethod: "weight", disabled: false },
+    { label: "Coeliac Disease", value: "coeliac-disease", measurementMethod: "weight", disabled: false },
     { label: "Growth Hormone Deficiency", value: "growth-hormone-deficiency", measurementMethod: "height", disabled: false },
   ]
   
