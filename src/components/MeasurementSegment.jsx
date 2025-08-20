@@ -58,6 +58,8 @@ const MeasurementSegment=({})=> {
     results,
     apiErrors,
     isLoading,
+    rateLimitExceeded,
+    retryAfter
   } = useRcpchApi(measurementMethod, reference, mode);
 
 
@@ -67,7 +69,17 @@ const MeasurementSegment=({})=> {
   );
 
   useEffect(() => {
-    if (apiErrors.errors) {
+    if (rateLimitExceeded) {
+      setErrorModal({
+        visible: true,
+        title: "Rate limit exceeded",
+        body: `This demo page is rate limited to ensure it is used fairly. You can try again in ${retryAfter} seconds.`,
+        handleClose: () => {
+          clearApiErrors();
+          setErrorModal(InitalErrorModalState());
+        },
+      });
+    } else if (apiErrors.errors) {
       setErrorModal({
         visible: true,
         title: "Unable to plot",

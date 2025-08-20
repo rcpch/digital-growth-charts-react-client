@@ -30,6 +30,28 @@ const fetchFromApi = async (inputParameters, reference, mode) => {
     headers,
   });
 
+  if (response.status !== 200) {
+    let to_throw = null;
+
+    try {
+      const error = await response.text();
+      const { statusCode, message } = JSON.parse(error);
+
+      if(statusCode && message) {
+        to_throw = Error(`${statusCode} ${message}`);
+      } else {
+        to_throw = Error(`${response.status} ${error}`);
+      }
+
+      to_throw.retryAfter = response.headers.get("Retry-After");
+    } catch (err) {
+      to_throw = Error(`${response.status} ${err}`);
+    }
+
+    to_throw.statusCode = response.status;
+    throw to_throw;
+  }
+
   const data = await response.json();
 
   return data;
@@ -190,6 +212,8 @@ const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
     setApiState((old) => {
       const mutable = deepCopy(old);
       mutable.errors = { errors: false, message: "" };
+      mutable.rateLimitExceeded = false;
+      delete mutable.retryAfter;
       return mutable;
     });
   }, []);
@@ -363,6 +387,8 @@ const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
               ? `There has been a problem loading the local fictional dataset.\nError: ${error.message}`
               : `There has been a problem fetching the result from the server.\nError details: ${error.message}`;
             mutable.errors = { errors: true, message: errorForUser };
+            mutable.rateLimitExceeded = error.statusCode === 429;
+            mutable.retryAfter = error.retryAfter;
             mutable.isLoading = false;
             return mutable;
           });
@@ -381,6 +407,8 @@ const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
     measurements: apiState[mode].input,
     results: apiState[mode].output,
     apiErrors: apiState.errors,
+    rateLimitExceeded: apiState.rateLimitExceeded,
+    retryAfter: apiState.retryAfter,
     isLoading: apiState.isLoading,
   };
 };
