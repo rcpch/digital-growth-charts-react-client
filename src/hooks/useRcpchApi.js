@@ -30,6 +30,21 @@ const fetchFromApi = async (inputParameters, reference, mode) => {
     headers,
   });
 
+  if (response.status !== 200) {
+    try {
+      const error = await response.text();
+      const { statusCode, message } = JSON.parse(error);
+
+      if(statusCode && message) {
+        throw new Error(`${statusCode} ${message}`);
+      }
+
+      throw new Error(`${response.status} ${error}`);
+    } catch (err) {
+      throw new Error(`${response.status} ${err}`);
+    }
+  }
+
   const data = await response.json();
 
   return data;

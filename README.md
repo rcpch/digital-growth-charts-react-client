@@ -6,7 +6,7 @@ Issues can be raised here <https://github.com/rcpch/digital-growth-charts-react-
 
 ## Dev Setup
 
-1. Install Node 20 (eg `nvm use 20`)
+1. Install Node 22 (eg `nvm use 22`)
 1. Copy `env.template` to `.env`
 1. `npm i`
 1. `npm run dev`
