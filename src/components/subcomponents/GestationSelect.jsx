@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 function GestationSelect(props) {
   let gestationWeeksOptions = [];
-  let gestWeeks = 23;
+  let gestWeeks = 22;
   while (gestWeeks <= 42) {
     gestationWeeksOptions.push({
       key: gestWeeks.toString(10),
