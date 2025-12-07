@@ -2,11 +2,11 @@ import { Button, Modal } from "semantic-ui-react";
 import PropTypes from "prop-types";
 
 export const ErrorModal = ({
-  title,
-  body,
-  handleClose,
-  visible,
-  handleCancel,
+  title = "",
+  body = null,
+  handleClose = () => {},
+  visible = false,
+  handleCancel = null,
 }) => {
   const showCancel = handleCancel ? true : false;
   return (
@@ -29,12 +29,4 @@ ErrorModal.propTypes = {
   handleClose: PropTypes.func,
   handleCancel: PropTypes.func,
   visible: PropTypes.bool,
-};
-
-ErrorModal.defaultProps = {
-  title: "",
-  body: null,
-  handleClose: () => {},
-  handleCancel: null,
-  visible: false,
 };
