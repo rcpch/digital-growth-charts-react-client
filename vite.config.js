@@ -72,6 +72,7 @@ export default defineConfig(() => {
         : [],
     },
     server: {
+      ...(process.env.DOCKER ? { host: true } : {}),
       fs: {
         allow: [
           path.resolve(__dirname),
