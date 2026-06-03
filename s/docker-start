@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 # names the container as below
 app="rcpch-dgc-demo-client"
