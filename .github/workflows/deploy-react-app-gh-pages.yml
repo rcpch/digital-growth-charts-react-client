@@ -5,8 +5,6 @@ on:
     branches:
       - live
 
-env:
-  WEBSITES_PORT: ${{ secrets.AZURE_NODE_PORT }}
 jobs:
   build:
     name: Build
