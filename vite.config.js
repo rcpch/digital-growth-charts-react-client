@@ -54,17 +54,27 @@ export default defineConfig(() => {
     },
     resolve: {
       preserveSymlinks: true,
-      alias: isLocalDev
-        ? {
-            "@rcpch/digital-growth-charts-react-component-library":
-              path.resolve(
-                __dirname,
-                "..",
-                "digital-growth-charts-react-component-library",
-                "src"
-              ),
-          }
-        : {},
+      alias: {
+        // Always deduplicate React and styled-components to the app's copy,
+        // preventing "two copies of React" errors when using the local library.
+        react: path.resolve(__dirname, "node_modules/react"),
+        "react-dom": path.resolve(__dirname, "node_modules/react-dom"),
+        "styled-components": path.resolve(
+          __dirname,
+          "node_modules/styled-components"
+        ),
+        ...(isLocalDev
+          ? {
+              "@rcpch/digital-growth-charts-react-component-library":
+                path.resolve(
+                  __dirname,
+                  "..",
+                  "digital-growth-charts-react-component-library",
+                  "src"
+                ),
+            }
+          : {}),
+      },
     },
     optimizeDeps: {
       exclude: isLocalDev
