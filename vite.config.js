@@ -91,6 +91,7 @@ export default defineConfig(() => {
     build: {
       chunkSizeWarningLimit: 1000,
       outDir: "dist",
+      cssMinify: "esbuild", // semantic-ui-less has an invalid pseudo-element selector that Lightning CSS rejects
     },
   };
 });
