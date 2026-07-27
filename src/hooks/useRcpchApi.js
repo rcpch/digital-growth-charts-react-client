@@ -143,6 +143,62 @@ const makeInitialState = () => {
   };
 };
 
+// This is a special case for fictional child data, which is not fetched from the API
+// but from local JSON files.
+// It is used to simulate an API call for fictional data.
+// The files are stored in src/fictional-children/{reference}/{measurementMethod}/data.json
+// or in src/fictional-children/{key}.json if the first path is not found.
+// The JSON files are imported using import.meta.glob to allow for dynamic imports.
+// This allows for easy addition of new fictional datasets without changing the code.
+// The files contain lists of measurement objects that match the expected structure
+// of the API response, so they can be used directly in the application.
+// Preload all local fictional datasets (Vite bundles JSON)
+const fictionalIndex = import.meta.glob("/src/fictional-children/**/*.json", {
+  eager: true,
+});
+
+const fetchFromLocal = async (input, reference, measurementMethod, sex) => {
+  const { condition } = input || {};
+  if (!condition || !reference || !measurementMethod || !sex) {
+    throw new Error(
+      `Missing required keys for local dataset. Got condition=${condition}, reference=${reference}, measurementMethod=${measurementMethod}, sex=${sex}`
+    );
+  }
+
+  // Required: measurements
+  // Expected path: /src/fictional-children/{condition}/{reference}/{measurementMethod}/{sex}/data.json
+  const baseDir = `/src/fictional-children/${condition}/${reference}/${measurementMethod}/${sex}`;
+  const dataPath = `${baseDir}/data.json`;
+  const dataMod = fictionalIndex[dataPath];
+  if (!dataMod) {
+    throw new Error(`Fictional dataset not found at ${dataPath}`);
+  }
+  const measurements = dataMod.default ?? dataMod;
+
+  // Optional: mid-parental height (only for certain conditions and height method)
+  const needsMph =
+    measurementMethod === "height" &&
+    [
+      "growth-hormone-deficiency",
+      "short-stature",
+      "tall-stature",
+      "normal",
+    ].includes(condition);
+
+  let midParentalHeights = null;
+  if (needsMph) {
+    const mphPath = `${baseDir}/mid-parental-height.json`; // same folder as data.json
+    const mphMod = fictionalIndex[mphPath];
+    if (mphMod) {
+      midParentalHeights = mphMod.default ?? mphMod;
+    }
+    // If missing, treat as optional and continue without throwing
+  }
+
+  // Return a composite result so the caller can set both outputs
+  return { measurements, midParentalHeights };
+};
+
 const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
   const [apiState, setApiState] = useState(makeInitialState);
   const fetchResult = useCallback(
@@ -217,62 +273,6 @@ const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
       return mutable;
     });
   }, []);
-
-  // This is a special case for fictional child data, which is not fetched from the API
-  // but from local JSON files.
-  // It is used to simulate an API call for fictional data.
-  // The files are stored in src/fictional-children/{reference}/{measurementMethod}/data.json
-  // or in src/fictional-children/{key}.json if the first path is not found.
-  // The JSON files are imported using import.meta.glob to allow for dynamic imports.
-  // This allows for easy addition of new fictional datasets without changing the code.
-  // The files contain lists of measurement objects that match the expected structure
-  // of the API response, so they can be used directly in the application.
-  // Preload all local fictional datasets (Vite bundles JSON)
-  const fictionalIndex = import.meta.glob("/src/fictional-children/**/*.json", {
-    eager: true,
-  });
-
-  const fetchFromLocal = async (input, reference, measurementMethod, sex) => {
-    const { condition } = input || {};
-    if (!condition || !reference || !measurementMethod || !sex) {
-      throw new Error(
-        `Missing required keys for local dataset. Got condition=${condition}, reference=${reference}, measurementMethod=${measurementMethod}, sex=${sex}`
-      );
-    }
-
-    // Required: measurements
-    // Expected path: /src/fictional-children/{condition}/{reference}/{measurementMethod}/{sex}/data.json
-    const baseDir = `/src/fictional-children/${condition}/${reference}/${measurementMethod}/${sex}`;
-    const dataPath = `${baseDir}/data.json`;
-    const dataMod = fictionalIndex[dataPath];
-    if (!dataMod) {
-      throw new Error(`Fictional dataset not found at ${dataPath}`);
-    }
-    const measurements = dataMod.default ?? dataMod;
-
-    // Optional: mid-parental height (only for certain conditions and height method)
-    const needsMph =
-      measurementMethod === "height" &&
-      [
-        "growth-hormone-deficiency",
-        "short-stature",
-        "tall-stature",
-        "normal",
-      ].includes(condition);
-
-    let midParentalHeights = null;
-    if (needsMph) {
-      const mphPath = `${baseDir}/mid-parental-height.json`; // same folder as data.json
-      const mphMod = fictionalIndex[mphPath];
-      if (mphMod) {
-        midParentalHeights = mphMod.default ?? mphMod;
-      }
-      // If missing, treat as optional and continue without throwing
-    }
-
-    // Return a composite result so the caller can set both outputs
-    return { measurements, midParentalHeights };
-  };
 
   useEffect(() => {
     let ignore = false;
@@ -397,7 +397,7 @@ const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
     return () => {
       ignore = true;
     };
-  }, [apiState, measurementMethod, mode, reference, removeLastFromArrays, fetchFromLocal]);
+  }, [apiState, measurementMethod, mode, reference, removeLastFromArrays]);
 
   return {
     fetchResult,
