@@ -75,11 +75,11 @@ export const ResultsDataTable = ({
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {data.map((measurement, index) => {
+          {data.map((measurement) => {
             return (
               <ResultsDataTableRow
                 measurement={measurement}
-                key={index}
+                key={`${measurement.measurement_dates.observation_date}-${measurement.child_observation_value.observation_value}`}
                 ageChoice={ageChoice}
                 decimalAge={decimalAge}
                 chronologicalStyles={chronologicalStyles}
