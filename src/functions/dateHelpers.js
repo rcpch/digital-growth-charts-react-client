@@ -17,7 +17,7 @@ export const formatDate = (inputDate) => {
         }
 
         return [year, month, day].join('-');
-    } catch (error) {
+    } catch {
         throw new Error('Input date for formatDate not recognised');
     }
 };
@@ -74,7 +74,7 @@ export const parseDate = (inputDate) => {
         } else {
             throw new Error();
         }
-    } catch (error) {
+    } catch {
         return null;
     }
 };

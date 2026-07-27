@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './semantic-ui/semantic.less'
- 
+
 
 // Create a root element for React to render into
 const rootElement = document.getElementById('root');

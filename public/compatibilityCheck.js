@@ -2,7 +2,7 @@ function isES6() {
   try {
     Function('() => {};');
     return true;
-  } catch (error) {
+  } catch {
     return false;
   }
 }

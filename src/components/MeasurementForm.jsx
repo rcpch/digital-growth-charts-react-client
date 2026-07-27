@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+/* eslint-disable @eslint-react/set-state-in-effect */
+
+import { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 
 import {
@@ -28,10 +30,8 @@ const JON_BROWER_MINNOCH = 635; // interesting fact -  Jon Brower Minnoch (Born 
 const KHALID_BIN_MOHSEN_SHAARI = 204; // Khalid bin Mohsen Shaari (2/8/1991) from Saudi Arabia had the highest recorded BMI
 
 const MeasurementForm = (props) => {
-  const [birth_date, setBirth_date] = useState(formatDate(new Date()));
-  const [observation_date, setObservation_date] = useState(
-    formatDate(new Date())
-  );
+  const [birth_date, setBirth_date] = useState(() => formatDate(new Date()));
+  const [observation_date, setObservation_date] = useState(() => formatDate(new Date()));
   const [measurement, setMeasurement] = useState({
     observation_value: "",
   });
@@ -47,9 +47,11 @@ const MeasurementForm = (props) => {
   const [boneAgeSDS, setBoneAgeSDS] = useState("");
   const [boneAgeCentile, setBoneAgeCentile] = useState("");
   const [boneAgeText, setBoneAgeText] = useState("");
-  const [events, setEvents] = useState([""]);
+  const [events, setEvents] = useState([]);
   const [showBoneAge, setShowBoneAge] = useState(false);
   const [showEvents, setShowEvents] = useState(false);
+  const eventIdRef = useRef(0);
+  const createEvent = (text = "") => ({ id: eventIdRef.current++, text });
 
   const handleChangeReference = ({ value }) => {
     if (value !== "uk-who" && value !== "cdc" && value !== "who") {
@@ -190,9 +192,9 @@ const MeasurementForm = (props) => {
     let eventText = {
       events: [],
     };
-    if (events.length > 0 && events[0].length > 0) {
+    if (events.length > 0 && events[0].text.length > 0) {
       eventText = {
-        events_text: events,
+        events_text: events.map((ev) => ev.text),
       };
     }
     if (showBoneAge) {
@@ -260,23 +262,23 @@ const MeasurementForm = (props) => {
     e.preventDefault();
     const isPressed = showEvents;
     setShowEvents(!isPressed);
-    setEvents([""]);
+    setEvents([createEvent()]);
   };
 
   const handleAddEvent = (e) => {
     e.preventDefault();
     let allEvents = [...events];
-    if (allEvents[allEvents.length - 1] === "") {
+    if (allEvents[allEvents.length - 1].text === "") {
       // cannot add a new event on top of empty one
       return;
     }
-    allEvents.push("");
+    allEvents.push(createEvent());
     setEvents(allEvents);
   };
 
-  const handleRemoveEvent = (e, event) => {
+  const handleRemoveEvent = (e, id) => {
     e.preventDefault();
-    const newEvents = events.filter((ev) => ev !== event);
+    const newEvents = events.filter((ev) => ev.id !== id);
     setEvents(newEvents);
   };
 
@@ -365,7 +367,7 @@ const MeasurementForm = (props) => {
       setForm_valid(false);
       setShowBoneAge(false);
       setShowEvents(false);
-      setEvents([""]);
+      setEvents([]);
       setBoneAgeCentile("");
       setBoneAgeSDS("");
       setBoneAgeType("greulich-pyle");
@@ -399,7 +401,7 @@ const MeasurementForm = (props) => {
   return (
     <Container>
       <Form onSubmit={handleSubmit} className="ui form measurement-form left aligned">
-        
+
           <Form.Field required>
             <Header as="h5" textAlign="left">
               Reference
@@ -410,7 +412,7 @@ const MeasurementForm = (props) => {
               referenceOptions={referenceOptions}
             />
           </Form.Field>
-          
+
             <Header as="h5" textAlign="left">
               Dates
             </Header>
@@ -425,7 +427,7 @@ const MeasurementForm = (props) => {
                 placeholder="Date of Birth"
                 onChange={handleChangeDate}
               />
-            
+
               <Form.Field
                 fluid
                 required
@@ -438,8 +440,8 @@ const MeasurementForm = (props) => {
                 onChange={handleChangeDate}
               />
           </Form.Group>
-          
-          
+
+
           <ErrorText errorText={observation_date_error} />
           <ErrorText errorText={birth_date_error} />
 
@@ -514,7 +516,7 @@ const MeasurementForm = (props) => {
             showError={observation_value_error !== "empty"}
             errorText={observation_value_error}
           />
-        
+
           <Form.Group widths={"equal"}>
             {props.globalState.measurementMethod === "height" && (
               <Form.Field>
@@ -565,7 +567,7 @@ const MeasurementForm = (props) => {
             <Segment>
               {events.map((anEvent, index) => {
                 return (
-                  <Form.Group key={index} className="event-row">
+                  <Form.Group key={anEvent.id} className="event-row">
                     <Form.Field className="input-field" style={{ textAlign: 'left', flex: '1 1 auto', minWidth: 0 }}>
                       <Input
                         fluid
@@ -573,10 +575,10 @@ const MeasurementForm = (props) => {
                         placeholder="e.g. diagnosis"
                         onChange={(data) => {
                           let thisEvent = [...events];
-                          thisEvent[index] = data.target.value;
+                          thisEvent[index] = { ...anEvent, text: data.target.value };
                           setEvents(thisEvent);
                         }}
-                        value={anEvent}
+                        value={anEvent.text}
                       />
                     </Form.Field>
 
@@ -586,7 +588,7 @@ const MeasurementForm = (props) => {
                           <Icon name="plus circle" />
                         </Button>
                       ) : (
-                        <Button icon circular onClick={(e) => handleRemoveEvent(e, anEvent)}>
+                        <Button icon circular onClick={(e) => handleRemoveEvent(e, anEvent.id)}>
                           <Icon name="minus circle" />
                         </Button>
                       )}

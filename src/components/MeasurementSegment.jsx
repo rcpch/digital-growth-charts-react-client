@@ -1,5 +1,5 @@
 // React
-import React, { useState, useEffect, useMemo, Fragment } from "react";
+import { useState, useEffect, useMemo, Fragment } from "react";
 
 // Semantic UI React
 import {
@@ -23,8 +23,8 @@ import useRcpchApi from "../hooks/useRcpchApi";
 import useGlobalState from "../hooks/useGlobalState";
 import Presets from "./Presets";
 
-const MeasurementSegment=({})=> {
-  
+const MeasurementSegment=()=> {
+
   const [centile, setCentile] = useState(true);
   const [theme, setTheme] = useState({
     value: "monochrome",
@@ -32,7 +32,7 @@ const MeasurementSegment=({})=> {
   });
 
   const [flip, setFlip] = useState(false); // flag to determine if results or chart showing
-  const [errorModal, setErrorModal] = useState(InitalErrorModalState());
+  const [errorModal, setErrorModal] = useState(() => InitalErrorModalState());
   const { globalState, makeGlobalStateUpdater } = useGlobalState();
   const [clinician, setClinician] = useState(true);
 
@@ -68,6 +68,11 @@ const MeasurementSegment=({})=> {
     [results, makeGlobalStateUpdater]
   );
 
+  // Shows an appropriate error modal in response to API/global-state errors.
+  // The setErrorModal calls here are intentional: the modal's open/closed
+  // state is genuinely separate from the underlying error state (the user
+  // can dismiss the modal without clearing the error, and vice versa).
+  /* eslint-disable @eslint-react/set-state-in-effect */
   useEffect(() => {
     if (rateLimitExceeded) {
       setErrorModal({
@@ -107,7 +112,8 @@ const MeasurementSegment=({})=> {
       });
       updateGlobalState("errors", { errors: false, message: "" });
     }
-  }, [errors, apiErrors, clearApiErrors, updateGlobalState]);
+  }, [errors, apiErrors, clearApiErrors, updateGlobalState, rateLimitExceeded, retryAfter]);
+  /* eslint-enable @eslint-react/set-state-in-effect */
 
   useEffect(() => {
     if (results[reference][measurementMethod].length > 0) {
@@ -183,8 +189,8 @@ const MeasurementSegment=({})=> {
     });
 
   };
-    
-  
+
+
   const handleChangeTheme = (event, { value }) => {
     // callback from select theme
     // matches themeOptions by key and returns text to dropdown and value to chart for rerender in new theme
@@ -266,7 +272,7 @@ const MeasurementSegment=({})=> {
     }
   };
 
-  const panes = panesBlueprint.map((details, index) => {
+  const panes = panesBlueprint.map((details) => {
     return {
       menuItem: details.menuItem,
       render: () => {
@@ -277,7 +283,7 @@ const MeasurementSegment=({})=> {
             disabled={disabled[details.measurementName]}
           >
             <ChartData
-              key={`centile-${index}`}
+              key={`centile-${details.key}`}
               reference={reference}
               sex={sex}
               measurementMethod={details.measurementName}
@@ -292,7 +298,7 @@ const MeasurementSegment=({})=> {
         ) : (
           <Tab.Pane attached="top" key="sds">
             <ChartData
-              key={`sds-${index}`}
+              key={`sds-${details.key}`}
               reference={reference}
               sex={sex}
               measurementMethod={details.measurementName}
@@ -307,20 +313,6 @@ const MeasurementSegment=({})=> {
       },
     };
   });
-
-  const TabPanes = () => (
-    <Tab
-      key="tabPanes"
-      menu={{
-        attached: "top",
-        secondary: true,
-        pointing: true,
-      }}
-      panes={panes}
-      activeIndex={measurementMethodActiveIndex}
-      onTabChange={handleTabChange}
-    />
-  );
 
   const FormPanes = [
     {
@@ -358,7 +350,7 @@ const MeasurementSegment=({})=> {
       menuItem: "Example Charts",
       render: () => (
         <Tab.Pane key="presets">
-          <Presets 
+          <Presets
             globalState={globalState}
             updateGlobalState={updateGlobalState}
             handlePresetsSubmit={presetsDataSubmit}
@@ -368,19 +360,6 @@ const MeasurementSegment=({})=> {
     },
   ];
 
-  const ThemeSelection = () => (
-    <span>
-      Theme{" "}
-      <Dropdown
-        options={themeOptions}
-        floating
-        inline
-        onChange={handleChangeTheme}
-        text={theme.text}
-      />
-    </span>
-  );
-  
   return (
     <Fragment>
       <Grid padded>
@@ -409,7 +388,17 @@ const MeasurementSegment=({})=> {
                 <ResultsSegment apiResult={results} reference={reference} />
               ) : (
                 <div>
-                  <TabPanes />
+                  <Tab
+                    key="tabPanes"
+                    menu={{
+                      attached: "top",
+                      secondary: true,
+                      pointing: true,
+                    }}
+                    panes={panes}
+                    activeIndex={measurementMethodActiveIndex}
+                    onTabChange={handleTabChange}
+                  />
                 </div>
               )}
               <Grid verticalAlign="middle">
@@ -433,7 +422,16 @@ const MeasurementSegment=({})=> {
                     />
                   </Grid.Column>
                   <Grid.Column textAlign="center" width={4}>
-                    <ThemeSelection />
+                    <span>
+                      Theme{" "}
+                      <Dropdown
+                        options={themeOptions}
+                        floating
+                        inline
+                        onChange={handleChangeTheme}
+                        text={theme.text}
+                      />
+                    </span>
                   </Grid.Column>
                   <Grid.Column textAlign="right" width={8}>
                     <Button
