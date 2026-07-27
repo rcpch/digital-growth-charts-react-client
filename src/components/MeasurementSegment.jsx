@@ -308,20 +308,6 @@ const MeasurementSegment=()=> {
     };
   });
 
-  const TabPanes = () => (
-    <Tab
-      key="tabPanes"
-      menu={{
-        attached: "top",
-        secondary: true,
-        pointing: true,
-      }}
-      panes={panes}
-      activeIndex={measurementMethodActiveIndex}
-      onTabChange={handleTabChange}
-    />
-  );
-
   const FormPanes = [
     {
       key: "measurements",
@@ -368,19 +354,6 @@ const MeasurementSegment=()=> {
     },
   ];
 
-  const ThemeSelection = () => (
-    <span>
-      Theme{" "}
-      <Dropdown
-        options={themeOptions}
-        floating
-        inline
-        onChange={handleChangeTheme}
-        text={theme.text}
-      />
-    </span>
-  );
-
   return (
     <Fragment>
       <Grid padded>
@@ -409,7 +382,17 @@ const MeasurementSegment=()=> {
                 <ResultsSegment apiResult={results} reference={reference} />
               ) : (
                 <div>
-                  <TabPanes />
+                  <Tab
+                    key="tabPanes"
+                    menu={{
+                      attached: "top",
+                      secondary: true,
+                      pointing: true,
+                    }}
+                    panes={panes}
+                    activeIndex={measurementMethodActiveIndex}
+                    onTabChange={handleTabChange}
+                  />
                 </div>
               )}
               <Grid verticalAlign="middle">
@@ -433,7 +416,16 @@ const MeasurementSegment=()=> {
                     />
                   </Grid.Column>
                   <Grid.Column textAlign="center" width={4}>
-                    <ThemeSelection />
+                    <span>
+                      Theme{" "}
+                      <Dropdown
+                        options={themeOptions}
+                        floating
+                        inline
+                        onChange={handleChangeTheme}
+                        text={theme.text}
+                      />
+                    </span>
                   </Grid.Column>
                   <Grid.Column textAlign="right" width={8}>
                     <Button
