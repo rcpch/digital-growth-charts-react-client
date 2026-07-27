@@ -28,10 +28,8 @@ const JON_BROWER_MINNOCH = 635; // interesting fact -  Jon Brower Minnoch (Born 
 const KHALID_BIN_MOHSEN_SHAARI = 204; // Khalid bin Mohsen Shaari (2/8/1991) from Saudi Arabia had the highest recorded BMI
 
 const MeasurementForm = (props) => {
-  const [birth_date, setBirth_date] = useState(formatDate(new Date()));
-  const [observation_date, setObservation_date] = useState(
-    formatDate(new Date())
-  );
+  const [birth_date, setBirth_date] = useState(() => formatDate(new Date()));
+  const [observation_date, setObservation_date] = useState(() => formatDate(new Date()));
   const [measurement, setMeasurement] = useState({
     observation_value: "",
   });
@@ -399,7 +397,7 @@ const MeasurementForm = (props) => {
   return (
     <Container>
       <Form onSubmit={handleSubmit} className="ui form measurement-form left aligned">
-        
+
           <Form.Field required>
             <Header as="h5" textAlign="left">
               Reference
@@ -410,7 +408,7 @@ const MeasurementForm = (props) => {
               referenceOptions={referenceOptions}
             />
           </Form.Field>
-          
+
             <Header as="h5" textAlign="left">
               Dates
             </Header>
@@ -425,7 +423,7 @@ const MeasurementForm = (props) => {
                 placeholder="Date of Birth"
                 onChange={handleChangeDate}
               />
-            
+
               <Form.Field
                 fluid
                 required
@@ -438,8 +436,8 @@ const MeasurementForm = (props) => {
                 onChange={handleChangeDate}
               />
           </Form.Group>
-          
-          
+
+
           <ErrorText errorText={observation_date_error} />
           <ErrorText errorText={birth_date_error} />
 
@@ -514,7 +512,7 @@ const MeasurementForm = (props) => {
             showError={observation_value_error !== "empty"}
             errorText={observation_value_error}
           />
-        
+
           <Form.Group widths={"equal"}>
             {props.globalState.measurementMethod === "height" && (
               <Form.Field>
