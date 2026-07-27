@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 
 import {
@@ -45,9 +45,11 @@ const MeasurementForm = (props) => {
   const [boneAgeSDS, setBoneAgeSDS] = useState("");
   const [boneAgeCentile, setBoneAgeCentile] = useState("");
   const [boneAgeText, setBoneAgeText] = useState("");
-  const [events, setEvents] = useState([""]);
+  const [events, setEvents] = useState([]);
   const [showBoneAge, setShowBoneAge] = useState(false);
   const [showEvents, setShowEvents] = useState(false);
+  const eventIdRef = useRef(0);
+  const createEvent = (text = "") => ({ id: eventIdRef.current++, text });
 
   const handleChangeReference = ({ value }) => {
     if (value !== "uk-who" && value !== "cdc" && value !== "who") {
@@ -188,9 +190,9 @@ const MeasurementForm = (props) => {
     let eventText = {
       events: [],
     };
-    if (events.length > 0 && events[0].length > 0) {
+    if (events.length > 0 && events[0].text.length > 0) {
       eventText = {
-        events_text: events,
+        events_text: events.map((ev) => ev.text),
       };
     }
     if (showBoneAge) {
@@ -258,23 +260,23 @@ const MeasurementForm = (props) => {
     e.preventDefault();
     const isPressed = showEvents;
     setShowEvents(!isPressed);
-    setEvents([""]);
+    setEvents([createEvent()]);
   };
 
   const handleAddEvent = (e) => {
     e.preventDefault();
     let allEvents = [...events];
-    if (allEvents[allEvents.length - 1] === "") {
+    if (allEvents[allEvents.length - 1].text === "") {
       // cannot add a new event on top of empty one
       return;
     }
-    allEvents.push("");
+    allEvents.push(createEvent());
     setEvents(allEvents);
   };
 
-  const handleRemoveEvent = (e, event) => {
+  const handleRemoveEvent = (e, id) => {
     e.preventDefault();
-    const newEvents = events.filter((ev) => ev !== event);
+    const newEvents = events.filter((ev) => ev.id !== id);
     setEvents(newEvents);
   };
 
@@ -363,7 +365,7 @@ const MeasurementForm = (props) => {
       setForm_valid(false);
       setShowBoneAge(false);
       setShowEvents(false);
-      setEvents([""]);
+      setEvents([]);
       setBoneAgeCentile("");
       setBoneAgeSDS("");
       setBoneAgeType("greulich-pyle");
@@ -563,7 +565,7 @@ const MeasurementForm = (props) => {
             <Segment>
               {events.map((anEvent, index) => {
                 return (
-                  <Form.Group key={index} className="event-row">
+                  <Form.Group key={anEvent.id} className="event-row">
                     <Form.Field className="input-field" style={{ textAlign: 'left', flex: '1 1 auto', minWidth: 0 }}>
                       <Input
                         fluid
@@ -571,10 +573,10 @@ const MeasurementForm = (props) => {
                         placeholder="e.g. diagnosis"
                         onChange={(data) => {
                           let thisEvent = [...events];
-                          thisEvent[index] = data.target.value;
+                          thisEvent[index] = { ...anEvent, text: data.target.value };
                           setEvents(thisEvent);
                         }}
-                        value={anEvent}
+                        value={anEvent.text}
                       />
                     </Form.Field>
 
@@ -584,7 +586,7 @@ const MeasurementForm = (props) => {
                           <Icon name="plus circle" />
                         </Button>
                       ) : (
-                        <Button icon circular onClick={(e) => handleRemoveEvent(e, anEvent)}>
+                        <Button icon circular onClick={(e) => handleRemoveEvent(e, anEvent.id)}>
                           <Icon name="minus circle" />
                         </Button>
                       )}
