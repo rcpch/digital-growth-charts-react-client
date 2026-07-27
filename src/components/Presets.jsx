@@ -38,7 +38,7 @@ const Presets = (props) => {
     return conditionOptionList.filter(option => option.measurementMethod === measurementMethod).sort((a, b) => a.label.localeCompare(b.label));
   };
   // Initialize condition options based on the default measurement method
-  const [conditionOptions, setConditionOptions] = useState(filterConditionOptionsToMeasurementMethod("height"));
+  const [conditionOptions, setConditionOptions] = useState(() => filterConditionOptionsToMeasurementMethod("height"));
   // Start with no condition selected so the user must choose one
   const [conditionOption, setConditionOption] = useState(null);
 

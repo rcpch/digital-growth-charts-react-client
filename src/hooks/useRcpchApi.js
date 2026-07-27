@@ -162,9 +162,9 @@ const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
     [measurementMethod, mode, reference]
   );
 
-  /* 
-  Remove last item from arrays. Defaults to removing last item from measurements array only. 
-  If 'both' parameter is set to true, removes last item from measurements array and 
+  /*
+  Remove last item from arrays. Defaults to removing last item from measurements array only.
+  If 'both' parameter is set to true, removes last item from measurements array and
   results array.
   */
   const removeLastFromArrays = useCallback(
@@ -397,7 +397,7 @@ const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
     return () => {
       ignore = true;
     };
-  }, [apiState, measurementMethod, mode, reference, removeLastFromArrays]);
+  }, [apiState, measurementMethod, mode, reference, removeLastFromArrays, fetchFromLocal]);
 
   return {
     fetchResult,
