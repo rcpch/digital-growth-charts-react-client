@@ -32,7 +32,7 @@ const MeasurementSegment=()=> {
   });
 
   const [flip, setFlip] = useState(false); // flag to determine if results or chart showing
-  const [errorModal, setErrorModal] = useState(InitalErrorModalState());
+  const [errorModal, setErrorModal] = useState(() => InitalErrorModalState());
   const { globalState, makeGlobalStateUpdater } = useGlobalState();
   const [clinician, setClinician] = useState(true);
 
@@ -68,6 +68,11 @@ const MeasurementSegment=()=> {
     [results, makeGlobalStateUpdater]
   );
 
+  // Shows an appropriate error modal in response to API/global-state errors.
+  // The setErrorModal calls here are intentional: the modal's open/closed
+  // state is genuinely separate from the underlying error state (the user
+  // can dismiss the modal without clearing the error, and vice versa).
+  // eslint-disable-next-line @eslint-react/set-state-in-effect
   useEffect(() => {
     if (rateLimitExceeded) {
       setErrorModal({
@@ -107,7 +112,7 @@ const MeasurementSegment=()=> {
       });
       updateGlobalState("errors", { errors: false, message: "" });
     }
-  }, [errors, apiErrors, clearApiErrors, updateGlobalState]);
+  }, [errors, apiErrors, clearApiErrors, updateGlobalState, rateLimitExceeded, retryAfter]);
 
   useEffect(() => {
     if (results[reference][measurementMethod].length > 0) {
