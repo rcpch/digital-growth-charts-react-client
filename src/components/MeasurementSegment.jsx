@@ -266,7 +266,7 @@ const MeasurementSegment=()=> {
     }
   };
 
-  const panes = panesBlueprint.map((details, index) => {
+  const panes = panesBlueprint.map((details) => {
     return {
       menuItem: details.menuItem,
       render: () => {
@@ -277,7 +277,7 @@ const MeasurementSegment=()=> {
             disabled={disabled[details.measurementName]}
           >
             <ChartData
-              key={`centile-${index}`}
+              key={`centile-${details.key}`}
               reference={reference}
               sex={sex}
               measurementMethod={details.measurementName}
@@ -292,7 +292,7 @@ const MeasurementSegment=()=> {
         ) : (
           <Tab.Pane attached="top" key="sds">
             <ChartData
-              key={`sds-${index}`}
+              key={`sds-${details.key}`}
               reference={reference}
               sex={sex}
               measurementMethod={details.measurementName}
