@@ -72,7 +72,7 @@ const MeasurementSegment=()=> {
   // The setErrorModal calls here are intentional: the modal's open/closed
   // state is genuinely separate from the underlying error state (the user
   // can dismiss the modal without clearing the error, and vice versa).
-  // eslint-disable-next-line @eslint-react/set-state-in-effect
+  /* eslint-disable @eslint-react/set-state-in-effect */
   useEffect(() => {
     if (rateLimitExceeded) {
       setErrorModal({
@@ -113,6 +113,7 @@ const MeasurementSegment=()=> {
       updateGlobalState("errors", { errors: false, message: "" });
     }
   }, [errors, apiErrors, clearApiErrors, updateGlobalState, rateLimitExceeded, retryAfter]);
+  /* eslint-enable @eslint-react/set-state-in-effect */
 
   useEffect(() => {
     if (results[reference][measurementMethod].length > 0) {
