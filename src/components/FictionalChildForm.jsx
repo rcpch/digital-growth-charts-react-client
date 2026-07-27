@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import PropTypes from "prop-types";
 
 import { Form, Input, Header, Checkbox, Button } from "semantic-ui-react";
@@ -29,7 +29,21 @@ const FictionalChildForm = (props) => {
   const [noiseFlag, setNoiseFlag] = useState(false);
   const [noise, setNoise] = useState(1.0); // note this is a percentage must be converted back to a decimal for the API
   const [startSDS, setStartSDS] = useState("0");
-  const [errorMessage, setErrorMessage] = useState("");
+
+  const errorMessage = useMemo(() => {
+    if (Number(startingAge) < 0) return "Starting age must be above 0.";
+    if (Number(endingAge) > 20) return "Ending age must be under 20.";
+    if (
+      Number.isNaN(Number(startingAge)) ||
+      Number.isNaN(Number(endingAge)) ||
+      Number.isNaN(Number(interval)) ||
+      Number.isNaN(Number(startSDS))
+    )
+      return "Please check that all entries have valid numbers.";
+    if (!startingAge || !endingAge || !interval || !startSDS)
+      return "Please check that all entries are filled in.";
+    return "";
+  }, [startingAge, endingAge, interval, startSDS]);
 
   const handleBigButtonPress = ({ type }) => {
     if (type === "submit") {
@@ -175,31 +189,6 @@ const FictionalChildForm = (props) => {
     props.handleUtilitiesFormDataSubmit(formData);
   };
 
-  useEffect(() => {
-    switch (true) {
-      case Number(startingAge) < 0:
-        setErrorMessage("Starting age must be above 0.");
-        break;
-      case Number(endingAge) > 20:
-        setErrorMessage("Ending age must be under 20.");
-        break;
-      case Number.isNaN(Number(startingAge)):
-      case Number.isNaN(Number(endingAge)):
-      case Number.isNaN(Number(interval)):
-      case Number.isNaN(Number(startSDS)):
-        setErrorMessage("Please check that all entries have valid numbers.");
-        break;
-      case startingAge === "":
-      case endingAge === "":
-      case interval === "":
-      case startSDS === "":
-        setErrorMessage("Please check that all entries are filled in.");
-        break;
-      default:
-        setErrorMessage("");
-    }
-  }, [startingAge, endingAge, interval, startSDS]);
-  
   return (
     <div>
       <Form onSubmit={handleBigButtonPress}>
