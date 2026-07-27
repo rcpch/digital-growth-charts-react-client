@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { Message, Button, Form } from "semantic-ui-react";
 import MeasurementMethodSelect from "./subcomponents/MeasurementMethodSelect";
@@ -27,7 +27,7 @@ const Presets = (props) => {
     { label: "Coeliac Disease", value: "coeliac-disease", measurementMethod: "weight", disabled: false },
     { label: "Growth Hormone Deficiency", value: "growth-hormone-deficiency", measurementMethod: "height", disabled: false },
   ]
-  
+
   const filterConditionOptionsToMeasurementMethod = (measurementMethod) => {
     if (props.globalState.reference !== "uk-who") {
       return conditionOptionList.filter(option => option.measurementMethod === measurementMethod && !option.disabled).sort((a, b) => a.label.localeCompare(b.label)).map(option => ({
@@ -52,7 +52,7 @@ const Presets = (props) => {
     // Reset selection until the user explicitly chooses a condition
     setConditionOption(null);
   };
-  
+
   const handleChangeReference = ({ value }) => {
     props.updateGlobalState("reference", value);
   };

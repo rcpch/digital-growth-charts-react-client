@@ -1,5 +1,5 @@
 // React
-import React, { useState, useEffect, useMemo, Fragment } from "react";
+import { useState, useEffect, useMemo, Fragment } from "react";
 
 // Semantic UI React
 import {
@@ -23,8 +23,8 @@ import useRcpchApi from "../hooks/useRcpchApi";
 import useGlobalState from "../hooks/useGlobalState";
 import Presets from "./Presets";
 
-const MeasurementSegment=({})=> {
-  
+const MeasurementSegment=()=> {
+
   const [centile, setCentile] = useState(true);
   const [theme, setTheme] = useState({
     value: "monochrome",
@@ -183,8 +183,8 @@ const MeasurementSegment=({})=> {
     });
 
   };
-    
-  
+
+
   const handleChangeTheme = (event, { value }) => {
     // callback from select theme
     // matches themeOptions by key and returns text to dropdown and value to chart for rerender in new theme
@@ -358,7 +358,7 @@ const MeasurementSegment=({})=> {
       menuItem: "Example Charts",
       render: () => (
         <Tab.Pane key="presets">
-          <Presets 
+          <Presets
             globalState={globalState}
             updateGlobalState={updateGlobalState}
             handlePresetsSubmit={presetsDataSubmit}
@@ -380,7 +380,7 @@ const MeasurementSegment=({})=> {
       />
     </span>
   );
-  
+
   return (
     <Fragment>
       <Grid padded>

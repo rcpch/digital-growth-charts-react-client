@@ -1,5 +1,5 @@
 export const canvasFromSVG = (svg) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     // get outerHTML
     let outerHTMLSVG = svg.outerHTML;
     // add namespace
