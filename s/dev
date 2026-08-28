@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#
+# Run the Vite development server. Install dependencies with npm ci first.
+
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+
+exec npm run dev -- "$@"

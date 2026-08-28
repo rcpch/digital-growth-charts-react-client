@@ -314,6 +314,7 @@ const MeasurementForm = (props) => {
   };
 
   const removeMidParentalHeight = () => {
+    props.handleRemoveMidParentalHeight();
     props.updateGlobalState("mid-parental-height", "reset");
   };
 
@@ -326,7 +327,7 @@ const MeasurementForm = (props) => {
   };
 
   const handleUtilitiesDataSubmit = (event) => {
-    if (event.target[0].value < 100 && event.target[1].value < 100) {
+    if (event.target[0].value < 100 || event.target[1].value < 100) {
       return;
     }
     const formData = {
@@ -337,8 +338,8 @@ const MeasurementForm = (props) => {
     };
     props.updateGlobalState("isMidParentalHeightRequest", true);
     props.updateGlobalState("parentalHeights", {
-      maternalHeight: event.target[0].value,
-      paternalHeight: event.target[1].value,
+      height_maternal: event.target[0].value,
+      height_paternal: event.target[1].value,
     });
     props.handleUtilitiesFormDataSubmit(formData);
   };
@@ -641,6 +642,7 @@ MeasurementForm.propTypes = {
   updateGlobalState: PropTypes.func.isRequired,
   handleMeasurementResult: PropTypes.func.isRequired,
   handleUtilitiesFormDataSubmit: PropTypes.func.isRequired,
+  handleRemoveMidParentalHeight: PropTypes.func.isRequired,
   globalState: PropTypes.shape({
     measurementMethod: PropTypes.string.isRequired,
     units: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,

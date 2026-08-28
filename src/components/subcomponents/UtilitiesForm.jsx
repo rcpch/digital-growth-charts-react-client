@@ -60,7 +60,7 @@ const UtilitiesForm = (props) => {
         </Form.Field>
         {props.midParentalHeightDataPresent && (
           <Form.Field>
-            <Button type="submit" onClick={props.removeMidParentalHeight}>
+            <Button type="button" onClick={props.removeMidParentalHeight}>
               Remove Mid-Parental Height
             </Button>
           </Form.Field>

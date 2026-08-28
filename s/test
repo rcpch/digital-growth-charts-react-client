@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#
+# Run the Vitest suite once. Additional Vitest arguments are forwarded.
+
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+
+exec npm test -- "$@"

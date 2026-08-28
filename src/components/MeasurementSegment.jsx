@@ -15,7 +15,7 @@ import {
 
 import ChartData from "../api/Chart";
 import MeasurementForm from "./MeasurementForm";
-import deepCopy from "../functions/deepCopy";
+import { validatePatientMeasurement } from "../functions/measurementValidation";
 import { ResultsSegment } from "./subcomponents/ResultsSegment";
 import { ErrorModal } from "./subcomponents/ErrorModal";
 import FictionalChildForm from "./FictionalChildForm";
@@ -53,6 +53,7 @@ const MeasurementSegment=()=> {
     fetchResult,
     removeLastActiveItem,
     clearBothActiveArrays,
+    clearMidParentalHeight,
     clearApiErrors,
     measurements,
     results,
@@ -123,6 +124,13 @@ const MeasurementSegment=()=> {
     }
   }, [results, reference, measurementMethod, updateGlobalState]);
 
+  useEffect(() => {
+    updateGlobalState(
+      "mid-parental-height",
+      results[reference].midParentalHeights
+    );
+  }, [reference, results, updateGlobalState]);
+
   if (resetCurrent) {
     setErrorModal({
       visible: true,
@@ -180,7 +188,6 @@ const MeasurementSegment=()=> {
     // delegate function from Presets
     // receives form data and stores in the correct measurement array
     // passes to the chart (no API call needed)
-    console.log("Presets data submit called with formData:", formData, results);
     // formData contains age and condition
     fetchResult({
       ...formData,
@@ -213,41 +220,10 @@ const MeasurementSegment=()=> {
     // receives form data and stores in the correct measurement array
     // checks for duplicates, mismatching dobs, sexes and gestations
     if (!isLoading) {
-      const existingResults = deepCopy(
-        measurements[reference][measurementMethod]
+      const errorString = validatePatientMeasurement(
+        measurements[reference],
+        latestResult
       );
-      let errorString = "";
-      if (existingResults.length > 0) {
-        const newGestation =
-          latestResult.gestation_weeks * 7 + latestResult.gestation_days;
-        const newErrors = [];
-        for (const oldResult of existingResults) {
-          if (JSON.stringify(oldResult) === JSON.stringify(latestResult)) {
-            errorString = "duplicate";
-            break;
-          }
-          const oldGestation =
-            oldResult.gestation_weeks * 7 + oldResult.gestation_days;
-          if (oldResult.sex !== latestResult.sex) {
-            newErrors.push("differing sexes");
-          }
-          if (oldResult.birth_date !== latestResult.birth_date) {
-            newErrors.push("differing date of births");
-          }
-          if (oldGestation !== newGestation) {
-            newErrors.push("differing gestations");
-          }
-          if (newErrors.length > 0) {
-            errorString = newErrors[0];
-            if (newErrors.length === 2) {
-              errorString = newErrors.join(" and ");
-            } else if (newErrors.length === 3) {
-              errorString = `${newErrors[0]}, ${newErrors[1]} and ${newErrors[2]}`;
-            }
-            break;
-          }
-        }
-      }
       if (errorString) {
         if (errorString === "duplicate") {
           setErrorModal({
@@ -326,6 +302,7 @@ const MeasurementSegment=()=> {
             updateGlobalState={updateGlobalState}
             className="measurement-form"
             handleUtilitiesFormDataSubmit={utilitiesFormDataSubmit}
+            handleRemoveMidParentalHeight={clearMidParentalHeight}
             // themeColour={centileStyle.centileStroke}
           />
         </Tab.Pane>
@@ -341,6 +318,7 @@ const MeasurementSegment=()=> {
             globalState={globalState}
             updateGlobalState={updateGlobalState}
             handleUtilitiesFormDataSubmit={utilitiesFormDataSubmit}
+            handleRemoveMidParentalHeight={clearMidParentalHeight}
           />
         </Tab.Pane>
       ),
@@ -362,7 +340,27 @@ const MeasurementSegment=()=> {
 
   return (
     <Fragment>
-      <Grid padded>
+      <Grid padded stackable>
+        <Grid.Row>
+          <Container>
+            <Message
+              icon="warning sign"
+              header="Demonstration only - not for clinical use"
+              color="red"
+              content={
+                <p>
+                  Use fictional data only. Do not enter real or identifiable
+                  patient data. Calculation inputs are sent to the configured
+                  RCPCH API. Read the{" "}
+                  <a href="https://growth.rcpch.ac.uk/legal/privacy-notice/">
+                    privacy notice
+                  </a>
+                  .
+                </p>
+              }
+            />
+          </Container>
+        </Grid.Row>
         <Grid.Row>
           <Grid.Column width={6}>
             <Segment
@@ -401,7 +399,7 @@ const MeasurementSegment=()=> {
                   />
                 </div>
               )}
-              <Grid verticalAlign="middle">
+              <Grid stackable verticalAlign="middle">
                 <Grid.Row columns={3}>
                   <Grid.Column textAlign="left" width={4}>
                     <Checkbox
@@ -453,16 +451,6 @@ const MeasurementSegment=()=> {
               </Grid>
             </Segment>
           </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Container>
-            <Message
-              icon={"warning sign"}
-              header={"DISCLAIMER"}
-              content="This is for demonstration purposes only and is not for clinical use."
-              color="red"
-            />
-          </Container>
         </Grid.Row>
       </Grid>
 

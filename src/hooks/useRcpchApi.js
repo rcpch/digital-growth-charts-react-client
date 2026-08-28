@@ -5,8 +5,8 @@ import deepCopy from "../functions/deepCopy";
 const fetchFromApi = async (inputParameters, reference, mode) => {
   /*
   This code snippet makes an API call direct to the digital growth charts server
-  It uses a development API key stored in .env which is unsafe
-  In due course this endpoint will be deprecated.
+  The optional browser credential is public because Vite includes it in the
+  downloaded bundle. It must be scoped and rate-limited as a demo credential.
   */
   //  For this to work in development use http://127.0.0.1:8000 rather than localhost
   const prod_url = import.meta.env.VITE_APP_GROWTH_API_BASEURL;
@@ -17,10 +17,10 @@ const fetchFromApi = async (inputParameters, reference, mode) => {
     url = `${prod_url}/utilities/${mode}`;
   }
 
-  const headers = import.meta.env.VITE_APP_API_KEY
+  const headers = import.meta.env.VITE_APP_PUBLIC_DEMO_KEY
     ? {
         "Content-Type": "application/json",
-        "Subscription-Key": import.meta.env.VITE_APP_API_KEY,
+        "Subscription-Key": import.meta.env.VITE_APP_PUBLIC_DEMO_KEY,
       }
     : { "Content-Type": "application/json" };
 
@@ -58,7 +58,7 @@ const fetchFromApi = async (inputParameters, reference, mode) => {
 };
 
 const makeInitialState = () => {
-  const midParentalHeights = {
+  const makeMidParentalHeights = () => ({
     mid_parental_height: null,
     mid_parental_height_sds: null,
     mid_parental_height_centile: null,
@@ -67,7 +67,7 @@ const makeInitialState = () => {
     mid_parental_height_upper_centile_data: null,
     mid_parental_height_lower_value: null,
     mid_parental_height_upper_value: null,
-  };
+  });
 
   const measurements = {
     turner: {
@@ -99,7 +99,7 @@ const makeInitialState = () => {
         sex: null,
         reference: "uk-who",
       },
-      midParentalHeights: midParentalHeights,
+      midParentalHeights: makeMidParentalHeights(),
     },
     who: {
       height: [],
@@ -112,7 +112,7 @@ const makeInitialState = () => {
         sex: null,
         reference: "who",
       },
-      midParentalHeights: midParentalHeights,
+      midParentalHeights: makeMidParentalHeights(),
     },
     cdc: {
       height: [],
@@ -260,9 +260,34 @@ const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
       const mutable = deepCopy(old);
       mutable[mode].input[reference][measurementMethod] = [];
       mutable[mode].output[reference][measurementMethod] = [];
+      if (measurementMethod === "height") {
+        mutable[mode].input[reference].parentalHeights = {
+          height_maternal: null,
+          height_paternal: null,
+          sex: null,
+          reference,
+        };
+        mutable[mode].output[reference].midParentalHeights =
+          makeInitialState()[mode].output[reference].midParentalHeights;
+      }
       return mutable;
     });
   }, [measurementMethod, mode, reference]);
+
+  const clearMidParentalHeight = useCallback(() => {
+    setApiState((old) => {
+      const mutable = deepCopy(old);
+      mutable[mode].input[reference].parentalHeights = {
+        height_maternal: null,
+        height_paternal: null,
+        sex: null,
+        reference,
+      };
+      mutable[mode].output[reference].midParentalHeights =
+        makeInitialState()[mode].output[reference].midParentalHeights;
+      return mutable;
+    });
+  }, [mode, reference]);
 
   const clearApiErrors = useCallback(() => {
     setApiState((old) => {
@@ -403,6 +428,7 @@ const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
     fetchResult,
     removeLastActiveItem,
     clearBothActiveArrays,
+    clearMidParentalHeight,
     clearApiErrors,
     measurements: apiState[mode].input,
     results: apiState[mode].output,

@@ -26,3 +26,9 @@ yarn-error.log*
 
 .vscode
 .prettierrc
+
+# Disposable agent and browser-automation artefacts
+.playwright-mcp/
+
+# Retained local-only work
+.private/

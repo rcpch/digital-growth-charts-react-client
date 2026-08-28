@@ -1,13 +1,15 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+#
+# Rebuild the local development image. Run it afterward with s/docker-start.
 
-# names the image as below
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+
 image="rcpch-dgc-demo-client"
-container_name="rcpch-dgc-demo-client"
 
-docker rm ${image} || true
+if ! command -v docker >/dev/null 2>&1; then
+  printf 'Docker is required. Install it before running s/docker-rebuild.\n' >&2
+  exit 1
+fi
 
-# Build the Docker image
-docker build -t ${image} .
-
-# Run the Docker container with port mapping and container name
-docker run -p 3000:3000 --name ${container_name} ${image}
+exec docker build --tag "${image}" "$@" .

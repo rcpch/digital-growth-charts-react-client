@@ -17,7 +17,12 @@
   background: #e6e6e6 !important;
   color: #000 !important;
   border-color: #d4d4d5 !important;
-  box-shadow: none !important;
+}
+
+.ui.buttons .button:focus-visible,
+.ui.button:focus-visible {
+  outline: 3px solid #1b469c !important;
+  outline-offset: 2px;
 }
 
 /* Hover styling for preset radio button group - increase specificity for basic buttons */

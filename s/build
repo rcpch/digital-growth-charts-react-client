@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#
+# Build the production browser bundle into dist/.
+
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+
+exec npm run build -- "$@"

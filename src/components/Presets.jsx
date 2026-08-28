@@ -17,7 +17,7 @@ const Presets = (props) => {
     { label: "Normal", value: "normal", measurementMethod: "height", disabled: false },
     { label: "Faltering Growth", value: "faltering-growth", measurementMethod: "weight", disabled: false },
     { label: "Prematurity", value: "prematurity", measurementMethod: "weight", disabled: false },
-    { label: "Malnutrition", value: "malnutrition", measurementMethod: "bmi", disabled: false },
+    { label: "Malnutrition", value: "malnutrition", measurementMethod: "bmi", disabled: true },
     { label: "Obesity", value: "obesity", measurementMethod: "bmi", disabled: false },
     { label: "Pubertal Delay", value: "pubertal-delay", measurementMethod: "height", disabled: false },
     { label: "Short Stature", value: "short-stature", measurementMethod: "height", disabled: false },
