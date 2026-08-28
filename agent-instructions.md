@@ -26,6 +26,8 @@ This repository contains the public React demonstration client for the RCPCH Dig
 - `s/dev` - run the Vite development server.
 - `s/lint` - run ESLint.
 - `s/test` - run the test suite once.
+- `s/smoke` - build and run the production-browser compatibility smoke tests.
+- `s/smoke-live` - run the opt-in smoke matrix against a nominated API deployment.
 - `s/build` - build the production bundle.
 - `s/audit` - fail on high-severity npm advisories.
 - `s/docker-rebuild` - rebuild the development image.
@@ -38,6 +40,7 @@ s/lint
 s/test
 s/build
 s/audit
+s/smoke
 ```
 
 Review the diff as well as the command results. Agent-generated tests are not independent clinical evidence.

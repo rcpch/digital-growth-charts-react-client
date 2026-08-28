@@ -52,9 +52,23 @@ s/lint
 s/test
 s/build
 s/audit
+s/smoke
 ```
 
 The current test suite is an initial baseline, not complete clinical assurance. Safety-relevant changes require independent review against authoritative evidence.
+
+`s/smoke` builds the production bundle and runs it in Chromium, ensuring the exact installed chart package can render centile and SDS output from API-shaped data. For a coordinated platform release candidate, run the opt-in live matrix against the nominated API deployment:
+
+```sh
+LIVE_GROWTH_API_BASE_URL=https://candidate.example/growth/v1 \
+LIVE_PUBLIC_DEMO_KEY=... \
+LIVE_REQUIRE_PROVENANCE=true \
+s/smoke-live
+```
+
+The live smoke test checks interoperability and provenance relationships. It does not independently recalculate or clinically approve centiles or SDS values.
+
+Maintainers can run the same matrix from GitHub Actions using **Coordinated platform smoke test**, supplying the candidate API URL and choosing whether v5 provenance is mandatory. The workflow uses the repository's public demo credential without exposing it to pull-request code.
 
 ## Configuration
 

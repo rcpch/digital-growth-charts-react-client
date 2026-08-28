@@ -5,6 +5,8 @@ The `s/` directory contains simple convenience scripts to standardise work on th
 - `s/dev` - run the Vite development server.
 - `s/lint` - run ESLint.
 - `s/test` - run Vitest once.
+- `s/smoke` - build and exercise the installed chart package in Chromium.
+- `s/smoke-live` - run the opt-in API compatibility matrix against a nominated deployment.
 - `s/build` - build the production bundle.
 - `s/audit` - audit the locked npm dependencies.
 - `s/docker-rebuild` - rebuild the local development image.

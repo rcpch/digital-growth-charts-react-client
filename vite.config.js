@@ -24,19 +24,37 @@ function getBasePath() {
   return "/";
 }
 
-// Check if we're in a local development environment with the library available
-const isLocalDev =
-  process.env.NODE_ENV === "development" &&
-  fs.existsSync(
-    path.resolve(
-      __dirname,
-      "..",
-      "digital-growth-charts-react-component-library"
-    )
-  );
-
-export default defineConfig(() => {
+export default defineConfig(({ command }) => {
   const base = getBasePath();
+  const isLocalDev =
+    command === "serve" &&
+    process.env.NODE_ENV === "development" &&
+    fs.existsSync(
+      path.resolve(
+        __dirname,
+        "..",
+        "digital-growth-charts-react-component-library"
+      )
+    );
+  const componentLibraryAlias =
+    process.env.NODE_ENV === "test"
+      ? path.resolve(
+          __dirname,
+          "node_modules",
+          "@rcpch",
+          "digital-growth-charts-react-component-library",
+          "build",
+          "esm.index.js"
+        )
+      : isLocalDev
+      ? path.resolve(
+          __dirname,
+          "..",
+          "digital-growth-charts-react-component-library",
+          "src"
+        )
+      : null;
+
   return {
     base,
     plugins: [react()],
@@ -62,15 +80,10 @@ export default defineConfig(() => {
           __dirname,
           "node_modules/styled-components"
         ),
-        ...(isLocalDev
+        ...(componentLibraryAlias
           ? {
               "@rcpch/digital-growth-charts-react-component-library":
-                path.resolve(
-                  __dirname,
-                  "..",
-                  "digital-growth-charts-react-component-library",
-                  "src"
-                ),
+                componentLibraryAlias,
             }
           : {}),
       },

@@ -1,61 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
 
 import deepCopy from "../functions/deepCopy";
-
-const fetchFromApi = async (inputParameters, reference, mode) => {
-  /*
-  This code snippet makes an API call direct to the digital growth charts server
-  The optional browser credential is public because Vite includes it in the
-  downloaded bundle. It must be scoped and rate-limited as a demo credential.
-  */
-  //  For this to work in development use http://127.0.0.1:8000 rather than localhost
-  const prod_url = import.meta.env.VITE_APP_GROWTH_API_BASEURL;
-  // const prod_url = "http://127.0.0.1:8000";
-
-  let url = `${prod_url}/${reference}/${mode}`;
-  if (mode === "mid-parental-height") {
-    url = `${prod_url}/utilities/${mode}`;
-  }
-
-  const headers = import.meta.env.VITE_APP_PUBLIC_DEMO_KEY
-    ? {
-        "Content-Type": "application/json",
-        "Subscription-Key": import.meta.env.VITE_APP_PUBLIC_DEMO_KEY,
-      }
-    : { "Content-Type": "application/json" };
-
-  const response = await fetch(url, {
-    body: JSON.stringify(inputParameters),
-    method: "POST",
-    headers,
-  });
-
-  if (response.status !== 200) {
-    let to_throw = null;
-
-    try {
-      const error = await response.text();
-      const { statusCode, message } = JSON.parse(error);
-
-      if(statusCode && message) {
-        to_throw = Error(`${statusCode} ${message}`);
-      } else {
-        to_throw = Error(`${response.status} ${error}`);
-      }
-
-      to_throw.retryAfter = response.headers.get("Retry-After");
-    } catch (err) {
-      to_throw = Error(`${response.status} ${err}`);
-    }
-
-    to_throw.statusCode = response.status;
-    throw to_throw;
-  }
-
-  const data = await response.json();
-
-  return data;
-};
+import { requestGrowthApi } from "../api/growthApiClient";
+import { validateFictionalChildResponse } from "../api/growthApiContract";
 
 const makeInitialState = () => {
   const makeMidParentalHeights = () => ({
@@ -173,7 +120,10 @@ const fetchFromLocal = async (input, reference, measurementMethod, sex) => {
   if (!dataMod) {
     throw new Error(`Fictional dataset not found at ${dataPath}`);
   }
-  const measurements = dataMod.default ?? dataMod;
+  const measurements = validateFictionalChildResponse(
+    dataMod.default ?? dataMod,
+    { reference, measurementMethod, sex }
+  );
 
   // Optional: mid-parental height (only for certain conditions and height method)
   const needsMph =
@@ -324,10 +274,16 @@ const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
       const useLocal = !isStandardEndpoint || explicitLocal;
 
       const fetcher = apiState["isMidparentalCalculation"]
-        ? (li) => fetchFromApi(li, reference, "mid-parental-height")
+        ? (li) =>
+            requestGrowthApi({
+              inputParameters: li,
+              reference,
+              mode: "mid-parental-height",
+            })
         : useLocal
         ? (li) => fetchFromLocal(li, reference, measurementMethod, sex)
-        : (li) => fetchFromApi(li, reference, mode);
+        : (li) =>
+            requestGrowthApi({ inputParameters: li, reference, mode });
 
       fetcher(latestInput)
         .then((result) => {

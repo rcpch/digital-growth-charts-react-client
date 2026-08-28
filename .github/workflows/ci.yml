@@ -41,6 +41,14 @@ jobs:
           BASE_PATH: /${{ github.event.repository.name }}/
           VITE_APP_GROWTH_API_BASEURL: https://api.rcpch.ac.uk/growth/v1
 
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Production browser smoke test
+        run: npm run test:browser
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}/
+
   dependency-security:
     name: Dependency security
     runs-on: ubuntu-latest

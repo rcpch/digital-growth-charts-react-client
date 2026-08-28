@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#
+# Run the opt-in compatibility matrix against a nominated API deployment.
+# Requires LIVE_GROWTH_API_BASE_URL; LIVE_PUBLIC_DEMO_KEY is optional.
+
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+
+exec npm run test:live -- "$@"
