@@ -164,6 +164,16 @@ The harness should make valid choices easy to discover while keeping runs reprod
 
 The default command should run one named stack. Matrix execution must be explicit because a full Cartesian product of all available versions would be expensive, slow, and often meaningless. Named supported combinations, upgrade boundaries, and user-selected comparison axes should define practical matrices.
 
+## Default Stack Presets
+
+A user should not have to hand-write a configuration for the common cases. The harness should ship a small set of named presets that resolve to a full stack configuration and can still be overridden field by field like any other configuration:
+
+- **`local-everything`**: every layer from a local checkout - the engine from the sibling `rcpchgrowth-python` checkout installed into a locally built API, the Chart Component from the sibling component checkout, and the current Demo Client checkout. Dirty trees are expected and must be recorded as such rather than treated as reproducible. This is the fast inner-loop preset for a developer with all repositories checked out as siblings, and corresponds to the "local development stack" matrix type.
+- **`cloud-standard`**: the standard cloud-hosted API backend (currently Azure App Service, matching the `VITE_APP_GROWTH_API_BASEURL` production endpoint), the current Demo Client checkout, and its locked Chart Component. This is the closest single-run analogue of what a real user experiences, requires the public demo credential and network access, and must remain opt-in like `s/smoke-live`. It corresponds to the "cloud verification stack" matrix type.
+- **`latest-released`**: the latest npm Chart Component installed into the current Demo Client checkout and tested against the nominated released cloud API. The engine version is observed from API provenance rather than selected independently because the cloud API is immutable. Testing the latest PyPI engine instead requires a controllable API source and is expressed as an override of `local-everything`. This preset confirms the newest installable frontend combination without requiring sibling checkouts and corresponds to the "current supported stack" matrix type.
+
+Preset identifiers are part of the stable configuration surface: scripts, CI jobs, and the Upgrades Runbook should be able to name a preset rather than reconstructing its fields.
+
 ## Harness Capabilities
 
 ### E2E-1 - Reproducible Stack Resolution
@@ -340,7 +350,7 @@ These checks should remain fast defaults. The broader harness should compose or 
 Legend: [x] done, [~] in progress, [ ] not started
 
 - [x] **E2E-R1 - Establish local browser and nominated-API smoke tests.** Production-bundle Chromium rendering and six-reference API calls exist.
-- [ ] **E2E-R2 - Define and validate the stack configuration schema.** Add named configurations, CLI overrides, capability validation, and immutable resolved manifests.
+- [ ] **E2E-R2 - Define and validate the stack configuration schema.** Add named configurations including the `local-everything`, `cloud-standard`, and `latest-released` default presets, CLI overrides, capability validation, and immutable resolved manifests.
 - [ ] **E2E-R3 - Add source discovery and adapters.** Support PyPI/local/Git engine sources, local/image/cloud API sources, npm/local/Git/CDN component sources, and local/Git/deployed client sources.
 - [ ] **E2E-R4 - Add isolated orchestration.** Build disposable API and client environments, inject selected dependencies without modifying source checkouts, allocate unique Docker resources, wait for readiness, and clean up safely.
 - [ ] **E2E-R5 - Implement the API scenario registry.** Convert current live smoke coverage into stable scenario IDs and add bulk, fictional-child, chart-data, errors, and observed-version verification.
