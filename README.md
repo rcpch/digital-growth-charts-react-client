@@ -83,4 +83,4 @@ Raise issues at <https://github.com/rcpch/digital-growth-charts-react-client/iss
 
 ## Licence
 
-The repository currently declares the code as MIT: see [LICENSE](LICENSE). The bundled RCPCH chart component declares AGPL-3.0-or-later, so combined-distribution obligations and alignment with the RCPCH application licensing standard are under review in [HOUSE-STYLE-AUDIT.md](HOUSE-STYLE-AUDIT.md). No relicensing is implied by this documentation.
+The repository currently declares the code as MIT: see [LICENSE](LICENSE). The bundled RCPCH chart component declares AGPL-3.0-or-later, so combined-distribution obligations and alignment with the RCPCH application licensing standard are under review in [spec/roadmap.md](spec/roadmap.md). No relicensing is implied by this documentation.

@@ -6,7 +6,7 @@ This repository contains the public React demonstration client for the RCPCH Dig
 
 - [README.md](README.md) - purpose, status, setup, and validation.
 - [SAFETY.md](SAFETY.md) - clinical scope, data boundary, and authoritative safety links.
-- [HOUSE-STYLE-AUDIT.md](HOUSE-STYLE-AUDIT.md) - current compliance gaps and owner decisions.
+- [spec/roadmap.md](spec/roadmap.md) - current compliance gaps, owner decisions, and remediation status.
 - [`rcpch-house-style`](https://github.com/rcpch/rcpch-house-style) - RCPCH engineering standards. The local checkout is normally at `~/code/rcpch/rcpch-house-style/AGENTS.md`.
 
 ## Core Invariants

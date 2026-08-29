@@ -12,7 +12,7 @@ The intended users of this repository are developers, integrators, implementers,
 
 ## Current Safety Status
 
-This repository is not independently assured for clinical use. Known assurance gaps are recorded in [HOUSE-STYLE-AUDIT.md](HOUSE-STYLE-AUDIT.md), including missing comprehensive tests, patient-state defects, fixture provenance, accessibility, and the browser credential boundary. Safety-relevant changes require independent review and must not rely on agent-generated tests as their sole evidence.
+This repository is not independently assured for clinical use. Known assurance gaps are recorded in [spec/roadmap.md](spec/roadmap.md), including comprehensive clinical assurance, patient-state review, fixture provenance, accessibility, and the browser credential boundary. Safety-relevant changes require independent review and must not rely on agent-generated tests as their sole evidence.
 
 The wider RCPCH Digital Growth Charts platform has a controlled clinical safety and medical-device file. The product owner and Clinical Safety Officer must confirm whether a particular deployment of this client is inside the warranted platform boundary before clinical use or a change in the claims made here.
 
