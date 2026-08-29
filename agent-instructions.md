@@ -7,6 +7,7 @@ This repository contains the public React demonstration client for the RCPCH Dig
 - [README.md](README.md) - purpose, status, setup, and validation.
 - [SAFETY.md](SAFETY.md) - clinical scope, data boundary, and authoritative safety links.
 - [spec/roadmap.md](spec/roadmap.md) - current compliance gaps, owner decisions, and remediation status.
+- [spec/e2e.md](spec/e2e.md) - the five-repository E2E compatibility harness spec, presets, scenarios, and roadmap.
 - [`rcpch-house-style`](https://github.com/rcpch/rcpch-house-style) - RCPCH engineering standards. The local checkout is normally at `~/code/rcpch/rcpch-house-style/AGENTS.md`.
 
 ## Core Invariants
@@ -28,6 +29,7 @@ This repository contains the public React demonstration client for the RCPCH Dig
 - `s/test` - run the test suite once.
 - `s/smoke` - build and run the production-browser compatibility smoke tests.
 - `s/smoke-live` - run the opt-in smoke matrix against a nominated API deployment.
+- `s/e2e-local` - run the opt-in `local-everything` E2E preset across all local sibling checkouts (requires Docker).
 - `s/build` - build the production bundle.
 - `s/audit` - fail on high-severity npm advisories.
 - `s/docker-rebuild` - rebuild the development image.

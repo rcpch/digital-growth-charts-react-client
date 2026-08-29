@@ -13,8 +13,9 @@
     "dev": "vite --port 3000",
     "build": "vite build",
     "lint": "eslint .",
-    "test": "vitest run --exclude tests/browser/**",
+    "test": "vitest run --exclude tests/browser/** --exclude tests/e2e/**",
     "test:browser": "playwright test",
+    "test:e2e-local": "playwright test --config=playwright.e2e.config.js",
     "test:live": "node tests/live/platform-api-smoke.mjs",
     "preview": "vite preview",
     "postinstall": "cp -f \"./src/semantic-ui/theme.config\" \"./node_modules/semantic-ui-less/theme.config\" && mkdir -p ./public/themes/default/assets/fonts && cp -f ./node_modules/semantic-ui-less/themes/default/assets/fonts/* ./public/themes/default/assets/fonts && mkdir -p ./public/themes/default/assets/images && cp -f ./node_modules/semantic-ui-less/themes/default/assets/images/flags.png ./public/themes/default/assets/images/flags.png && mkdir -p ./public/fonts && cp -f ./node_modules/semantic-ui-less/themes/default/assets/fonts/* ./public/fonts"

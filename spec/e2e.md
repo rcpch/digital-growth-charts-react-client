@@ -174,6 +174,19 @@ A user should not have to hand-write a configuration for the common cases. The h
 
 Preset identifiers are part of the stable configuration surface: scripts, CI jobs, and the Upgrades Runbook should be able to name a preset rather than reconstructing its fields.
 
+## Local Port Convention
+
+Local and E2E services across the coordinated platform should use ports from the block **58600-58699**, reserved here for RCPCH dGC local and E2E use. This sits inside IANA's dynamic/private range (49152-65535), which is never assigned to a registered service, rather than in a commonly-used port such as 8000. The intent is that every layer can eventually run in its own container without a host-port clash, including alongside a developer's ordinary unrelated local services.
+
+Current allocations:
+
+| Port | Service |
+|---|---|
+| 58600 | API server (`s/e2e-local`) |
+| 58680 | Demo Client dev server (`s/e2e-local`) |
+
+Allocate new local/E2E services from this block as they are added, and record the allocation here rather than in an individual repository's own documentation, so the whole platform's local port map stays in one place.
+
 ## Harness Capabilities
 
 ### E2E-1 - Reproducible Stack Resolution
@@ -342,8 +355,9 @@ The repository already contains the first useful increments:
 - `tests/live/platform-api-smoke.mjs` calls a nominated real API for all six reference families and three mid-parental-height references.
 - `s/smoke` builds and exercises the installed component/client combination.
 - `s/smoke-live` runs the opt-in nominated-API smoke test.
+- `s/e2e-local` runs a first cut of the `local-everything` preset: it starts the local API server with the sibling `rcpchgrowth-python` checkout installed (via the server repository's own `s/dev`), runs `tests/live/platform-api-smoke.mjs` against it for real-API contract verification, then starts the Demo Client dev server aliased to the sibling Chart Component source and runs `tests/e2e/local-stack.spec.js` in Chromium. It does not yet drive a real browser-to-API measurement submission: chart rendering still uses the bundled fixtures, because the manual `Measurements` tab's `Sex` and `Reference` controls are Semantic UI `Select` components without a discoverable accessible name (tracked as part of `R13` in `spec/roadmap.md`), which would make browser-driven form-fill selectors unreliable. Local API CORS is already open (`allow_origins=['*', ...]` in `main.py`), so this is the main remaining blocker to a true `CLIENT-1` scenario, not networking.
 
-These checks should remain fast defaults. The broader harness should compose or extend them rather than replacing them with one monolithic test.
+These checks should remain fast defaults. The broader harness should compose or extend them rather than replacing them with one monolithic test. `s/e2e-local` is the exception: it is opt-in and Docker-dependent, like `s/smoke-live`.
 
 ## Roadmap
 
@@ -352,7 +366,7 @@ Legend: [x] done, [~] in progress, [ ] not started
 - [x] **E2E-R1 - Establish local browser and nominated-API smoke tests.** Production-bundle Chromium rendering and six-reference API calls exist.
 - [ ] **E2E-R2 - Define and validate the stack configuration schema.** Add named configurations including the `local-everything`, `cloud-standard`, and `latest-released` default presets, CLI overrides, capability validation, and immutable resolved manifests.
 - [ ] **E2E-R3 - Add source discovery and adapters.** Support PyPI/local/Git engine sources, local/image/cloud API sources, npm/local/Git/CDN component sources, and local/Git/deployed client sources.
-- [ ] **E2E-R4 - Add isolated orchestration.** Build disposable API and client environments, inject selected dependencies without modifying source checkouts, allocate unique Docker resources, wait for readiness, and clean up safely.
+- [~] **E2E-R4 - Add isolated orchestration.** `s/e2e-local` starts and waits for readiness of the `local-everything` preset and cleans up on exit, but it is a fixed single-run script hardcoded to the sibling-checkout convention, does not use disposable worktrees or unique Docker resources, and is not safe to run in parallel with itself.
 - [ ] **E2E-R5 - Implement the API scenario registry.** Convert current live smoke coverage into stable scenario IDs and add bulk, fictional-child, chart-data, errors, and observed-version verification.
 - [ ] **E2E-R6 - Implement provenance and persistence conformance.** Exercise genuine matching, legacy, mixed, mismatch, all-mismatch, unknown, Turner, method-selection, transition, and export cases.
 - [ ] **E2E-R7 - Expand browser workflows and accessibility evidence.** Cover reference transitions, request races, patient identity, existing guards, warning interactions, exports, and phone/tablet/desktop viewports.
