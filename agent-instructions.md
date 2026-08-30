@@ -29,7 +29,7 @@ This repository contains the public React demonstration client for the RCPCH Dig
 - `s/test` - run the test suite once.
 - `s/smoke` - build and run the production-browser compatibility smoke tests.
 - `s/smoke-live` - run the opt-in smoke matrix against a nominated API deployment.
-- `s/e2e-local` - run the opt-in `local-everything` E2E preset across all local sibling checkouts (requires Docker).
+- `s/e2e-local` - run the opt-in `local-everything` E2E preset across all local sibling checkouts (requires Docker). Add `--serve` for manual interaction with the running stack instead of tearing down after the automated checks.
 - `s/build` - build the production bundle.
 - `s/audit` - fail on high-severity npm advisories.
 - `s/docker-rebuild` - rebuild the development image.

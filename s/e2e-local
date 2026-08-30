@@ -19,6 +19,16 @@
 # digital-growth-charts-server, and
 # digital-growth-charts-react-component-library, and Docker. Set API_PORT
 # and CLIENT_PORT to override the default ports.
+#
+# Usage:
+#   s/e2e-local          # run the automated checks once and tear down
+#   s/e2e-local --serve  # start the stack and keep it running for manual
+#                         # interaction until Ctrl+C, then tear down
+
+SERVE_MODE=0
+if [[ "${1:-}" == "--serve" ]]; then
+  SERVE_MODE=1
+fi
 
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
@@ -66,6 +76,7 @@ cleanup() {
   exit "$status"
 }
 trap cleanup EXIT
+trap 'exit 0' INT
 
 wait_for() {
   local url="$1" label="$2" timeout="${3:-180}"
@@ -100,7 +111,14 @@ API_JOB_PID=$!
 wait_for "$API_URL/" "local API server" 180
 
 echo "--- Verifying the real API contract for all references and mid-parental-height ---"
-LIVE_GROWTH_API_BASE_URL="$API_URL" npm run test:live
+if [ "$SERVE_MODE" -eq 1 ]; then
+  # Report but do not abort: the point of --serve is to look at a stack that
+  # may be known-broken, not to be blocked by it.
+  LIVE_GROWTH_API_BASE_URL="$API_URL" npm run test:live \
+    || echo "WARNING: the real API contract check failed; continuing into --serve anyway."
+else
+  LIVE_GROWTH_API_BASE_URL="$API_URL" npm run test:live
+fi
 
 echo "--- Starting the Demo Client against the local API and local Chart Component source ---"
 # Bypass the `dev` npm script's own --port 3000 and bind explicitly to the
@@ -111,7 +129,18 @@ NODE_ENV=development VITE_APP_GROWTH_API_BASEURL="$API_URL" \
 CLIENT_PID=$!
 wait_for "$CLIENT_URL/" "Demo Client dev server" 60
 
-echo "--- Rendering the local Chart Component in Chromium ---"
-E2E_CLIENT_BASE_URL="$CLIENT_URL" npx playwright test --config=playwright.e2e.config.js
+if [ "$SERVE_MODE" -eq 1 ]; then
+  echo ""
+  echo "--- local-everything stack is running ---"
+  echo "Demo Client:  $CLIENT_URL"
+  echo "API server:   $API_URL"
+  echo "Logs:         $LOG_DIR"
+  echo "Press Ctrl+C to stop and tear down."
+  echo ""
+  wait "$CLIENT_PID"
+else
+  echo "--- Rendering the local Chart Component in Chromium ---"
+  E2E_CLIENT_BASE_URL="$CLIENT_URL" npx playwright test --config=playwright.e2e.config.js
 
-echo "--- local-everything: nothing broke ---"
+  echo "--- local-everything: nothing broke ---"
+fi
