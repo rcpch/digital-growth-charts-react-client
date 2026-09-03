@@ -55,6 +55,43 @@ for dir in "$SERVER_DIR" "$ENGINE_DIR" "$COMPONENT_DIR"; do
   fi
 done
 
+# Resolved-stack reporting: shows what is actually about to run, not just
+# what was requested, so a stale or wrong sibling branch is obvious before
+# anything starts. See spec/e2e.md "Requested versus observed drift".
+version_of() {
+  local kind="$1" path="$2"
+  case "$kind" in
+    pyproject)
+      grep -m1 '^version' "$path/pyproject.toml" 2>/dev/null \
+        | sed -E 's/version *= *"([^"]+)".*/\1/' ;;
+    server-metadata)
+      grep -m1 'API_SERVER_VERSION' "$path/server_metadata.py" 2>/dev/null \
+        | sed -E 's/.*"([^"]+)".*/\1/' ;;
+    package-json)
+      node -p "require('$path/package.json').version" 2>/dev/null ;;
+  esac
+}
+
+describe_stack_entry() {
+  local label="$1" version="$2" dir="$3"
+  local branch commit dirty=""
+  branch="$(git -C "$dir" rev-parse --abbrev-ref HEAD 2>/dev/null || echo unknown)"
+  commit="$(git -C "$dir" rev-parse --short HEAD 2>/dev/null || echo unknown)"
+  [ -n "$(git -C "$dir" status --porcelain 2>/dev/null)" ] && dirty=", DIRTY"
+  printf "  %-17s v%-9s local checkout, branch %s, %s%s\n" \
+    "$label" "${version:-unknown}" "$branch" "$commit" "$dirty"
+}
+
+print_stack_versions() {
+  echo "=== Resolved local-everything stack ==="
+  describe_stack_entry "ENGINE" "$(version_of pyproject "$ENGINE_DIR")" "$ENGINE_DIR"
+  describe_stack_entry "API SERVER" "$(version_of server-metadata "$SERVER_DIR")" "$SERVER_DIR"
+  describe_stack_entry "CHART COMPONENT" "$(version_of package-json "$COMPONENT_DIR")" "$COMPONENT_DIR"
+  describe_stack_entry "DEMO CLIENT" "$(version_of package-json "$REPO_ROOT")" "$REPO_ROOT"
+  echo "========================================"
+}
+print_stack_versions
+
 API_JOB_PID=""
 CLIENT_PID=""
 cleanup() {
@@ -132,6 +169,7 @@ wait_for "$CLIENT_URL/" "Demo Client dev server" 60
 if [ "$SERVE_MODE" -eq 1 ]; then
   echo ""
   echo "--- local-everything stack is running ---"
+  print_stack_versions
   echo "Demo Client:  $CLIENT_URL"
   echo "API server:   $API_URL"
   echo "Logs:         $LOG_DIR"
@@ -143,4 +181,5 @@ else
   E2E_CLIENT_BASE_URL="$CLIENT_URL" npx playwright test --config=playwright.e2e.config.js
 
   echo "--- local-everything: nothing broke ---"
+  print_stack_versions
 fi
