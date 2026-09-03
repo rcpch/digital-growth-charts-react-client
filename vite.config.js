@@ -55,8 +55,36 @@ export default defineConfig(({ command }) => {
         )
       : null;
 
+  // In local dev, the component is aliased to raw source rather than the
+  // npm package pinned in package.json, so that pinned version is wrong to
+  // display. Read the sibling checkout's own version so the UI can show
+  // what is actually running instead of silently showing a stale number.
+  let localComponentLibraryVersion = null;
+  if (isLocalDev) {
+    try {
+      localComponentLibraryVersion = JSON.parse(
+        fs.readFileSync(
+          path.resolve(
+            __dirname,
+            "..",
+            "digital-growth-charts-react-component-library",
+            "package.json"
+          ),
+          "utf-8"
+        )
+      ).version;
+    } catch {
+      localComponentLibraryVersion = null;
+    }
+  }
+
   return {
     base,
+    define: {
+      "import.meta.env.VITE_APP_COMPONENT_LIBRARY_VERSION": JSON.stringify(
+        localComponentLibraryVersion
+      ),
+    },
     plugins: [react()],
     css: {
       preprocessorOptions: {
