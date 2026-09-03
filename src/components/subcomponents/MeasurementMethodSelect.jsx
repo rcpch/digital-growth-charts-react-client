@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 function MeasurementMethodSelect(props) {
   return (
     <Select
+      aria-label="Measurement method"
       fluid
       name="measurement_method"
       placeholder="Measurement"

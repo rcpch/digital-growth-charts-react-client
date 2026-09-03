@@ -285,7 +285,7 @@ Remaining work:
 
 ### [~] R13 - Meet the accessibility and responsive UI baseline
 
-Status: visible focus and responsive stacking have been improved, and Chromium checks cover the primary desktop flow and phone-width overflow. Comprehensive WCAG 2.2 AA review, labels, live announcements, zoom, tablet, keyboard, and responsive-table evidence remain incomplete.
+Status: visible focus and responsive stacking have been improved, and Chromium checks cover the primary desktop flow and phone-width overflow. The `Measurements` tab's `Reference`, `Sex`, and `Measurement method` dropdowns now have an `aria-label`, discoverable by screen readers and by Playwright's accessible-role queries; this was found and fixed while building the `CLIENT-1` E2E scenario (`spec/e2e.md`). Comprehensive WCAG 2.2 AA review, live announcements, zoom, tablet, keyboard, and responsive-table evidence remain incomplete.
 
 Audit evidence:
 
@@ -300,7 +300,7 @@ House style:
 
 Remaining work:
 
-- Associate labels and errors and add accessible names and status announcements throughout the form and chart workflows.
+- Associate labels and errors and add accessible names and status announcements throughout the form and chart workflows. The gestation-weeks and gestation-days dropdowns and icon-only buttons still lack a discoverable accessible name.
 - Verify keyboard-only operation and visible focus across all interactive controls.
 - Add representative phone, tablet, desktop, and zoom-level Playwright checks, including the results table.
 

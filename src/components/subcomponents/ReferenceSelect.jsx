@@ -5,6 +5,7 @@ function ReferenceSelect(props) {
   
   return (
     <Select
+      aria-label="Growth reference"
       name="reference"
       placeholder="UK-WHO"
       value={props.reference}

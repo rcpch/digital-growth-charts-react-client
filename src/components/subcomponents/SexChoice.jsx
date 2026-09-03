@@ -6,6 +6,7 @@ function SexSelect(props) {
     <>
     
     <Select
+      aria-label="Sex"
       fluid
       name="sex"
       placeholder="Sex"
