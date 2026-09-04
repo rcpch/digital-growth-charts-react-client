@@ -4,10 +4,11 @@ import { expect, test } from "@playwright/test";
 // built from source against the local Chart Component checkout, running
 // against a real locally built API server backed by the local
 // rcpchgrowth-python engine. Chart data itself comes from the bundled
-// fictional-child fixtures rather than a live API call from the browser;
-// the real API contract is checked separately by s/e2e-local via
-// `npm run test:live` against the local server. See spec/e2e.md.
-test("the local Chart Component renders against local fixtures with no errors", async ({
+// example scenarios (src/example-scenarios/) rather than a live API call
+// from the browser; the real API contract is checked separately by
+// s/e2e-local via `npm run test:live` against the local server. See
+// spec/e2e.md.
+test("the local Chart Component renders against a bundled example scenario with no errors", async ({
   page,
 }) => {
   const consoleErrors = [];
@@ -43,9 +44,10 @@ test("the local Chart Component renders against local fixtures with no errors", 
 
 // CLIENT-1 from spec/e2e.md: enter one fictional measurement through the
 // real Measurements form and render its centile chart and results table.
-// Unlike the fixture-driven test above, this drives a genuine browser POST
-// to the local API server (see s/e2e-local), proving the manual entry
-// workflow itself works end to end, not just fixture rendering. The
+// Unlike the example-scenario-driven test above, this drives a genuine
+// browser POST to the local API server (see s/e2e-local), proving the
+// manual entry workflow itself works end to end, not just rendering a
+// bundled example scenario. The
 // Reference, Sex, and Measurement method controls are left at their
 // defaults (UK-WHO, Boy, Height) since verifying they can be discovered
 // and read by their accessible name is covered implicitly by using

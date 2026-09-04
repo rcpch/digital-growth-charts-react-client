@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import legacyMeasurements from "../fictional-children/normal/uk-who/height/female/data.json";
-import midParentalHeight from "../fictional-children/normal/uk-who/height/female/mid-parental-height.json";
+import legacyMeasurements from "../example-scenarios/normal/uk-who/height/female/data.json";
+import midParentalHeight from "../example-scenarios/normal/uk-who/height/female/mid-parental-height.json";
 import {
   GrowthApiContractError,
   validateFictionalChildResponse,

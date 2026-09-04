@@ -17,7 +17,7 @@ This repository contains the public React demonstration client for the RCPCH Dig
 - A chart contains one patient's measurements only. DOB, sex, and gestation must remain consistent across every measurement method.
 - Treat every `VITE_*` value as public because Vite embeds it in the browser bundle. Never put a confidential credential there.
 - Changes affecting clinical presentation, validation, fixtures, provenance, or API contracts require independent review against authoritative evidence and a safety-impact assessment.
-- Files under `src/fictional-children/` are reviewed clinical demonstration fixtures. Do not hand-edit or regenerate them without recording provenance and review evidence.
+- Files under `src/example-scenarios/` are reviewed clinical demonstration example scenarios (not test fixtures, and distinct from the API's own `/fictional-child-data` generator feature). Do not hand-edit them; regenerate via `s/regenerate-example-scenarios` from `src/example-scenarios/scenario-manifest.json` and record provenance and review evidence.
 - `live` is currently the protected default and deployment branch. Use a feature branch and pull request; never push directly to `live`.
 - Retaining `live` rather than migrating this established static deployment to `main` is a documented project exception.
 - The repository remains MIT pending an explicit RCPCH licensing review. Do not change the licence or add SPDX/REUSE declarations that imply a relicensing decision.
@@ -30,6 +30,7 @@ This repository contains the public React demonstration client for the RCPCH Dig
 - `s/smoke` - build and run the production-browser compatibility smoke tests.
 - `s/smoke-live` - run the opt-in smoke matrix against a nominated API deployment.
 - `s/e2e-local` - run the opt-in `local-everything` E2E preset across all local sibling checkouts (requires Docker). Add `--serve` for manual interaction with the running stack instead of tearing down after the automated checks.
+- `s/regenerate-example-scenarios` - regenerate `src/example-scenarios/**/data.json` from the scenario manifest against a real API (requires `LIVE_GROWTH_API_BASE_URL`).
 - `s/build` - build the production bundle.
 - `s/audit` - fail on high-severity npm advisories.
 - `s/docker-rebuild` - rebuild the development image.

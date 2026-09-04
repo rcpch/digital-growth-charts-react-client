@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-import legacyMeasurements from "../fictional-children/normal/uk-who/height/female/data.json";
+import legacyMeasurements from "../example-scenarios/normal/uk-who/height/female/data.json";
 import { buildGrowthApiUrl, requestGrowthApi } from "./growthApiClient";
 
 const inputParameters = {

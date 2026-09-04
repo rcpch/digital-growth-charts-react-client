@@ -82,7 +82,7 @@ const Presets = (props) => {
   return (
     <>
       <Message>
-        <p>The following examples are Presets to demonstrate the functionality of the charts.</p>
+        <p>The following are example scenarios to demonstrate the functionality of the charts.</p>
         <p>
           Please note that these examples are fictional and do not represent real patients. You can
           create fictional patients also by using the &quot;Generator&quot; tab.

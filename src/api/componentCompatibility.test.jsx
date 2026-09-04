@@ -6,7 +6,7 @@ import semver from "semver";
 import { afterEach, describe, expect, it } from "vitest";
 
 import { RCPCHChart } from "@rcpch/digital-growth-charts-react-component-library";
-import legacyMeasurements from "../fictional-children/normal/uk-who/height/female/data.json";
+import legacyMeasurements from "../example-scenarios/normal/uk-who/height/female/data.json";
 import { validateMeasurementResponse } from "./growthApiContract";
 
 const require = createRequire(import.meta.url);

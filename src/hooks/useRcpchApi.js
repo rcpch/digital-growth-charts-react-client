@@ -90,19 +90,20 @@ const makeInitialState = () => {
   };
 };
 
-// This is a special case for fictional child data, which is not fetched from the API
-// but from local JSON files.
-// It is used to simulate an API call for fictional data.
-// The files are stored in src/fictional-children/{reference}/{measurementMethod}/data.json
-// or in src/fictional-children/{key}.json if the first path is not found.
+// This is a special case for bundled example scenarios, which are not
+// fetched from the API but loaded from local JSON files generated ahead of
+// time by s/regenerate-example-scenarios. It simulates an API call using
+// data shaped exactly like a fictional-child-data response.
+// The files are stored in src/example-scenarios/{condition}/{reference}/{measurementMethod}/{sex}/data.json.
 // The JSON files are imported using import.meta.glob to allow for dynamic imports.
-// This allows for easy addition of new fictional datasets without changing the code.
+// This allows for easy addition of new example scenarios without changing the code.
 // The files contain lists of measurement objects that match the expected structure
 // of the API response, so they can be used directly in the application.
-// Preload all local fictional datasets (Vite bundles JSON)
-const fictionalIndex = import.meta.glob("/src/fictional-children/**/*.json", {
-  eager: true,
-});
+// Preload all local example scenarios (Vite bundles JSON)
+const exampleScenarioIndex = import.meta.glob(
+  "/src/example-scenarios/**/*.json",
+  { eager: true }
+);
 
 const fetchFromLocal = async (input, reference, measurementMethod, sex) => {
   const { condition } = input || {};
@@ -113,12 +114,12 @@ const fetchFromLocal = async (input, reference, measurementMethod, sex) => {
   }
 
   // Required: measurements
-  // Expected path: /src/fictional-children/{condition}/{reference}/{measurementMethod}/{sex}/data.json
-  const baseDir = `/src/fictional-children/${condition}/${reference}/${measurementMethod}/${sex}`;
+  // Expected path: /src/example-scenarios/{condition}/{reference}/{measurementMethod}/{sex}/data.json
+  const baseDir = `/src/example-scenarios/${condition}/${reference}/${measurementMethod}/${sex}`;
   const dataPath = `${baseDir}/data.json`;
-  const dataMod = fictionalIndex[dataPath];
+  const dataMod = exampleScenarioIndex[dataPath];
   if (!dataMod) {
-    throw new Error(`Fictional dataset not found at ${dataPath}`);
+    throw new Error(`Example scenario dataset not found at ${dataPath}`);
   }
   const measurements = validateFictionalChildResponse(
     dataMod.default ?? dataMod,
@@ -138,7 +139,7 @@ const fetchFromLocal = async (input, reference, measurementMethod, sex) => {
   let midParentalHeights = null;
   if (needsMph) {
     const mphPath = `${baseDir}/mid-parental-height.json`; // same folder as data.json
-    const mphMod = fictionalIndex[mphPath];
+    const mphMod = exampleScenarioIndex[mphPath];
     if (mphMod) {
       midParentalHeights = mphMod.default ?? mphMod;
     }

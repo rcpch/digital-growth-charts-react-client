@@ -263,9 +263,9 @@ Completion criteria:
 - Pin all direct dependencies exactly.
 - Separately review and remove dependencies that do not solve a current problem.
 
-### [~] R12 - Record fixture provenance and enforce registry consistency
+### [~] R12 - Record example-scenario provenance and enforce registry consistency
 
-Status: contract tests now validate every bundled API-shaped dataset, patient identity, ordering, and declared mid-parental-height fixture. A reviewed source, generator, licence, review-date, and checksum manifest is still missing.
+Status: `src/example-scenarios/` (formerly `src/fictional-children/`, renamed to avoid colliding with the API's own `/fictional-child-data` generator feature and with "fixture" as general test-artifact terminology) now has a committed `scenario-manifest.json` and `s/regenerate-example-scenarios` tool that calls the real API's fictional-child-data generator from hard-coded scenario parameters, rather than hand-editing or freezing API responses. All 26 `uk-who`/`cdc`/`trisomy-21` datasets have been regenerated this way and now carry real `provenance`. Contract tests validate every bundled dataset, patient identity, ordering, and declared mid-parental-height example scenario. A source/licence/review-date/checksum manifest and clinical review of the manifest's scenario parameters (age range, target SDS; drift is currently disabled - see `spec/queries.md`) are still missing.
 
 Audit evidence:
 
@@ -279,9 +279,10 @@ House style:
 
 Remaining work:
 
-- Add a reviewed dataset registry containing source, reference, generator version, licence, review date, and checksum.
-- Derive enabled options from the registry or retain a test that every enabled option resolves.
-- Do not hand-edit or regenerate fixtures without provenance and review evidence.
+- Add licence and checksum fields to `scenario-manifest.json`, alongside the scenario parameters it already records.
+- Derive enabled `Presets` options from the registry or retain a test that every enabled option resolves; add the missing `malnutrition` dataset or keep it disabled deliberately.
+- Obtain clinical review of the manifest's scenario parameters (see `spec/queries.md`) before treating the regenerated datasets as authoritative teaching examples.
+- Do not hand-edit example scenarios; regenerate via `s/regenerate-example-scenarios` and record provenance and review evidence.
 
 ### [~] R13 - Meet the accessibility and responsive UI baseline
 
@@ -384,8 +385,8 @@ That parcel was completed in `607a667` (`chore: establish house-style compliance
 The original audit proposed the following second PR:
 
 1. Fix cross-method patient identity and mid-parental-height lifecycle defects with independently reviewed tests.
-2. Add API contract, date, fixture-registry, and reviewed clinical-vector tests, then require them in CI.
+2. Add API contract, date, example-scenario-registry, and reviewed clinical-vector tests, then require them in CI.
 3. Address form and chart accessibility and responsive behaviour with Playwright verification.
-4. Resolve licensing, fixture provenance, branch model, and release traceability through explicit owner, CSO, and licensing decisions.
+4. Resolve licensing, example-scenario provenance, branch model, and release traceability through explicit owner, CSO, and licensing decisions.
 
-Engineering portions of this parcel are partially complete in `607a667` and `e340376` (`test: add coordinated platform compatibility smoke tests`). Governance decisions, independent clinical review, fixture provenance, comprehensive accessibility evidence, and release traceability remain represented by R1, R3-R5, R7-R8, and R12-R15.
+Engineering portions of this parcel are partially complete in `607a667` and `e340376` (`test: add coordinated platform compatibility smoke tests`). Governance decisions, independent clinical review, example-scenario provenance, comprehensive accessibility evidence, and release traceability remain represented by R1, R3-R5, R7-R8, and R12-R15.
