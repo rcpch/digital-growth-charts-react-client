@@ -37,11 +37,12 @@ Prerequisite: Docker with the daemon running.
 
 ```sh
 cp example.env .env
-s/docker-rebuild
-s/docker-start
+s/up
 ```
 
-The Docker image is for local development and runs the Vite development server. GitHub Pages serves the public deployment.
+Open <http://localhost:3000/>. Source changes are reflected through Vite's development server. Stop and remove the development environment with `s/down`.
+
+Compose builds the development image with the exact locked dependencies and mounts the application source for hot reload. The older `s/docker-rebuild` and `s/docker-start` wrappers remain available for running the image directly. GitHub Pages serves the public deployment.
 
 ## Validation
 
