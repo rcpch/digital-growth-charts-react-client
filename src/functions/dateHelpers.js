@@ -26,7 +26,10 @@ export const parseDate = (inputDate) => {
     const isDaysInMonthValid = (parsedArray) => {
         const [jsYear, jsMonth, jsDay] = parsedArray;
         if (jsMonth === 1 && jsDay === 29) {
-            if (jsYear % 4 === 0) {
+            if (
+                jsYear % 4 === 0 &&
+                (jsYear % 100 !== 0 || jsYear % 400 === 0)
+            ) {
                 return true;
             } else {
                 return false;

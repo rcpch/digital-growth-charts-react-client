@@ -161,6 +161,7 @@ const FictionalChildForm = (props) => {
   };
 
   const removeMidParentalHeight = () => {
+    props.handleRemoveMidParentalHeight();
     props.updateGlobalState("mid-parental-height", "reset");
   };
 
@@ -372,6 +373,7 @@ FictionalChildForm.propTypes = {
   updateGlobalState: PropTypes.func.isRequired,
   fictionalFormDataSubmit: PropTypes.func.isRequired,
   handleUtilitiesFormDataSubmit: PropTypes.func.isRequired,
+  handleRemoveMidParentalHeight: PropTypes.func.isRequired,
   globalState: PropTypes.shape({
     measurementMethod: PropTypes.string.isRequired,
     sex: PropTypes.string.isRequired,

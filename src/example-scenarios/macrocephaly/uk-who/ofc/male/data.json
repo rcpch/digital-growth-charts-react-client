@@ -1,0 +1,630 @@
+[
+  {
+    "provenance": {
+      "growth_reference": "uk-who",
+      "calculation_engine": {
+        "name": "rcpch/rcpchgrowth-python",
+        "version": "4.6.2",
+        "commit": "unknown"
+      },
+      "api_server": {
+        "name": "rcpch/digital-growth-charts-server",
+        "version": "5.0.0",
+        "commit": "unknown"
+      }
+    },
+    "birth_data": {
+      "birth_date": "1759-04-11",
+      "gestation_weeks": 40,
+      "gestation_days": 0,
+      "estimated_date_delivery": "1759-04-11",
+      "estimated_date_delivery_string": "Wed 11 April, 1759",
+      "sex": "male"
+    },
+    "measurement_dates": {
+      "observation_date": "1759-04-11",
+      "chronological_decimal_age": 0,
+      "corrected_decimal_age": 0,
+      "chronological_calendar_age": "Birth date",
+      "corrected_calendar_age": "Birth date",
+      "corrected_gestational_age": {
+        "corrected_gestation_weeks": 40,
+        "corrected_gestation_days": 0
+      },
+      "comments": {
+        "clinician_corrected_decimal_age_comment": "Born at term. No correction has been made for gestation.",
+        "lay_corrected_decimal_age_comment": "Your child was born on their due date.",
+        "clinician_chronological_decimal_age_comment": "Born Term. No correction has been made for gestation.",
+        "lay_chronological_decimal_age_comment": "Your child was born on their due date."
+      },
+      "corrected_decimal_age_error": null,
+      "chronological_decimal_age_error": null
+    },
+    "child_observation_value": {
+      "measurement_method": "ofc",
+      "observation_value": 36.8,
+      "observation_value_error": null
+    },
+    "measurement_calculated_values": {
+      "corrected_sds": 1.6261937469075254,
+      "corrected_centile": 94.8046,
+      "corrected_centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+      "chronological_sds": 1.6261937469075254,
+      "chronological_centile": 94.8046,
+      "chronological_centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+      "corrected_measurement_error": null,
+      "chronological_measurement_error": null,
+      "corrected_percentage_median_bmi": null,
+      "chronological_percentage_median_bmi": null
+    },
+    "plottable_data": {
+      "centile_data": {
+        "chronological_decimal_age_data": {
+          "x": 0,
+          "y": 36.8,
+          "b": null,
+          "centile": 94.8046,
+          "sds": 1.6261937469075254,
+          "bone_age_label": null,
+          "events_text": null,
+          "bone_age_type": null,
+          "bone_age_sds": null,
+          "bone_age_centile": null,
+          "observation_error": null,
+          "age_type": "chronological_age",
+          "calendar_age": "Birth date",
+          "lay_comment": "Your child was born on their due date.",
+          "clinician_comment": "Born Term. No correction has been made for gestation.",
+          "age_error": null,
+          "centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+          "observation_value_error": null
+        },
+        "corrected_decimal_age_data": {
+          "x": 0,
+          "y": 36.8,
+          "b": null,
+          "centile": 94.8046,
+          "sds": 1.6261937469075254,
+          "bone_age_label": null,
+          "events_text": null,
+          "bone_age_type": null,
+          "bone_age_sds": null,
+          "bone_age_centile": null,
+          "observation_error": null,
+          "age_type": "corrected_age",
+          "calendar_age": "Birth date",
+          "corrected_gestational_age": "40 + 0 weeks",
+          "lay_comment": "Your child was born on their due date.",
+          "clinician_comment": "Born at term. No correction has been made for gestation.",
+          "age_error": null,
+          "centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+          "observation_value_error": null
+        }
+      },
+      "sds_data": {
+        "chronological_decimal_age_data": {
+          "x": 0,
+          "y": 1.6261937469075254,
+          "b": null,
+          "centile": 94.8046,
+          "sds": null,
+          "bone_age_label": null,
+          "events_text": null,
+          "bone_age_type": null,
+          "bone_age_sds": null,
+          "bone_age_centile": null,
+          "observation_error": null,
+          "age_type": "chronological_age",
+          "calendar_age": "Birth date",
+          "lay_comment": "Your child was born on their due date.",
+          "clinician_comment": "Born Term. No correction has been made for gestation.",
+          "age_error": null,
+          "centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+          "observation_value_error": null
+        },
+        "corrected_decimal_age_data": {
+          "x": 0,
+          "y": 1.6261937469075254,
+          "b": null,
+          "centile": 94.8046,
+          "sds": null,
+          "bone_age_label": null,
+          "events_text": null,
+          "bone_age_type": null,
+          "bone_age_sds": null,
+          "bone_age_centile": null,
+          "observation_error": null,
+          "age_type": "corrected_age",
+          "calendar_age": "Birth date",
+          "corrected_gestational_age": "40 + 0 weeks",
+          "lay_comment": "Your child was born on their due date.",
+          "clinician_comment": "Born at term. No correction has been made for gestation.",
+          "age_error": null,
+          "centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+          "observation_value_error": null
+        }
+      }
+    },
+    "bone_age": {
+      "bone_age": null,
+      "bone_age_type": null,
+      "bone_age_sds": null,
+      "bone_age_centile": null,
+      "bone_age_text": null
+    },
+    "events_data": {
+      "events_text": null
+    }
+  },
+  {
+    "provenance": {
+      "growth_reference": "uk-who",
+      "calculation_engine": {
+        "name": "rcpch/rcpchgrowth-python",
+        "version": "4.6.2",
+        "commit": "unknown"
+      },
+      "api_server": {
+        "name": "rcpch/digital-growth-charts-server",
+        "version": "5.0.0",
+        "commit": "unknown"
+      }
+    },
+    "birth_data": {
+      "birth_date": "1759-04-11",
+      "gestation_weeks": 40,
+      "gestation_days": 0,
+      "estimated_date_delivery": "1759-04-11",
+      "estimated_date_delivery_string": "Wed 11 April, 1759",
+      "sex": "male"
+    },
+    "measurement_dates": {
+      "observation_date": "1759-09-10",
+      "chronological_decimal_age": 0.4161533196440794,
+      "corrected_decimal_age": 0.4161533196440794,
+      "chronological_calendar_age": "4 months, 4 weeks and 2 days",
+      "corrected_calendar_age": "4 months, 4 weeks and 2 days",
+      "corrected_gestational_age": {
+        "corrected_gestation_weeks": null,
+        "corrected_gestation_days": null
+      },
+      "comments": {
+        "clinician_corrected_decimal_age_comment": "Born at term. No correction has been made for gestation.",
+        "lay_corrected_decimal_age_comment": "Your child was born on their due date.",
+        "clinician_chronological_decimal_age_comment": "Born Term. No correction has been made for gestation.",
+        "lay_chronological_decimal_age_comment": "Your child was born on their due date."
+      },
+      "corrected_decimal_age_error": null,
+      "chronological_decimal_age_error": null
+    },
+    "child_observation_value": {
+      "measurement_method": "ofc",
+      "observation_value": 44.5,
+      "observation_value_error": null
+    },
+    "measurement_calculated_values": {
+      "corrected_sds": 1.613304593295535,
+      "corrected_centile": 94.6661,
+      "corrected_centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+      "chronological_sds": 1.613304593295535,
+      "chronological_centile": 94.6661,
+      "chronological_centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+      "corrected_measurement_error": null,
+      "chronological_measurement_error": null,
+      "corrected_percentage_median_bmi": null,
+      "chronological_percentage_median_bmi": null
+    },
+    "plottable_data": {
+      "centile_data": {
+        "chronological_decimal_age_data": {
+          "x": 0.4161533196440794,
+          "y": 44.5,
+          "b": null,
+          "centile": 94.6661,
+          "sds": 1.613304593295535,
+          "bone_age_label": null,
+          "events_text": null,
+          "bone_age_type": null,
+          "bone_age_sds": null,
+          "bone_age_centile": null,
+          "observation_error": null,
+          "age_type": "chronological_age",
+          "calendar_age": "4 months, 4 weeks and 2 days",
+          "lay_comment": "Your child was born on their due date.",
+          "clinician_comment": "Born Term. No correction has been made for gestation.",
+          "age_error": null,
+          "centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+          "observation_value_error": null
+        },
+        "corrected_decimal_age_data": {
+          "x": 0.4161533196440794,
+          "y": 44.5,
+          "b": null,
+          "centile": 94.6661,
+          "sds": 1.613304593295535,
+          "bone_age_label": null,
+          "events_text": null,
+          "bone_age_type": null,
+          "bone_age_sds": null,
+          "bone_age_centile": null,
+          "observation_error": null,
+          "age_type": "corrected_age",
+          "calendar_age": "4 months, 4 weeks and 2 days",
+          "corrected_gestational_age": "",
+          "lay_comment": "Your child was born on their due date.",
+          "clinician_comment": "Born at term. No correction has been made for gestation.",
+          "age_error": null,
+          "centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+          "observation_value_error": null
+        }
+      },
+      "sds_data": {
+        "chronological_decimal_age_data": {
+          "x": 0.4161533196440794,
+          "y": 1.613304593295535,
+          "b": null,
+          "centile": 94.6661,
+          "sds": null,
+          "bone_age_label": null,
+          "events_text": null,
+          "bone_age_type": null,
+          "bone_age_sds": null,
+          "bone_age_centile": null,
+          "observation_error": null,
+          "age_type": "chronological_age",
+          "calendar_age": "4 months, 4 weeks and 2 days",
+          "lay_comment": "Your child was born on their due date.",
+          "clinician_comment": "Born Term. No correction has been made for gestation.",
+          "age_error": null,
+          "centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+          "observation_value_error": null
+        },
+        "corrected_decimal_age_data": {
+          "x": 0.4161533196440794,
+          "y": 1.613304593295535,
+          "b": null,
+          "centile": 94.6661,
+          "sds": null,
+          "bone_age_label": null,
+          "events_text": null,
+          "bone_age_type": null,
+          "bone_age_sds": null,
+          "bone_age_centile": null,
+          "observation_error": null,
+          "age_type": "corrected_age",
+          "calendar_age": "4 months, 4 weeks and 2 days",
+          "corrected_gestational_age": "",
+          "lay_comment": "Your child was born on their due date.",
+          "clinician_comment": "Born at term. No correction has been made for gestation.",
+          "age_error": null,
+          "centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+          "observation_value_error": null
+        }
+      }
+    },
+    "bone_age": {
+      "bone_age": null,
+      "bone_age_type": null,
+      "bone_age_sds": null,
+      "bone_age_centile": null,
+      "bone_age_text": null
+    },
+    "events_data": {
+      "events_text": null
+    }
+  },
+  {
+    "provenance": {
+      "growth_reference": "uk-who",
+      "calculation_engine": {
+        "name": "rcpch/rcpchgrowth-python",
+        "version": "4.6.2",
+        "commit": "unknown"
+      },
+      "api_server": {
+        "name": "rcpch/digital-growth-charts-server",
+        "version": "5.0.0",
+        "commit": "unknown"
+      }
+    },
+    "birth_data": {
+      "birth_date": "1759-04-11",
+      "gestation_weeks": 40,
+      "gestation_days": 0,
+      "estimated_date_delivery": "1759-04-11",
+      "estimated_date_delivery_string": "Wed 11 April, 1759",
+      "sex": "male"
+    },
+    "measurement_dates": {
+      "observation_date": "1760-02-09",
+      "chronological_decimal_age": 0.8323066392881588,
+      "corrected_decimal_age": 0.8323066392881588,
+      "chronological_calendar_age": "9 months, 4 weeks and 1 day",
+      "corrected_calendar_age": "9 months, 4 weeks and 1 day",
+      "corrected_gestational_age": {
+        "corrected_gestation_weeks": null,
+        "corrected_gestation_days": null
+      },
+      "comments": {
+        "clinician_corrected_decimal_age_comment": "Born at term. No correction has been made for gestation.",
+        "lay_corrected_decimal_age_comment": "Your child was born on their due date.",
+        "clinician_chronological_decimal_age_comment": "Born Term. No correction has been made for gestation.",
+        "lay_chronological_decimal_age_comment": "Your child was born on their due date."
+      },
+      "corrected_decimal_age_error": null,
+      "chronological_decimal_age_error": null
+    },
+    "child_observation_value": {
+      "measurement_method": "ofc",
+      "observation_value": 47.5,
+      "observation_value_error": null
+    },
+    "measurement_calculated_values": {
+      "corrected_sds": 1.6575730673460718,
+      "corrected_centile": 95.1298,
+      "corrected_centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+      "chronological_sds": 1.6575730673460718,
+      "chronological_centile": 95.1298,
+      "chronological_centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+      "corrected_measurement_error": null,
+      "chronological_measurement_error": null,
+      "corrected_percentage_median_bmi": null,
+      "chronological_percentage_median_bmi": null
+    },
+    "plottable_data": {
+      "centile_data": {
+        "chronological_decimal_age_data": {
+          "x": 0.8323066392881588,
+          "y": 47.5,
+          "b": null,
+          "centile": 95.1298,
+          "sds": 1.6575730673460718,
+          "bone_age_label": null,
+          "events_text": null,
+          "bone_age_type": null,
+          "bone_age_sds": null,
+          "bone_age_centile": null,
+          "observation_error": null,
+          "age_type": "chronological_age",
+          "calendar_age": "9 months, 4 weeks and 1 day",
+          "lay_comment": "Your child was born on their due date.",
+          "clinician_comment": "Born Term. No correction has been made for gestation.",
+          "age_error": null,
+          "centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+          "observation_value_error": null
+        },
+        "corrected_decimal_age_data": {
+          "x": 0.8323066392881588,
+          "y": 47.5,
+          "b": null,
+          "centile": 95.1298,
+          "sds": 1.6575730673460718,
+          "bone_age_label": null,
+          "events_text": null,
+          "bone_age_type": null,
+          "bone_age_sds": null,
+          "bone_age_centile": null,
+          "observation_error": null,
+          "age_type": "corrected_age",
+          "calendar_age": "9 months, 4 weeks and 1 day",
+          "corrected_gestational_age": "",
+          "lay_comment": "Your child was born on their due date.",
+          "clinician_comment": "Born at term. No correction has been made for gestation.",
+          "age_error": null,
+          "centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+          "observation_value_error": null
+        }
+      },
+      "sds_data": {
+        "chronological_decimal_age_data": {
+          "x": 0.8323066392881588,
+          "y": 1.6575730673460718,
+          "b": null,
+          "centile": 95.1298,
+          "sds": null,
+          "bone_age_label": null,
+          "events_text": null,
+          "bone_age_type": null,
+          "bone_age_sds": null,
+          "bone_age_centile": null,
+          "observation_error": null,
+          "age_type": "chronological_age",
+          "calendar_age": "9 months, 4 weeks and 1 day",
+          "lay_comment": "Your child was born on their due date.",
+          "clinician_comment": "Born Term. No correction has been made for gestation.",
+          "age_error": null,
+          "centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+          "observation_value_error": null
+        },
+        "corrected_decimal_age_data": {
+          "x": 0.8323066392881588,
+          "y": 1.6575730673460718,
+          "b": null,
+          "centile": 95.1298,
+          "sds": null,
+          "bone_age_label": null,
+          "events_text": null,
+          "bone_age_type": null,
+          "bone_age_sds": null,
+          "bone_age_centile": null,
+          "observation_error": null,
+          "age_type": "corrected_age",
+          "calendar_age": "9 months, 4 weeks and 1 day",
+          "corrected_gestational_age": "",
+          "lay_comment": "Your child was born on their due date.",
+          "clinician_comment": "Born at term. No correction has been made for gestation.",
+          "age_error": null,
+          "centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+          "observation_value_error": null
+        }
+      }
+    },
+    "bone_age": {
+      "bone_age": null,
+      "bone_age_type": null,
+      "bone_age_sds": null,
+      "bone_age_centile": null,
+      "bone_age_text": null
+    },
+    "events_data": {
+      "events_text": null
+    }
+  },
+  {
+    "provenance": {
+      "growth_reference": "uk-who",
+      "calculation_engine": {
+        "name": "rcpch/rcpchgrowth-python",
+        "version": "4.6.2",
+        "commit": "unknown"
+      },
+      "api_server": {
+        "name": "rcpch/digital-growth-charts-server",
+        "version": "5.0.0",
+        "commit": "unknown"
+      }
+    },
+    "birth_data": {
+      "birth_date": "1759-04-11",
+      "gestation_weeks": 40,
+      "gestation_days": 0,
+      "estimated_date_delivery": "1759-04-11",
+      "estimated_date_delivery_string": "Wed 11 April, 1759",
+      "sex": "male"
+    },
+    "measurement_dates": {
+      "observation_date": "1760-07-10",
+      "chronological_decimal_age": 1.2484599589322383,
+      "corrected_decimal_age": 1.2484599589322383,
+      "chronological_calendar_age": "1 year, 2 months, 4 weeks and 1 day",
+      "corrected_calendar_age": "1 year, 2 months, 4 weeks and 1 day",
+      "corrected_gestational_age": {
+        "corrected_gestation_weeks": null,
+        "corrected_gestation_days": null
+      },
+      "comments": {
+        "clinician_corrected_decimal_age_comment": "Born at term. No correction has been made for gestation.",
+        "lay_corrected_decimal_age_comment": "Your child was born on their due date.",
+        "clinician_chronological_decimal_age_comment": "Born Term. No correction has been made for gestation.",
+        "lay_chronological_decimal_age_comment": "Your child was born on their due date."
+      },
+      "corrected_decimal_age_error": null,
+      "chronological_decimal_age_error": null
+    },
+    "child_observation_value": {
+      "measurement_method": "ofc",
+      "observation_value": 48.9,
+      "observation_value_error": null
+    },
+    "measurement_calculated_values": {
+      "corrected_sds": 1.605476780181948,
+      "corrected_centile": 94.5806,
+      "corrected_centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+      "chronological_sds": 1.605476780181948,
+      "chronological_centile": 94.5806,
+      "chronological_centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+      "corrected_measurement_error": null,
+      "chronological_measurement_error": null,
+      "corrected_percentage_median_bmi": null,
+      "chronological_percentage_median_bmi": null
+    },
+    "plottable_data": {
+      "centile_data": {
+        "chronological_decimal_age_data": {
+          "x": 1.2484599589322383,
+          "y": 48.9,
+          "b": null,
+          "centile": 94.5806,
+          "sds": 1.605476780181948,
+          "bone_age_label": null,
+          "events_text": null,
+          "bone_age_type": null,
+          "bone_age_sds": null,
+          "bone_age_centile": null,
+          "observation_error": null,
+          "age_type": "chronological_age",
+          "calendar_age": "1 year, 2 months, 4 weeks and 1 day",
+          "lay_comment": "Your child was born on their due date.",
+          "clinician_comment": "Born Term. No correction has been made for gestation.",
+          "age_error": null,
+          "centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+          "observation_value_error": null
+        },
+        "corrected_decimal_age_data": {
+          "x": 1.2484599589322383,
+          "y": 48.9,
+          "b": null,
+          "centile": 94.5806,
+          "sds": 1.605476780181948,
+          "bone_age_label": null,
+          "events_text": null,
+          "bone_age_type": null,
+          "bone_age_sds": null,
+          "bone_age_centile": null,
+          "observation_error": null,
+          "age_type": "corrected_age",
+          "calendar_age": "1 year, 2 months, 4 weeks and 1 day",
+          "corrected_gestational_age": "",
+          "lay_comment": "Your child was born on their due date.",
+          "clinician_comment": "Born at term. No correction has been made for gestation.",
+          "age_error": null,
+          "centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+          "observation_value_error": null
+        }
+      },
+      "sds_data": {
+        "chronological_decimal_age_data": {
+          "x": 1.2484599589322383,
+          "y": 1.605476780181948,
+          "b": null,
+          "centile": 94.5806,
+          "sds": null,
+          "bone_age_label": null,
+          "events_text": null,
+          "bone_age_type": null,
+          "bone_age_sds": null,
+          "bone_age_centile": null,
+          "observation_error": null,
+          "age_type": "chronological_age",
+          "calendar_age": "1 year, 2 months, 4 weeks and 1 day",
+          "lay_comment": "Your child was born on their due date.",
+          "clinician_comment": "Born Term. No correction has been made for gestation.",
+          "age_error": null,
+          "centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+          "observation_value_error": null
+        },
+        "corrected_decimal_age_data": {
+          "x": 1.2484599589322383,
+          "y": 1.605476780181948,
+          "b": null,
+          "centile": 94.5806,
+          "sds": null,
+          "bone_age_label": null,
+          "events_text": null,
+          "bone_age_type": null,
+          "bone_age_sds": null,
+          "bone_age_centile": null,
+          "observation_error": null,
+          "age_type": "corrected_age",
+          "calendar_age": "1 year, 2 months, 4 weeks and 1 day",
+          "corrected_gestational_age": "",
+          "lay_comment": "Your child was born on their due date.",
+          "clinician_comment": "Born at term. No correction has been made for gestation.",
+          "age_error": null,
+          "centile_band": "This head circumference measurement is between the 91st and 98th centiles.",
+          "observation_value_error": null
+        }
+      }
+    },
+    "bone_age": {
+      "bone_age": null,
+      "bone_age_type": null,
+      "bone_age_sds": null,
+      "bone_age_centile": null,
+      "bone_age_text": null
+    },
+    "events_data": {
+      "events_text": null
+    }
+  }
+]

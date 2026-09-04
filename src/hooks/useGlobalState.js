@@ -1,6 +1,11 @@
 import { useState, useCallback } from "react";
 import deepCopy from "../functions/deepCopy";
 import { units } from "../functions/units";
+import {
+  allMeasurements,
+  firstRecordedSex,
+  resultSex,
+} from "../functions/measurementValidation";
 
 const makeGlobalState = () => {
   return {
@@ -92,15 +97,9 @@ const useGlobalState = () => {
               mutable.measurementMethodActiveIndex = 0;
               mutable.sex = "female";
             } else {
-              if (
-                results[newValue][mutable.measurementMethod].length > 0 &&
-                results[newValue][mutable.measurementMethod][0].birth_data
-                  .sex !== mutable.sex
-              ) {
-                mutable.sex =
-                  results[newValue][
-                    mutable.measurementMethod
-                  ][0].birth_data.sex;
+              const recordedSex = firstRecordedSex(results[newValue]);
+              if (recordedSex && recordedSex !== mutable.sex) {
+                mutable.sex = recordedSex;
               }
               mutable.disabled = {
                 height: false,
@@ -145,18 +144,14 @@ const useGlobalState = () => {
             break;
           }
           case "sex": {
-            const existingResults = [
-              ...results[mutable.reference][mutable.measurementMethod],
-            ];
-            if (existingResults.length > 0) {
-              for (const oldResult of existingResults) {
-                if (newValue !== oldResult.sex) {
-                  mutable.errors = {
-                    errors: true,
-                    message: "Unable to change sex",
-                  };
-                  break;
-                }
+            const existingResults = allMeasurements(results[mutable.reference]);
+            for (const oldResult of existingResults) {
+              if (newValue !== resultSex(oldResult)) {
+                mutable.errors = {
+                  errors: true,
+                  message: "Unable to change sex",
+                };
+                break;
               }
             }
             if (!mutable.errors.message) {
@@ -164,17 +159,19 @@ const useGlobalState = () => {
             }
             break;
           }
-          // case "mid-parental-height":
-          //   if (newValue==="reset"){
-          //     const empty = {
-          //       height_maternal: null,
-          //       height_paternal: null
-          //     }
-          //     mutable.parentalHeights = empty;
-          //   } else {
-          //     mutable.midparentalHeightData = newValue;
-          //   }
-          //   break;
+          case "mid-parental-height":
+            if (newValue === "reset" || newValue === "empty") {
+              mutable.parentalHeights = {
+                height_maternal: null,
+                height_paternal: null,
+              };
+              mutable["mid-parental-height"] = {
+                mid_parental_height: null,
+              };
+            } else {
+              mutable["mid-parental-height"] = newValue;
+            }
+            break;
           default:
             mutable[name] = newValue;
         }

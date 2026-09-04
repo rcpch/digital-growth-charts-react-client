@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#
+# Build and exercise the production bundle in Chromium using the installed
+# chart package. Install the browser once with: npx playwright install chromium
+
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+
+npm ls react react-dom styled-components @rcpch/digital-growth-charts-react-component-library
+npm run build
+exec npm run test:browser -- "$@"

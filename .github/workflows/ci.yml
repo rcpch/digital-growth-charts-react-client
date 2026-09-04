@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - live
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Lint, test, and build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: s/lint
+
+      - name: Test
+        run: s/test
+
+      - name: Build
+        run: s/build
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}/
+          VITE_APP_GROWTH_API_BASEURL: https://api.rcpch.ac.uk/growth/v1
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Production browser smoke test
+        run: npm run test:browser
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}/
+
+  dependency-security:
+    name: Dependency security
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Audit locked dependencies
+        run: s/audit
+
+  workflow-security:
+    name: GitHub Actions security
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install Zizmor
+        uses: taiki-e/install-action@37f7c5781271959fb65b6b35224e28652ff2b63d # v2.87.0
+        with:
+          tool: zizmor@1.29.0
+          fallback: none
+
+      - name: Audit GitHub Actions
+        run: zizmor --strict-collection .
+        env:
+          GH_TOKEN: ${{ github.token }}

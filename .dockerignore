@@ -1,0 +1,12 @@
+.env
+.env.*
+.git
+.github
+.playwright-mcp
+.private
+.vscode
+build
+coverage
+dist
+node_modules
+npm-debug.log*

@@ -1,64 +1,11 @@
 import { useEffect, useState, useCallback } from "react";
 
 import deepCopy from "../functions/deepCopy";
-
-const fetchFromApi = async (inputParameters, reference, mode) => {
-  /*
-  This code snippet makes an API call direct to the digital growth charts server
-  It uses a development API key stored in .env which is unsafe
-  In due course this endpoint will be deprecated.
-  */
-  //  For this to work in development use http://127.0.0.1:8000 rather than localhost
-  const prod_url = import.meta.env.VITE_APP_GROWTH_API_BASEURL;
-  // const prod_url = "http://127.0.0.1:8000";
-
-  let url = `${prod_url}/${reference}/${mode}`;
-  if (mode === "mid-parental-height") {
-    url = `${prod_url}/utilities/${mode}`;
-  }
-
-  const headers = import.meta.env.VITE_APP_API_KEY
-    ? {
-        "Content-Type": "application/json",
-        "Subscription-Key": import.meta.env.VITE_APP_API_KEY,
-      }
-    : { "Content-Type": "application/json" };
-
-  const response = await fetch(url, {
-    body: JSON.stringify(inputParameters),
-    method: "POST",
-    headers,
-  });
-
-  if (response.status !== 200) {
-    let to_throw = null;
-
-    try {
-      const error = await response.text();
-      const { statusCode, message } = JSON.parse(error);
-
-      if(statusCode && message) {
-        to_throw = Error(`${statusCode} ${message}`);
-      } else {
-        to_throw = Error(`${response.status} ${error}`);
-      }
-
-      to_throw.retryAfter = response.headers.get("Retry-After");
-    } catch (err) {
-      to_throw = Error(`${response.status} ${err}`);
-    }
-
-    to_throw.statusCode = response.status;
-    throw to_throw;
-  }
-
-  const data = await response.json();
-
-  return data;
-};
+import { requestGrowthApi } from "../api/growthApiClient";
+import { validateFictionalChildResponse } from "../api/growthApiContract";
 
 const makeInitialState = () => {
-  const midParentalHeights = {
+  const makeMidParentalHeights = () => ({
     mid_parental_height: null,
     mid_parental_height_sds: null,
     mid_parental_height_centile: null,
@@ -67,7 +14,7 @@ const makeInitialState = () => {
     mid_parental_height_upper_centile_data: null,
     mid_parental_height_lower_value: null,
     mid_parental_height_upper_value: null,
-  };
+  });
 
   const measurements = {
     turner: {
@@ -99,7 +46,7 @@ const makeInitialState = () => {
         sex: null,
         reference: "uk-who",
       },
-      midParentalHeights: midParentalHeights,
+      midParentalHeights: makeMidParentalHeights(),
     },
     who: {
       height: [],
@@ -112,7 +59,7 @@ const makeInitialState = () => {
         sex: null,
         reference: "who",
       },
-      midParentalHeights: midParentalHeights,
+      midParentalHeights: makeMidParentalHeights(),
     },
     cdc: {
       height: [],
@@ -143,19 +90,20 @@ const makeInitialState = () => {
   };
 };
 
-// This is a special case for fictional child data, which is not fetched from the API
-// but from local JSON files.
-// It is used to simulate an API call for fictional data.
-// The files are stored in src/fictional-children/{reference}/{measurementMethod}/data.json
-// or in src/fictional-children/{key}.json if the first path is not found.
+// This is a special case for bundled example scenarios, which are not
+// fetched from the API but loaded from local JSON files generated ahead of
+// time by s/regenerate-example-scenarios. It simulates an API call using
+// data shaped exactly like a fictional-child-data response.
+// The files are stored in src/example-scenarios/{condition}/{reference}/{measurementMethod}/{sex}/data.json.
 // The JSON files are imported using import.meta.glob to allow for dynamic imports.
-// This allows for easy addition of new fictional datasets without changing the code.
+// This allows for easy addition of new example scenarios without changing the code.
 // The files contain lists of measurement objects that match the expected structure
 // of the API response, so they can be used directly in the application.
-// Preload all local fictional datasets (Vite bundles JSON)
-const fictionalIndex = import.meta.glob("/src/fictional-children/**/*.json", {
-  eager: true,
-});
+// Preload all local example scenarios (Vite bundles JSON)
+const exampleScenarioIndex = import.meta.glob(
+  "/src/example-scenarios/**/*.json",
+  { eager: true }
+);
 
 const fetchFromLocal = async (input, reference, measurementMethod, sex) => {
   const { condition } = input || {};
@@ -166,14 +114,17 @@ const fetchFromLocal = async (input, reference, measurementMethod, sex) => {
   }
 
   // Required: measurements
-  // Expected path: /src/fictional-children/{condition}/{reference}/{measurementMethod}/{sex}/data.json
-  const baseDir = `/src/fictional-children/${condition}/${reference}/${measurementMethod}/${sex}`;
+  // Expected path: /src/example-scenarios/{condition}/{reference}/{measurementMethod}/{sex}/data.json
+  const baseDir = `/src/example-scenarios/${condition}/${reference}/${measurementMethod}/${sex}`;
   const dataPath = `${baseDir}/data.json`;
-  const dataMod = fictionalIndex[dataPath];
+  const dataMod = exampleScenarioIndex[dataPath];
   if (!dataMod) {
-    throw new Error(`Fictional dataset not found at ${dataPath}`);
+    throw new Error(`Example scenario dataset not found at ${dataPath}`);
   }
-  const measurements = dataMod.default ?? dataMod;
+  const measurements = validateFictionalChildResponse(
+    dataMod.default ?? dataMod,
+    { reference, measurementMethod, sex }
+  );
 
   // Optional: mid-parental height (only for certain conditions and height method)
   const needsMph =
@@ -188,7 +139,7 @@ const fetchFromLocal = async (input, reference, measurementMethod, sex) => {
   let midParentalHeights = null;
   if (needsMph) {
     const mphPath = `${baseDir}/mid-parental-height.json`; // same folder as data.json
-    const mphMod = fictionalIndex[mphPath];
+    const mphMod = exampleScenarioIndex[mphPath];
     if (mphMod) {
       midParentalHeights = mphMod.default ?? mphMod;
     }
@@ -260,9 +211,34 @@ const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
       const mutable = deepCopy(old);
       mutable[mode].input[reference][measurementMethod] = [];
       mutable[mode].output[reference][measurementMethod] = [];
+      if (measurementMethod === "height") {
+        mutable[mode].input[reference].parentalHeights = {
+          height_maternal: null,
+          height_paternal: null,
+          sex: null,
+          reference,
+        };
+        mutable[mode].output[reference].midParentalHeights =
+          makeInitialState()[mode].output[reference].midParentalHeights;
+      }
       return mutable;
     });
   }, [measurementMethod, mode, reference]);
+
+  const clearMidParentalHeight = useCallback(() => {
+    setApiState((old) => {
+      const mutable = deepCopy(old);
+      mutable[mode].input[reference].parentalHeights = {
+        height_maternal: null,
+        height_paternal: null,
+        sex: null,
+        reference,
+      };
+      mutable[mode].output[reference].midParentalHeights =
+        makeInitialState()[mode].output[reference].midParentalHeights;
+      return mutable;
+    });
+  }, [mode, reference]);
 
   const clearApiErrors = useCallback(() => {
     setApiState((old) => {
@@ -299,10 +275,16 @@ const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
       const useLocal = !isStandardEndpoint || explicitLocal;
 
       const fetcher = apiState["isMidparentalCalculation"]
-        ? (li) => fetchFromApi(li, reference, "mid-parental-height")
+        ? (li) =>
+            requestGrowthApi({
+              inputParameters: li,
+              reference,
+              mode: "mid-parental-height",
+            })
         : useLocal
         ? (li) => fetchFromLocal(li, reference, measurementMethod, sex)
-        : (li) => fetchFromApi(li, reference, mode);
+        : (li) =>
+            requestGrowthApi({ inputParameters: li, reference, mode });
 
       fetcher(latestInput)
         .then((result) => {
@@ -403,6 +385,7 @@ const useRcpchApi = (measurementMethod, reference, mode = "calculation") => {
     fetchResult,
     removeLastActiveItem,
     clearBothActiveArrays,
+    clearMidParentalHeight,
     clearApiErrors,
     measurements: apiState[mode].input,
     results: apiState[mode].output,

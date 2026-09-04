@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#
+# Regenerate src/example-scenarios/**/data.json from the hard-coded
+# scenario manifest by calling the real API's fictional-child-data
+# generator endpoint. Requires LIVE_GROWTH_API_BASE_URL; see
+# tools/regenerate-example-scenarios.mjs and spec/roadmap.md R12.
+
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+
+exec node tools/regenerate-example-scenarios.mjs "$@"

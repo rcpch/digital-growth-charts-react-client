@@ -24,21 +24,67 @@ function getBasePath() {
   return "/";
 }
 
-// Check if we're in a local development environment with the library available
-const isLocalDev =
-  process.env.NODE_ENV === "development" &&
-  fs.existsSync(
-    path.resolve(
-      __dirname,
-      "..",
-      "digital-growth-charts-react-component-library"
-    )
-  );
-
-export default defineConfig(() => {
+export default defineConfig(({ command }) => {
   const base = getBasePath();
+  const isLocalDev =
+    command === "serve" &&
+    process.env.NODE_ENV === "development" &&
+    fs.existsSync(
+      path.resolve(
+        __dirname,
+        "..",
+        "digital-growth-charts-react-component-library"
+      )
+    );
+  const componentLibraryAlias =
+    process.env.NODE_ENV === "test"
+      ? path.resolve(
+          __dirname,
+          "node_modules",
+          "@rcpch",
+          "digital-growth-charts-react-component-library",
+          "build",
+          "esm.index.js"
+        )
+      : isLocalDev
+      ? path.resolve(
+          __dirname,
+          "..",
+          "digital-growth-charts-react-component-library",
+          "src"
+        )
+      : null;
+
+  // In local dev, the component is aliased to raw source rather than the
+  // npm package pinned in package.json, so that pinned version is wrong to
+  // display. Read the sibling checkout's own version so the UI can show
+  // what is actually running instead of silently showing a stale number.
+  let localComponentLibraryVersion = null;
+  if (isLocalDev) {
+    try {
+      localComponentLibraryVersion = JSON.parse(
+        fs.readFileSync(
+          path.resolve(
+            __dirname,
+            "..",
+            "digital-growth-charts-react-component-library",
+            "package.json"
+          ),
+          "utf-8"
+        )
+      ).version;
+    } catch {
+      localComponentLibraryVersion = null;
+    }
+  }
+
   return {
     base,
+    define: {
+      "import.meta.env.VITE_APP_COMPONENT_LIBRARY_VERSION": JSON.stringify(
+        localComponentLibraryVersion
+      ),
+    },
     plugins: [react()],
     css: {
       preprocessorOptions: {
@@ -62,15 +108,10 @@ export default defineConfig(() => {
           __dirname,
           "node_modules/styled-components"
         ),
-        ...(isLocalDev
+        ...(componentLibraryAlias
           ? {
               "@rcpch/digital-growth-charts-react-component-library":
-                path.resolve(
-                  __dirname,
-                  "..",
-                  "digital-growth-charts-react-component-library",
-                  "src"
-                ),
+                componentLibraryAlias,
             }
           : {}),
       },

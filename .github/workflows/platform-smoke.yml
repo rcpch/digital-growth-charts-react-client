@@ -1,0 +1,44 @@
+name: Coordinated platform smoke test
+
+on:
+  workflow_dispatch:
+    inputs:
+      api-base-url:
+        description: Candidate Digital Growth Charts API base URL
+        required: true
+        default: https://api.rcpch.ac.uk/growth/v1
+        type: string
+      require-provenance:
+        description: Require the v5 calculation provenance contract
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  live-api-contract:
+    name: Live API compatibility matrix
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run API compatibility matrix
+        run: s/smoke-live
+        env:
+          LIVE_GROWTH_API_BASE_URL: ${{ inputs['api-base-url'] }}
+          LIVE_PUBLIC_DEMO_KEY: ${{ secrets.VITE_APP_API_KEY }}
+          LIVE_REQUIRE_PROVENANCE: ${{ inputs['require-provenance'] }}

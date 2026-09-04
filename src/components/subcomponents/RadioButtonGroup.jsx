@@ -1,8 +1,12 @@
 import PropTypes from "prop-types";
 import { ButtonGroup, Button } from "semantic-ui-react";
 
-const RCPCHRadioButtonGroup = (props) => {
-    const { options, selectedValue, onChange, vertical } = props;
+const RCPCHRadioButtonGroup = ({
+    options,
+    selectedValue = null,
+    onChange,
+    vertical = false,
+}) => {
     return (
         <ButtonGroup
             basic
@@ -56,11 +60,6 @@ RCPCHRadioButtonGroup.propTypes = {
     ]),
     onChange: PropTypes.func.isRequired,
     vertical: PropTypes.bool,
-};
-
-RCPCHRadioButtonGroup.defaultProps = {
-    vertical: false,
-    selectedValue: null,
 };
 
 export default RCPCHRadioButtonGroup;

@@ -6,7 +6,7 @@ import globals from "globals";
 export default defineConfig([
   {
     files: ['**/*.{js,jsx}'],
-    ignores: ['dist/**', 'node_modules/**'],
+    ignores: ['build/**', 'dist/**', 'node_modules/**'],
     extends: [
       eslintJs.configs.recommended,
       eslintReact.configs["recommended"],

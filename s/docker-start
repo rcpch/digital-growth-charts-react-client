@@ -1,17 +1,27 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+#
+# Run the previously built local development image. Create .env from
+# example.env first, and build the image with s/docker-rebuild.
 
-# names the container as below
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+
 app="rcpch-dgc-demo-client"
 
-# usage: `s/docker-start` runs the container
-# It assumes the Docker image has already been built using the `s/docker-rebuild` script
-# It will error if a Docker container already exists
-# To remove the existing container use `docker container rm rcpch-dgc-demo-client`
-# or use the `s/docker-rebuild` script
+if ! command -v docker >/dev/null 2>&1; then
+  printf 'Docker is required. Install it before running s/docker-start.\n' >&2
+  exit 1
+fi
 
-docker run -it --rm -p 3000:3000 \
-  --name=${app} \
-  --volume $PWD:/app \
+if [[ ! -f .env ]]; then
+  printf 'Missing .env. Run: cp example.env .env\n' >&2
+  exit 1
+fi
+
+exec docker run -it --rm -p 3000:3000 \
+  --name="${app}" \
+  --volume "${PWD}:/app" \
   --volume /app/node_modules \
   --env-file ./.env \
-  ${app}
+  "$@" \
+  "${app}"

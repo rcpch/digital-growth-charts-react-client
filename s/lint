@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#
+# Run the repository ESLint checks.
+
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+
+exec npm run lint -- "$@"

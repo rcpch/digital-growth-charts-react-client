@@ -17,7 +17,7 @@ const Presets = (props) => {
     { label: "Normal", value: "normal", measurementMethod: "height", disabled: false },
     { label: "Faltering Growth", value: "faltering-growth", measurementMethod: "weight", disabled: false },
     { label: "Prematurity", value: "prematurity", measurementMethod: "weight", disabled: false },
-    { label: "Malnutrition", value: "malnutrition", measurementMethod: "bmi", disabled: false },
+    { label: "Malnutrition", value: "malnutrition", measurementMethod: "bmi", disabled: true },
     { label: "Obesity", value: "obesity", measurementMethod: "bmi", disabled: false },
     { label: "Pubertal Delay", value: "pubertal-delay", measurementMethod: "height", disabled: false },
     { label: "Short Stature", value: "short-stature", measurementMethod: "height", disabled: false },
@@ -82,7 +82,7 @@ const Presets = (props) => {
   return (
     <>
       <Message>
-        <p>The following examples are Presets to demonstrate the functionality of the charts.</p>
+        <p>The following are example scenarios to demonstrate the functionality of the charts.</p>
         <p>
           Please note that these examples are fictional and do not represent real patients. You can
           create fictional patients also by using the &quot;Generator&quot; tab.

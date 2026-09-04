@@ -6,9 +6,9 @@
 @primaryColor: #000;
 @positiveColor: #000;
 
-/* Reduce/neutralize focus effects globally */
-@focusBoxShadow: none;
-@invertedFocusBoxShadow: none;
+/* Keep keyboard focus clearly visible. */
+@focusBoxShadow: 0 0 0 3px rgba(27, 70, 156, 0.45);
+@invertedFocusBoxShadow: 0 0 0 3px rgba(255, 255, 255, 0.8);
 
 /* Toggle (radio-like) buttons: active state is black/white */
 @toggleOnBackgroundColor: #000;
