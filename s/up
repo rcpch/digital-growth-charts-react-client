@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#
+# Build and start the local development environment with Docker Compose.
+
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+
+if ! docker compose version >/dev/null 2>&1; then
+  printf 'Docker Compose is required. Install Docker with the Compose plugin before running s/up.\n' >&2
+  exit 1
+fi
+
+if [[ ! -f .env ]]; then
+  printf 'Missing .env. Run: cp example.env .env\n' >&2
+  exit 1
+fi
+
+exec docker compose up --build "$@"

@@ -30,5 +30,5 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
   CMD wget --quiet --tries=1 --spider http://127.0.0.1:3000/ || exit 1
 
-# Start the application
-CMD ["npm", "run", "dev"]
+# Start the application on the container interface
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

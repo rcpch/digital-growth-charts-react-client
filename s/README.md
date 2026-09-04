@@ -11,5 +11,7 @@ The `s/` directory contains simple convenience scripts to standardise work on th
 - `s/regenerate-example-scenarios` - regenerate the bundled `src/example-scenarios/**/data.json` demo datasets from `scenario-manifest.json` against a real API.
 - `s/build` - build the production bundle.
 - `s/audit` - audit the locked npm dependencies.
+- `s/up` - build and start the Docker Compose development environment.
+- `s/down` - stop and remove the Docker Compose development environment.
 - `s/docker-rebuild` - rebuild the local development image.
 - `s/docker-start` - run the local development image using `.env`.

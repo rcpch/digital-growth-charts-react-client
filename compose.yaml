@@ -1,0 +1,18 @@
+name: rcpch-dgc-demo-client
+
+services:
+  demo-client:
+    build:
+      context: .
+    image: rcpch-dgc-demo-client
+    init: true
+    env_file:
+      - path: .env
+        required: false
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./index.html:/app/index.html
+      - ./public:/app/public
+      - ./src:/app/src
+      - ./vite.config.js:/app/vite.config.js

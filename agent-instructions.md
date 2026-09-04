@@ -33,6 +33,8 @@ This repository contains the public React demonstration client for the RCPCH Dig
 - `s/regenerate-example-scenarios` - regenerate `src/example-scenarios/**/data.json` from the scenario manifest against a real API (requires `LIVE_GROWTH_API_BASE_URL`).
 - `s/build` - build the production bundle.
 - `s/audit` - fail on high-severity npm advisories.
+- `s/up` - build and start the Docker Compose development environment.
+- `s/down` - stop and remove the Docker Compose development environment.
 - `s/docker-rebuild` - rebuild the development image.
 - `s/docker-start` - run the development image.
 
