@@ -26,24 +26,24 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "semantic-ui-react": "3.0.0-beta.2",
-    "styled-components": "6.4.1"
+    "styled-components": "6.5.3"
   },
   "devDependencies": {
-    "@eslint-react/eslint-plugin": "5.18.0",
+    "@eslint-react/eslint-plugin": "5.18.7",
     "@eslint/js": "9.39.5",
     "@playwright/test": "1.62.1",
     "@testing-library/react": "16.3.3",
     "@types/react": "18.3.30",
     "@types/react-dom": "18.3.7",
-    "@vitejs/plugin-react": "6.0.2",
-    "esbuild": "0.28.1",
-    "eslint": "10.8.0",
+    "@vitejs/plugin-react": "6.1.1",
+    "esbuild": "0.28.2",
+    "eslint": "10.9.1",
     "globals": "15.15.0",
     "jsdom": "30.0.1",
-    "less": "4.9.0",
+    "less": "4.9.1",
     "semantic-ui-less": "2.5.0",
     "semver": "7.8.5",
-    "vite": "8.0.16",
+    "vite": "8.2.2",
     "vitest": "4.1.11"
   }
 }
