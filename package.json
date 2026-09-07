@@ -23,7 +23,7 @@
   "dependencies": {
     "@rcpch/digital-growth-charts-react-component-library": "7.5.2",
     "prop-types": "15.8.1",
-    "react": "18.3.1",
+    "react": "19.2.8",
     "react-dom": "18.3.1",
     "semantic-ui-react": "3.0.0-beta.2",
     "styled-components": "6.5.3"
@@ -33,7 +33,7 @@
     "@eslint/js": "10.0.1",
     "@playwright/test": "1.62.1",
     "@testing-library/react": "16.3.3",
-    "@types/react": "18.3.30",
+    "@types/react": "19.2.18",
     "@types/react-dom": "18.3.7",
     "@vitejs/plugin-react": "6.1.1",
     "esbuild": "0.28.2",
