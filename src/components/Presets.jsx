@@ -37,20 +37,15 @@ const Presets = (props) => {
     }
     return conditionOptionList.filter(option => option.measurementMethod === measurementMethod).sort((a, b) => a.label.localeCompare(b.label));
   };
-  // Initialize condition options based on the default measurement method
-  const [conditionOptions, setConditionOptions] = useState(() => filterConditionOptionsToMeasurementMethod("height"));
+  const conditionOptions = filterConditionOptionsToMeasurementMethod(
+    props.globalState.measurementMethod
+  );
   // Start with no condition selected so the user must choose one
   const [conditionOption, setConditionOption] = useState(null);
-
 
   const handleChangeMeasurementMethod = (newMeasurementMethod) => {
     // Update the global state with the new measurement method
     props.updateGlobalState("measurementMethod", newMeasurementMethod);
-    // filter the condition options based on the selected measurement method
-    const filteredConditions = filterConditionOptionsToMeasurementMethod(newMeasurementMethod);
-    setConditionOptions(filteredConditions);
-    // Reset selection until the user explicitly chooses a condition
-    setConditionOption(null);
   };
 
   const handleChangeReference = ({ value }) => {
@@ -72,7 +67,9 @@ const Presets = (props) => {
   const dynamicReferenceOptions = referenceOptions.map(makeDynamic);
 
   // A condition is considered selected only if it matches one of the current options
-  const isConditionSelected = conditionOptions.some(o => o.value === conditionOption);
+  const isConditionSelected = conditionOptions.some(
+    (option) => option.value === conditionOption && !option.disabled
+  );
 
   const handlePresetsSubmit = ({ age, condition }) => {
     // Forward to parent handler
