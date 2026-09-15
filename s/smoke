@@ -6,6 +6,21 @@
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
-npm ls react react-dom styled-components @rcpch/digital-growth-charts-react-component-library
+# `npm ls` cannot gate this script under React 19: semantic-ui-react's
+# published peer range still caps at ^18, so npm reports a correct React 19
+# install as invalid (ELSPROBLEMS). Verify the installed versions directly.
+node --input-type=module -e '
+  import { createRequire } from "node:module";
+  const require = createRequire(process.cwd() + "/package.json");
+  for (const name of [
+    "react",
+    "react-dom",
+    "styled-components",
+    "@rcpch/digital-growth-charts-react-component-library",
+  ]) {
+    const { version } = require(name + "/package.json");
+    console.log(name + "@" + version);
+  }
+'
 npm run build
 exec npm run test:browser -- "$@"

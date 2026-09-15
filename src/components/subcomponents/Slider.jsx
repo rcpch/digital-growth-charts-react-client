@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-const Slider = (props) => {
+const Slider = ({ isPercentage = false, ...props }) => {
   return (
     <div style={{ textAlign: "left" }}>
       <label style={{ padding: "10px" }}>{props.min} </label>
@@ -18,7 +18,7 @@ const Slider = (props) => {
       <label style={{ padding: "10px" }}>{props.max}</label>
 
       <h5 style={{ display: "inline" }}>
-        {props.label}: {props.value} {props.isPercentage ? "%" : "SDS"}
+        {props.label}: {props.value} {isPercentage ? "%" : "SDS"}
       </h5>
     </div>
   );
@@ -32,10 +32,6 @@ Slider.propTypes = {
   onChange: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
   isPercentage: PropTypes.bool,
-};
-
-Slider.defaultProps = {
-  isPercentage: false,
 };
 
 export default Slider;
