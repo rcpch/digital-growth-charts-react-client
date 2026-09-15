@@ -8,8 +8,9 @@ WORKDIR /app
 ENV PATH=/app/node_modules/.bin:$PATH
 ENV DOCKER=true
 
-# Copy package.json and package-lock.json
-COPY package.json package-lock.json ./
+# Copy package.json, package-lock.json, and .npmrc (needed for
+# legacy-peer-deps while semantic-ui-react caps its React peer range at ^18)
+COPY package.json package-lock.json .npmrc ./
 
 # Copy semantic-ui config needed by the postinstall script
 COPY src/semantic-ui ./src/semantic-ui
