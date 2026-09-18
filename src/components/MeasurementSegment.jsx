@@ -329,6 +329,7 @@ const MeasurementSegment=()=> {
       render: () => (
         <Tab.Pane key="presets">
           <Presets
+            key={`${reference}:${measurementMethod}`}
             globalState={globalState}
             updateGlobalState={updateGlobalState}
             handlePresetsSubmit={presetsDataSubmit}
