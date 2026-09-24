@@ -23,6 +23,15 @@ This repository contains the public React demonstration client for the RCPCH Dig
 - Original Demo Client code deliberately remains MIT as an exception to the RCPCH application default. The Chart Component remains AGPL-3.0-or-later; do not imply that the Client's MIT licence relicenses the component or third-party assets.
 - `public/fonts/` and `public/themes/default/assets/` are generated from the exact locked `semantic-ui-less` dependency by `npm ci`. Do not hand-edit or commit them.
 
+## Cross-Repository Impact
+
+The demo is the fourth layer in the product chain: `rcpchgrowth-python` (calculations) → `digital-growth-charts-server` (API) → `digital-growth-charts-react-component-library` (chart rendering) → **this client** → `digital-growth-charts-documentation`. Use the [Five-Repository Upgrade Runbook](https://growth.rcpch.ac.uk/developer/five-repository-upgrade-runbook/) for coordinated upgrades and public-contract changes.
+
+- Changes to calculated values, measurement fields, reference boundaries or provenance originate upstream. Confirm the exact engine/API/component versions, review API regression and component-compatibility results, then exercise the integrated browser workflow here.
+- Changes to client integration, routing, selection or presentation should be checked with `s/smoke`; use `s/e2e-local` when an API/component interaction or complete stack could be affected. Run it from this client checkout and verify the printed revisions and the browser network target.
+- Update documentation when supported workflows, visible behavior, configuration, version requirements or troubleshooting guidance changes. Do not describe a candidate stack as released or supported before the coordinated release.
+- Record affected and unaffected repositories, the exact versions/commits tested, and any human visual review in the PR or upgrade record. A passing client-only test does not prove upstream responses are compatible.
+
 ## Workflow
 
 - `s/dev` - run the Vite development server.
