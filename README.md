@@ -71,6 +71,26 @@ The live smoke test checks interoperability and provenance relationships. It doe
 
 Maintainers can run the same matrix from GitHub Actions using **Coordinated platform smoke test**, supplying the candidate API URL and choosing whether v5 provenance is mandatory. The workflow uses the repository's public demo credential without exposing it to pull-request code.
 
+## Versions and Releases
+
+The Client has its own Semantic Version in `package.json`. It is independent of the Chart Component, API, and calculation engine versions; similar version numbers do not imply compatibility.
+
+- **Major**: backward-incompatible changes to the demonstrated integration or configuration contract, removal of supported workflows, or raised compatibility floors that require integrator action.
+- **Minor**: backward-compatible user-visible capabilities or supported integration options.
+- **Patch**: backward-compatible fixes, security remediations, and documentation or maintenance changes worth recording as a named release.
+
+Every push to `live` is deployed to GitHub Pages. The visible build commit identifies the exact deployment, including deployments between named releases. A `vX.Y.Z` tag and GitHub Release identify a reviewed named snapshot.
+
+Release preparation additionally requires authenticated [GitHub CLI](https://cli.github.com/) and [git-cliff](https://git-cliff.org/). With approval to start a release, run the following from a clean, current `live` branch:
+
+```sh
+s/version++ patch  # or minor / major
+```
+
+The command runs the release gate, updates `package.json`, `package-lock.json`, and `CHANGELOG.md`, then opens a `release/vX.Y.Z` pull request. Merging that narrowly scoped PR tags the exact merged commit and creates the GitHub Release. This private static application does not publish an npm package.
+
+The first managed release will be `v7.1.0`. Named releases are cut when a coherent set of changes merits a reviewed snapshot, not for every deployment. A maintainer chooses the bump level and prepares the release PR; its reviewer approves the version, release notes, and available compatibility evidence before merging.
+
 ## Configuration
 
 | Variable | Purpose |
@@ -84,4 +104,4 @@ Raise issues at <https://github.com/rcpch/digital-growth-charts-react-client/iss
 
 ## Licence
 
-The repository currently declares the code as MIT: see [LICENSE](LICENSE). The bundled RCPCH chart component declares AGPL-3.0-or-later, so combined-distribution obligations and alignment with the RCPCH application licensing standard are under review in [spec/roadmap.md](spec/roadmap.md). No relicensing is implied by this documentation.
+Original Demo Client code is deliberately licensed under MIT to permit broad integration and modification: see [LICENSE](LICENSE). This is an explicit project exception to the RCPCH default of AGPL-3.0-or-later for applications. The bundled RCPCH Chart Component remains AGPL-3.0-or-later: that licence permits modification, but its source-availability and share-alike conditions continue to apply to use and distribution of the component and its modifications. The MIT licence for this Client does not relicense the Chart Component or other third-party assets.

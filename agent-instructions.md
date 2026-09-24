@@ -20,7 +20,8 @@ This repository contains the public React demonstration client for the RCPCH Dig
 - Files under `src/example-scenarios/` are reviewed clinical demonstration example scenarios (not test fixtures, and distinct from the API's own `/fictional-child-data` generator feature). Do not hand-edit them; regenerate via `s/regenerate-example-scenarios` from `src/example-scenarios/scenario-manifest.json` and record provenance and review evidence.
 - `live` is currently the protected default and deployment branch. Use a feature branch and pull request; never push directly to `live`.
 - Retaining `live` rather than migrating this established static deployment to `main` is a documented project exception.
-- The repository remains MIT pending an explicit RCPCH licensing review. Do not change the licence or add SPDX/REUSE declarations that imply a relicensing decision.
+- Original Demo Client code deliberately remains MIT as an exception to the RCPCH application default. The Chart Component remains AGPL-3.0-or-later; do not imply that the Client's MIT licence relicenses the component or third-party assets.
+- `public/fonts/` and `public/themes/default/assets/` are generated from the exact locked `semantic-ui-less` dependency by `npm ci`. Do not hand-edit or commit them.
 
 ## Workflow
 
@@ -33,6 +34,7 @@ This repository contains the public React demonstration client for the RCPCH Dig
 - `s/regenerate-example-scenarios` - regenerate `src/example-scenarios/**/data.json` from the scenario manifest against a real API (requires `LIVE_GROWTH_API_BASE_URL`).
 - `s/build` - build the production bundle.
 - `s/audit` - fail on high-severity npm advisories.
+- `s/version++ [patch|minor|major]` - prepare and open a Client release PR from a clean, current `live` branch. Running it is externally visible and requires approval.
 - `s/up` - build and start the Docker Compose development environment.
 - `s/down` - stop and remove the Docker Compose development environment.
 - `s/docker-rebuild` - rebuild the development image.

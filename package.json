@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/rcpch/digital-growth-charts-react-client"
   },
-  "homepage": "https://rcpch.github.io/digital-growth-charts-react-client",
+  "homepage": "https://growth.rcpch.ac.uk/",
   "type": "module",
   "scripts": {
     "dev": "vite --port 3000",
@@ -18,7 +18,7 @@
     "test:e2e-local": "playwright test --config=playwright.e2e.config.js",
     "test:live": "node tests/live/platform-api-smoke.mjs",
     "preview": "vite preview",
-    "postinstall": "cp -f \"./src/semantic-ui/theme.config\" \"./node_modules/semantic-ui-less/theme.config\" && mkdir -p ./public/themes/default/assets/fonts && cp -f ./node_modules/semantic-ui-less/themes/default/assets/fonts/* ./public/themes/default/assets/fonts && mkdir -p ./public/themes/default/assets/images && cp -f ./node_modules/semantic-ui-less/themes/default/assets/images/flags.png ./public/themes/default/assets/images/flags.png && mkdir -p ./public/fonts && cp -f ./node_modules/semantic-ui-less/themes/default/assets/fonts/* ./public/fonts"
+    "postinstall": "cp -f \"./src/semantic-ui/theme.config\" \"./node_modules/semantic-ui-less/theme.config\" && mkdir -p ./public/themes/default/assets/images && cp -f ./node_modules/semantic-ui-less/themes/default/assets/images/flags.png ./public/themes/default/assets/images/flags.png && mkdir -p ./public/fonts && cp -f ./node_modules/semantic-ui-less/themes/default/assets/fonts/* ./public/fonts"
   },
   "dependencies": {
     "@rcpch/digital-growth-charts-react-component-library": "7.7.0",
