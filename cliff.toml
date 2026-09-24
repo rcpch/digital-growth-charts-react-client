@@ -45,6 +45,7 @@ commit_parsers = [
   { message = "^ci\\(deps\\)", skip = true },
   { message = "^ci", group = "CI" },
   { message = "^build", group = "Build" },
+  { message = "^chore\\(release\\)", skip = true },
   { message = "^chore", group = "Maintenance" },
   { message = "^revert", group = "Reverts" },
 ]
