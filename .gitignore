@@ -11,6 +11,8 @@ node_modules/
 # Build output
 /build
 /dist
+/public/fonts/
+/public/themes/default/assets/
 
 # Environment files
 .env

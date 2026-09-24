@@ -18,7 +18,7 @@ The most urgent issue was architectural: the deployment injected a GitHub secret
 
 ## Governing Decisions
 
-- MIT is retained pending an explicit RCPCH rights and licensing review; no relicensing or SPDX/REUSE declaration has been made.
+- Original Demo Client code deliberately remains MIT to support broad downstream integration and modification; the bundled Chart Component remains AGPL-3.0-or-later and retains its source-availability and share-alike terms.
 - `live` is retained and documented as the protected default and deployment branch.
 - The browser value is formally treated and named as a public, constrained demo credential. The existing exposed value still requires operational rotation and API gateway review.
 - The application remains demonstration-only and delegates centile and SDS calculations to the API rather than reimplementing clinical algorithms in React.
@@ -31,7 +31,7 @@ The most urgent issue was architectural: the deployment injected a GitHub secret
 - Fix four high-severity npm advisories and enforce exact direct dependency versions for this deployable application.
 - Add tests for patient identity invariants, mid-parental-height lifecycle, date handling, API serialization, fixture coverage, accessibility, and responsive workflows.
 - Add `SAFETY.md`, agent instructions, `SECURITY.md`, a stronger README, canonical `s/` scripts, `.editorconfig`, and `.dockerignore`.
-- Resolve whether this application remains MIT or moves to the RCPCH application default of AGPL-3.0-or-later, taking account of the AGPL chart dependency and without silently relicensing existing work.
+- Record the Demo Client's deliberate MIT exception and add accurate SPDX/REUSE and third-party coverage without silently relicensing AGPL or historical material.
 - Retain `live` as a documented exception to the RCPCH static-app `main` release model, as decided during remediation.
 
 ## Priority 1
@@ -181,7 +181,7 @@ Remaining work:
 
 ### [~] R8 - Resolve application and bundled-component licensing
 
-Status: MIT is deliberately retained pending owner and legal review. No silent relicensing or unsupported SPDX/REUSE declaration has been made.
+Status: the owner decision is recorded: original Demo Client code deliberately remains MIT to permit broad downstream integration and modification, as an explicit exception to the RCPCH application default. The bundled Chart Component remains AGPL-3.0-or-later; modifications are permitted under that licence, but its source-availability and share-alike obligations remain and the Client's MIT licence does not relicense it. README and agent guidance now state this boundary.
 
 Audit evidence:
 
@@ -195,9 +195,8 @@ House style:
 
 Remaining work:
 
-- Obtain an explicit owner and legal decision before changing the licence.
-- Document the combined-distribution obligations of the AGPL component.
-- After the decision, add correct SPDX/REUSE coverage and notices without silently relicensing historical contributions or third-party assets.
+- Confirm copyright and licence coverage for historical contributions, written/clinical content, generated example scenarios, and third-party assets before adding SPDX/REUSE annotations.
+- Add correct SPDX/REUSE coverage and third-party notices without applying the Client's MIT decision to AGPL or third-party material.
 
 ### [x] R9 - Harden the development container boundary
 
@@ -305,33 +304,35 @@ Remaining work:
 - Verify keyboard-only operation and visible focus across all interactive controls.
 - Add representative phone, tablet, desktop, and zoom-level Playwright checks, including the results table.
 
-### [~] R14 - Complete project documentation, scripts, and release traceability
+### [~] R14 - Define Demo Client versioning and complete release traceability
 
-Status: README and canonical scripts are substantially improved, and `live` is documented as an intentional branch-model exception. The repository still has no changelog, tags, releases, or automated release traceability.
+Status: Independent Client Semantic Versioning, changelog generation, immutable build identity, the protected-branch `s/version++` flow, and merge-triggered tag and GitHub Release automation are implemented. The first managed release is agreed as `v7.1.0`; named releases are cut for coherent reviewed snapshots rather than every deployment, with the preparing maintainer choosing the bump and the PR reviewer approving the version, notes, and available compatibility evidence. No managed release has yet been cut, so end-to-end release evidence remains outstanding.
 
 Audit evidence:
 
 - `README.md` was 16 lines and omitted status, audience, safety and privacy boundaries, tests, contribution guidance, complete licensing, and canonical URLs.
 - `s/docker-start` and `s/docker-rebuild` did not follow the standard strict-mode, root, exec, and argument-forwarding shape; there was no `s/build`, `s/lint`, `s/test`, or `s/audit`.
-- The UI displayed version 7.0.8, but the repository had no tags, releases, or changelog.
-- The default and deployment branch was `live`, while the proposed RCPCH static React release standard named `main`.
+- The UI displayed a manually maintained package version, but the repository had no tags, releases, changelog, or immutable Git identity in the deployed build.
+- Historical package-version bumps were commonly coupled to Chart Component dependency updates, but the repositories have different artefact types, release cadences, and downstream consumers and must not imply lockstep compatibility through matching or adjacent numbers.
+- Every push to `live` deploys to GitHub Pages, so a named release version and the identity of the exact deployed build are related but distinct concepts.
+- At the audit baseline, the default and deployment branch was `live` while the then-proposed RCPCH static React release standard named `main`; the adopted standard now supports protected release branches such as `live`.
 
 House style:
 
-- `rcpch-house-style/new-repos.md`, `scripts.md`, `commits.md`, and `release.md` require discoverable setup and validation, conventional workflow, changelog, and release traceability.
+- `rcpch-house-style/new-repos.md`, `scripts.md`, `commits.md`, and `release.md` require discoverable setup and validation, conventional workflow, independent Semantic Versioning for code artefacts, and release traceability.
+- `rcpch-house-style/release.md` explicitly rejects lockstep Digital Growth Charts suite versions and supports an `s/version++` -> release PR -> validated tag and GitHub Release cascade on a protected `live` branch.
 - General `house-style/repo-presentation.md` requires a clear first screen, honest status, quick start, and real product visual where available.
 
 Remaining work:
 
-- Add changelog and release traceability through an explicitly reviewed release process.
-- Adopt the proposed `s/version++` and auto-tag release cascade only after confirming it is appropriate for the retained `live` branch model.
-- Keep canonical project, package, documentation, and demo URLs clear and consistent.
+- Cut `v7.1.0` through the reviewed release flow after this implementation lands; do not retroactively tag an arbitrary historical commit.
+- Record Client, Chart Component, API, and calculation-engine versions independently in compatibility evidence. A Client release must never imply lockstep suite compatibility from version-number similarity alone.
 
 ## Priority 3
 
-### [~] R15 - Finish repository presentation and generated-asset hygiene
+### [x] R15 - Finish repository presentation and generated-asset hygiene
 
-Status: stale merged branches and the unexplained `text.txt` file have been removed. Automatic merged-branch deletion, canonical URL consistency, and generated Semantic UI asset ownership still require confirmation.
+Status: stale merged branches and the unexplained `text.txt` file were removed; GitHub now automatically deletes merged branches; repository, demo, and documentation links distinguish their destinations; and package metadata points to the canonical demo. Semantic UI fonts and the flag sprite are lockfile-derived build inputs generated by `npm ci`, ignored by Git, and documented as non-editable rather than being duplicated as tracked files.
 
 Audit evidence:
 
@@ -344,16 +345,16 @@ House style:
 
 - `rcpch-house-style/commits.md` and general `house-style/repo-presentation.md` favour clean branch state, clear URLs, and honest maintained repository surfaces.
 
-Remaining work:
+Completion criteria:
 
-- Enable automatic deletion of merged branches if approved for the repository.
-- Choose and consistently publish canonical repository, package, documentation, and demo URLs.
-- Choose one reviewed ownership and regeneration model for generated Semantic UI assets.
+- Automatically delete merged branches while retaining protected `live`.
+- Publish distinct canonical repository, documentation, and demo URLs.
+- Generate Semantic UI assets from the exact locked dependency and exclude them from source control.
 
 ## Compliant And Good Patterns
 
 - Repository and directory names match and use lowercase hyphenation.
-- The root MIT licence is deliberate and recognized by GitHub, although its continuing suitability needs review under R8.
+- The root MIT licence is a deliberate exception for original Demo Client code and is recognized by GitHub; bundled AGPL and third-party material retain their own terms under R8.
 - `package-lock.json` is committed and uses integrity hashes with no Git dependency sources.
 - Node 24 is consistently named in `.nvmrc`, README, Docker, and deployment.
 - `.env`, dependencies, coverage, and build output are ignored; no `.env` is tracked.
@@ -389,4 +390,4 @@ The original audit proposed the following second PR:
 3. Address form and chart accessibility and responsive behaviour with Playwright verification.
 4. Resolve licensing, example-scenario provenance, branch model, and release traceability through explicit owner, CSO, and licensing decisions.
 
-Engineering portions of this parcel are partially complete in `607a667` and `e340376` (`test: add coordinated platform compatibility smoke tests`). Governance decisions, independent clinical review, example-scenario provenance, comprehensive accessibility evidence, and release traceability remain represented by R1, R3-R5, R7-R8, and R12-R15.
+Engineering portions of this parcel are partially complete in `607a667` and `e340376` (`test: add coordinated platform compatibility smoke tests`). Governance follow-up, independent clinical review, example-scenario provenance, comprehensive accessibility evidence, licensing annotations, and first-release evidence remain represented by R1, R3-R5, R7-R8, and R12-R14.

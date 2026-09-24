@@ -10,6 +10,8 @@ const Home = () => {
     packageJson.dependencies[
       "@rcpch/digital-growth-charts-react-component-library"
     ];
+  const clientCommit = import.meta.env.VITE_APP_CLIENT_COMMIT_SHA || "unknown";
+  const shortClientCommit = clientCommit.slice(0, 7);
 
   return (
     <main>
@@ -19,7 +21,14 @@ const Home = () => {
         <small>
           <i>
             RCPCH Digital Growth Charts - Client: v{packageJson.version},
-            Charts: v{componentLibraryVersion}.
+            Charts: v{componentLibraryVersion}, Build:{" "}
+            <span
+              data-testid="client-build"
+              title={`Client commit ${clientCommit}`}
+            >
+              {shortClientCommit}
+            </span>
+            .
           </i>
         </small>
       </footer>

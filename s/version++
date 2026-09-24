@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+readonly RELEASE_BRANCH="live"
+# The first managed release includes changes after the last untagged 7.0.9 deployment.
+readonly INITIAL_CHANGELOG_BASE="bf8bd5299939836674e13b323d31b56729e6285e"
+
+usage() {
+  printf 'Usage: s/version++ [patch|minor|major] [--dry-run]\n' >&2
+}
+
+fail() {
+  printf 'Error: %s\n' "$1" >&2
+  exit 1
+}
+
+[[ $# -ge 1 && $# -le 2 ]] || { usage; exit 2; }
+
+bump="$1"
+[[ "$bump" =~ ^(patch|minor|major)$ ]] || { usage; exit 2; }
+
+dry_run=false
+if [[ $# -eq 2 ]]; then
+  [[ "$2" == "--dry-run" ]] || { usage; exit 2; }
+  dry_run=true
+fi
+
+root="$(git rev-parse --show-toplevel 2>/dev/null)" || fail "run this command inside the repository"
+cd "$root"
+
+current_version="$(node -p "require('./package.json').version")"
+[[ "$current_version" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]] || fail "package.json version is not stable SemVer: $current_version"
+
+major="${BASH_REMATCH[1]}"
+minor="${BASH_REMATCH[2]}"
+patch="${BASH_REMATCH[3]}"
+case "$bump" in
+  patch) next_version="$major.$minor.$((patch + 1))" ;;
+  minor) next_version="$major.$((minor + 1)).0" ;;
+  major) next_version="$((major + 1)).0.0" ;;
+esac
+
+printf 'Client version: %s -> %s (%s)\n' "$current_version" "$next_version" "$bump"
+if [[ "$dry_run" == true ]]; then
+  printf 'Dry run only; no checks, files, branches, tags, releases, or pull requests were changed.\n'
+  exit 0
+fi
+
+for command in gh git git-cliff node npm; do
+  command -v "$command" >/dev/null 2>&1 || fail "required command not found: $command"
+done
+gh auth status >/dev/null 2>&1 || fail "authenticate the GitHub CLI before preparing a release"
+
+[[ "$(git branch --show-current)" == "$RELEASE_BRANCH" ]] || fail "switch to $RELEASE_BRANCH before preparing a release"
+[[ -z "$(git status --porcelain)" ]] || fail "working tree is not clean"
+
+printf 'Refreshing %s and release tags...\n' "$RELEASE_BRANCH"
+git fetch --quiet origin "$RELEASE_BRANCH" --tags
+[[ "$(git rev-parse HEAD)" == "$(git rev-parse "origin/$RELEASE_BRANCH")" ]] || fail "$RELEASE_BRANCH is not current with origin/$RELEASE_BRANCH"
+
+tag="v$next_version"
+[[ -z "$(git tag --list "$tag")" ]] || fail "tag already exists locally: $tag"
+[[ -z "$(git ls-remote --tags origin "refs/tags/$tag")" ]] || fail "tag already exists on origin: $tag"
+[[ -z "$(git branch --list "release/$tag")" ]] || fail "branch already exists locally: release/$tag"
+[[ -z "$(git ls-remote --heads origin "refs/heads/release/$tag")" ]] || fail "branch already exists on origin: release/$tag"
+
+printf 'Running the release gate...\n'
+npm ci
+s/lint
+s/test
+s/build
+s/audit
+s/smoke
+
+changelog_base="$INITIAL_CHANGELOG_BASE"
+mapfile -t release_tags < <(git tag --list 'v*' --sort=-v:refname)
+for release_tag in "${release_tags[@]}"; do
+  if [[ "$release_tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    changelog_base="$release_tag"
+    break
+  fi
+done
+git merge-base --is-ancestor "$changelog_base" HEAD || fail "changelog base is not an ancestor of HEAD: $changelog_base"
+
+release_branch="release/$tag"
+git switch --create "$release_branch"
+npm version "$next_version" --no-git-tag-version
+git cliff "$changelog_base..HEAD" --config cliff.toml --tag "$tag" --prepend CHANGELOG.md
+git diff --check
+
+git add package.json package-lock.json CHANGELOG.md
+git commit -m "chore(release): $tag"
+git push --set-upstream origin "$release_branch"
+
+pr_url="$(gh pr create \
+  --base "$RELEASE_BRANCH" \
+  --head "$release_branch" \
+  --title "chore(release): $tag" \
+  --body "## Release
+
+- Client version: \`$tag\`
+- Bump: \`$bump\`
+- Changelog: [CHANGELOG.md](../blob/$release_branch/CHANGELOG.md)
+
+## Validation
+
+- \`s/lint\`
+- \`s/test\`
+- \`s/build\`
+- \`s/audit\`
+- \`s/smoke\`
+
+Merging this pull request tags the exact merged commit and creates the GitHub Release. It does not publish an npm package.")"
+
+printf 'Release pull request: %s\n' "$pr_url"

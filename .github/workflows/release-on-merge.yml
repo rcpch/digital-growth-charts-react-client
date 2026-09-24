@@ -1,0 +1,171 @@
+name: Release merged client version
+
+on:
+  pull_request:
+    branches:
+      - live
+    types:
+      - closed
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: release-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    if: >-
+      github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.head.ref, 'release/v')
+    runs-on: ubuntu-24.04
+    outputs:
+      tag: ${{ steps.release.outputs.tag }}
+      version: ${{ steps.release.outputs.version }}
+      merge_sha: ${{ steps.release.outputs.merge_sha }}
+    steps:
+      - name: Check release metadata
+        id: release
+        env:
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          set -euo pipefail
+          tag="${HEAD_REF#release/}"
+          version="${tag#v}"
+          [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || {
+            echo "Invalid release branch: $HEAD_REF" >&2
+            exit 1
+          }
+          [[ "$PR_TITLE" == "chore(release): $tag" ]] || {
+            echo "Release PR title must be: chore(release): $tag" >&2
+            exit 1
+          }
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "merge_sha=$MERGE_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Check release file scope
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          mapfile -t files < <(gh api --paginate "repos/$REPOSITORY/pulls/$PR_NUMBER/files" --jq '.[].filename')
+          [[ ${#files[@]} -eq 3 ]] || {
+            printf 'Release PR must change exactly three files; found: %s\n' "${files[*]}" >&2
+            exit 1
+          }
+          for expected in CHANGELOG.md package-lock.json package.json; do
+            printf '%s\n' "${files[@]}" | grep -Fxq "$expected" || {
+              echo "Release PR did not change $expected" >&2
+              exit 1
+            }
+          done
+
+      - name: Check out merged release
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ steps.release.outputs.merge_sha }}
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Verify synchronized version files
+        env:
+          EXPECTED_VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          set -euo pipefail
+          package_version="$(node -p "require('./package.json').version")"
+          lock_version="$(node -p "require('./package-lock.json').version")"
+          lock_root_version="$(node -p "require('./package-lock.json').packages[''].version")"
+          [[ "$package_version" == "$EXPECTED_VERSION" ]]
+          [[ "$lock_version" == "$EXPECTED_VERSION" ]]
+          [[ "$lock_root_version" == "$EXPECTED_VERSION" ]]
+          grep -Fq "## [$EXPECTED_VERSION]" CHANGELOG.md
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run release checks
+        env:
+          GITHUB_SHA: ${{ steps.release.outputs.merge_sha }}
+        run: |
+          s/lint
+          s/test
+          s/build
+          s/audit
+
+  release:
+    needs: validate
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: Tag merged commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MERGE_SHA: ${{ needs.validate.outputs.merge_sha }}
+          REPOSITORY: ${{ github.repository }}
+          TAG: ${{ needs.validate.outputs.tag }}
+        run: |
+          set -euo pipefail
+          if existing_sha="$(gh api "repos/$REPOSITORY/git/ref/tags/$TAG" --jq '.object.sha' 2>/dev/null)"; then
+            [[ "$existing_sha" == "$MERGE_SHA" ]] || {
+              echo "$TAG already points to $existing_sha, not $MERGE_SHA" >&2
+              exit 1
+            }
+          else
+            gh api --method POST "repos/$REPOSITORY/git/refs" \
+              -f ref="refs/tags/$TAG" \
+              -f sha="$MERGE_SHA" >/dev/null
+          fi
+
+      - name: Create GitHub Release
+        env:
+          CHANGELOG_PATH: ${{ runner.temp }}/CHANGELOG.md
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+          MERGE_SHA: ${{ needs.validate.outputs.merge_sha }}
+          NOTES_PATH: ${{ runner.temp }}/release-notes.md
+          TAG: ${{ needs.validate.outputs.tag }}
+          VERSION: ${{ needs.validate.outputs.version }}
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "GitHub Release already exists: $TAG"
+          else
+            gh api \
+              -H 'Accept: application/vnd.github.raw+json' \
+              "repos/$GH_REPO/contents/CHANGELOG.md?ref=$MERGE_SHA" \
+              > "$CHANGELOG_PATH"
+            node --input-type=module <<'NODE'
+          import { readFileSync, writeFileSync } from "node:fs";
+
+          const changelog = readFileSync(process.env.CHANGELOG_PATH, "utf-8");
+          const heading = `## [${process.env.VERSION}]`;
+          const start = changelog.indexOf(heading);
+          if (start === -1) throw new Error(`Missing changelog heading: ${heading}`);
+          const contentStart = changelog.indexOf("\n", start) + 1;
+          const nextRelease = changelog.indexOf("\n## [", contentStart);
+          const notes = changelog
+            .slice(contentStart, nextRelease === -1 ? undefined : nextRelease)
+            .trim();
+          writeFileSync(
+            process.env.NOTES_PATH,
+            `${notes || "No user-facing changes were listed for this release."}\n`
+          );
+          NODE
+            gh release create "$TAG" \
+              --title "$TAG" \
+              --notes-file "$NOTES_PATH" \
+              --verify-tag
+          fi
