@@ -73,20 +73,12 @@ s/build
 s/audit
 s/smoke
 
-changelog_base="$INITIAL_CHANGELOG_BASE"
-mapfile -t release_tags < <(git tag --list 'v*' --sort=-v:refname)
-for release_tag in "${release_tags[@]}"; do
-  if [[ "$release_tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    changelog_base="$release_tag"
-    break
-  fi
-done
-git merge-base --is-ancestor "$changelog_base" HEAD || fail "changelog base is not an ancestor of HEAD: $changelog_base"
+git merge-base --is-ancestor "$INITIAL_CHANGELOG_BASE" HEAD || fail "changelog base is not an ancestor of HEAD: $INITIAL_CHANGELOG_BASE"
 
 release_branch="release/$tag"
 git switch --create "$release_branch"
 npm version "$next_version" --no-git-tag-version
-git cliff "$changelog_base..HEAD" --config cliff.toml --tag "$tag" --prepend CHANGELOG.md
+git cliff "$INITIAL_CHANGELOG_BASE..HEAD" --config cliff.toml --tag "$tag" --output CHANGELOG.md
 git diff --check
 
 git add package.json package-lock.json CHANGELOG.md
