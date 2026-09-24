@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import fs from "fs";
+import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "url";
 import process from "node:process";
 
@@ -24,8 +25,22 @@ function getBasePath() {
   return "/";
 }
 
+function getClientCommit() {
+  if (process.env.GITHUB_SHA) return process.env.GITHUB_SHA;
+
+  try {
+    return execFileSync("git", ["rev-parse", "HEAD"], {
+      cwd: __dirname,
+      encoding: "utf-8",
+    }).trim();
+  } catch {
+    return "unknown";
+  }
+}
+
 export default defineConfig(({ command }) => {
   const base = getBasePath();
+  const clientCommit = getClientCommit();
   const isLocalDev =
     command === "serve" &&
     process.env.NODE_ENV === "development" &&
@@ -81,6 +96,8 @@ export default defineConfig(({ command }) => {
   return {
     base,
     define: {
+      "import.meta.env.VITE_APP_CLIENT_COMMIT_SHA":
+        JSON.stringify(clientCommit),
       "import.meta.env.VITE_APP_COMPONENT_LIBRARY_VERSION": JSON.stringify(
         localComponentLibraryVersion
       ),

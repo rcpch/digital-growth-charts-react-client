@@ -17,6 +17,11 @@ test("the production client renders installed chart centile and SDS output", asy
   await expect(
     page.getByText("Demonstration only - not for clinical use")
   ).toBeVisible();
+  await expect(page.getByTestId("client-build")).toHaveText(/^[0-9a-f]{7}$/);
+  await expect(page.getByTestId("client-build")).toHaveAttribute(
+    "title",
+    /^Client commit [0-9a-f]{40}$/
+  );
 
   await page.getByText("Example Charts", { exact: true }).click();
   await page.getByRole("radio", { name: "Normal" }).click();
