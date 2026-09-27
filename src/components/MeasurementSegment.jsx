@@ -352,7 +352,7 @@ const MeasurementSegment=()=> {
                 <p>
                   Use fictional data only. Do not enter real or identifiable
                   patient data. Calculation inputs are sent to the configured
-                  RCPCH API. Read the{" "}
+                  RCPCH API, which does not store them. Read the{" "}
                   <a href="https://growth.rcpch.ac.uk/legal/privacy-notice/">
                     privacy notice
                   </a>

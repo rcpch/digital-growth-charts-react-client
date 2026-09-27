@@ -42,16 +42,16 @@
     },
     "child_observation_value": {
       "measurement_method": "height",
-      "observation_value": 93.3,
+      "observation_value": 93.7,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": -2.3818066599494108,
-      "corrected_centile": 0.8614,
+      "corrected_sds": -2.284846954475875,
+      "corrected_centile": 1.11609016649847,
       "corrected_centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
-      "chronological_sds": -2.491150701270492,
-      "chronological_centile": 0.6367,
-      "chronological_centile_band": "This height measurement is on or near the 0.4th centile.",
+      "chronological_sds": -2.3949429680752776,
+      "chronological_centile": 0.8311475330690723,
+      "chronological_centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
       "corrected_percentage_median_bmi": null,
@@ -61,10 +61,10 @@
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 4.298425735797399,
-          "y": 93.3,
+          "y": 93.7,
           "b": null,
-          "centile": 0.6367,
-          "sds": -2.491150701270492,
+          "centile": 0.8311475330690723,
+          "sds": -2.3949429680752776,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -76,15 +76,15 @@
           "lay_comment": "This is your child's age without taking into account their gestation at birth.",
           "clinician_comment": "No correction has been made for gestational age.",
           "age_error": null,
-          "centile_band": "This height measurement is on or near the 0.4th centile.",
+          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 4.224503764544832,
-          "y": 93.3,
+          "y": 93.7,
           "b": null,
-          "centile": 0.8614,
-          "sds": -2.3818066599494108,
+          "centile": 1.11609016649847,
+          "sds": -2.284846954475875,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -104,9 +104,9 @@
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 4.298425735797399,
-          "y": -2.491150701270492,
+          "y": -2.3949429680752776,
           "b": null,
-          "centile": 0.6367,
+          "centile": 0.8311475330690723,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -119,14 +119,14 @@
           "lay_comment": "This is your child's age without taking into account their gestation at birth.",
           "clinician_comment": "No correction has been made for gestational age.",
           "age_error": null,
-          "centile_band": "This height measurement is on or near the 0.4th centile.",
+          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 4.224503764544832,
-          "y": -2.3818066599494108,
+          "y": -2.284846954475875,
           "b": null,
-          "centile": 0.8614,
+          "centile": 1.11609016649847,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -199,16 +199,16 @@
     },
     "child_observation_value": {
       "measurement_method": "height",
-      "observation_value": 101.4,
+      "observation_value": 100.5,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": -2.386571936257186,
-      "corrected_centile": 0.8503,
-      "corrected_centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
-      "chronological_sds": -2.4713701602368916,
-      "chronological_centile": 0.673,
-      "chronological_centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+      "corrected_sds": -2.5782055690466255,
+      "corrected_centile": 0.4965744786359306,
+      "corrected_centile_band": "This height measurement is on or near the 0.4th centile.",
+      "chronological_sds": -2.6619193211136563,
+      "chronological_centile": 0.3884824941856726,
+      "chronological_centile_band": "This height measurement is on or near the 0.4th centile.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
       "corrected_percentage_median_bmi": null,
@@ -218,10 +218,10 @@
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 5.631759069130732,
-          "y": 101.4,
+          "y": 100.5,
           "b": null,
-          "centile": 0.673,
-          "sds": -2.4713701602368916,
+          "centile": 0.3884824941856726,
+          "sds": -2.6619193211136563,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -233,15 +233,15 @@
           "lay_comment": "This is your child's age without taking into account their gestation at birth.",
           "clinician_comment": "No correction has been made for gestational age.",
           "age_error": null,
-          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+          "centile_band": "This height measurement is on or near the 0.4th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 5.557837097878165,
-          "y": 101.4,
+          "y": 100.5,
           "b": null,
-          "centile": 0.8503,
-          "sds": -2.386571936257186,
+          "centile": 0.4965744786359306,
+          "sds": -2.5782055690466255,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -254,16 +254,16 @@
           "lay_comment": "Because your child was born at 36+1 weeks gestation an adjustment has been made to take this into account.",
           "clinician_comment": "Correction for gestational age has been made.",
           "age_error": null,
-          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+          "centile_band": "This height measurement is on or near the 0.4th centile.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 5.631759069130732,
-          "y": -2.4713701602368916,
+          "y": -2.6619193211136563,
           "b": null,
-          "centile": 0.673,
+          "centile": 0.3884824941856726,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -276,14 +276,14 @@
           "lay_comment": "This is your child's age without taking into account their gestation at birth.",
           "clinician_comment": "No correction has been made for gestational age.",
           "age_error": null,
-          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+          "centile_band": "This height measurement is on or near the 0.4th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 5.557837097878165,
-          "y": -2.386571936257186,
+          "y": -2.5782055690466255,
           "b": null,
-          "centile": 0.8503,
+          "centile": 0.4965744786359306,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -297,7 +297,7 @@
           "lay_comment": "Because your child was born at 36+1 weeks gestation an adjustment has been made to take this into account.",
           "clinician_comment": "Correction for gestational age has been made.",
           "age_error": null,
-          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+          "centile_band": "This height measurement is on or near the 0.4th centile.",
           "observation_value_error": null
         }
       }
@@ -356,16 +356,16 @@
     },
     "child_observation_value": {
       "measurement_method": "height",
-      "observation_value": 108.3,
+      "observation_value": 106.9,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": -2.3982974109713493,
-      "corrected_centile": 0.8236,
-      "corrected_centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
-      "chronological_sds": -2.4745808699613003,
-      "chronological_centile": 0.667,
-      "chronological_centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+      "corrected_sds": -2.670972011416499,
+      "corrected_centile": 0.37815976423908726,
+      "corrected_centile_band": "This height measurement is on or near the 0.4th centile.",
+      "chronological_sds": -2.746062564848437,
+      "chronological_centile": 0.3015763004997745,
+      "chronological_centile_band": "This height measurement is on or near the 0.4th centile.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
       "corrected_percentage_median_bmi": null,
@@ -375,10 +375,10 @@
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 6.965092402464066,
-          "y": 108.3,
+          "y": 106.9,
           "b": null,
-          "centile": 0.667,
-          "sds": -2.4745808699613003,
+          "centile": 0.3015763004997745,
+          "sds": -2.746062564848437,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -390,15 +390,15 @@
           "lay_comment": "This is your child's age without taking into account their gestation at birth.",
           "clinician_comment": "No correction has been made for gestational age.",
           "age_error": null,
-          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+          "centile_band": "This height measurement is on or near the 0.4th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 6.891170431211499,
-          "y": 108.3,
+          "y": 106.9,
           "b": null,
-          "centile": 0.8236,
-          "sds": -2.3982974109713493,
+          "centile": 0.37815976423908726,
+          "sds": -2.670972011416499,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -411,16 +411,16 @@
           "lay_comment": "Because your child was born at 36+1 weeks gestation an adjustment has been made to take this into account.",
           "clinician_comment": "Correction for gestational age has been made.",
           "age_error": null,
-          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+          "centile_band": "This height measurement is on or near the 0.4th centile.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 6.965092402464066,
-          "y": -2.4745808699613003,
+          "y": -2.746062564848437,
           "b": null,
-          "centile": 0.667,
+          "centile": 0.3015763004997745,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -433,14 +433,14 @@
           "lay_comment": "This is your child's age without taking into account their gestation at birth.",
           "clinician_comment": "No correction has been made for gestational age.",
           "age_error": null,
-          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+          "centile_band": "This height measurement is on or near the 0.4th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 6.891170431211499,
-          "y": -2.3982974109713493,
+          "y": -2.670972011416499,
           "b": null,
-          "centile": 0.8236,
+          "centile": 0.37815976423908726,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -454,7 +454,7 @@
           "lay_comment": "Because your child was born at 36+1 weeks gestation an adjustment has been made to take this into account.",
           "clinician_comment": "Correction for gestational age has been made.",
           "age_error": null,
-          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+          "centile_band": "This height measurement is on or near the 0.4th centile.",
           "observation_value_error": null
         }
       }
@@ -513,16 +513,16 @@
     },
     "child_observation_value": {
       "measurement_method": "height",
-      "observation_value": 115.3,
+      "observation_value": 114.0,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": -2.4015650203513976,
-      "corrected_centile": 0.8163,
-      "corrected_centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
-      "chronological_sds": -2.4648258781863723,
-      "chronological_centile": 0.6854,
-      "chronological_centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+      "corrected_sds": -2.6359592886836527,
+      "corrected_centile": 0.4194989847350359,
+      "corrected_centile_band": "This height measurement is on or near the 0.4th centile.",
+      "chronological_sds": -2.698149261208526,
+      "chronological_centile": 0.3486308487747995,
+      "chronological_centile_band": "This height measurement is on or near the 0.4th centile.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
       "corrected_percentage_median_bmi": null,
@@ -532,10 +532,10 @@
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 8.2984257357974,
-          "y": 115.3,
+          "y": 114.0,
           "b": null,
-          "centile": 0.6854,
-          "sds": -2.4648258781863723,
+          "centile": 0.3486308487747995,
+          "sds": -2.698149261208526,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -547,15 +547,15 @@
           "lay_comment": "This is your child's age without taking into account their gestation at birth.",
           "clinician_comment": "No correction has been made for gestational age.",
           "age_error": null,
-          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+          "centile_band": "This height measurement is on or near the 0.4th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 8.224503764544833,
-          "y": 115.3,
+          "y": 114.0,
           "b": null,
-          "centile": 0.8163,
-          "sds": -2.4015650203513976,
+          "centile": 0.4194989847350359,
+          "sds": -2.6359592886836527,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -568,16 +568,16 @@
           "lay_comment": "Because your child was born at 36+1 weeks gestation an adjustment has been made to take this into account.",
           "clinician_comment": "Correction for gestational age has been made.",
           "age_error": null,
-          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+          "centile_band": "This height measurement is on or near the 0.4th centile.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 8.2984257357974,
-          "y": -2.4648258781863723,
+          "y": -2.698149261208526,
           "b": null,
-          "centile": 0.6854,
+          "centile": 0.3486308487747995,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -590,17 +590,19 @@
           "lay_comment": "This is your child's age without taking into account their gestation at birth.",
           "clinician_comment": "No correction has been made for gestational age.",
           "age_error": null,
-          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+          "centile_band": "This height measurement is on or near the 0.4th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 8.224503764544833,
-          "y": -2.4015650203513976,
+          "y": -2.6359592886836527,
           "b": null,
-          "centile": 0.8163,
+          "centile": 0.4194989847350359,
           "sds": null,
           "bone_age_label": null,
-          "events_text": null,
+          "events_text": [
+            "ACAN mutation identified"
+          ],
           "bone_age_type": null,
           "bone_age_sds": null,
           "bone_age_centile": null,
@@ -611,7 +613,7 @@
           "lay_comment": "Because your child was born at 36+1 weeks gestation an adjustment has been made to take this into account.",
           "clinician_comment": "Correction for gestational age has been made.",
           "age_error": null,
-          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+          "centile_band": "This height measurement is on or near the 0.4th centile.",
           "observation_value_error": null
         }
       }
@@ -624,7 +626,9 @@
       "bone_age_text": null
     },
     "events_data": {
-      "events_text": null
+      "events_text": [
+        "ACAN mutation"
+      ]
     }
   },
   {
@@ -675,10 +679,10 @@
     },
     "measurement_calculated_values": {
       "corrected_sds": -2.390403302466258,
-      "corrected_centile": 0.8415,
+      "corrected_centile": 0.8414940165202137,
       "corrected_centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
       "chronological_sds": -2.442856079551224,
-      "chronological_centile": 0.7286,
+      "chronological_centile": 0.7285773466782368,
       "chronological_centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
@@ -691,7 +695,7 @@
           "x": 9.631759069130732,
           "y": 121.3,
           "b": null,
-          "centile": 0.7286,
+          "centile": 0.7285773466782368,
           "sds": -2.442856079551224,
           "bone_age_label": null,
           "events_text": null,
@@ -711,7 +715,7 @@
           "x": 9.557837097878165,
           "y": 121.3,
           "b": null,
-          "centile": 0.8415,
+          "centile": 0.8414940165202137,
           "sds": -2.390403302466258,
           "bone_age_label": null,
           "events_text": null,
@@ -734,7 +738,7 @@
           "x": 9.631759069130732,
           "y": -2.442856079551224,
           "b": null,
-          "centile": 0.7286,
+          "centile": 0.7285773466782368,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -754,7 +758,7 @@
           "x": 9.557837097878165,
           "y": -2.390403302466258,
           "b": null,
-          "centile": 0.8415,
+          "centile": 0.8414940165202137,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -827,16 +831,16 @@
     },
     "child_observation_value": {
       "measurement_method": "height",
-      "observation_value": 127.1,
+      "observation_value": 126.3,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": -2.396510902112936,
-      "corrected_centile": 0.8276,
-      "corrected_centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
-      "chronological_sds": -2.445061363498956,
-      "chronological_centile": 0.7241,
-      "chronological_centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+      "corrected_sds": -2.5133696858481396,
+      "corrected_centile": 0.5979197437641893,
+      "corrected_centile_band": "This height measurement is on or near the 0.4th centile.",
+      "chronological_sds": -2.5613328373455975,
+      "chronological_centile": 0.5213570355020976,
+      "chronological_centile_band": "This height measurement is on or near the 0.4th centile.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
       "corrected_percentage_median_bmi": null,
@@ -846,10 +850,10 @@
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 10.965092402464066,
-          "y": 127.1,
+          "y": 126.3,
           "b": null,
-          "centile": 0.7241,
-          "sds": -2.445061363498956,
+          "centile": 0.5213570355020976,
+          "sds": -2.5613328373455975,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -861,15 +865,15 @@
           "lay_comment": "This is your child's age without taking into account their gestation at birth.",
           "clinician_comment": "No correction has been made for gestational age.",
           "age_error": null,
-          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+          "centile_band": "This height measurement is on or near the 0.4th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 10.8911704312115,
-          "y": 127.1,
+          "y": 126.3,
           "b": null,
-          "centile": 0.8276,
-          "sds": -2.396510902112936,
+          "centile": 0.5979197437641893,
+          "sds": -2.5133696858481396,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -882,16 +886,16 @@
           "lay_comment": "Because your child was born at 36+1 weeks gestation an adjustment has been made to take this into account.",
           "clinician_comment": "Correction for gestational age has been made.",
           "age_error": null,
-          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+          "centile_band": "This height measurement is on or near the 0.4th centile.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 10.965092402464066,
-          "y": -2.445061363498956,
+          "y": -2.5613328373455975,
           "b": null,
-          "centile": 0.7241,
+          "centile": 0.5213570355020976,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -904,14 +908,14 @@
           "lay_comment": "This is your child's age without taking into account their gestation at birth.",
           "clinician_comment": "No correction has been made for gestational age.",
           "age_error": null,
-          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+          "centile_band": "This height measurement is on or near the 0.4th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 10.8911704312115,
-          "y": -2.396510902112936,
+          "y": -2.5133696858481396,
           "b": null,
-          "centile": 0.8276,
+          "centile": 0.5979197437641893,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -925,7 +929,7 @@
           "lay_comment": "Because your child was born at 36+1 weeks gestation an adjustment has been made to take this into account.",
           "clinician_comment": "Correction for gestational age has been made.",
           "age_error": null,
-          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+          "centile_band": "This height measurement is on or near the 0.4th centile.",
           "observation_value_error": null
         }
       }
@@ -984,16 +988,16 @@
     },
     "child_observation_value": {
       "measurement_method": "height",
-      "observation_value": 134,
+      "observation_value": 133.5,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": -2.3961218560917814,
-      "corrected_centile": 0.8285,
+      "corrected_sds": -2.4664487485470294,
+      "corrected_centile": 0.6823012764364177,
       "corrected_centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
-      "chronological_sds": -2.4583607788707798,
-      "chronological_centile": 0.6979,
-      "chronological_centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+      "chronological_sds": -2.5287646122349035,
+      "chronological_centile": 0.5723238290968206,
+      "chronological_centile_band": "This height measurement is on or near the 0.4th centile.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
       "corrected_percentage_median_bmi": null,
@@ -1003,10 +1007,10 @@
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 12.2984257357974,
-          "y": 134,
+          "y": 133.5,
           "b": null,
-          "centile": 0.6979,
-          "sds": -2.4583607788707798,
+          "centile": 0.5723238290968206,
+          "sds": -2.5287646122349035,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -1018,15 +1022,15 @@
           "lay_comment": "This is your child's age without taking into account their gestation at birth.",
           "clinician_comment": "No correction has been made for gestational age.",
           "age_error": null,
-          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+          "centile_band": "This height measurement is on or near the 0.4th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 12.224503764544833,
-          "y": 134,
+          "y": 133.5,
           "b": null,
-          "centile": 0.8285,
-          "sds": -2.3961218560917814,
+          "centile": 0.6823012764364177,
+          "sds": -2.4664487485470294,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -1046,9 +1050,9 @@
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 12.2984257357974,
-          "y": -2.4583607788707798,
+          "y": -2.5287646122349035,
           "b": null,
-          "centile": 0.6979,
+          "centile": 0.5723238290968206,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -1061,14 +1065,14 @@
           "lay_comment": "This is your child's age without taking into account their gestation at birth.",
           "clinician_comment": "No correction has been made for gestational age.",
           "age_error": null,
-          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+          "centile_band": "This height measurement is on or near the 0.4th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 12.224503764544833,
-          "y": -2.3961218560917814,
+          "y": -2.4664487485470294,
           "b": null,
-          "centile": 0.8285,
+          "centile": 0.6823012764364177,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -1141,16 +1145,16 @@
     },
     "child_observation_value": {
       "measurement_method": "height",
-      "observation_value": 141.8,
+      "observation_value": 141.2,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": -2.3958171053118864,
-      "corrected_centile": 0.8292,
+      "corrected_sds": -2.4851363880841832,
+      "corrected_centile": 0.6475090428711294,
       "corrected_centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
-      "chronological_sds": -2.4527226607621744,
-      "chronological_centile": 0.7089,
-      "chronological_centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+      "chronological_sds": -2.542434374094048,
+      "chronological_centile": 0.5504163572487597,
+      "chronological_centile_band": "This height measurement is on or near the 0.4th centile.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
       "corrected_percentage_median_bmi": null,
@@ -1160,10 +1164,10 @@
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 13.631759069130732,
-          "y": 141.8,
+          "y": 141.2,
           "b": null,
-          "centile": 0.7089,
-          "sds": -2.4527226607621744,
+          "centile": 0.5504163572487597,
+          "sds": -2.542434374094048,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -1175,15 +1179,15 @@
           "lay_comment": "This is your child's age without taking into account their gestation at birth.",
           "clinician_comment": "No correction has been made for gestational age.",
           "age_error": null,
-          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+          "centile_band": "This height measurement is on or near the 0.4th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 13.557837097878165,
-          "y": 141.8,
+          "y": 141.2,
           "b": null,
-          "centile": 0.8292,
-          "sds": -2.3958171053118864,
+          "centile": 0.6475090428711294,
+          "sds": -2.4851363880841832,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -1203,9 +1207,9 @@
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 13.631759069130732,
-          "y": -2.4527226607621744,
+          "y": -2.542434374094048,
           "b": null,
-          "centile": 0.7089,
+          "centile": 0.5504163572487597,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -1218,14 +1222,14 @@
           "lay_comment": "This is your child's age without taking into account their gestation at birth.",
           "clinician_comment": "No correction has been made for gestational age.",
           "age_error": null,
-          "centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
+          "centile_band": "This height measurement is on or near the 0.4th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 13.557837097878165,
-          "y": -2.3958171053118864,
+          "y": -2.4851363880841832,
           "b": null,
-          "centile": 0.8292,
+          "centile": 0.6475090428711294,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -1298,15 +1302,15 @@
     },
     "child_observation_value": {
       "measurement_method": "height",
-      "observation_value": 147,
+      "observation_value": 147.5,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": -2.3948605204407,
-      "corrected_centile": 0.8313,
+      "corrected_sds": -2.3149520939915877,
+      "corrected_centile": 1.0307776975923757,
       "corrected_centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
-      "chronological_sds": -2.423027030181249,
-      "chronological_centile": 0.7696,
+      "chronological_sds": -2.3428888558896284,
+      "chronological_centile": 0.9567541194173077,
       "chronological_centile_band": "This height measurement is between the 0.4th and 2nd centiles.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
@@ -1317,10 +1321,10 @@
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 14.965092402464066,
-          "y": 147,
+          "y": 147.5,
           "b": null,
-          "centile": 0.7696,
-          "sds": -2.423027030181249,
+          "centile": 0.9567541194173077,
+          "sds": -2.3428888558896284,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -1337,10 +1341,10 @@
         },
         "corrected_decimal_age_data": {
           "x": 14.8911704312115,
-          "y": 147,
+          "y": 147.5,
           "b": null,
-          "centile": 0.8313,
-          "sds": -2.3948605204407,
+          "centile": 1.0307776975923757,
+          "sds": -2.3149520939915877,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -1360,9 +1364,9 @@
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 14.965092402464066,
-          "y": -2.423027030181249,
+          "y": -2.3428888558896284,
           "b": null,
-          "centile": 0.7696,
+          "centile": 0.9567541194173077,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -1380,9 +1384,9 @@
         },
         "corrected_decimal_age_data": {
           "x": 14.8911704312115,
-          "y": -2.3948605204407,
+          "y": -2.3149520939915877,
           "b": null,
-          "centile": 0.8313,
+          "centile": 1.0307776975923757,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,

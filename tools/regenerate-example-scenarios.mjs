@@ -10,9 +10,19 @@ import { requestGrowthApi } from "../src/api/growthApiClient.js";
 // freezing API responses directly. See spec/roadmap.md R12 and
 // spec/queries.md for the review this output still needs.
 //
+// NOTE: the bundled datasets are currently hand-curated teaching scenarios
+// (see spec/queries.md R12). The API's fictional-child-data generator
+// cannot reproduce non-monotonic pathological growth patterns such as
+// coeliac falter-then-recovery, growth-hormone-deficiency slow-then-catch-up,
+// or pubertal-delay dip-then-catch-up. Each manifest entry is marked
+// `"regeneratable": false`; this tool will refuse to overwrite them unless
+// you explicitly opt in with --force, to prevent silently re-flattening
+// the hand-curated trajectories.
+//
 // Usage:
 //   LIVE_GROWTH_API_BASE_URL=http://127.0.0.1:58600 s/regenerate-example-scenarios
 //   LIVE_GROWTH_API_BASE_URL=... s/regenerate-example-scenarios normal/uk-who   # filter by path substring
+//   LIVE_GROWTH_API_BASE_URL=... s/regenerate-example-scenarios --force        # override the regeneratable guard
 
 const baseUrl = process.env.LIVE_GROWTH_API_BASE_URL;
 if (!baseUrl) {
@@ -21,7 +31,9 @@ if (!baseUrl) {
   );
 }
 const publicDemoKey = process.env.LIVE_PUBLIC_DEMO_KEY;
-const pathFilter = process.argv[2];
+const force = process.argv.includes("--force");
+const positionalArgs = process.argv.slice(2).filter((a) => a !== "--force");
+const pathFilter = positionalArgs[0];
 
 const rootDir = fileURLToPath(new URL("..", import.meta.url));
 const manifestPath = `${rootDir}src/example-scenarios/scenario-manifest.json`;
@@ -38,6 +50,12 @@ if (scenarios.length === 0) {
 const failures = [];
 
 for (const scenario of scenarios) {
+  if (scenario.regeneratable === false && !force) {
+    console.log(
+      `Skipping ${scenario.path} (regeneratable: false; hand-curated teaching scenario). Use --force to override.`
+    );
+    continue;
+  }
   const inputParameters = {
     measurement_method: scenario.measurementMethod,
     sex: scenario.sex,
