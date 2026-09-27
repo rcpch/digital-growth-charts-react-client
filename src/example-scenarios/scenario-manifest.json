@@ -15,7 +15,8 @@
     "drift": false,
     "driftRange": -0.1127,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "coeliac-disease/uk-who/weight/male",
@@ -33,7 +34,8 @@
     "drift": false,
     "driftRange": -0.1188,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "faltering-growth/uk-who/weight/female",
@@ -51,7 +53,8 @@
     "drift": false,
     "driftRange": -3.0343,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "faltering-growth/uk-who/weight/male",
@@ -69,7 +72,8 @@
     "drift": false,
     "driftRange": -4.2898,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "growth-hormone-deficiency/uk-who/height/female",
@@ -87,7 +91,8 @@
     "drift": false,
     "driftRange": 0.2734,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "growth-hormone-deficiency/uk-who/height/male",
@@ -105,7 +110,8 @@
     "drift": false,
     "driftRange": 0.181,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "macrocephaly/uk-who/ofc/female",
@@ -123,7 +129,8 @@
     "drift": false,
     "driftRange": 0.5793,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "macrocephaly/uk-who/ofc/male",
@@ -141,7 +148,8 @@
     "drift": false,
     "driftRange": 0.4651,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "microcephaly/uk-who/ofc/female",
@@ -159,7 +167,8 @@
     "drift": false,
     "driftRange": -0.6919,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "microcephaly/uk-who/ofc/male",
@@ -177,7 +186,8 @@
     "drift": false,
     "driftRange": -0.8385,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "normal/uk-who/height/female",
@@ -195,7 +205,8 @@
     "drift": false,
     "driftRange": 0.0034,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "normal/uk-who/height/male",
@@ -213,7 +224,8 @@
     "drift": false,
     "driftRange": 0.0203,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "obesity/cdc/bmi/female",
@@ -231,7 +243,8 @@
     "drift": false,
     "driftRange": 0.1897,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "obesity/cdc/bmi/male",
@@ -249,7 +262,8 @@
     "drift": false,
     "driftRange": 0.1784,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "obesity/trisomy-21/bmi/female",
@@ -267,7 +281,8 @@
     "drift": false,
     "driftRange": 0.118,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "obesity/trisomy-21/bmi/male",
@@ -285,7 +300,8 @@
     "drift": false,
     "driftRange": 0.1224,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "obesity/uk-who/bmi/female",
@@ -303,7 +319,8 @@
     "drift": false,
     "driftRange": 0.179,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "obesity/uk-who/bmi/male",
@@ -321,7 +338,8 @@
     "drift": false,
     "driftRange": 0.1754,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "prematurity/uk-who/weight/female",
@@ -339,7 +357,8 @@
     "drift": false,
     "driftRange": 11.7895,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "prematurity/uk-who/weight/male",
@@ -357,7 +376,8 @@
     "drift": false,
     "driftRange": 5.3984,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "pubertal-delay/uk-who/height/female",
@@ -375,7 +395,8 @@
     "drift": false,
     "driftRange": -0.0566,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "pubertal-delay/uk-who/height/male",
@@ -393,7 +414,8 @@
     "drift": false,
     "driftRange": 0.0049,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "short-stature/uk-who/height/female",
@@ -411,7 +433,8 @@
     "drift": false,
     "driftRange": 0.0049,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "short-stature/uk-who/height/male",
@@ -429,7 +452,8 @@
     "drift": false,
     "driftRange": 0.0038,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "tall-stature/uk-who/height/female",
@@ -447,7 +471,8 @@
     "drift": false,
     "driftRange": 0.0272,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   },
   {
     "path": "tall-stature/uk-who/height/male",
@@ -465,6 +490,7 @@
     "drift": false,
     "driftRange": 0.0031,
     "noise": false,
-    "noiseRange": 0
+    "noiseRange": 0,
+    "regeneratable": false
   }
 ]

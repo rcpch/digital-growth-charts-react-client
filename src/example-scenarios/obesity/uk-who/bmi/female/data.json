@@ -46,16 +46,16 @@
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.869386391670382,
-      "corrected_centile": 96.9215,
+      "corrected_sds": 1.8693089595323489,
+      "corrected_centile": 96.92100788311514,
       "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.869386391670382,
-      "chronological_centile": 96.9215,
+      "chronological_sds": 1.8693089595323489,
+      "chronological_centile": 96.92100788311514,
       "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 118.20330969267138,
-      "chronological_percentage_median_bmi": 118.20330969267138
+      "corrected_percentage_median_bmi": 118.2029783141207,
+      "chronological_percentage_median_bmi": 118.2029783141207
     },
     "plottable_data": {
       "centile_data": {
@@ -63,8 +63,8 @@
           "x": 2.9979466119096507,
           "y": 18.2,
           "b": null,
-          "centile": 96.9215,
-          "sds": 1.869386391670382,
+          "centile": 96.92100788311514,
+          "sds": 1.8693089595323489,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -83,8 +83,8 @@
           "x": 2.9979466119096507,
           "y": 18.2,
           "b": null,
-          "centile": 96.9215,
-          "sds": 1.869386391670382,
+          "centile": 96.92100788311514,
+          "sds": 1.8693089595323489,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -104,9 +104,9 @@
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 2.9979466119096507,
-          "y": 1.869386391670382,
+          "y": 1.8693089595323489,
           "b": null,
-          "centile": 96.9215,
+          "centile": 96.92100788311514,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -124,9 +124,9 @@
         },
         "corrected_decimal_age_data": {
           "x": 2.9979466119096507,
-          "y": 1.869386391670382,
+          "y": 1.8693089595323489,
           "b": null,
-          "centile": 96.9215,
+          "centile": 96.92100788311514,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -199,29 +199,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 18.2,
+      "observation_value": 18.1,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.8718968100365512,
-      "corrected_centile": 96.939,
+      "corrected_sds": 1.8146222661024638,
+      "corrected_centile": 96.52090108453615,
       "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.8718968100365512,
-      "chronological_centile": 96.939,
+      "chronological_sds": 1.8146222661024638,
+      "chronological_centile": 96.52090108453615,
       "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 118.77104596831032,
-      "chronological_percentage_median_bmi": 118.77104596831032
+      "corrected_percentage_median_bmi": 118.11790247395564,
+      "chronological_percentage_median_bmi": 118.11790247395564
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 3.4140999315537304,
-          "y": 18.2,
+          "y": 18.1,
           "b": null,
-          "centile": 96.939,
-          "sds": 1.8718968100365512,
+          "centile": 96.52090108453615,
+          "sds": 1.8146222661024638,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -238,10 +238,10 @@
         },
         "corrected_decimal_age_data": {
           "x": 3.4140999315537304,
-          "y": 18.2,
+          "y": 18.1,
           "b": null,
-          "centile": 96.939,
-          "sds": 1.8718968100365512,
+          "centile": 96.52090108453615,
+          "sds": 1.8146222661024638,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -261,9 +261,9 @@
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 3.4140999315537304,
-          "y": 1.8718968100365512,
+          "y": 1.8146222661024638,
           "b": null,
-          "centile": 96.939,
+          "centile": 96.52090108453615,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -281,9 +281,9 @@
         },
         "corrected_decimal_age_data": {
           "x": 3.4140999315537304,
-          "y": 1.8718968100365512,
+          "y": 1.8146222661024638,
           "b": null,
-          "centile": 96.939,
+          "centile": 96.52090108453615,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -356,29 +356,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 18.2,
+      "observation_value": 18.5,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.8438675021320854,
-      "corrected_centile": 96.7399,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.8438675021320854,
-      "chronological_centile": 96.7399,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 2.0067042102255965,
+      "corrected_centile": 97.76094162655936,
+      "corrected_centile_band": "This body mass index measurement is on or near the 98th centile.",
+      "chronological_sds": 2.0067042102255965,
+      "chronological_centile": 97.76094162655936,
+      "chronological_centile_band": "This body mass index measurement is on or near the 98th centile.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 119.16063770583037,
-      "chronological_percentage_median_bmi": 119.16063770583037
+      "corrected_percentage_median_bmi": 121.12494511303386,
+      "chronological_percentage_median_bmi": 121.12494511303386
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 3.8302532511978096,
-          "y": 18.2,
+          "y": 18.5,
           "b": null,
-          "centile": 96.7399,
-          "sds": 1.8438675021320854,
+          "centile": 97.76094162655936,
+          "sds": 2.0067042102255965,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -390,15 +390,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 98th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 3.8302532511978096,
-          "y": 18.2,
+          "y": 18.5,
           "b": null,
-          "centile": 96.7399,
-          "sds": 1.8438675021320854,
+          "centile": 97.76094162655936,
+          "sds": 2.0067042102255965,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -411,16 +411,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 98th centile.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 3.8302532511978096,
-          "y": 1.8438675021320854,
+          "y": 2.0067042102255965,
           "b": null,
-          "centile": 96.7399,
+          "centile": 97.76094162655936,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -433,14 +433,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 98th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 3.8302532511978096,
-          "y": 1.8438675021320854,
+          "y": 2.0067042102255965,
           "b": null,
-          "centile": 96.7399,
+          "centile": 97.76094162655936,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -454,7 +454,7 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 98th centile.",
           "observation_value_error": null
         }
       }
@@ -513,29 +513,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 18.8,
+      "observation_value": 19.0,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.8892328981579083,
-      "corrected_centile": 97.057,
+      "corrected_sds": 1.9847393634034822,
+      "corrected_centile": 97.64132615523583,
       "corrected_centile_band": "This body mass index measurement is on or near the 98th centile.",
-      "chronological_sds": 1.8892328981579083,
-      "chronological_centile": 97.057,
+      "chronological_sds": 1.9847393634034822,
+      "chronological_centile": 97.64132615523583,
       "chronological_centile_band": "This body mass index measurement is on or near the 98th centile.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 120.46865174591406,
-      "chronological_percentage_median_bmi": 120.46865174591406
+      "corrected_percentage_median_bmi": 121.75023314746633,
+      "chronological_percentage_median_bmi": 121.75023314746633
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 4.246406570841889,
-          "y": 18.8,
+          "y": 19.0,
           "b": null,
-          "centile": 97.057,
-          "sds": 1.8892328981579083,
+          "centile": 97.64132615523583,
+          "sds": 1.9847393634034822,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -552,10 +552,10 @@
         },
         "corrected_decimal_age_data": {
           "x": 4.246406570841889,
-          "y": 18.8,
+          "y": 19.0,
           "b": null,
-          "centile": 97.057,
-          "sds": 1.8892328981579083,
+          "centile": 97.64132615523583,
+          "sds": 1.9847393634034822,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -575,9 +575,9 @@
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 4.246406570841889,
-          "y": 1.8892328981579083,
+          "y": 1.9847393634034822,
           "b": null,
-          "centile": 97.057,
+          "centile": 97.64132615523583,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -595,9 +595,9 @@
         },
         "corrected_decimal_age_data": {
           "x": 4.246406570841889,
-          "y": 1.8892328981579083,
+          "y": 1.9847393634034822,
           "b": null,
-          "centile": 97.057,
+          "centile": 97.64132615523583,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -670,29 +670,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 18.8,
+      "observation_value": 19.4,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.8769044555483003,
-      "corrected_centile": 96.9734,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.8769044555483003,
-      "chronological_centile": 96.9734,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 2.146283469965737,
+      "corrected_centile": 98.40748152042168,
+      "corrected_centile_band": "This body mass index measurement is on or near the 98th centile.",
+      "chronological_sds": 2.146283469965737,
+      "chronological_centile": 98.40748152042168,
+      "chronological_centile_band": "This body mass index measurement is on or near the 98th centile.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 121.06641600805226,
-      "chronological_percentage_median_bmi": 121.06641600805226
+      "corrected_percentage_median_bmi": 124.93023779554329,
+      "chronological_percentage_median_bmi": 124.93023779554329
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 4.662559890485968,
-          "y": 18.8,
+          "y": 19.4,
           "b": null,
-          "centile": 96.9734,
-          "sds": 1.8769044555483003,
+          "centile": 98.40748152042168,
+          "sds": 2.146283469965737,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -704,15 +704,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 98th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 4.662559890485968,
-          "y": 18.8,
+          "y": 19.4,
           "b": null,
-          "centile": 96.9734,
-          "sds": 1.8769044555483003,
+          "centile": 98.40748152042168,
+          "sds": 2.146283469965737,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -725,16 +725,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 98th centile.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 4.662559890485968,
-          "y": 1.8769044555483003,
+          "y": 2.146283469965737,
           "b": null,
-          "centile": 96.9734,
+          "centile": 98.40748152042168,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -747,14 +747,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 98th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 4.662559890485968,
-          "y": 1.8769044555483003,
+          "y": 2.146283469965737,
           "b": null,
-          "centile": 96.9734,
+          "centile": 98.40748152042168,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -768,7 +768,7 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 98th centile.",
           "observation_value_error": null
         }
       }
@@ -827,29 +827,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 18.9,
+      "observation_value": 19.5,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.8902320817704035,
-      "corrected_centile": 97.0637,
+      "corrected_sds": 2.1461111425988633,
+      "corrected_centile": 98.4067943748379,
       "corrected_centile_band": "This body mass index measurement is on or near the 98th centile.",
-      "chronological_sds": 1.8902320817704035,
-      "chronological_centile": 97.0637,
+      "chronological_sds": 2.1461111425988633,
+      "chronological_centile": 98.4067943748379,
       "chronological_centile_band": "This body mass index measurement is on or near the 98th centile.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 122.12917800554703,
-      "chronological_percentage_median_bmi": 122.12917800554703
+      "corrected_percentage_median_bmi": 126.0062947676279,
+      "chronological_percentage_median_bmi": 126.0062947676279
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 5.078713210130048,
-          "y": 18.9,
+          "y": 19.5,
           "b": null,
-          "centile": 97.0637,
-          "sds": 1.8902320817704035,
+          "centile": 98.4067943748379,
+          "sds": 2.1461111425988633,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -866,10 +866,10 @@
         },
         "corrected_decimal_age_data": {
           "x": 5.078713210130048,
-          "y": 18.9,
+          "y": 19.5,
           "b": null,
-          "centile": 97.0637,
-          "sds": 1.8902320817704035,
+          "centile": 98.4067943748379,
+          "sds": 2.1461111425988633,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -889,9 +889,9 @@
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 5.078713210130048,
-          "y": 1.8902320817704035,
+          "y": 2.1461111425988633,
           "b": null,
-          "centile": 97.0637,
+          "centile": 98.4067943748379,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -909,9 +909,9 @@
         },
         "corrected_decimal_age_data": {
           "x": 5.078713210130048,
-          "y": 1.8902320817704035,
+          "y": 2.1461111425988633,
           "b": null,
-          "centile": 97.0637,
+          "centile": 98.4067943748379,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -984,29 +984,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 19,
+      "observation_value": 20.0,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.8788615977676688,
-      "corrected_centile": 96.9868,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.8788615977676688,
-      "chronological_centile": 96.9868,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 2.275354256729347,
+      "corrected_centile": 98.85576564525142,
+      "corrected_centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
+      "chronological_sds": 2.275354256729347,
+      "chronological_centile": 98.85576564525142,
+      "chronological_centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 122.92204615115665,
-      "chronological_percentage_median_bmi": 122.92204615115665
+      "corrected_percentage_median_bmi": 129.39162752753333,
+      "chronological_percentage_median_bmi": 129.39162752753333
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 5.494866529774128,
-          "y": 19,
+          "y": 20.0,
           "b": null,
-          "centile": 96.9868,
-          "sds": 1.8788615977676688,
+          "centile": 98.85576564525142,
+          "sds": 2.275354256729347,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -1018,15 +1018,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 5.494866529774128,
-          "y": 19,
+          "y": 20.0,
           "b": null,
-          "centile": 96.9868,
-          "sds": 1.8788615977676688,
+          "centile": 98.85576564525142,
+          "sds": 2.275354256729347,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -1039,16 +1039,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 5.494866529774128,
-          "y": 1.8788615977676688,
+          "y": 2.275354256729347,
           "b": null,
-          "centile": 96.9868,
+          "centile": 98.85576564525142,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -1061,14 +1061,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 5.494866529774128,
-          "y": 1.8788615977676688,
+          "y": 2.275354256729347,
           "b": null,
-          "centile": 96.9868,
+          "centile": 98.85576564525142,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -1082,7 +1082,7 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
           "observation_value_error": null
         }
       }
@@ -1141,29 +1141,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 19.2,
+      "observation_value": 20.6,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.885470650138694,
-      "corrected_centile": 97.0317,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.885470650138694,
-      "chronological_centile": 97.0317,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 2.3971498542695655,
+      "corrected_centile": 99.17384176869429,
+      "corrected_centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
+      "chronological_sds": 2.3971498542695655,
+      "chronological_centile": 99.17384176869429,
+      "chronological_centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 124.05919483046146,
-      "chronological_percentage_median_bmi": 124.05919483046146
+      "corrected_percentage_median_bmi": 133.10517778684928,
+      "chronological_percentage_median_bmi": 133.10517778684928
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 5.9110198494182065,
-          "y": 19.2,
+          "y": 20.6,
           "b": null,
-          "centile": 97.0317,
-          "sds": 1.885470650138694,
+          "centile": 99.17384176869429,
+          "sds": 2.3971498542695655,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -1175,15 +1175,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 5.9110198494182065,
-          "y": 19.2,
+          "y": 20.6,
           "b": null,
-          "centile": 97.0317,
-          "sds": 1.885470650138694,
+          "centile": 99.17384176869429,
+          "sds": 2.3971498542695655,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -1196,16 +1196,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 5.9110198494182065,
-          "y": 1.885470650138694,
+          "y": 2.3971498542695655,
           "b": null,
-          "centile": 97.0317,
+          "centile": 99.17384176869429,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -1218,14 +1218,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 5.9110198494182065,
-          "y": 1.885470650138694,
+          "y": 2.3971498542695655,
           "b": null,
-          "centile": 97.0317,
+          "centile": 99.17384176869429,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -1239,7 +1239,7 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
           "observation_value_error": null
         }
       }
@@ -1298,29 +1298,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 19.4,
+      "observation_value": 21.1,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.8728256461634036,
-      "corrected_centile": 96.9454,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.8728256461634036,
-      "chronological_centile": 96.9454,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 2.450899756880265,
+      "corrected_centile": 99.28750183998903,
+      "corrected_centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
+      "chronological_sds": 2.450899756880265,
+      "chronological_centile": 99.28750183998903,
+      "chronological_centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 124.92761497088833,
-      "chronological_percentage_median_bmi": 124.92761497088833
+      "corrected_percentage_median_bmi": 135.8748802002961,
+      "chronological_percentage_median_bmi": 135.8748802002961
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 6.327173169062286,
-          "y": 19.4,
+          "y": 21.1,
           "b": null,
-          "centile": 96.9454,
-          "sds": 1.8728256461634036,
+          "centile": 99.28750183998903,
+          "sds": 2.450899756880265,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -1332,15 +1332,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 6.327173169062286,
-          "y": 19.4,
+          "y": 21.1,
           "b": null,
-          "centile": 96.9454,
-          "sds": 1.8728256461634036,
+          "centile": 99.28750183998903,
+          "sds": 2.450899756880265,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -1353,16 +1353,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 6.327173169062286,
-          "y": 1.8728256461634036,
+          "y": 2.450899756880265,
           "b": null,
-          "centile": 96.9454,
+          "centile": 99.28750183998903,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -1375,14 +1375,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 6.327173169062286,
-          "y": 1.8728256461634036,
+          "y": 2.450899756880265,
           "b": null,
-          "centile": 96.9454,
+          "centile": 99.28750183998903,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -1396,7 +1396,7 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
           "observation_value_error": null
         }
       }
@@ -1455,29 +1455,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 19.7,
+      "observation_value": 21.5,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.8812850998097943,
-      "corrected_centile": 97.0033,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.8812850998097943,
-      "chronological_centile": 97.0033,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 2.4529052074387945,
+      "corrected_centile": 99.29146161953942,
+      "corrected_centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
+      "chronological_sds": 2.4529052074387945,
+      "chronological_centile": 99.29146161953942,
+      "chronological_centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 126.18093615824957,
-      "chronological_percentage_median_bmi": 126.18093615824957
+      "corrected_percentage_median_bmi": 137.71015875138912,
+      "chronological_percentage_median_bmi": 137.71015875138912
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 6.743326488706366,
-          "y": 19.7,
+          "y": 21.5,
           "b": null,
-          "centile": 97.0033,
-          "sds": 1.8812850998097943,
+          "centile": 99.29146161953942,
+          "sds": 2.4529052074387945,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -1489,15 +1489,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 6.743326488706366,
-          "y": 19.7,
+          "y": 21.5,
           "b": null,
-          "centile": 97.0033,
-          "sds": 1.8812850998097943,
+          "centile": 99.29146161953942,
+          "sds": 2.4529052074387945,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -1510,16 +1510,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 6.743326488706366,
-          "y": 1.8812850998097943,
+          "y": 2.4529052074387945,
           "b": null,
-          "centile": 97.0033,
+          "centile": 99.29146161953942,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -1532,14 +1532,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 6.743326488706366,
-          "y": 1.8812850998097943,
+          "y": 2.4529052074387945,
           "b": null,
-          "centile": 97.0033,
+          "centile": 99.29146161953942,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -1553,7 +1553,7 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is between the 98th and 99.6th centiles.",
           "observation_value_error": null
         }
       }
@@ -1612,29 +1612,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 20,
+      "observation_value": 22.2,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.8780154853152091,
-      "corrected_centile": 96.981,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.8780154853152091,
-      "chronological_centile": 96.981,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 2.523550125759363,
+      "corrected_centile": 99.41911751774704,
+      "corrected_centile_band": "This body mass index measurement is on or near the 99.6th centile.",
+      "chronological_sds": 2.523550125759363,
+      "chronological_centile": 99.41911751774704,
+      "chronological_centile_band": "This body mass index measurement is on or near the 99.6th centile.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 127.21864420633928,
-      "chronological_percentage_median_bmi": 127.21864420633928
+      "corrected_percentage_median_bmi": 141.21269506903658,
+      "chronological_percentage_median_bmi": 141.21269506903658
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 7.1594798083504445,
-          "y": 20,
+          "y": 22.2,
           "b": null,
-          "centile": 96.981,
-          "sds": 1.8780154853152091,
+          "centile": 99.41911751774704,
+          "sds": 2.523550125759363,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -1646,15 +1646,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 99.6th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 7.1594798083504445,
-          "y": 20,
+          "y": 22.2,
           "b": null,
-          "centile": 96.981,
-          "sds": 1.8780154853152091,
+          "centile": 99.41911751774704,
+          "sds": 2.523550125759363,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -1667,16 +1667,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 99.6th centile.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 7.1594798083504445,
-          "y": 1.8780154853152091,
+          "y": 2.523550125759363,
           "b": null,
-          "centile": 96.981,
+          "centile": 99.41911751774704,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -1689,14 +1689,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 99.6th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 7.1594798083504445,
-          "y": 1.8780154853152091,
+          "y": 2.523550125759363,
           "b": null,
-          "centile": 96.981,
+          "centile": 99.41911751774704,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -1710,7 +1710,7 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 99.6th centile.",
           "observation_value_error": null
         }
       }
@@ -1769,29 +1769,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 20.3,
+      "observation_value": 23.4,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.8685641642302384,
-      "corrected_centile": 96.9158,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.8685641642302384,
-      "chronological_centile": 96.9158,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 2.6927368284433806,
+      "corrected_centile": 99.64565908074155,
+      "corrected_centile_band": "This body mass index measurement is on or near the 99.6th centile.",
+      "chronological_sds": 2.6927368284433806,
+      "chronological_centile": 99.64565908074155,
+      "chronological_centile_band": "This body mass index measurement is on or near the 99.6th centile.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 128.09534131778767,
-      "chronological_percentage_median_bmi": 128.09534131778767
+      "corrected_percentage_median_bmi": 147.65669885892768,
+      "chronological_percentage_median_bmi": 147.65669885892768
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 7.575633127994524,
-          "y": 20.3,
+          "y": 23.4,
           "b": null,
-          "centile": 96.9158,
-          "sds": 1.8685641642302384,
+          "centile": 99.64565908074155,
+          "sds": 2.6927368284433806,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -1803,15 +1803,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 99.6th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 7.575633127994524,
-          "y": 20.3,
+          "y": 23.4,
           "b": null,
-          "centile": 96.9158,
-          "sds": 1.8685641642302384,
+          "centile": 99.64565908074155,
+          "sds": 2.6927368284433806,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -1824,16 +1824,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 99.6th centile.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 7.575633127994524,
-          "y": 1.8685641642302384,
+          "y": 2.6927368284433806,
           "b": null,
-          "centile": 96.9158,
+          "centile": 99.64565908074155,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -1846,14 +1846,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 99.6th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 7.575633127994524,
-          "y": 1.8685641642302384,
+          "y": 2.6927368284433806,
           "b": null,
-          "centile": 96.9158,
+          "centile": 99.64565908074155,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -1867,7 +1867,7 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 99.6th centile.",
           "observation_value_error": null
         }
       }
@@ -1926,29 +1926,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 20.6,
+      "observation_value": 24.0,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.8562756453079932,
-      "corrected_centile": 96.8293,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.8562756453079932,
-      "chronological_centile": 96.8293,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 2.7057539284464407,
+      "corrected_centile": 99.65925238181585,
+      "corrected_centile_band": "This body mass index measurement is on or near the 99.6th centile.",
+      "chronological_sds": 2.7057539284464407,
+      "chronological_centile": 99.65925238181585,
+      "chronological_centile_band": "This body mass index measurement is on or near the 99.6th centile.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 128.83007586251108,
-      "chronological_percentage_median_bmi": 128.83007586251108
+      "corrected_percentage_median_bmi": 150.0932922670032,
+      "chronological_percentage_median_bmi": 150.0932922670032
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 7.991786447638604,
-          "y": 20.6,
+          "y": 24.0,
           "b": null,
-          "centile": 96.8293,
-          "sds": 1.8562756453079932,
+          "centile": 99.65925238181585,
+          "sds": 2.7057539284464407,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -1960,15 +1960,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 99.6th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 7.991786447638604,
-          "y": 20.6,
+          "y": 24.0,
           "b": null,
-          "centile": 96.8293,
-          "sds": 1.8562756453079932,
+          "centile": 99.65925238181585,
+          "sds": 2.7057539284464407,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -1981,16 +1981,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 99.6th centile.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 7.991786447638604,
-          "y": 1.8562756453079932,
+          "y": 2.7057539284464407,
           "b": null,
-          "centile": 96.8293,
+          "centile": 99.65925238181585,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -2003,14 +2003,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 99.6th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 7.991786447638604,
-          "y": 1.8562756453079932,
+          "y": 2.7057539284464407,
           "b": null,
-          "centile": 96.8293,
+          "centile": 99.65925238181585,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -2024,7 +2024,7 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 99.6th centile.",
           "observation_value_error": null
         }
       }
@@ -2083,29 +2083,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 21,
+      "observation_value": 25.0,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.8717445906940677,
-      "corrected_centile": 96.9379,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.8717445906940677,
-      "chronological_centile": 96.9379,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 2.794091924695077,
+      "corrected_centile": 99.73977159109191,
+      "corrected_centile_band": "This body mass index measurement is on or near the 99.6th centile.",
+      "chronological_sds": 2.794091924695077,
+      "chronological_centile": 99.73977159109191,
+      "chronological_centile_band": "This body mass index measurement is on or near the 99.6th centile.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 130.05828486216924,
-      "chronological_percentage_median_bmi": 130.05828486216924
+      "corrected_percentage_median_bmi": 154.83129150258245,
+      "chronological_percentage_median_bmi": 154.83129150258245
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 8.407939767282683,
-          "y": 21,
+          "y": 25.0,
           "b": null,
-          "centile": 96.9379,
-          "sds": 1.8717445906940677,
+          "centile": 99.73977159109191,
+          "sds": 2.794091924695077,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -2117,15 +2117,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 99.6th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 8.407939767282683,
-          "y": 21,
+          "y": 25.0,
           "b": null,
-          "centile": 96.9379,
-          "sds": 1.8717445906940677,
+          "centile": 99.73977159109191,
+          "sds": 2.794091924695077,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -2138,16 +2138,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 99.6th centile.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 8.407939767282683,
-          "y": 1.8717445906940677,
+          "y": 2.794091924695077,
           "b": null,
-          "centile": 96.9379,
+          "centile": 99.73977159109191,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -2160,14 +2160,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 99.6th centile.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 8.407939767282683,
-          "y": 1.8717445906940677,
+          "y": 2.794091924695077,
           "b": null,
-          "centile": 96.9379,
+          "centile": 99.73977159109191,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -2181,7 +2181,7 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is on or near the 99.6th centile.",
           "observation_value_error": null
         }
       }
@@ -2240,29 +2240,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 21.4,
+      "observation_value": 26.3,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.8828847309666363,
-      "corrected_centile": 97.0142,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.8828847309666363,
-      "chronological_centile": 97.0142,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 2.918719020702217,
+      "corrected_centile": 99.82426356434271,
+      "corrected_centile_band": "This body mass index measurement is above the normal range.",
+      "chronological_sds": 2.918719020702217,
+      "chronological_centile": 99.82426356434271,
+      "chronological_centile_band": "This body mass index measurement is above the normal range.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 131.12778105288848,
-      "chronological_percentage_median_bmi": 131.12778105288848
+      "corrected_percentage_median_bmi": 161.15236643415736,
+      "chronological_percentage_median_bmi": 161.15236643415736
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 8.824093086926762,
-          "y": 21.4,
+          "y": 26.3,
           "b": null,
-          "centile": 97.0142,
-          "sds": 1.8828847309666363,
+          "centile": 99.82426356434271,
+          "sds": 2.918719020702217,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -2274,15 +2274,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 8.824093086926762,
-          "y": 21.4,
+          "y": 26.3,
           "b": null,
-          "centile": 97.0142,
-          "sds": 1.8828847309666363,
+          "centile": 99.82426356434271,
+          "sds": 2.918719020702217,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -2295,16 +2295,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 8.824093086926762,
-          "y": 1.8828847309666363,
+          "y": 2.918719020702217,
           "b": null,
-          "centile": 97.0142,
+          "centile": 99.82426356434271,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -2317,14 +2317,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 8.824093086926762,
-          "y": 1.8828847309666363,
+          "y": 2.918719020702217,
           "b": null,
-          "centile": 97.0142,
+          "centile": 99.82426356434271,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -2338,7 +2338,7 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       }
@@ -2397,29 +2397,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 21.7,
+      "observation_value": 27.1,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.8655964520220838,
-      "corrected_centile": 96.8951,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.8655964520220838,
-      "chronological_centile": 96.8951,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 2.949871075381317,
+      "corrected_centile": 99.84104672135199,
+      "corrected_centile_band": "This body mass index measurement is above the normal range.",
+      "chronological_sds": 2.949871075381317,
+      "chronological_centile": 99.84104672135199,
+      "chronological_centile_band": "This body mass index measurement is above the normal range.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 131.4332662384914,
-      "chronological_percentage_median_bmi": 131.4332662384914
+      "corrected_percentage_median_bmi": 164.14016198447544,
+      "chronological_percentage_median_bmi": 164.14016198447544
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 9.240246406570842,
-          "y": 21.7,
+          "y": 27.1,
           "b": null,
-          "centile": 96.8951,
-          "sds": 1.8655964520220838,
+          "centile": 99.84104672135199,
+          "sds": 2.949871075381317,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -2431,15 +2431,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 9.240246406570842,
-          "y": 21.7,
+          "y": 27.1,
           "b": null,
-          "centile": 96.8951,
-          "sds": 1.8655964520220838,
+          "centile": 99.84104672135199,
+          "sds": 2.949871075381317,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -2452,16 +2452,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 9.240246406570842,
-          "y": 1.8655964520220838,
+          "y": 2.949871075381317,
           "b": null,
-          "centile": 96.8951,
+          "centile": 99.84104672135199,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -2474,14 +2474,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 9.240246406570842,
-          "y": 1.8655964520220838,
+          "y": 2.949871075381317,
           "b": null,
-          "centile": 96.8951,
+          "centile": 99.84104672135199,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -2495,7 +2495,7 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       }
@@ -2554,29 +2554,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 22.1,
+      "observation_value": 28.0,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.8731938645987374,
-      "corrected_centile": 96.9479,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.8731938645987374,
-      "chronological_centile": 96.9479,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 2.99424994786362,
+      "corrected_centile": 99.86243976859204,
+      "corrected_centile_band": "This body mass index measurement is above the normal range.",
+      "chronological_sds": 2.99424994786362,
+      "chronological_centile": 99.86243976859204,
+      "chronological_centile_band": "This body mass index measurement is above the normal range.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 132.2032682783886,
-      "chronological_percentage_median_bmi": 132.2032682783886
+      "corrected_percentage_median_bmi": 167.4973534748815,
+      "chronological_percentage_median_bmi": 167.4973534748815
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 9.656399726214921,
-          "y": 22.1,
+          "y": 28.0,
           "b": null,
-          "centile": 96.9479,
-          "sds": 1.8731938645987374,
+          "centile": 99.86243976859204,
+          "sds": 2.99424994786362,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -2588,15 +2588,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 9.656399726214921,
-          "y": 22.1,
+          "y": 28.0,
           "b": null,
-          "centile": 96.9479,
-          "sds": 1.8731938645987374,
+          "centile": 99.86243976859204,
+          "sds": 2.99424994786362,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -2609,16 +2609,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 9.656399726214921,
-          "y": 1.8731938645987374,
+          "y": 2.99424994786362,
           "b": null,
-          "centile": 96.9479,
+          "centile": 99.86243976859204,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -2631,14 +2631,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 9.656399726214921,
-          "y": 1.8731938645987374,
+          "y": 2.99424994786362,
           "b": null,
-          "centile": 96.9479,
+          "centile": 99.86243976859204,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -2652,7 +2652,7 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       }
@@ -2711,29 +2711,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 22.5,
+      "observation_value": 29.2,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.879715899889197,
-      "corrected_centile": 96.9927,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.879715899889197,
-      "chronological_centile": 96.9927,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 3.076870712763453,
+      "corrected_centile": 99.89540699536161,
+      "corrected_centile_band": "This body mass index measurement is above the normal range.",
+      "chronological_sds": 3.076870712763453,
+      "chronological_centile": 99.89540699536161,
+      "chronological_centile_band": "This body mass index measurement is above the normal range.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 132.84439969158487,
-      "chronological_percentage_median_bmi": 132.84439969158487
+      "corrected_percentage_median_bmi": 172.40250982196793,
+      "chronological_percentage_median_bmi": 172.40250982196793
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 10.072553045859001,
-          "y": 22.5,
+          "y": 29.2,
           "b": null,
-          "centile": 96.9927,
-          "sds": 1.879715899889197,
+          "centile": 99.89540699536161,
+          "sds": 3.076870712763453,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -2745,15 +2745,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 10.072553045859001,
-          "y": 22.5,
+          "y": 29.2,
           "b": null,
-          "centile": 96.9927,
-          "sds": 1.879715899889197,
+          "centile": 99.89540699536161,
+          "sds": 3.076870712763453,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -2766,16 +2766,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 10.072553045859001,
-          "y": 1.879715899889197,
+          "y": 3.076870712763453,
           "b": null,
-          "centile": 96.9927,
+          "centile": 99.89540699536161,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -2788,14 +2788,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 10.072553045859001,
-          "y": 1.879715899889197,
+          "y": 3.076870712763453,
           "b": null,
-          "centile": 96.9927,
+          "centile": 99.89540699536161,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -2809,7 +2809,7 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       }
@@ -2868,29 +2868,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 22.8,
+      "observation_value": 30.7,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.8612087463293479,
-      "corrected_centile": 96.8643,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.8612087463293479,
-      "chronological_centile": 96.8643,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 3.1886367115248224,
+      "corrected_centile": 99.92852730044048,
+      "corrected_centile_band": "This body mass index measurement is above the normal range.",
+      "chronological_sds": 3.1886367115248224,
+      "chronological_centile": 99.92852730044048,
+      "chronological_centile_band": "This body mass index measurement is above the normal range.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 132.77045750899347,
-      "chronological_percentage_median_bmi": 132.77045750899347
+      "corrected_percentage_median_bmi": 178.77425638272365,
+      "chronological_percentage_median_bmi": 178.77425638272365
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 10.48870636550308,
-          "y": 22.8,
+          "y": 30.7,
           "b": null,
-          "centile": 96.8643,
-          "sds": 1.8612087463293479,
+          "centile": 99.92852730044048,
+          "sds": 3.1886367115248224,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -2902,15 +2902,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 10.48870636550308,
-          "y": 22.8,
+          "y": 30.7,
           "b": null,
-          "centile": 96.8643,
-          "sds": 1.8612087463293479,
+          "centile": 99.92852730044048,
+          "sds": 3.1886367115248224,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -2923,16 +2923,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 10.48870636550308,
-          "y": 1.8612087463293479,
+          "y": 3.1886367115248224,
           "b": null,
-          "centile": 96.8643,
+          "centile": 99.92852730044048,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -2945,14 +2945,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 10.48870636550308,
-          "y": 1.8612087463293479,
+          "y": 3.1886367115248224,
           "b": null,
-          "centile": 96.8643,
+          "centile": 99.92852730044048,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -2966,7 +2966,7 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       }
@@ -3025,29 +3025,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 23.2,
+      "observation_value": 31.7,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.866946190454759,
-      "corrected_centile": 96.9045,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.866946190454759,
-      "chronological_centile": 96.9045,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 3.2367104899597887,
+      "corrected_centile": 99.93954199253574,
+      "corrected_centile_band": "This body mass index measurement is above the normal range.",
+      "chronological_sds": 3.2367104899597887,
+      "chronological_centile": 99.93954199253574,
+      "chronological_centile_band": "This body mass index measurement is above the normal range.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 133.1811841919276,
-      "chronological_percentage_median_bmi": 133.1811841919276
+      "corrected_percentage_median_bmi": 181.97601460707347,
+      "chronological_percentage_median_bmi": 181.97601460707347
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 10.904859685147159,
-          "y": 23.2,
+          "y": 31.7,
           "b": null,
-          "centile": 96.9045,
-          "sds": 1.866946190454759,
+          "centile": 99.93954199253574,
+          "sds": 3.2367104899597887,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -3059,15 +3059,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 10.904859685147159,
-          "y": 23.2,
+          "y": 31.7,
           "b": null,
-          "centile": 96.9045,
-          "sds": 1.866946190454759,
+          "centile": 99.93954199253574,
+          "sds": 3.2367104899597887,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -3080,16 +3080,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 10.904859685147159,
-          "y": 1.866946190454759,
+          "y": 3.2367104899597887,
           "b": null,
-          "centile": 96.9045,
+          "centile": 99.93954199253574,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -3102,14 +3102,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 10.904859685147159,
-          "y": 1.866946190454759,
+          "y": 3.2367104899597887,
           "b": null,
-          "centile": 96.9045,
+          "centile": 99.93954199253574,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -3123,7 +3123,7 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       }
@@ -3182,29 +3182,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 23.6,
+      "observation_value": 33.1,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.8719271315237416,
-      "corrected_centile": 96.9392,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.8719271315237416,
-      "chronological_centile": 96.9392,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 3.3260428545305833,
+      "corrected_centile": 99.95595580794408,
+      "corrected_centile_band": "This body mass index measurement is above the normal range.",
+      "chronological_sds": 3.3260428545305833,
+      "chronological_centile": 99.95595580794408,
+      "chronological_centile_band": "This body mass index measurement is above the normal range.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 133.49017930104904,
-      "chronological_percentage_median_bmi": 133.49017930104904
+      "corrected_percentage_median_bmi": 187.22563283325098,
+      "chronological_percentage_median_bmi": 187.22563283325098
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 11.321013004791238,
-          "y": 23.6,
+          "y": 33.1,
           "b": null,
-          "centile": 96.9392,
-          "sds": 1.8719271315237416,
+          "centile": 99.95595580794408,
+          "sds": 3.3260428545305833,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -3216,15 +3216,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 11.321013004791238,
-          "y": 23.6,
+          "y": 33.1,
           "b": null,
-          "centile": 96.9392,
-          "sds": 1.8719271315237416,
+          "centile": 99.95595580794408,
+          "sds": 3.3260428545305833,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -3237,16 +3237,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 11.321013004791238,
-          "y": 1.8719271315237416,
+          "y": 3.3260428545305833,
           "b": null,
-          "centile": 96.9392,
+          "centile": 99.95595580794408,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -3259,14 +3259,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 11.321013004791238,
-          "y": 1.8719271315237416,
+          "y": 3.3260428545305833,
           "b": null,
-          "centile": 96.9392,
+          "centile": 99.95595580794408,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -3280,7 +3280,7 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       }
@@ -3339,29 +3339,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 24,
+      "observation_value": 34.4,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.877541231170689,
-      "corrected_centile": 96.9778,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.877541231170689,
-      "chronological_centile": 96.9778,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 3.4020091325555777,
+      "corrected_centile": 99.96655379877465,
+      "corrected_centile_band": "This body mass index measurement is above the normal range.",
+      "chronological_sds": 3.4020091325555777,
+      "chronological_centile": 99.96655379877465,
+      "chronological_centile_band": "This body mass index measurement is above the normal range.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 133.73689348694003,
-      "chronological_percentage_median_bmi": 133.73689348694003
+      "corrected_percentage_median_bmi": 191.68954733128072,
+      "chronological_percentage_median_bmi": 191.68954733128072
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 11.737166324435318,
-          "y": 24,
+          "y": 34.4,
           "b": null,
-          "centile": 96.9778,
-          "sds": 1.877541231170689,
+          "centile": 99.96655379877465,
+          "sds": 3.4020091325555777,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -3373,15 +3373,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 11.737166324435318,
-          "y": 24,
+          "y": 34.4,
           "b": null,
-          "centile": 96.9778,
-          "sds": 1.877541231170689,
+          "centile": 99.96655379877465,
+          "sds": 3.4020091325555777,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -3394,16 +3394,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 11.737166324435318,
-          "y": 1.877541231170689,
+          "y": 3.4020091325555777,
           "b": null,
-          "centile": 96.9778,
+          "centile": 99.96655379877465,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -3416,14 +3416,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 11.737166324435318,
-          "y": 1.877541231170689,
+          "y": 3.4020091325555777,
           "b": null,
-          "centile": 96.9778,
+          "centile": 99.96655379877465,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -3437,7 +3437,7 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       }
@@ -3496,29 +3496,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 24.3,
+      "observation_value": 35.7,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.86181223839308,
-      "corrected_centile": 96.8685,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.86181223839308,
-      "chronological_centile": 96.8685,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 3.475241674004729,
+      "corrected_centile": 99.97448033462715,
+      "corrected_centile_band": "This body mass index measurement is above the normal range.",
+      "chronological_sds": 3.475241674004729,
+      "chronological_centile": 99.97448033462715,
+      "chronological_centile_band": "This body mass index measurement is above the normal range.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 133.38286458140016,
-      "chronological_percentage_median_bmi": 133.38286458140016
+      "corrected_percentage_median_bmi": 195.9575417924274,
+      "chronological_percentage_median_bmi": 195.9575417924274
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 12.153319644079398,
-          "y": 24.3,
+          "y": 35.7,
           "b": null,
-          "centile": 96.8685,
-          "sds": 1.86181223839308,
+          "centile": 99.97448033462715,
+          "sds": 3.475241674004729,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -3530,15 +3530,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 12.153319644079398,
-          "y": 24.3,
+          "y": 35.7,
           "b": null,
-          "centile": 96.8685,
-          "sds": 1.86181223839308,
+          "centile": 99.97448033462715,
+          "sds": 3.475241674004729,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -3551,16 +3551,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 12.153319644079398,
-          "y": 1.86181223839308,
+          "y": 3.475241674004729,
           "b": null,
-          "centile": 96.8685,
+          "centile": 99.97448033462715,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -3573,14 +3573,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 12.153319644079398,
-          "y": 1.86181223839308,
+          "y": 3.475241674004729,
           "b": null,
-          "centile": 96.8685,
+          "centile": 99.97448033462715,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -3594,7 +3594,7 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       }
@@ -3653,29 +3653,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 24.7,
+      "observation_value": 37.7,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.870231646250481,
-      "corrected_centile": 96.9274,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.870231646250481,
-      "chronological_centile": 96.9274,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 3.6067675110921122,
+      "corrected_centile": 99.98449823947595,
+      "corrected_centile_band": "This body mass index measurement is above the normal range.",
+      "chronological_sds": 3.6067675110921122,
+      "chronological_centile": 99.98449823947595,
+      "chronological_centile_band": "This body mass index measurement is above the normal range.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 133.57847555703313,
-      "chronological_percentage_median_bmi": 133.57847555703313
+      "corrected_percentage_median_bmi": 203.88293637652427,
+      "chronological_percentage_median_bmi": 203.88293637652427
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 12.569472963723477,
-          "y": 24.7,
+          "y": 37.7,
           "b": null,
-          "centile": 96.9274,
-          "sds": 1.870231646250481,
+          "centile": 99.98449823947595,
+          "sds": 3.6067675110921122,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -3687,15 +3687,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 12.569472963723477,
-          "y": 24.7,
+          "y": 37.7,
           "b": null,
-          "centile": 96.9274,
-          "sds": 1.870231646250481,
+          "centile": 99.98449823947595,
+          "sds": 3.6067675110921122,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -3708,16 +3708,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 12.569472963723477,
-          "y": 1.870231646250481,
+          "y": 3.6067675110921122,
           "b": null,
-          "centile": 96.9274,
+          "centile": 99.98449823947595,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -3730,14 +3730,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 12.569472963723477,
-          "y": 1.870231646250481,
+          "y": 3.6067675110921122,
           "b": null,
-          "centile": 96.9274,
+          "centile": 99.98449823947595,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -3751,7 +3751,7 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       }
@@ -3810,29 +3810,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 25.1,
+      "observation_value": 38.9,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.8804562449675748,
-      "corrected_centile": 96.9977,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.8804562449675748,
-      "chronological_centile": 96.9977,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 3.6680802624539663,
+      "corrected_centile": 99.98778107619613,
+      "corrected_centile_band": "This body mass index measurement is above the normal range.",
+      "chronological_sds": 3.6680802624539663,
+      "chronological_centile": 99.98778107619613,
+      "chronological_centile_band": "This body mass index measurement is above the normal range.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 133.77584673459285,
-      "chronological_percentage_median_bmi": 133.77584673459285
+      "corrected_percentage_median_bmi": 207.32591386357214,
+      "chronological_percentage_median_bmi": 207.32591386357214
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 12.985626283367557,
-          "y": 25.1,
+          "y": 38.9,
           "b": null,
-          "centile": 96.9977,
-          "sds": 1.8804562449675748,
+          "centile": 99.98778107619613,
+          "sds": 3.6680802624539663,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -3844,15 +3844,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 12.985626283367557,
-          "y": 25.1,
+          "y": 38.9,
           "b": null,
-          "centile": 96.9977,
-          "sds": 1.8804562449675748,
+          "centile": 99.98778107619613,
+          "sds": 3.6680802624539663,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -3865,16 +3865,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 12.985626283367557,
-          "y": 1.8804562449675748,
+          "y": 3.6680802624539663,
           "b": null,
-          "centile": 96.9977,
+          "centile": 99.98778107619613,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -3887,14 +3887,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 12.985626283367557,
-          "y": 1.8804562449675748,
+          "y": 3.6680802624539663,
           "b": null,
-          "centile": 96.9977,
+          "centile": 99.98778107619613,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -3908,7 +3908,7 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       }
@@ -3967,29 +3967,29 @@
     },
     "child_observation_value": {
       "measurement_method": "bmi",
-      "observation_value": 25.4,
+      "observation_value": 39.7,
       "observation_value_error": null
     },
     "measurement_calculated_values": {
-      "corrected_sds": 1.87234456640645,
-      "corrected_centile": 96.9421,
-      "corrected_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
-      "chronological_sds": 1.87234456640645,
-      "chronological_centile": 96.9421,
-      "chronological_centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+      "corrected_sds": 3.700050511841489,
+      "corrected_centile": 99.98922217209514,
+      "corrected_centile_band": "This body mass index measurement is above the normal range.",
+      "chronological_sds": 3.700050511841489,
+      "chronological_centile": 99.98922217209514,
+      "chronological_centile_band": "This body mass index measurement is above the normal range.",
       "corrected_measurement_error": null,
       "chronological_measurement_error": null,
-      "corrected_percentage_median_bmi": 133.48344882686123,
-      "chronological_percentage_median_bmi": 133.48344882686123
+      "corrected_percentage_median_bmi": 208.63357946560598,
+      "chronological_percentage_median_bmi": 208.63357946560598
     },
     "plottable_data": {
       "centile_data": {
         "chronological_decimal_age_data": {
           "x": 13.401779603011637,
-          "y": 25.4,
+          "y": 39.7,
           "b": null,
-          "centile": 96.9421,
-          "sds": 1.87234456640645,
+          "centile": 99.98922217209514,
+          "sds": 3.700050511841489,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -4001,15 +4001,15 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 13.401779603011637,
-          "y": 25.4,
+          "y": 39.7,
           "b": null,
-          "centile": 96.9421,
-          "sds": 1.87234456640645,
+          "centile": 99.98922217209514,
+          "sds": 3.700050511841489,
           "bone_age_label": null,
           "events_text": null,
           "bone_age_type": null,
@@ -4022,16 +4022,16 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       },
       "sds_data": {
         "chronological_decimal_age_data": {
           "x": 13.401779603011637,
-          "y": 1.87234456640645,
+          "y": 3.700050511841489,
           "b": null,
-          "centile": 96.9421,
+          "centile": 99.98922217209514,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -4044,14 +4044,14 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born Term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         },
         "corrected_decimal_age_data": {
           "x": 13.401779603011637,
-          "y": 1.87234456640645,
+          "y": 3.700050511841489,
           "b": null,
-          "centile": 96.9421,
+          "centile": 99.98922217209514,
           "sds": null,
           "bone_age_label": null,
           "events_text": null,
@@ -4065,7 +4065,164 @@
           "lay_comment": "Your child was born on their due date.",
           "clinician_comment": "Born at term. No correction has been made for gestation.",
           "age_error": null,
-          "centile_band": "This body mass index measurement is between the 91st and 98th centiles.",
+          "centile_band": "This body mass index measurement is above the normal range.",
+          "observation_value_error": null
+        }
+      }
+    },
+    "bone_age": {
+      "bone_age": null,
+      "bone_age_type": null,
+      "bone_age_sds": null,
+      "bone_age_centile": null,
+      "bone_age_text": null
+    },
+    "events_data": {
+      "events_text": null
+    }
+  },
+  {
+    "provenance": {
+      "growth_reference": "uk-who",
+      "calculation_engine": {
+        "name": "rcpch/rcpchgrowth-python",
+        "version": "4.6.2",
+        "commit": "unknown"
+      },
+      "api_server": {
+        "name": "rcpch/digital-growth-charts-server",
+        "version": "5.0.0",
+        "commit": "unknown"
+      }
+    },
+    "birth_data": {
+      "birth_date": "1759-04-11",
+      "gestation_weeks": 40,
+      "gestation_days": 0,
+      "estimated_date_delivery": "1759-04-11",
+      "estimated_date_delivery_string": "Wed 11 April, 1759",
+      "sex": "female"
+    },
+    "measurement_dates": {
+      "observation_date": "1773-02-03",
+      "chronological_decimal_age": 13.817932922655714,
+      "corrected_decimal_age": 13.817932922655714,
+      "chronological_calendar_age": "13 years, 9 months, 3 weeks and 2 days",
+      "corrected_calendar_age": "13 years, 9 months, 3 weeks and 2 days",
+      "corrected_gestational_age": {
+        "corrected_gestation_weeks": null,
+        "corrected_gestation_days": null
+      },
+      "comments": {
+        "clinician_corrected_decimal_age_comment": "Born at term. No correction has been made for gestation.",
+        "lay_corrected_decimal_age_comment": "Your child was born on their due date.",
+        "clinician_chronological_decimal_age_comment": "Born Term. No correction has been made for gestation.",
+        "lay_chronological_decimal_age_comment": "Your child was born on their due date."
+      },
+      "corrected_decimal_age_error": null,
+      "chronological_decimal_age_error": null
+    },
+    "child_observation_value": {
+      "measurement_method": "bmi",
+      "observation_value": 41.5,
+      "observation_value_error": null
+    },
+    "measurement_calculated_values": {
+      "corrected_sds": 3.806554959324273,
+      "corrected_centile": 99.99295420054824,
+      "corrected_centile_band": "This body mass index measurement is above the normal range.",
+      "chronological_sds": 3.806554959324273,
+      "chronological_centile": 99.99295420054824,
+      "chronological_centile_band": "This body mass index measurement is above the normal range.",
+      "corrected_measurement_error": null,
+      "chronological_measurement_error": null,
+      "corrected_percentage_median_bmi": 215.18656327420996,
+      "chronological_percentage_median_bmi": 215.18656327420996
+    },
+    "plottable_data": {
+      "centile_data": {
+        "chronological_decimal_age_data": {
+          "x": 13.817932922655714,
+          "y": 41.5,
+          "b": null,
+          "centile": 99.99295420054824,
+          "sds": 3.806554959324273,
+          "bone_age_label": null,
+          "events_text": null,
+          "bone_age_type": null,
+          "bone_age_sds": null,
+          "bone_age_centile": null,
+          "observation_error": null,
+          "age_type": "chronological_age",
+          "calendar_age": "13 years, 9 months, 3 weeks and 2 days",
+          "lay_comment": "Your child was born on their due date.",
+          "clinician_comment": "Born Term. No correction has been made for gestation.",
+          "age_error": null,
+          "centile_band": "This body mass index measurement is above the normal range.",
+          "observation_value_error": null
+        },
+        "corrected_decimal_age_data": {
+          "x": 13.817932922655714,
+          "y": 41.5,
+          "b": null,
+          "centile": 99.99295420054824,
+          "sds": 3.806554959324273,
+          "bone_age_label": null,
+          "events_text": null,
+          "bone_age_type": null,
+          "bone_age_sds": null,
+          "bone_age_centile": null,
+          "observation_error": null,
+          "age_type": "corrected_age",
+          "calendar_age": "13 years, 9 months, 3 weeks and 2 days",
+          "corrected_gestational_age": "",
+          "lay_comment": "Your child was born on their due date.",
+          "clinician_comment": "Born at term. No correction has been made for gestation.",
+          "age_error": null,
+          "centile_band": "This body mass index measurement is above the normal range.",
+          "observation_value_error": null
+        }
+      },
+      "sds_data": {
+        "chronological_decimal_age_data": {
+          "x": 13.817932922655714,
+          "y": 3.806554959324273,
+          "b": null,
+          "centile": 99.99295420054824,
+          "sds": null,
+          "bone_age_label": null,
+          "events_text": null,
+          "bone_age_type": null,
+          "bone_age_sds": null,
+          "bone_age_centile": null,
+          "observation_error": null,
+          "age_type": "chronological_age",
+          "calendar_age": "13 years, 9 months, 3 weeks and 2 days",
+          "lay_comment": "Your child was born on their due date.",
+          "clinician_comment": "Born Term. No correction has been made for gestation.",
+          "age_error": null,
+          "centile_band": "This body mass index measurement is above the normal range.",
+          "observation_value_error": null
+        },
+        "corrected_decimal_age_data": {
+          "x": 13.817932922655714,
+          "y": 3.806554959324273,
+          "b": null,
+          "centile": 99.99295420054824,
+          "sds": null,
+          "bone_age_label": null,
+          "events_text": null,
+          "bone_age_type": null,
+          "bone_age_sds": null,
+          "bone_age_centile": null,
+          "observation_error": null,
+          "age_type": "corrected_age",
+          "calendar_age": "13 years, 9 months, 3 weeks and 2 days",
+          "corrected_gestational_age": "",
+          "lay_comment": "Your child was born on their due date.",
+          "clinician_comment": "Born at term. No correction has been made for gestation.",
+          "age_error": null,
+          "centile_band": "This body mass index measurement is above the normal range.",
           "observation_value_error": null
         }
       }

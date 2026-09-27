@@ -84,6 +84,11 @@ const Presets = (props) => {
           Please note that these examples are fictional and do not represent real patients. You can
           create fictional patients also by using the &quot;Generator&quot; tab.
         </p>
+        <p>
+          Example charts are available across all four measurement methods - height, weight,
+          body mass index (BMI), and occipitofrontal circumference (OFC). Use the measurement method
+          selector above to view the examples for each.
+        </p>
         <p>To use the charts, please enter your own measurements in the &quot;Measurements&quot; tab.</p>
       </Message>
       <Form className="preset-form" key="preset-form">
