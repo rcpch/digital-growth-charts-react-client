@@ -31,12 +31,12 @@
   "devDependencies": {
     "@eslint-react/eslint-plugin": "5.28.8",
     "@eslint/js": "10.0.1",
-    "@playwright/test": "1.64.1",
+    "@playwright/test": "1.65.0",
     "@testing-library/dom": "10.4.2",
     "@testing-library/react": "16.3.3",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "@vitejs/plugin-react": "6.1.2",
+    "@vitejs/plugin-react": "6.2.1",
     "esbuild": "0.28.2",
     "eslint": "10.14.0",
     "globals": "17.14.0",
@@ -45,7 +45,7 @@
     "semantic-ui-less": "2.5.0",
     "semver": "7.8.6",
     "typescript": "6.0.3",
-    "vite": "8.3.6",
-    "vitest": "5.0.5"
+    "vite": "8.3.8",
+    "vitest": "5.1.0"
   }
 }
